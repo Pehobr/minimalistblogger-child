@@ -41,7 +41,7 @@ function minimalistblogger_child_enqueue_assets() {
     wp_enqueue_style( 'minimalistblogger-vzhled-pc', get_stylesheet_directory_uri() . '/css/vzhled-pc.css', array('chld_thm_cfg_parent'), $theme_version, 'screen and (min-width: 992px)' );
 
     // Načtení stylů pro panel nastavení - načítáme pouze na stránkách s aplikacemi
-    if ( is_page_template('page-liturgicke-cteni.php') || is_page_template('page-poboznosti.php') || is_page_template('page-home.php') ) { // ZDE JE PŘIDÁNA VAŠE NOVÁ ŠABLONA
+    if ( is_page_template('page-liturgicke-cteni.php') || is_page_template('page-poboznosti.php') || is_page_template('page-home.php') ) {
         wp_enqueue_style(
             'minimalistblogger-nastaveni-panel',
             get_stylesheet_directory_uri() . '/css/nastaveni-panel.css',
@@ -58,13 +58,22 @@ function minimalistblogger_child_enqueue_assets() {
         );
     }
 
-    // --- Načtení CSS pro úvodní stránku aplikace (HOME) ---
+    // --- Načtení CSS a JS pro úvodní stránku aplikace (HOME) ---
     if ( is_page_template('page-home.php') ) { // Načíst pouze na úvodní stránce
         wp_enqueue_style(
             'postni-kapky-home-styles', // Unikátní název pro váš styl
             get_stylesheet_directory_uri() . '/css/page-home.css', // Cesta k vašemu CSS souboru
             array(), // Závislosti (žádné prozatím)
             filemtime( get_stylesheet_directory() . '/css/page-home.css' ) // Verze souboru pro zamezení cache
+        );
+
+        // Načtení nového JS pro modální okno
+        wp_enqueue_script(
+            'postni-kapky-home-js', // Unikátní název pro skript
+            get_stylesheet_directory_uri() . '/js/page-home.js', // Cesta k novému JS souboru
+            array('jquery'), // Závislost na jQuery
+            filemtime( get_stylesheet_directory() . '/js/page-home.js' ), // Verze
+            true // Načíst v patičce
         );
     }
 
