@@ -110,6 +110,27 @@ function minimalistblogger_child_enqueue_assets() {
         $theme_version,
         true
     );
+
+    // ====================================================================
+    // ZDE JE SPRÁVNÉ MÍSTO PRO KÓD PRO RÁDIA - UVNITŘ FUNKCE
+    // ====================================================================
+    // --- Načtení CSS a JS POUZE pro stránku s přehrávačem rádií ---
+    if ( is_page_template('page-radia.php') || is_page_template('page-radio.php') ) { // Pozn: Kontroluje obě verze názvu pro jistotu
+        wp_enqueue_style(
+            'minimalistblogger-page-radia',
+            get_stylesheet_directory_uri() . '/css/page-radia.css',
+            array('chld_thm_cfg_parent'),
+            filemtime( get_stylesheet_directory() . '/css/page-radia.css' )
+        );
+        
+        wp_enqueue_script(
+            'minimalistblogger-page-radia-js',
+            get_stylesheet_directory_uri() . '/js/page-radia.js',
+            array('jquery'),
+            filemtime( get_stylesheet_directory() . '/js/page-radia.js' ),
+            true
+        );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'minimalistblogger_child_enqueue_assets', 20 );
 
@@ -201,5 +222,5 @@ function poboznosti_app_assets() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'poboznosti_app_assets' );
-
+    
 // END ENQUEUE PARENT ACTION
