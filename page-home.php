@@ -14,7 +14,7 @@ get_header(); // Načte hlavičku WordPressu
 
         <div id="intro-wrapper">
             <div id="intro-grid-container">
-                <a href="<?php echo esc_url( '/zkusebni-stranka/' ); ?>" class="icon-grid-item">
+                <a href="<?php echo esc_url( home_url( '/papez-frantisek/' ) ); ?>" class="icon-grid-item">
                     <img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/img/ikona-janpavel.png' ); ?>" alt="Papež František">
                 </a>
 
