@@ -38,18 +38,33 @@ function minimalistblogger_child_enqueue_assets() {
     $theme_version = wp_get_theme()->get('Version');
 
     // --- Načtení CSS stylů ---
-    // Základní styly, které zůstávají
     wp_enqueue_style( 'minimalistblogger-dolni-lista', get_stylesheet_directory_uri() . '/css/dolni-lista.css', array('chld_thm_cfg_parent'), $theme_version );
     wp_enqueue_style( 'minimalistblogger-fixni-hlavicka', get_stylesheet_directory_uri() . '/css/fixni-hlavicka.css', array('chld_thm_cfg_parent'), $theme_version );
     wp_enqueue_style( 'minimalistblogger-prispevky', get_stylesheet_directory_uri() . '/css/prispevky.css', array('chld_thm_cfg_parent'), $theme_version );
 
     // --- Načtení NOVĚ ORGANIZOVANÝCH STYLŮ ---
-    // Styl pro mobilní zařízení se načte vždy
     wp_enqueue_style( 'minimalistblogger-vzhled-mobil', get_stylesheet_directory_uri() . '/css/vzhled-mobil.css', array('chld_thm_cfg_parent'), $theme_version );
-    
-    // Styl pro PC se načte jen pro obrazovky širší než 992px
     wp_enqueue_style( 'minimalistblogger-vzhled-pc', get_stylesheet_directory_uri() . '/css/vzhled-pc.css', array('chld_thm_cfg_parent'), $theme_version, 'screen and (min-width: 992px)' );
 
+    // --- ZMĚNA: Načtení mobilního menu na VŠECH stránkách ---
+    if (file_exists(get_stylesheet_directory() . '/css/mobile-menu.css')) {
+        wp_enqueue_style(
+            'minimalistblogger-mobile-menu',
+            get_stylesheet_directory_uri() . '/css/mobile-menu.css',
+            array(),
+            filemtime( get_stylesheet_directory() . '/css/mobile-menu.css' )
+        );
+    }
+    if (file_exists(get_stylesheet_directory() . '/js/mobile-menu.js')) {
+        wp_enqueue_script(
+            'minimalistblogger-mobile-menu-js',
+            get_stylesheet_directory_uri() . '/js/mobile-menu.js',
+            array('jquery'),
+            filemtime( get_stylesheet_directory() . '/js/mobile-menu.js' ),
+            true
+        );
+    }
+    
     // Načtení stylů pro panel nastavení - načítáme pouze na stránkách s aplikacemi
     if ( is_page_template('page-liturgicke-cteni.php') || is_page_template('page-poboznosti.php') || is_page_template('page-home.php') ) {
         wp_enqueue_style(
@@ -58,7 +73,6 @@ function minimalistblogger_child_enqueue_assets() {
             array('chld_thm_cfg_parent'),
             $theme_version
         );
-        // Načtení JavaScriptu pro panel nastavení - pro obě aplikace
         wp_enqueue_script(
             'minimalistblogger-nastaveni-panel-js',
             get_stylesheet_directory_uri() . '/js/nastaveni-panel.js',
@@ -68,56 +82,33 @@ function minimalistblogger_child_enqueue_assets() {
         );
     }
 
-    // --- Načtení CSS a JS pro úvodní stránku aplikace (HOME) ---
-    if ( is_page_template('page-home.php') ) { // Načíst pouze na úvodní stránce
+    // --- Načtení CSS a JS POUZE pro úvodní stránku aplikace (HOME) ---
+    if ( is_page_template('page-home.php') ) {
         wp_enqueue_style(
-            'postni-kapky-home-styles', // Unikátní název pro váš styl
-            get_stylesheet_directory_uri() . '/css/page-home.css', // Cesta k vašemu CSS souboru
-            array(), // Závislosti (žádné prozatím)
-            filemtime( get_stylesheet_directory() . '/css/page-home.css' ) // Verze souboru pro zamezení cache
+            'postni-kapky-home-styles',
+            get_stylesheet_directory_uri() . '/css/page-home.css',
+            array(),
+            filemtime( get_stylesheet_directory() . '/css/page-home.css' )
         );
         
-        // Zde byl dříve kód pro page-home.js, který obsluhoval modální okno s citáty.
-        // Nyní ho přesuneme, aby byl spolu s menu.
-
-        // Načtení JS pro modální okno s citáty (pokud ho stále chcete používat)
         if (file_exists(get_stylesheet_directory() . '/js/page-home.js')) {
             wp_enqueue_script(
-                'postni-kapky-home-js', // Unikátní název pro skript
-                get_stylesheet_directory_uri() . '/js/page-home.js', // Cesta k JS souboru pro modální okna
-                array('jquery'), // Závislost na jQuery
-                filemtime( get_stylesheet_directory() . '/js/page-home.js' ), // Verze
-                true // Načíst v patičce
-            );
-        }
-
-        // Načtení stylů a skriptů pro nové mobilní menu
-        if (file_exists(get_stylesheet_directory() . '/css/mobile-menu.css')) {
-            wp_enqueue_style(
-                'minimalistblogger-mobile-menu',
-                get_stylesheet_directory_uri() . '/css/mobile-menu.css',
-                array(),
-                filemtime( get_stylesheet_directory() . '/css/mobile-menu.css' )
-            );
-        }
-        if (file_exists(get_stylesheet_directory() . '/js/mobile-menu.js')) {
-            wp_enqueue_script(
-                'minimalistblogger-mobile-menu-js',
-                get_stylesheet_directory_uri() . '/js/mobile-menu.js',
+                'postni-kapky-home-js',
+                get_stylesheet_directory_uri() . '/js/page-home.js',
                 array('jquery'),
-                filemtime( get_stylesheet_directory() . '/js/mobile-menu.js' ),
+                filemtime( get_stylesheet_directory() . '/js/page-home.js' ),
                 true
             );
         }
     }
 
-    // --- Načtení JavaScriptu ---
+    // --- Načtení JavaScriptu pro dolní lištu ---
     wp_enqueue_script(
-        'minimalistblogger-dolni-lista-js', // Unikátní název skriptu
-        get_stylesheet_directory_uri() . '/js/dolni-lista.js', // Cesta k souboru
-        array(), // Závislosti
-        $theme_version, // Verze
-        true // Načíst v patičce
+        'minimalistblogger-dolni-lista-js',
+        get_stylesheet_directory_uri() . '/js/dolni-lista.js',
+        array(),
+        $theme_version,
+        true
     );
 }
 add_action( 'wp_enqueue_scripts', 'minimalistblogger_child_enqueue_assets', 20 );
@@ -129,12 +120,10 @@ add_action( 'wp_enqueue_scripts', 'minimalistblogger_child_enqueue_assets', 20 )
 function moje_aplikace_assets() {
     $theme_version = wp_get_theme()->get('Version');
 
-    // Sjednocená podmínka: Načíst na stránce s aplikací NEBO na detailu příspěvku z dané rubriky
     $is_liturgicka_stranka = is_page_template('page-liturgicke-cteni.php') || (is_singular('post') && has_category('liturgicke-cteni'));
 
     if ( $is_liturgicka_stranka ) {
         
-        // Načtení CSS souboru
         wp_enqueue_style( 
             'liturgicke-cteni-style', 
             get_stylesheet_directory_uri() . '/css/liturgicke-cteni.css', 
@@ -142,7 +131,6 @@ function moje_aplikace_assets() {
             $theme_version 
         );
 
-        // Načtení JavaScriptového souboru
         wp_enqueue_script( 
             'liturgicke-cteni-script', 
             get_stylesheet_directory_uri() . '/js/liturgicke-cteni.js', 
@@ -151,8 +139,6 @@ function moje_aplikace_assets() {
             true
         );
 
-        // Data nyní předáváme přímo ze šablony `page-liturgicke-cteni.php`.
-        // Zde necháme pouze logiku pro PŘÍMÉ zobrazení příspěvku.
         if ( is_singular('post') && has_category('liturgicke-cteni') ) {
             global $post;
             $audio_data = array();
@@ -175,13 +161,11 @@ add_action( 'wp_enqueue_scripts', 'moje_aplikace_assets' );
  * Načtení specifických stylů a skriptů pro šablonu "Aplikace Pobožnosti"
  */
 function poboznosti_app_assets() {
-    // Podmínka: Načíst na stránce s šablonou Pobožnosti NEBO na detailu příspěvku z dané rubriky
     $is_poboznosti_stranka = is_page_template('page-poboznosti.php') || (is_singular('post') && has_category('poboznosti'));
 
     if ( $is_poboznosti_stranka ) {
         $theme_version = wp_get_theme()->get('Version');
         
-        // Načtení CSS souboru pro pobožnosti
         wp_enqueue_style( 
             'poboznosti-style', 
             get_stylesheet_directory_uri() . '/css/poboznosti.css', 
@@ -189,7 +173,6 @@ function poboznosti_app_assets() {
             $theme_version 
         );
 
-        // Načtení JavaScriptového souboru pro pobožnosti
         wp_enqueue_script( 
             'poboznosti-script', 
             get_stylesheet_directory_uri() . '/js/poboznosti.js', 
@@ -198,7 +181,6 @@ function poboznosti_app_assets() {
             true
         );
 
-        // Předání dat z PHP do JS (pouze pokud nějaká jsou)
         global $post;
         $audio_data = [];
         $i = 1;
@@ -213,7 +195,6 @@ function poboznosti_app_assets() {
             }
         }
         
-        // Předáme data, pouze pokud nějaká jsou
         if (!empty($audio_data)) {
             wp_localize_script( 'poboznosti-script', 'poboznostiUdaje', array('audioUrls' => $audio_data) );
         }
