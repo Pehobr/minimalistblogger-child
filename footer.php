@@ -1,7 +1,7 @@
 <?php
 /**
  * The template for displaying the footer
- * takže další pokus
+ * takže další pokus a co teď?
  * Contains the closing of the #content div and all content after.
  *
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
