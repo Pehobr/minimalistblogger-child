@@ -66,7 +66,8 @@ function minimalistblogger_child_enqueue_assets() {
     }
     
     // Načtení stylů pro panel nastavení - načítáme pouze na stránkách s aplikacemi
-    if ( is_page_template('page-liturgicke-cteni.php') || is_page_template('page-poboznosti.php') || is_page_template('page-home.php') ) {
+    // === ZDE JE KLÍČOVÁ ÚPRAVA ===
+    if ( is_page_template('page-liturgicke-cteni.php') || is_page_template('page-poboznosti.php') || is_page_template('page-home.php') || is_page_template('page-radio.php') ) {
         wp_enqueue_style(
             'minimalistblogger-nastaveni-panel',
             get_stylesheet_directory_uri() . '/css/nastaveni-panel.css',
@@ -111,11 +112,8 @@ function minimalistblogger_child_enqueue_assets() {
         true
     );
 
-    // ====================================================================
-    // ZDE JE SPRÁVNÉ MÍSTO PRO KÓD PRO RÁDIA - UVNITŘ FUNKCE
-    // ====================================================================
     // --- Načtení CSS a JS POUZE pro stránku s přehrávačem rádií ---
-    if ( is_page_template('page-radia.php') || is_page_template('page-radio.php') ) { // Pozn: Kontroluje obě verze názvu pro jistotu
+    if ( is_page_template('page-radio.php') ) {
         wp_enqueue_style(
             'minimalistblogger-page-radia',
             get_stylesheet_directory_uri() . '/css/page-radia.css',

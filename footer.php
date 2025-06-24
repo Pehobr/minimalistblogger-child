@@ -76,10 +76,11 @@
                 <span>Oblíbené</span>
             </a>
         </li>
+        
         <li>
-            <a href="/plaminek" aria-label="Zamyšlení">
-                <i class="fa fa-fire" aria-hidden="true"></i>
-                <span>Zamyšlení</span>
+            <a href="/krestanska-radia/" aria-label="Rádia">
+                <i class="fa fa-headphones" aria-hidden="true"></i>
+                <span>Rádia</span>
             </a>
         </li>
         <li>

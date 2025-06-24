@@ -15,17 +15,17 @@ $page_id = get_the_ID();
 // 'meta_key' je název vlastního pole (Custom Field), který použijete ve WordPressu.
 $radia = [
     [
-        'name' => 'Rádio Proglas',
+        'name' => 'Proglas',
         'icon' => 'ikona-proglas.png',
         'meta_key' => 'radio_stream_proglas'
     ],
     [
-        'name' => 'Rádio Timea',
+        'name' => 'Timea',
         'icon' => 'ikona-timea.png',
         'meta_key' => 'radio_stream_timea'
     ],
     [
-        'name' => 'Rádio Lumen',
+        'name' => 'Lumen',
         'icon' => 'ikona-lumen.png',
         'meta_key' => 'radio_stream_lumen'
     ]

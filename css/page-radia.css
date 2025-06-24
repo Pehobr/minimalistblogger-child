@@ -41,7 +41,7 @@
     height: 44px;
     background-color: #3b0f5d; /* Barva pozadí stejná jako ohraničení boxu */
     border: 2px solid #3b0f5d;  /* Ohraničení tlačítka ve stejné barvě */
-    color: #ffffff;             /* Barva ikony (play/pause) je bílá pro kontrast */
+    color: #ffffff;             /* Barva ikony (play/pause/spinner) je bílá pro kontrast */
     border-radius: 50%;
     font-size: 18px;
     cursor: pointer;
@@ -49,20 +49,31 @@
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
-    transition: transform 0.2s ease-in-out; /* Ponechána pouze animace velikosti */
+    transition: transform 0.2s ease-in-out;
 }
 
-/* Při najetí myší se tlačítko pouze zvětší, barva zůstává stejná */
 .radio-play-btn:hover {
     transform: scale(1.1);
 }
 
-/* Tento styl pro zvýraznění celého řádku při přehrávání ponecháme */
 .radio-player-item.is-playing {
     background-color: #dcd7e9;
 }
 
-/* Skrytí hlavního titulku stránky "Rádia", pokud je potřeba */
 .page-template-page-radio .entry-title {
     display: none;
+}
+
+
+/* === NOVÝ KÓD PRO SKRYTÍ BOČNÍHO PANELU === */
+
+/* Cílíme na boční panel (sidebar) pouze na stránce s šablonou pro rádia */
+.page-template-page-radio #secondary {
+    display: none;
+}
+
+/* Hlavní obsah na této stránce roztáhneme na 100% šířky */
+.page-template-page-radio #primary {
+    width: 100%;
+    margin: 0;
 }
