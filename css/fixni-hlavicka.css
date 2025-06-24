@@ -1,0 +1,94 @@
+/* 7 - VZHLED BOXU S HLAVIČKOU APLIKACE */
+.site-branding {
+    margin: 10px 12px 5px 12px; /* Sníženo z 12px/10px na 5px */
+    text-align: center;
+    width: calc(100% - 24px);
+    padding: 2px 15px;
+    border: 2px solid #3b0f5d;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background-color: #e6e0f3;
+}
+
+/* 6 - BARVA NÁZVU APLIKACE */
+.site-branding .site-title a{
+    color: #3b0f5d ;
+}
+
+/* === ÚPRAVA MEZERY NAD PRVNÍM PŘÍSPĚVKEM NA STRÁNKÁCH KATEGORIÍ === */
+
+/* Cílíme na záhlaví rubriky (element <header class="page-header">) 
+   pouze na stránkách archivů/kategorií (body.archive, body.category) */
+body.archive header.page-header,
+body.category header.page-header {
+    padding-top: 10px;    /* Snížíme horní vnitřní odsazení (upravte dle potřeby) */
+    padding-bottom: 10px; /* Snížíme dolní vnitřní odsazení (upravte dle potřeby) */
+    margin-top: 0;        /* Odstraníme horní vnější okraj, pokud nějaký je */
+    margin-bottom: 2px;  /* Ponecháme nebo upravíme mezeru před prvním článkem */
+    min-height: 0;        /* Pokud by byla nastavena minimální výška */
+    border-bottom: none;  /* Pokud by tam byl nějaký spodní okraj/linka */
+    /* Váš stávající kód již skrývá .page-title (h1 uvnitř tohoto headeru), 
+       takže toto by mělo zmenšit prostor zabraný samotným kontejnerem header.page-header */
+}
+
+/* Pokud chcete kontejner záhlaví rubriky odstranit úplně 
+   (protože jeho obsah .page-title je již skrytý): */
+/*
+body.archive header.page-header,
+body.category header.page-header {
+    display: none !important;
+}
+*/
+
+/* Dodatečná úprava pro první článek ve výpisu na stránce kategorie,
+   pokud by i po výše uvedeném byla mezera stále příliš velká. */
+body.archive #main > article.posts-entry:first-of-type,
+body.category #main > article.posts-entry:first-of-type {
+    margin-top: 0; /* Nebo nastavte menší hodnotu, např. 20px, pokud je header.page-header úplně skrytý */
+}
+
+/* === FIXNÍ HLAVIČKA === */
+
+header#masthead.sheader {
+    position: fixed;
+    top: 0; /* Na úplném vrchu stránky */
+    left: 0;
+    right: 0; /* Alternativně width: 100%; */
+    z-index: 999; /* Musí být nad obsahem, ale pod případným bočním menu (10000) a overlayem (9999) */
+    
+    /* Důležité: Zajistěte, aby hlavička měla vlastní pozadí, 
+       aby obsah prosvítající pod ní nebyl vidět. 
+       Podle vaší šablony by to mělo být #f8f5e6 (pozadí těla) 
+       nebo #ffffff (pozadí .site-branding), podle toho, jak chcete, aby vypadala.
+       Pokud .site-branding zabírá celou výšku/šířku hlavičky, jeho pozadí stačí.
+       Pokud je hlavička větší než .site-branding, nastavte pozadí pro header#masthead.sheader. */
+    background-color: #741ea4; /* Použijte barvu pozadí vašeho těla nebo specifickou barvu pro hlavičku */
+    
+    /* Můžete přidat jemný stín, pokud chcete vizuální oddělení od obsahu */
+    /* box-shadow: 0 2px 5px rgba(0,0,0,0.1); */
+}
+
+/* Odsazení obsahu stránky, aby nebyl překryt fixní hlavičkou */
+body {
+    /* Výška hlavičky: .site-branding má margin 12px nahoře/dole a padding 15px nahoře/dole + výška textu a borderu.
+       Odhaduji cca 85px až 95px. Tuto hodnotu budete muset PŘESNĚ doladit! */
+    padding-top: 67px; /* Upravte podle nové výšky hlavičky */
+}
+
+/* Úprava pozice fixní hlavičky, pokud je zobrazena WordPress admin lišta */
+body.admin-bar header#masthead.sheader {
+    top: 32px; /* Výška admin lišty na větších obrazovkách */
+}
+
+@media screen and (max-width: 782px) {
+    body.admin-bar header#masthead.sheader {
+        top: 46px; /* Výška admin lišty na menších obrazovkách */
+    }
+}
+
+/* Zajistíme, aby vnitřní .content-wrap hlavičky správně fungoval s fixním pozicováním */
+header#masthead.sheader > .content-wrap {
+    width: 100%; /* Pokud by se náhodou zúžil */
+    /* max-width vaší šablony pro obsah by se zde mohl také aplikovat, pokud je to žádoucí,
+       ale váš .site-branding již má vlastní šířku a marginy. */
+}

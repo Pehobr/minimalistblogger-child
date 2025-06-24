@@ -1,0 +1,132 @@
+/* === SPODNÍ NAVIGAČNÍ LIŠTA (FINÁLNÍ VERZE) === */
+
+/* --- Definice proměnných pro snadnou úpravu --- */
+:root {
+    --nav-bg-color: #7e7383;          /* Fialové pozadí lišty */
+    --nav-border-color: #ffffff;      /* Bílá barva pro horní okraj a ikony */
+    --nav-border-hover: #cccccc;      /* Světle šedá pro hover na ikonách */
+    --nav-active-color: #7e7383;      /* Fialová pro ikonu v aktivním tlačítku */
+    --nav-convex-bg: #ffffff;         /* Bílé pozadí pro vypouklé/aktivní tlačítko */
+    --nav-height: 55px;               /* Přibližná výška lišty */
+}
+
+/* --- Základní styl lišty --- */
+.bottom-nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: var(--nav-bg-color);
+    border-top: 2px solid var(--nav-border-color);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+    overflow: visible; 
+}
+
+.bottom-nav-bar ul {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: var(--nav-height);
+}
+
+/* --- Rozmístění a velikost položek --- */
+.bottom-nav-bar li {
+    flex-shrink: 0;
+    flex-basis: 0;
+    position: relative;
+    height: 100%;
+}
+.bottom-nav-bar li:nth-child(1),
+.bottom-nav-bar li:nth-child(5) {
+    flex-grow: 3; 
+}
+.bottom-nav-bar li:nth-child(2),
+.bottom-nav-bar li:nth-child(4) {
+    flex-grow: 2;
+}
+.bottom-nav-bar li:nth-child(3) {
+    flex-grow: 4;
+}
+
+/* --- Styly pro běžné ikony a odkazy (všechny kromě prostředního) --- */
+.bottom-nav-bar li:not(:nth-child(3)) a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    color: var(--nav-border-color);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+.bottom-nav-bar li:not(:nth-child(3)) a:hover {
+    color: var(--nav-border-hover);
+}
+
+/* Velikosti ikon */
+.bottom-nav-bar li a i {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+}
+.bottom-nav-bar li:nth-child(1) i,
+.bottom-nav-bar li:nth-child(5) i {
+    font-size: 1.1rem;
+}
+.bottom-nav-bar li:nth-child(2) i,
+.bottom-nav-bar li:nth-child(4) i {
+    font-size: 1.4rem;
+}
+
+/* --- Speciální styly pro prostřední "vypouklé" tlačítko --- */
+.bottom-nav-bar li:nth-child(3) a {
+    position: absolute;
+    left: 50%;
+    top: -10px; /* Posunuto níže (menší záporná hodnota) */
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 68px;  /* Větší šířka */
+    height: 52px; /* Větší výška */
+    background-color: var(--nav-convex-bg);
+    border: 2px solid var(--nav-border-color);
+    border-radius: 12px; /* Zaoblený obdélník místo kruhu */
+    z-index: 1001;
+    text-decoration: none;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.15); /* Jemnější stín */
+    transition: all 0.2s ease-out;
+}
+
+.bottom-nav-bar li:nth-child(3) a i {
+    font-size: 1.6rem; /* Mírně větší ikona, aby ladila s tlačítkem */
+    margin-bottom: 0;
+}
+
+/* Hover a Active stavy pro prostřední tlačítko */
+.bottom-nav-bar li:nth-child(3) a:hover {
+    background-color: #f5f5f5;
+    border-color: var(--nav-border-hover);
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.bottom-nav-bar li:nth-child(3) a.active {
+    background-color: var(--nav-convex-bg);
+    border-color: var(--nav-convex-bg);
+    color: var(--nav-active-color);
+}
+
+/* --- DŮLEŽITÉ: Odsazení obsahu stránky --- */
+body {
+    padding-bottom: calc(var(--nav-height) + 15px);
+}
+
+/* === VLASTNÍ ÚPRAVY - Definitivní skrytí všech popisků na liště === */
+.bottom-nav-bar li a span {
+    display: none !important;
+}

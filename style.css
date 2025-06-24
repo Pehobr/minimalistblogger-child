@@ -1,0 +1,143 @@
+/*
+Theme Name: MinimalistBlogger Child
+Theme URI: https://superbthemes.com/minimalistblogger/minimalistblogger-info/
+Template: minimalistblogger
+Author: ThemeEverest
+Author URI: http://superbthemes.com/
+Description: MinimalistBlogger is a responsive WordPress blog and news theme made for bloggers and newspapers. Its elegant and minimalistic look makes it an attractive theme for writers who wish to write about their view on food, fashion, travel, clothing, movies, or their lifestyle in general. Minimalistblogger is of course modern in the ways that it is both fast and search engine optimized (SEO friendly) as a theme should be nowadays. The sidebar allows widgets, Adsense affiliate links, or whatever else you wish to put there. Installing and setting up the theme is simple for any author, we have tried to optimise the user friendliness by making the interface clean and so it is as easy as possible to set up and start using. If the business aspect is important for you, for example, if you are using it as a newspaper or personal writing/journalist portfolio then it's great since your website is able to rank everywhere on the internet with our theme, for example in Yahoo, Bing or Google.
+Tags: theme-options,threaded-comments,translation-ready,sticky-post,footer-widgets,custom-background,custom-colors,custom-header,custom-logo,custom-menu,featured-image-header,featured-images,flexible-header,right-sidebar,one-column,two-columns,news,entertainment,blog
+Version: 8.0.1750626301
+Updated: 2025-06-22 23:04:58
+
+*/
+
+/* --- Responzivní logika pro zobrazení menu (OPRAVENÁ VERZE) --- */
+
+/* === Zobrazení na velkých obrazovkách (počítače, tablety na šířku) === */
+@media screen and (min-width: 1024px) {
+
+    /* 1. Skryjeme spodní navigační lištu */
+    .bottom-nav-bar {
+        display: none;
+    }
+
+    /* 2. Odstraníme odsazení obsahu, které bylo potřeba pro spodní lištu */
+    body {
+        padding-bottom: 0;
+    }
+}
+
+/* === Zobrazení na malých obrazovkách (mobily, tablety na výšku) === */
+@media screen and (max-width: 1023px) {
+    
+    /* 1. Skryjeme původní "hamburger" menu, protože ho nahrazuje spodní lišta */
+    .super-menu {
+        display: none;
+    }
+
+    /* 2. Ujistíme se, že horní lišta od WordPressu nepřekrývá naši fixní hlavičku */
+    body.admin-bar header#masthead.sheader {
+        top: 0;
+    }
+}
+
+/* === Zobrazení na malých obrazovkách (mobily, tablety na výšku) === */
+@media screen and (max-width: 1023px) {
+
+    /* 1. Skryjeme horní menu (zůstane jen tlačítko pro mobilní navigaci, pokud byste ho chtěli použít) */
+    nav#primary-site-navigation.primary-menu {
+        display: none !important;
+    }
+
+    /* 2. Zajistíme, aby spodní lišta byla viditelná (což už je ve výchozím stavu) */
+    .bottom-nav-bar {
+        display: block; /* Můžete nechat, ale block je výchozí */
+    }
+}
+
+/* === VLASTNÍ ÚPRAVY - SKRYTÍ PATIČKY === */
+footer#colophon.site-footer {
+    display: none !important;
+}
+
+/* === ZÁKLADNÍ A OBECNÉ STYLY WEBU === */
+
+
+/* 10 - ODSTRANĚNÍ DUPLIKACE NÁZVU PŘÍSPĚVKU */
+p.favorite-wrapper {
+  display: none;
+}
+
+/* 9 - ZÁKLADNÍ NASTAVENÍ PÍSMA */
+article .entry-content p, 
+article .entry-content li {
+    font-size: 1rem;
+}
+
+/* 5 - VYCENTROVÁNÍ PŘEPÍNAČE TMAVÉHO VZHLEDU */
+.wp-dark-mode-switch {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 4 & 3 - ZMĚNA PÍSMA */
+article.post .entry-content {
+    font-family: 'Superclarendon', serif;
+}
+.posts-entry .entry-content p:last-child {
+    margin-bottom: 0;
+    font-family: 'Superclarendon', serif;
+}
+
+/* 2 - VZHLED PŘEHRÁVÁNÍ AUDIO MP3 */
+.mejs-container, .mejs-embed, .mejs-embed body, .mejs-container .mejs-controls {
+    background: #932641!important;
+    border-radius: 8px;
+}
+
+/* --- RŮZNÉ DROBNÉ ÚPRAVY A SKRÝVÁNÍ ELEMENTŮ --- */
+
+/* Skrytí hlavního nadpisu na statických stránkách */
+body.page #primary > main > article.page > header.entry-header {
+    display: none !important;
+}
+
+/* Základní styl patičky */
+.site-footer {
+    width: 100%;
+    float: left;
+    background: #f8f5e6
+}
+
+/* Skrytí informací o autorovi šablony v patičce */
+.site-info {
+    display: none !important;
+}
+
+/* Skrytí obecného nadpisu stránky (např. v archivu) */
+.page-title {
+    display: none !important;
+}
+
+/* Styl pro kontejner hlavičky */
+.sheader {
+	width: 100%;
+	margin: 0 0 0px;
+}
+
+/* === VYNUCENÍ ZAOBLENÍ HORNÍCH ROHŮ PRO STATICKÉ STRÁNKY === */
+
+/*
+ * Toto pravidlo je specifičtější a zajišťuje, aby boxy pro stránky
+ * (identifikované třídou .page na elementu body) měly zaoblené horní rohy.
+ */
+body.page #primary article.page {
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+}
+
+/* Skrytí informací o příspěvku (datum a autor) */
+.entry-meta {
+    display: none !important;
+}
