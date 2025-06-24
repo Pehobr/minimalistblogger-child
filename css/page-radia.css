@@ -11,12 +11,25 @@
     display: flex;
     align-items: center;
     padding: 15px;
-    gap: 15px; /* Mezera mezi ikonou, názvem a tlačítkem */
+    gap: 15px; /* Mezera mezi odkazem a play tlačítkem */
     background-color: #e6e0f3;
     border: 2px solid #3b0f5d;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     transition: background-color 0.3s ease;
+}
+
+/* === NOVÝ STYL PRO ODKAZ === */
+.radio-info-link {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Mezera mezi ikonou a názvem uvnitř odkazu */
+    flex-grow: 1;
+    text-decoration: none;
+    color: inherit;
+}
+.radio-info-link:hover {
+    text-decoration: none;
 }
 
 .radio-player-item .radio-icon {
@@ -34,7 +47,7 @@
     margin: 0;
     font-size: 1.2rem;
     color: #3b0f5d;
-    flex-grow: 1; /* DŮLEŽITÉ: Název u statických rádií zabere volné místo */
+    flex-grow: 1; /* Název u statických rádií zabere volné místo */
 }
 
 .radio-player-item .radio-play-btn {
@@ -55,15 +68,16 @@
 /* --- KONEC ZÁKLADNÍHO VZHLEDU --- */
 
 
-/* === SPECIFICKÉ DVOUŘÁDKOVÉ ROZLOŽENÍ POUZE PRO VLASTNÍ RÁDIA === */
-/* Cílíme na položky, které mají navíc třídu .custom-radio */
+/* === SPECIFICKÉ DVOUŘÁDKOVÉ ROZLOŽENÍ POUZE PRO VLASTNÍ RÁDIA (.custom-radio) === */
+.radio-player-item.custom-radio {
+    gap: 15px;
+}
 
 .radio-player-item.custom-radio .radio-icon {
     width: 65px;
     height: 65px;
 }
 
-/* Kontejner pro název a akce - stane se z něj hlavní prvek uprostřed */
 .radio-player-item.custom-radio .radio-item-content {
     flex-grow: 1;
     min-width: 0;
@@ -72,7 +86,6 @@
     gap: 5px;
 }
 
-/* U vlastních rádií název už nemusí zabírat místo, protože je v kontejneru */
 .radio-player-item.custom-radio .radio-title {
     flex-grow: 0;
     font-size: 1.1rem;
@@ -156,10 +169,10 @@
 }
 
 #add-radio-form-container,
-.inline-edit-form { /* Přidán styl i pro inline formulář */
+.inline-edit-form {
     margin-top: 25px;
     padding: 20px;
-    background-color: #f0ebf8; /* Mírně světlejší pozadí pro odlišení */
+    background-color: #f0ebf8;
     border: 2px solid #3b0f5d;
     border-radius: 8px;
 }

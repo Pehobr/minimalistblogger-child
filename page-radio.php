@@ -11,23 +11,25 @@ get_header();
 // Získáme ID aktuální stránky pro načtení Custom Fields
 $page_id = get_the_ID();
 
-// Pole s daty pro jednotlivá rádia v požadovaném pořadí.
-// 'meta_key' je název vlastního pole (Custom Field), který použijete ve WordPressu.
+// <<<=== ZMĚNA ZDE: Přidání 'site_url' k rádiím ===>>>
 $radia = [
     [
         'name' => 'Proglas',
         'icon' => 'ikona-proglas.png',
-        'meta_key' => 'radio_stream_proglas'
+        'meta_key' => 'radio_stream_proglas',
+        'site_url' => 'https://www.proglas.cz/'
     ],
     [
         'name' => 'Timea',
         'icon' => 'ikona-timea.png',
-        'meta_key' => 'radio_stream_timea'
+        'meta_key' => 'radio_stream_timea',
+        'site_url' => 'https://radiotimea.jednoduse.cz/'
     ],
     [
         'name' => 'Lumen',
         'icon' => 'ikona-lumen.png',
-        'meta_key' => 'radio_stream_lumen'
+        'meta_key' => 'radio_stream_lumen',
+        'site_url' => 'https://www.lumen.sk/'
     ]
 ];
 ?>
@@ -44,15 +46,15 @@ $radia = [
                 <div id="radio-player-container">
                     <?php foreach ($radia as $radio) : ?>
                         <?php
-                        // Načteme URL streamu z příslušného Custom Fieldu
                         $stream_url = get_post_meta($page_id, $radio['meta_key'], true);
-
-                        // Zobrazíme položku pouze v případě, že je pro ni vyplněna URL adresa
                         if ( !empty($stream_url) ) :
                         ?>
                             <div class="radio-player-item" data-stream-url="<?php echo esc_url($stream_url); ?>">
-                                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $radio['icon']); ?>" alt="<?php echo esc_attr($radio['name']); ?>" class="radio-icon">
-                                <h2 class="radio-title"><?php echo esc_html($radio['name']); ?></h2>
+                                <?php // <<<=== ZMĚNA ZDE: Obrázek a název jsou nyní v odkazu ===>>> ?>
+                                <a href="<?php echo esc_url($radio['site_url']); ?>" target="_blank" rel="noopener noreferrer" class="radio-info-link">
+                                    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $radio['icon']); ?>" alt="<?php echo esc_attr($radio['name']); ?>" class="radio-icon">
+                                    <h2 class="radio-title"><?php echo esc_html($radio['name']); ?></h2>
+                                </a>
                                 <button class="radio-play-btn" aria-label="Přehrát <?php echo esc_attr($radio['name']); ?>">
                                     <i class="fa fa-play" aria-hidden="true"></i>
                                 </button>
@@ -61,8 +63,6 @@ $radia = [
                     <?php endforeach; ?>
                 </div>
 
-                <?php // <<<=== ZDE ZAČÍNÁ NOVÝ KÓD ===>>> ?>
-                
                 <div id="add-radio-button-container">
                     <button id="show-add-radio-form-btn" aria-label="Přidat nové rádio">
                         <i class="fa fa-plus"></i>
@@ -74,11 +74,11 @@ $radia = [
                         <h3>Přidat nové rádio</h3>
                         <div class="form-group">
                             <label for="custom-radio-name">Název rádia:</label>
-                            <input type="text" id="custom-radio-name" placeholder="" required>
+                            <input type="text" id="custom-radio-name" placeholder="Např. Rádio 7" required>
                         </div>
                         <div class="form-group">
                             <label for="custom-radio-stream">URL adresa streamu:</label>
-                            <input type="url" id="custom-radio-stream" placeholder="" required>
+                            <input type="url" id="custom-radio-stream" placeholder="https://icecast.proglas.cz/radio7-128.mp3" required>
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="save-btn">Přidat rádio</button>
@@ -86,8 +86,6 @@ $radia = [
                         </div>
                     </form>
                 </div>
-
-                <?php // <<<=== ZDE KONČÍ NOVÝ KÓD ===>>> ?>
             </div>
         </article>
 
