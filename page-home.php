@@ -25,7 +25,7 @@ get_header(); // Načte hlavičku WordPressu
                     ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_frantisek'],
                     ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'citat_modlitba'],
                     ['name' => 'Papež Lev XIV.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev'],
-                    ['name' => 'Citáty', 'slug' => 'citaty', 'icon' => 'ikona-citaty.png', 'citat_key' => 'citat_citaty'],
+                    ['name' => 'Fotocitát', 'slug' => 'citaty', 'icon' => 'ikona-citaty.png', 'citat_key' => 'citat_citaty'],
                     ['name' => 'Svatost', 'slug' => 'svatost', 'icon' => 'ikona-svatost.png', 'citat_key' => 'citat_svatost'],
                     ['name' => 'Texty', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-texty.png', 'citat_key' => 'citat_texty'],
                     ['name' => 'Komunita', 'slug' => 'komunita', 'icon' => 'ikona-komunita.png', 'citat_key' => 'citat_komunita'],
