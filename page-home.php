@@ -20,11 +20,11 @@ get_header(); // Načte hlavičku WordPressu
                 <?php
                 // Data pro všechny dlaždice, abychom se neopakovali
                 $grid_items = [
-                    ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_frantisek'],
-                    ['name' => 'Papež Lev XIII.', 'slug' => 'papez-lev-xiii', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_lev'],
-                    ['name' => 'Svatý Augustin', 'slug' => 'svaty-augustin', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_augustin'],
+                    ['name' => 'Sv. Jan Pavel II', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel'],
+                    ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt'],
+                    ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_frantisek'],
                     ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'citat_modlitba'],
-                    ['name' => 'Zamyšlení', 'slug' => 'duchovni-zamysleni', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_zamysleni'],
+                    ['name' => 'Papež Lev XIV.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev'],
                     ['name' => 'Citáty', 'slug' => 'citaty', 'icon' => 'ikona-citaty.png', 'citat_key' => 'citat_citaty'],
                     ['name' => 'Svatost', 'slug' => 'svatost', 'icon' => 'ikona-svatost.png', 'citat_key' => 'citat_svatost'],
                     ['name' => 'Texty', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-texty.png', 'citat_key' => 'citat_texty'],
