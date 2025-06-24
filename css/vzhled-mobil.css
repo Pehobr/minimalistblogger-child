@@ -23,6 +23,12 @@
 
 /* Pravidla pro obrazovky do 700px (převážně mobily) */
 @media screen and (max-width: 700px) {
+    
+    /* === NOVÁ ÚPRAVA: Zarovnání titulku vlevo === */
+    .site-branding {
+        text-align: left; /* Přepíše původní 'center' na 'left' */
+    }
+    
     /* ODSAZENÍ OBSAHU */
     article .entry-content {
         margin-top: 0px;
