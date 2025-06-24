@@ -103,5 +103,27 @@
     </ul>
 </nav>
 
+<div id="mobile-menu-main-overlay" class="mobile-menu-overlay"></div>
+<div id="mobile-menu-panel" class="mobile-menu-panel">
+    <div class="mobile-menu-header">
+        <h2>Menu aplikace</h2>
+        <button id="mobile-menu-close-btn" class="mobile-menu-close-btn">&times;</button>
+    </div>
+    <div class="mobile-menu-content">
+        <?php
+        if ( has_nav_menu( 'mobile_extra_menu' ) ) {
+            wp_nav_menu(
+                array(
+                    'theme_location' => 'mobile_extra_menu',
+                    'container'      => false,
+                    'menu_class'     => 'mobile-menu-ul',
+                )
+            );
+        } else {
+            echo '<p>Vytvořte a přiřaďte menu k pozici "Extra mobilní menu".</p>';
+        }
+        ?>
+    </div>
+</div>
 </body>
 </html>

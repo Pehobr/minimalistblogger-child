@@ -15,79 +15,44 @@ get_header(); // Načte hlavičku WordPressu
         <div id="intro-wrapper">
             <div id="intro-grid-container">
                 
+                <?php $page_id = get_the_ID(); ?>
+
                 <?php
-                // Získáme ID aktuální stránky pro načtení vlastních polí
-                $page_id = get_the_ID();
+                // Data pro všechny dlaždice, abychom se neopakovali
+                $grid_items = [
+                    ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_frantisek'],
+                    ['name' => 'Papež Lev XIII.', 'slug' => 'papez-lev-xiii', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_lev'],
+                    ['name' => 'Svatý Augustin', 'slug' => 'svaty-augustin', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_augustin'],
+                    ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'citat_modlitba'],
+                    ['name' => 'Zamyšlení', 'slug' => 'duchovni-zamysleni', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_zamysleni'],
+                    ['name' => 'Citáty', 'slug' => 'citaty', 'icon' => 'ikona-citaty.png', 'citat_key' => 'citat_citaty'],
+                    ['name' => 'Svatost', 'slug' => 'svatost', 'icon' => 'ikona-svatost.png', 'citat_key' => 'citat_svatost'],
+                    ['name' => 'Texty', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-texty.png', 'citat_key' => 'citat_texty'],
+                    ['name' => 'Komunita', 'slug' => 'komunita', 'icon' => 'ikona-komunita.png', 'citat_key' => 'citat_komunita'],
+                ];
+
+                foreach ($grid_items as $item) :
+                    $quote = get_post_meta($page_id, $item['citat_key'], true);
+                    $has_quote = !empty($quote);
+                    $link_url = home_url('/' . $item['slug'] . '/');
                 ?>
-
-                <?php $quote_frantisek = get_post_meta($page_id, 'citat_janpavel', true); ?>
-                <a href="<?php echo empty($quote_frantisek) ? esc_url(home_url('/papez-frantisek/')) : '#'; ?>" 
-                   class="icon-grid-item" 
-                   <?php if (!empty($quote_frantisek)) { echo 'data-quote="' . esc_attr($quote_frantisek) . '"'; } ?>>
-                    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-janpavel.png'); ?>" alt="Papež František">
-                </a>
-
-                <?php $quote_lev = get_post_meta($page_id, 'citat_benedikt', true); ?>
-                <a href="<?php echo empty($quote_lev) ? esc_url(home_url('/papez-lev-xiii/')) : '#'; ?>" 
-                   class="icon-grid-item" 
-                   <?php if (!empty($quote_lev)) { echo 'data-quote="' . esc_attr($quote_lev) . '"'; } ?>>
-                    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-benedikt.png'); ?>" alt="Papež Lev XIII.">
-                </a>
-
-                <?php $quote_augustin = get_post_meta($page_id, 'citat_frantisek', true); ?>
-                <a href="<?php echo empty($quote_augustin) ? esc_url(home_url('/svaty-augustin/')) : '#'; ?>" 
-                   class="icon-grid-item" 
-                   <?php if (!empty($quote_augustin)) { echo 'data-quote="' . esc_attr($quote_augustin) . '"'; } ?>>
-                    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-frantisek.png'); ?>" alt="Svatý Augustin">
-                </a>
-
-                <?php $quote_modlitba = get_post_meta($page_id, 'citat_modlitba', true); ?>
-                <a href="<?php echo empty($quote_modlitba) ? esc_url(home_url('/modlitba/')) : '#'; ?>" 
-                   class="icon-grid-item" 
-                   <?php if (!empty($quote_modlitba)) { echo 'data-quote="' . esc_attr($quote_modlitba) . '"'; } ?>>
-                    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-modlitba.png'); ?>" alt="Modlitba">
-                </a>
-
-                <?php $quote_zamysleni = get_post_meta($page_id, 'citat_lev', true); ?>
-                <a href="<?php echo empty($quote_zamysleni) ? esc_url(home_url('/duchovni-zamysleni/')) : '#'; ?>" 
-                   class="icon-grid-item" 
-                   <?php if (!empty($quote_zamysleni)) { echo 'data-quote="' . esc_attr($quote_zamysleni) . '"'; } ?>>
-                    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-lev.png'); ?>" alt="Zamyšlení">
-                </a>
-
-                <?php $quote_citaty = get_post_meta($page_id, 'citat_citaty', true); ?>
-                <a href="<?php echo empty($quote_citaty) ? esc_url(home_url('/citaty/')) : '#'; ?>" 
-                   class="icon-grid-item" 
-                   <?php if (!empty($quote_citaty)) { echo 'data-quote="' . esc_attr($quote_citaty) . '"'; } ?>>
-                    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-citaty.png'); ?>" alt="Citáty">
-                </a>
-
-                <?php $quote_svatost = get_post_meta($page_id, 'citat_svatost', true); ?>
-                <a href="<?php echo empty($quote_svatost) ? esc_url(home_url('/svatost/')) : '#'; ?>" 
-                   class="icon-grid-item" 
-                   <?php if (!empty($quote_svatost)) { echo 'data-quote="' . esc_attr($quote_svatost) . '"'; } ?>>
-                    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-svatost.png'); ?>" alt="Svatost">
-                </a>
-
-                <?php $quote_texty = get_post_meta($page_id, 'citat_texty', true); ?>
-                <a href="<?php echo empty($quote_texty) ? esc_url(home_url('/nabozenske-texty/')) : '#'; ?>" 
-                   class="icon-grid-item" 
-                   <?php if (!empty($quote_texty)) { echo 'data-quote="' . esc_attr($quote_texty) . '"'; } ?>>
-                    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-texty.png'); ?>" alt="Texty">
-                </a>
-
-                <?php $quote_komunita = get_post_meta($page_id, 'citat_komunita', true); ?>
-                <a href="<?php echo empty($quote_komunita) ? esc_url(home_url('/komunita/')) : '#'; ?>" 
-                   class="icon-grid-item" 
-                   <?php if (!empty($quote_komunita)) { echo 'data-quote="' . esc_attr($quote_komunita) . '"'; } ?>>
-                    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-komunita.png'); ?>" alt="Komunita">
-                </a>
+                    <a href="<?php echo $has_quote ? '#' : esc_url($link_url); ?>" 
+                       class="icon-grid-item"
+                       <?php if ($has_quote) : ?>
+                           data-quote="<?php echo esc_attr($quote); ?>"
+                       <?php endif; ?>
+                    >
+                        <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
+                    </a>
+                <?php endforeach; ?>
 
             </div>
         </div>
 
     </main>
-</div>
+</div><?php
+// Zde již NIC NENÍ, get_sidebar() jsme odstranili
+?>
 
 <div id="quote-modal-overlay" class="quote-modal-overlay"></div>
 <div id="quote-modal-container" class="quote-modal-container">

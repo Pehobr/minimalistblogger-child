@@ -1,4 +1,14 @@
 <?php
+// Registrace nové pozice pro mobilní menu
+function register_mobile_menu_location() {
+    register_nav_menus(
+        array(
+            'mobile_extra_menu' => __( 'Extra mobilní menu', 'minimalistblogger-child' ),
+        )
+    );
+}
+add_action( 'init', 'register_mobile_menu_location' );
+
 // Exit if accessed directly
 if ( !defined( 'ABSPATH' ) ) exit;
 
@@ -66,15 +76,39 @@ function minimalistblogger_child_enqueue_assets() {
             array(), // Závislosti (žádné prozatím)
             filemtime( get_stylesheet_directory() . '/css/page-home.css' ) // Verze souboru pro zamezení cache
         );
+        
+        // Zde byl dříve kód pro page-home.js, který obsluhoval modální okno s citáty.
+        // Nyní ho přesuneme, aby byl spolu s menu.
 
-        // Načtení nového JS pro modální okno
-        wp_enqueue_script(
-            'postni-kapky-home-js', // Unikátní název pro skript
-            get_stylesheet_directory_uri() . '/js/page-home.js', // Cesta k novému JS souboru
-            array('jquery'), // Závislost na jQuery
-            filemtime( get_stylesheet_directory() . '/js/page-home.js' ), // Verze
-            true // Načíst v patičce
-        );
+        // Načtení JS pro modální okno s citáty (pokud ho stále chcete používat)
+        if (file_exists(get_stylesheet_directory() . '/js/page-home.js')) {
+            wp_enqueue_script(
+                'postni-kapky-home-js', // Unikátní název pro skript
+                get_stylesheet_directory_uri() . '/js/page-home.js', // Cesta k JS souboru pro modální okna
+                array('jquery'), // Závislost na jQuery
+                filemtime( get_stylesheet_directory() . '/js/page-home.js' ), // Verze
+                true // Načíst v patičce
+            );
+        }
+
+        // Načtení stylů a skriptů pro nové mobilní menu
+        if (file_exists(get_stylesheet_directory() . '/css/mobile-menu.css')) {
+            wp_enqueue_style(
+                'minimalistblogger-mobile-menu',
+                get_stylesheet_directory_uri() . '/css/mobile-menu.css',
+                array(),
+                filemtime( get_stylesheet_directory() . '/css/mobile-menu.css' )
+            );
+        }
+        if (file_exists(get_stylesheet_directory() . '/js/mobile-menu.js')) {
+            wp_enqueue_script(
+                'minimalistblogger-mobile-menu-js',
+                get_stylesheet_directory_uri() . '/js/mobile-menu.js',
+                array('jquery'),
+                filemtime( get_stylesheet_directory() . '/js/mobile-menu.js' ),
+                true
+            );
+        }
     }
 
     // --- Načtení JavaScriptu ---
