@@ -1,0 +1,100 @@
+/*
+ * Styly pro úvodní obrazovku s mřížkou ikon (page-home.css)
+ */
+
+/* Základní styly pro celou obrazovku, aby se mřížka vycentrovala */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Důležité: zabrání rolování a umožní kapkám padat */
+    font-family: sans-serif; /* Písmo pro čitelnost */
+    background-color: #f0f8ff; /* Světlounce modré pozadí pro celou stránku */
+}
+
+/* Odsazení obsahu stránky, aby nebyl překryt fixní hlavičkou a patičkou */
+/* Tyto hodnoty pochází z vašich stávajících CSS souborů */
+body {
+    padding-top: 67px; /* Z `css/fixni-hlavicka.css` */
+    padding-bottom: calc(var(--nav-height) + 15px); /* Z `css/dolni-lista.css` */
+}
+
+/* Přesahy fixní hlavičky a dolní lišty */
+header#masthead.sheader {
+    z-index: 999; /* Zajišťuje, že hlavička je nad obsahem */
+}
+
+.bottom-nav-bar {
+    z-index: 1000; /* Zajišťuje, že dolní lišta je nad obsahem a hlavičkou */
+}
+
+#intro-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Dynamicky vypočítaná výška, aby se vešla mezi hlavičku a patičku */
+    min-height: calc(100vh - 67px - var(--nav-height, 70px) - 40px); /* 40px pro padding shora/zdola */
+    padding: 20px; /* Vnitřní odsazení od okrajů */
+    box-sizing: border-box; /* Zahrne padding do celkové šířky/výšky */
+}
+
+/* Styly pro kontejner mřížky */
+#intro-grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 sloupce, každý se stejnou šířkou */
+    grid-template-rows: repeat(3, 1fr);    /* 3 řádky, každý se stejnou výškou */
+    gap: 15px; /* Mezera mezi jednotlivými ikonami */
+    width: 90vw; /* Šířka mřížky bude 90% šířky viewportu */
+    max-width: 600px; /* Ale nepřesáhne 600px na velkých obrazovkách */
+    margin: auto; /* Centrování mřížky */
+    position: relative; /* Klíčové pro z-index a kapky, které budou "pod" mřížkou */
+    z-index: 10; /* Zajistí, že ikony budou nad padajícími kapkami */
+}
+
+/* Styly pro každý jednotlivý prvek v mřížce (ikonu) */
+.icon-grid-item {
+    display: flex;
+    align-items: center; /* Centrování obsahu (jen obrázku) horizontálně */
+    justify-content: center; /* Centrování obsahu (jen obrázku) vertikálně */
+    
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.9); /* Bílé pozadí s lehkou průhledností */
+    border-radius: 12px; /* Zaoblené rohy */
+    text-decoration: none; /* Odstraní podtržení odkazu */
+    color: #333; /* Barva textu (už se nepoužije, ale pro pořádek) */
+    font-size: 0.9em; /* Velikost písma pro popisek (už se nepoužije) */
+    text-align: center; /* (už se nepoužije) */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Jemný stín pro 3D efekt */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Plynulá animace při najetí/kliknutí */
+    aspect-ratio: 1 / 1; /* Zajistí, že každý prvek bude čtvercový */
+}
+
+.icon-grid-item:hover,
+.icon-grid-item:focus { /* Styly pro interakci */
+    transform: scale(1.05); /* Mírné zvětšení */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Výraznější stín */
+    outline: none; /* Odstraní výchozí obrys při focusu */
+}
+
+/* Styly pro samotné obrázky ikon uvnitř .icon-grid-item */
+.icon-grid-item img {
+    width: 90%; /* Ikona zabere 90% šířky svého kontejneru */
+    height: auto; /* Automatická výška pro zachování proporcí */
+    object-fit: contain; /* Zajistí, že obrázek se vejde bez ořezání */
+    max-height: 90%; /* ZABRÁNÍ PŘÍLIŠ VELKÉ IKONĚ A ZAJISTÍ 90% VÝŠKY */
+}
+
+/* Základní responzivita pro menší obrazovky (volitelné, ale dobré) */
+@media (max-width: 480px) {
+    #intro-grid-container {
+        gap: 10px; /* Menší mezera na menších obrazovkách */
+    }
+    .icon-grid-item {
+        padding: 8px;
+    }
+    .icon-grid-item img {
+        width: 85%; /* Na menších obrazovkách možná trochu zmenšit, aby se vešly */
+        max-height: 85%;
+    }
+}

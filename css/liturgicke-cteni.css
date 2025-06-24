@@ -1,0 +1,199 @@
+/*
+ * Styly pro stránku "Aplikace Liturgické Čtení"
+ */
+
+/* Hlavní kontejner aplikace - zde můžeme nastavit specifické pozadí atd. */
+.liturgicke-cteni-app {
+    /* Příklad: jiné pozadí pro tuto stránku */
+    /* background-color: #fdfcf9; */ 
+}
+
+/* Stylování zpráv, pokud čtení ještě nezačalo nebo není k dispozici */
+.liturgicke-cteni-app .zprava-aplikace {
+    padding: 30px;
+    background-color: #f8f5e6; /* Světlejší pozadí pro odlišení, stejné jako v prispevky.css */
+    border: 2px solid #3b0f5d;
+    border-radius: 8px;
+    text-align: center;
+    margin: 20px auto;
+}
+
+.liturgicke-cteni-app .zprava-aplikace h2 {
+    color: #870e2c; /* Výrazná barva pro nadpis zprávy */
+    margin-top: 0;
+}
+
+/* Zpráva o chybě */
+.liturgicke-cteni-app .zprava-aplikace.chyba {
+    border-color: #d9534f; /* Červený okraj pro chybu */
+    background-color: #f2dede;
+}
+
+.liturgicke-cteni-app .zprava-aplikace.chyba h2 {
+    color: #a94442;
+}
+
+/* Úprava zobrazeného příspěvku - např. odstranění mezery pod ním, protože je jen jeden */
+.liturgicke-cteni-app article.post {
+    margin-bottom: 0 !important;
+}
+
+/* Můžete si zde dále upravovat vzhled nadpisů, textu atd. jen pro tuto stránku */
+.liturgicke-cteni-app .entry-title {
+    /* Např. jiná velikost nadpisu jen zde */
+    /* font-size: 2em; */
+}
+
+/*
+ * Styly pro audio přehrávače u liturgických čtení
+ * VERZE 2: Rozlišení stavů (výchozí, přehrávání, pauza)
+ */
+
+/* Kontejner pro nadpis s tlačítkem */
+.heading-with-player {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+/* Tlačítko přehrávače - VÝCHOZÍ STAV (ikona sluchátek) */
+.audio-player-button {
+    width: 40px;
+    height: 40px;
+    background-color: #e6e0f3;
+    border: 2px solid #3b0f5d; /* Výchozí fialová */
+    color: #3b0f5d;            /* Výchozí fialová */
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-left: 15px;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hover stav (platí pro všechny stavy) */
+.audio-player-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+
+/* PŘEHRÁVÁ SE (třída .is-playing, ikona pauzy) */
+.audio-player-button.is-playing {
+    border-color: #870e2c; /* Červená barva */
+    color: #870e2c;        /* Červená barva */
+}
+
+/* POZASTAVENO (třída .is-paused, ikona play) - ZDE JE VAŠE ZMĚNA */
+.audio-player-button.is-paused {
+    border-color: #5c4d00; /* Vaše zelená barva */
+    color: #5c4d00;        /* Vaše zelená barva */
+}
+
+/* Skryjeme původní HTML5 přehrávač */
+audio {
+    display: none !important;
+}
+
+/*
+ * Skrytí hlavního názvu příspěvku u liturgických čtení (spolehlivá verze)
+ */
+.single-post .posts-entry.category-liturgicke-cteni .entry-header .entry-title,
+.page-template-page-liturgicke-cteni .posts-entry .entry-header .entry-title {
+    display: none;
+}
+
+/*
+ * Styly pro finální verzi přehrávače
+ */
+#playlist-player-container {
+    display: flex;
+    flex-direction: column; /* Uspořádá ovládací prvky a lištu pod sebe */
+    align-items: center;
+    width: 100%;
+    background-color: #e6e0f3;
+    border: 2px solid #3b0f5d;
+    border-radius: 8px;
+    padding-left: 12px;
+padding-right: 12px;
+padding-bottom: 12px;
+padding-top: 0px;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0px; /* Mezera mezi tlačítky a lištou */
+}
+
+.player-control-btn {
+    background: none;
+    border: none;
+    color: #3b0f5d; /* Základní fialová */
+    cursor: pointer;
+    font-size: 20px;
+    padding: 5px;
+    margin: 0 10px;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+.player-control-btn:hover:not(:disabled) {
+    color: #870e2c; /* Zvýraznění při najetí */
+    transform: scale(1.1);
+}
+
+.player-control-btn.main-play-btn {
+    font-size: 23px; /* Větší tlačítko Play/Pause */
+    color: #870e2c; /* Hlavní tlačítko je vždy výrazné */
+    margin: 0 15px;
+}
+.player-control-btn.main-play-btn:hover:not(:disabled) {
+    color: #6d0b23;
+}
+
+.player-control-btn:disabled {
+    color: rgba(59, 15, 93, 0.3); /* Barva pro neaktivní tlačítka */
+    cursor: not-allowed;
+    transform: none;
+}
+
+.progress-wrapper {
+    width: 100%;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background-color: rgba(59, 15, 93, 0.2);
+    border-radius: 4px;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar-progress {
+    width: 0%;
+    height: 100%;
+    background-color: #870e2c;
+    border-radius: 4px;
+    transition: width 0.1s linear;
+}
+
+.progress-bar-container.disabled {
+    cursor: not-allowed;
+}
+
+.track-title {
+    font-size: 14px;
+    color: #3b0f5d;
+    text-align: center;
+    margin: 5px;
+    height: 1.2em; /* Rezervuje místo, aby layout neposkakoval */
+    font-weight: bold;
+    font-family: sans-serif; /* Použijeme lépe čitelné písmo pro název */
+}
+

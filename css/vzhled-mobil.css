@@ -1,0 +1,55 @@
+/* === Vzhled a rozložení pro Mobilní zařízení === */
+
+/* Pravidla pro obrazovky do 991px (tablety a mobily) */
+@media screen and (max-width: 991px) {
+
+    /* Úprava pro zobrazení obsahu na 100% šířky */
+    .content-wrap {
+        width: 100%;
+        max-width: 97%;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    /* Nastavíme šířku hlavního obsahu a sidebaru na 100% */
+    #primary.featured-content,
+    #secondary.featured-sidebar {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+}
+
+/* Pravidla pro obrazovky do 700px (převážně mobily) */
+@media screen and (max-width: 700px) {
+    /* ODSAZENÍ OBSAHU */
+    article .entry-content {
+        margin-top: 0px;
+        font-size: 16px;
+    }
+
+    /* NADPIS APLIKACE */
+    .site-branding .site-title {
+        font-size: 17px;
+    }
+
+    /* POPIS NADPISU APLIKACE */
+    .site-branding .site-description {
+        font-size: 17px;
+    }
+
+    /* NÁZEV PŘÍSPĚVKU */
+    h1.entry-title, h2.entry-title, h2.entry-title a:hover, h2.entry-title a:active {
+        font-size: 17px!important;
+		line-height: 120%;
+		color: #870e2c;
+    }
+
+    /* TEXT PŘÍSPĚVKU */
+    article .entry-content p {
+        margin-top: 7px;
+        font-size: 16px;
+		line-height: 1.3;
+    }
+}
