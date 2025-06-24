@@ -65,15 +65,118 @@
 }
 
 
-/* === NOVÝ KÓD PRO SKRYTÍ BOČNÍHO PANELU === */
+/* === KÓD PRO SKRYTÍ BOČNÍHO PANELU === */
 
-/* Cílíme na boční panel (sidebar) pouze na stránce s šablonou pro rádia */
 .page-template-page-radio #secondary {
     display: none;
 }
 
-/* Hlavní obsah na této stránce roztáhneme na 100% šířky */
 .page-template-page-radio #primary {
     width: 100%;
     margin: 0;
+}
+
+/* === NOVÉ STYLY PRO FORMULÁŘ PŘIDÁNÍ RÁDIA === */
+
+/* <<<=== ZMĚNA ZDE: Použití flexboxu pro dokonalé vycentrování ===>>> */
+#add-radio-button-container {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center; /* Toto zajistí horizontální vycentrování tlačítka */
+}
+
+#show-add-radio-form-btn {
+    width: 60px;
+    height: 60px;
+    background-color: #3b0f5d;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.2s ease-in-out;
+    
+    /* Vlastnosti pro dokonalé vycentrování ikony "+" uvnitř tlačítka */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    line-height: 1;
+}
+
+#show-add-radio-form-btn:hover {
+    transform: scale(1.1);
+    background-color: #870e2c;
+}
+
+#add-radio-form-container {
+    margin-top: 25px;
+    padding: 20px;
+    background-color: #e6e0f3;
+    border: 2px solid #3b0f5d;
+    border-radius: 8px;
+}
+
+#add-radio-form-container h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #3b0f5d;
+    text-align: center;
+}
+
+#custom-radio-form .form-group {
+    margin-bottom: 15px;
+}
+
+#custom-radio-form label {
+    display: block;
+    color: #3b0f5d;
+    margin-bottom: 5px;
+    font-family: sans-serif;
+}
+
+#custom-radio-form input[type="text"],
+#custom-radio-form input[type="url"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+#custom-radio-form .form-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+#custom-radio-form .save-btn,
+#custom-radio-form .cancel-btn {
+    flex-grow: 1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 7px;
+    color: #ffffff !important;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#custom-radio-form .save-btn {
+    background-color: #870e2c;
+}
+
+#custom-radio-form .save-btn:hover {
+    background-color: #6d0b23;
+}
+
+#custom-radio-form .cancel-btn {
+    background-color: #7e7383;
+}
+
+#custom-radio-form .cancel-btn:hover {
+    background-color: #6a6070;
 }

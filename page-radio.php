@@ -60,6 +60,34 @@ $radia = [
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
+
+                <?php // <<<=== ZDE ZAČÍNÁ NOVÝ KÓD ===>>> ?>
+                
+                <div id="add-radio-button-container">
+                    <button id="show-add-radio-form-btn" aria-label="Přidat nové rádio">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+
+                <div id="add-radio-form-container" style="display: none;">
+                    <form id="custom-radio-form">
+                        <h3>Přidat nové rádio</h3>
+                        <div class="form-group">
+                            <label for="custom-radio-name">Název rádia:</label>
+                            <input type="text" id="custom-radio-name" placeholder="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="custom-radio-stream">URL adresa streamu:</label>
+                            <input type="url" id="custom-radio-stream" placeholder="" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="save-btn">Přidat rádio</button>
+                            <button type="button" id="hide-add-radio-form-btn" class="cancel-btn">Zrušit</button>
+                        </div>
+                    </form>
+                </div>
+
+                <?php // <<<=== ZDE KONČÍ NOVÝ KÓD ===>>> ?>
             </div>
         </article>
 

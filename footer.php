@@ -126,5 +126,36 @@
         ?>
     </div>
 </div>
+
+<?php // <<<=== ZDE ZAČÍNÁ NOVÝ KÓD ===>>> ?>
+<?php // Panel pro přidání vlastního rádia ?>
+<div id="add-radio-overlay" class="settings-overlay"></div>
+<div id="add-radio-panel" class="settings-panel">
+    <div class="settings-header">
+        <h2>Přidat vlastní rádio</h2>
+        <button id="add-radio-close-btn" class="settings-close-btn" aria-label="Zavřít">&times;</button>
+    </div>
+    <div class="settings-content">
+        <div class="add-radio-form">
+            <div class="form-group">
+                <label for="custom-radio-name">Název rádia:</label>
+                <input type="text" id="custom-radio-name" placeholder="Např. Rádio 7">
+            </div>
+            <div class="form-group">
+                <label for="custom-radio-stream">URL adresa streamu:</label>
+                <input type="url" id="custom-radio-stream" placeholder="https://icecast.proglas.cz/radio7-128.mp3">
+            </div>
+            <button id="save-custom-radio-btn" class="save-btn">Uložit rádio</button>
+        </div>
+        <div id="custom-radio-list-container">
+             <h3>Moje rádia</h3>
+             <ul id="custom-radio-list">
+                <?php /* Seznam uživatelských rádií se sem vloží pomocí JavaScriptu */ ?>
+             </ul>
+        </div>
+    </div>
+</div>
+<?php // <<<=== ZDE KONČÍ NOVÝ KÓD ===>>> ?>
+
 </body>
 </html>

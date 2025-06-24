@@ -66,7 +66,6 @@ function minimalistblogger_child_enqueue_assets() {
     }
     
     // Načtení stylů pro panel nastavení - načítáme pouze na stránkách s aplikacemi
-    // === ZDE JE KLÍČOVÁ ÚPRAVA ===
     if ( is_page_template('page-liturgicke-cteni.php') || is_page_template('page-poboznosti.php') || is_page_template('page-home.php') || is_page_template('page-radio.php') ) {
         wp_enqueue_style(
             'minimalistblogger-nastaveni-panel',
@@ -121,6 +120,7 @@ function minimalistblogger_child_enqueue_assets() {
             filemtime( get_stylesheet_directory() . '/css/page-radia.css' )
         );
         
+        // <<<=== ZMĚNA ZDE ===>>>
         wp_enqueue_script(
             'minimalistblogger-page-radia-js',
             get_stylesheet_directory_uri() . '/js/page-radia.js',
@@ -128,6 +128,16 @@ function minimalistblogger_child_enqueue_assets() {
             filemtime( get_stylesheet_directory() . '/js/page-radia.js' ),
             true
         );
+
+        // Předání cesty k adresáři šablony do JS souboru
+        wp_localize_script(
+            'minimalistblogger-page-radia-js', // Cílíme na náš hlavní skript pro rádia
+            'radio_page_settings',
+            array(
+                'template_url' => get_stylesheet_directory_uri()
+            )
+        );
+        // <<<=== KONEC ZMĚNY ===>>>
     }
 }
 add_action( 'wp_enqueue_scripts', 'minimalistblogger_child_enqueue_assets', 20 );
