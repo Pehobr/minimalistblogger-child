@@ -63,12 +63,10 @@ jQuery(document).ready(function($) {
     const storageKey = 'pehobr_custom_radios';
     const defaultIconUrl = radio_page_settings.template_url + '/img/ikona-vlastni.png';
 
-    // Pomocná funkce pro bezpečné vložení textu do HTML
     function escapeHTML(str) {
         return $('<div>').text(str).html();
     }
 
-    // --- Zobrazování a skrývání formuláře pro přidání ---
     showFormBtn.on('click', function() {
         formContainer.slideDown();
         $(this).parent().hide();
@@ -78,7 +76,6 @@ jQuery(document).ready(function($) {
         showFormBtn.parent().show();
     });
 
-    // --- Přidání nového rádia ---
     customRadioForm.on('submit', function(event) {
         event.preventDefault();
         const name = radioNameInput.val().trim();
@@ -98,7 +95,6 @@ jQuery(document).ready(function($) {
         showFormBtn.parent().show();
     });
 
-    // --- Mazání rádia ---
     playerContainer.on('click', '.delete-radio-btn', function() {
         if (!confirm('Opravdu chcete smazat toto rádio?')) return;
         
@@ -106,46 +102,41 @@ jQuery(document).ready(function($) {
         const radioId = radioItem.data('id');
         
         const radios = getCustomRadios();
-        const updatedRadios = radios.filter(radio => radio.id != radioId); // Používáme != pro jistotu
+        const updatedRadios = radios.filter(radio => radio.id != radioId);
         saveCustomRadios(updatedRadios);
         
         radioItem.fadeOut(300, function() { $(this).remove(); });
     });
 
-    // --- Úprava rádia (krok 1: zobrazení editačního formuláře) ---
     playerContainer.on('click', '.edit-radio-btn', function() {
         const radioItem = $(this).closest('.custom-radio');
         const radioId = radioItem.data('id');
         const radios = getCustomRadios();
-        const radioToEdit = radios.find(radio => radio.id == radioId); // Používáme == pro jistotu
+        const radioToEdit = radios.find(radio => radio.id == radioId);
 
         if (!radioToEdit) {
             console.error("Chyba: Rádio k úpravě nebylo nalezeno. ID:", radioId);
             return;
         }
-
+        
         const editFormHTML = `
-            <div class="inline-edit-form">
-                <h3>Upravit rádio</h3>
+            <div class="inline-edit-form" style="width: 100%;">
                 <div class="form-group">
-                    <label>Název rádia:</label>
                     <input type="text" class="edit-name-input" value="${escapeHTML(radioToEdit.name)}">
                 </div>
                 <div class="form-group">
-                    <label>URL adresa streamu:</label>
                     <input type="url" class="edit-stream-input" value="${escapeHTML(radioToEdit.stream)}">
                 </div>
                 <div class="form-actions">
-                    <button type="button" class="save-btn save-edit-btn">Uložit změny</button>
+                    <button type="button" class="save-btn save-edit-btn">Uložit</button>
                     <button type="button" class="cancel-btn cancel-edit-btn">Zrušit</button>
                 </div>
             </div>`;
         
-        radioItem.find('.radio-item-main, .radio-item-actions').hide();
-        radioItem.append(editFormHTML);
+        // Místo skrytí původních prvků nahradíme celý vnitřek položky formulářem
+        radioItem.html(editFormHTML);
     });
     
-    // --- Úprava rádia (krok 2: uložení změn) ---
     playerContainer.on('click', '.save-edit-btn', function() {
         const radioItem = $(this).closest('.custom-radio');
         const radioId = radioItem.data('id');
@@ -171,32 +162,33 @@ jQuery(document).ready(function($) {
         }
     });
 
-    // --- Úprava rádia (krok 3: zrušení úprav) ---
     playerContainer.on('click', '.cancel-edit-btn', function() {
         const radioItem = $(this).closest('.custom-radio');
-        radioItem.find('.inline-edit-form').remove();
-        radioItem.find('.radio-item-main, .radio-item-actions').show();
+        const radioId = radioItem.data('id');
+        const radios = getCustomRadios();
+        const originalRadio = radios.find(radio => radio.id == radioId);
+
+        if (originalRadio) {
+            const originalRadioHTML = generateRadioHTML(originalRadio);
+            radioItem.replaceWith(originalRadioHTML);
+        }
     });
 
-    // --- Funkce pro práci s LocalStorage a vykreslování ---
     function getCustomRadios() {
         const radiosJSON = localStorage.getItem(storageKey);
         let radios = radiosJSON ? JSON.parse(radiosJSON) : [];
         let needsSave = false;
 
-        // OPRAVA: Zkontrolujeme a případně doplníme chybějící ID
         radios.forEach((radio, index) => {
             if (!radio.hasOwnProperty('id') || !radio.id) {
-                radio.id = (Date.now() + index).toString(); // Přidělíme unikátní ID
+                radio.id = (Date.now() + index).toString();
                 needsSave = true;
             }
         });
 
-        // Pokud jsme nějaká ID doplnili, uložíme opravená data zpět
         if (needsSave) {
             saveCustomRadios(radios);
         }
-
         return radios;
     }
 
@@ -204,25 +196,26 @@ jQuery(document).ready(function($) {
         localStorage.setItem(storageKey, JSON.stringify(radios));
     }
 
+    // <<<=== ZMĚNA ZDE: Funkce pro generování HTML s novou strukturou ===>>>
     function generateRadioHTML(radio) {
         const safeName = escapeHTML(radio.name);
         const safeStream = escapeHTML(radio.stream);
 
+        // Uživatelká rádia mají navíc třídu "custom-radio"
+        // a data-id pro jejich identifikaci
         return `
             <div class="radio-player-item custom-radio" data-stream-url="${safeStream}" data-id="${radio.id}">
-                <div class="radio-item-main">
-                    <img src="${defaultIconUrl}" alt="${safeName}" class="radio-icon">
-                    <div class="radio-title-container">
-                        <h2 class="radio-title">${safeName}</h2>
+                <img src="${defaultIconUrl}" alt="${safeName}" class="radio-icon">
+                <div class="radio-item-content">
+                    <h2 class="radio-title">${safeName}</h2>
+                    <div class="radio-item-actions">
+                        <button class="edit-radio-btn" aria-label="Upravit rádio"><i class="fa fa-pencil"></i></button>
+                        <button class="delete-radio-btn" aria-label="Smazat rádio"><i class="fa fa-trash"></i></button>
                     </div>
-                    <button class="radio-play-btn" aria-label="Přehrát ${safeName}">
-                        <i class="fa fa-play" aria-hidden="true"></i>
-                    </button>
                 </div>
-                <div class="radio-item-actions">
-                    <button class="edit-radio-btn" aria-label="Upravit rádio"><i class="fa fa-pencil"></i></button>
-                    <button class="delete-radio-btn" aria-label="Smazat rádio"><i class="fa fa-trash"></i></button>
-                </div>
+                <button class="radio-play-btn" aria-label="Přehrát ${safeName}">
+                    <i class="fa fa-play" aria-hidden="true"></i>
+                </button>
             </div>`;
     }
 
@@ -230,7 +223,6 @@ jQuery(document).ready(function($) {
         playerContainer.append(generateRadioHTML(radio));
     }
     
-    // Načteme a zobrazíme všechna uložená rádia při startu stránky
     const allCustomRadios = getCustomRadios();
     allCustomRadios.forEach(radio => renderSingleRadio(radio));
 });
