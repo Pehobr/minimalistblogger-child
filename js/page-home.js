@@ -12,8 +12,9 @@ jQuery(document).ready(function($) {
     const closeModalBtn = $('#quote-modal-close-btn');
 
     // 2. Funkce pro otevření a zavření modálního okna
-    function openModal(quoteText) {
-        modalContent.text(quoteText);
+    function openModal(quoteHtml) {
+        // <<<=== ZMĚNA ZDE: Používáme .html() místo .text() ===>>>
+        modalContent.html(quoteHtml);
         modalOverlay.fadeIn(200);
         modalContainer.fadeIn(300);
         modalContainer.addClass('is-visible');
@@ -28,14 +29,21 @@ jQuery(document).ready(function($) {
 
     // 3. Přidání posluchače událostí na kliknutí na dlaždice
     gridItems.on('click', function(event) {
-        const quote = $(this).data('quote');
+        // <<<=== ZMĚNA ZDE: Čteme nový 'data-target-id' atribut ===>>>
+        const targetId = $(this).data('target-id');
 
-        // Pokud má dlaždice atribut 'data-quote'
-        if (quote) {
+        // Pokud má dlaždice tento atribut (tedy má přiřazený citát)
+        if (targetId) {
             event.preventDefault(); // Zabráníme výchozí akci odkazu (přechod na #)
-            openModal(quote);
+            
+            // Najdeme skrytý div podle jeho ID a získáme jeho HTML obsah
+            const quoteHtmlContent = $('#' + targetId).html();
+
+            if (quoteHtmlContent) {
+                openModal(quoteHtmlContent);
+            }
         }
-        // Pokud atribut 'data-quote' nemá, skript nic neudělá a odkaz se normálně otevře.
+        // Pokud atribut nemá, skript nic neudělá a odkaz se normálně otevře.
     });
 
     // 4. Přidání posluchačů pro zavření okna
