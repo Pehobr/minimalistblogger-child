@@ -1,0 +1,82 @@
+/* Styly pro stránku Oblíbené texty */
+
+/* --- SKRYTÍ POSTRANNÍHO MENU (SIDEBARU) --- */
+/* Cílíme na stránku s naší šablonou a skrýváme sidebar */
+.page-template-page-oblibene-php #secondary {
+    display: none;
+}
+
+/* Rozšíříme hlavní obsah na celou šířku */
+.page-template-page-oblibene-php #primary {
+    width: 100%;
+    margin: 0;
+}
+
+
+/* --- VZHLED OBLÍBENÝCH POLOŽEK --- */
+
+/* Kontejner pro všechny oblíbené položky */
+#favorites-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Mezera mezi jednotlivými položkami */
+}
+
+/* --- VZHLED OBLÍBENÝCH POLOŽEK (S OPRAVOU ZAROVNÁNÍ) --- */
+
+/* Váš upravený kontejner */
+.favorite-item {
+    background-color: #e6e0f3;
+    border: 2px solid #3b0f5d;
+    border-radius: 8px;
+    padding: 7px 7px 12px 7px; /* Váš nový padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    position: relative; 
+}
+
+.favorite-item-content {
+    font-family: 'Superclarendon', serif;
+    font-size: 1.1rem;
+    color: #3b0f5d;
+    line-height: 1.4;
+    text-align: left; /* <-- ZMĚNA ZDE: Zarovnání textu vlevo */
+    /* Zajistíme, aby text nezasahoval pod ikonu */
+    padding-right: 30px; 
+}
+
+.favorite-item-content p {
+    margin-top: 0;
+    margin-bottom: 0.75em;
+}
+
+
+/* --- OPRAVENÝ STYL PRO TLAČÍTKO SMAZÁNÍ (IKONA KOŠE) --- */
+.delete-favorite-btn {
+    position: absolute; 
+    bottom: 5px;       
+    right: 7px;        
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #3b0f5d;
+    padding: 5px;
+    line-height: 1; 
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.delete-favorite-btn:hover {
+    color: #870e2c;
+    transform: scale(1.15);
+}
+
+/* Zpráva, pokud nejsou žádné oblíbené položky */
+.favorites-empty-message {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #3b0f5d;
+    padding: 40px 20px;
+    background-color: #e6e0f3;
+    border: 2px dashed #3b0f5d;
+    border-radius: 8px;
+}

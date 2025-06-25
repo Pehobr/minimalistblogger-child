@@ -126,6 +126,7 @@ foreach ($grid_items as $item) {
 
 <div id="quote-modal-overlay" class="quote-modal-overlay"></div>
 <div id="quote-modal-container" class="quote-modal-container">
+    <button id="quote-modal-favorite-btn" class="quote-modal-favorite-btn"><i class="fa fa-star-o"></i></button>
     <button id="quote-modal-close-btn" class="quote-modal-close-btn">&times;</button>
     <div id="quote-modal-content" class="quote-modal-content"></div>
 </div>

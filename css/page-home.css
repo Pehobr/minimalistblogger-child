@@ -150,3 +150,56 @@ header#masthead.sheader { z-index: 999; }
 .quote-modal-content { font-family: 'Superclarendon', serif; font-size: 1.2rem; color: #3b0f5d; text-align: center; line-height: 1.4; }
 .quote-modal-content p { margin-top: 0; margin-bottom: 0.75em; }
 .quote-modal-content p:last-child { margin-bottom: 0; }
+
+/* --- Styly pro modální okno s citátem (doplnění) --- */
+
+.quote-modal-container {
+    padding: 45px 25px 25px 25px; /* Zvětšíme horní padding pro hvězdičku */
+}
+
+/* Tlačítko pro zavření vpravo nahoře */
+.quote-modal-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 32px;
+    line-height: 1;
+    color: #3b0f5d;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+}
+.quote-modal-close-btn:hover {
+    color: #870e2c;
+}
+
+/* NOVÉ: Tlačítko pro oblíbené (hvězdička) vlevo nahoře */
+.quote-modal-favorite-btn {
+    position: absolute;
+    top: 12px;
+    left: 15px;
+    background: none;
+    border: none;
+    font-size: 26px; /* Velikost ikony hvězdičky */
+    line-height: 1;
+    color: #3b0f5d;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* Hover efekt pro hvězdičku */
+.quote-modal-favorite-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Styl pro vyplněnou hvězdičku (když je položka oblíbená) */
+.quote-modal-favorite-btn.is-favorite .fa {
+    font-family: "FontAwesome"; /* FontAwesome Solid */
+    font-weight: 900;
+    content: "\f005"; /* Unicode pro plnou hvězdu */
+    color: #ffc107; /* Zlatá barva pro vyplněnou hvězdu */
+}

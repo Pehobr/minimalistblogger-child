@@ -1,20 +1,71 @@
 /**
  * JavaScript pro úvodní stránku (page-home)
- * Zajišťuje funkčnost modálního okna pro zobrazení citátů.
+ * Zajišťuje funkčnost modálního okna pro zobrazení citátů a oblíbených položek.
  */
 jQuery(document).ready(function($) {
 
-    // 1. Selekce všech potřebných prvků
+    // --- 1. Selekce všech potřebných prvků ---
     const gridItems = $('.icon-grid-item');
     const modalOverlay = $('#quote-modal-overlay');
     const modalContainer = $('#quote-modal-container');
     const modalContent = $('#quote-modal-content');
     const closeModalBtn = $('#quote-modal-close-btn');
+    const favoriteBtn = $('#quote-modal-favorite-btn');
+    const favoriteIcon = favoriteBtn.find('i');
 
-    // 2. Funkce pro otevření a zavření modálního okna
-    function openModal(quoteHtml) {
-        // <<<=== ZMĚNA ZDE: Používáme .html() místo .text() ===>>>
+    let currentQuoteId = null; // Proměnná pro uložení ID aktuálně zobrazeného citátu
+
+    // --- 2. Správa oblíbených v LocalStorage ---
+    const favoritesStorageKey = 'pehobr_favorite_quotes';
+
+    function getFavorites() {
+        const favoritesJSON = localStorage.getItem(favoritesStorageKey);
+        return favoritesJSON ? JSON.parse(favoritesJSON) : [];
+    }
+
+    function saveFavorites(favorites) {
+        localStorage.setItem(favoritesStorageKey, JSON.stringify(favorites));
+    }
+
+    function isFavorite(quoteId) {
+        const favorites = getFavorites();
+        return favorites.some(fav => fav.id === quoteId);
+    }
+
+    function toggleFavorite() {
+        if (!currentQuoteId) return;
+
+        let favorites = getFavorites();
+        const quoteHtmlContent = $('#' + currentQuoteId).html();
+
+        if (isFavorite(currentQuoteId)) {
+            // Odebrat z oblíbených
+            favorites = favorites.filter(fav => fav.id !== currentQuoteId);
+            favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
+            favoriteBtn.removeClass('is-favorite');
+        } else {
+            // Přidat do oblíbených
+            favorites.push({ id: currentQuoteId, content: quoteHtmlContent });
+            favoriteIcon.removeClass('fa-star-o').addClass('fa-star');
+            favoriteBtn.addClass('is-favorite');
+        }
+        saveFavorites(favorites);
+    }
+
+    // --- 3. Funkce pro otevření a zavření modálního okna ---
+    function openModal(quoteHtml, quoteId) {
+        currentQuoteId = quoteId; // Uložíme si ID pro další práci
         modalContent.html(quoteHtml);
+
+        // Zkontrolujeme, zda je citát v oblíbených, a podle toho nastavíme hvězdičku
+        if (isFavorite(currentQuoteId)) {
+            favoriteIcon.removeClass('fa-star-o').addClass('fa-star');
+            favoriteBtn.addClass('is-favorite');
+        } else {
+            favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
+            favoriteBtn.removeClass('is-favorite');
+        }
+
         modalOverlay.fadeIn(200);
         modalContainer.fadeIn(300);
         modalContainer.addClass('is-visible');
@@ -23,38 +74,31 @@ jQuery(document).ready(function($) {
     function closeModal() {
         modalOverlay.fadeOut(300);
         modalContainer.fadeOut(200, function() {
-             modalContainer.removeClass('is-visible');
+            modalContainer.removeClass('is-visible');
+            currentQuoteId = null; // Vynulujeme ID po zavření okna
         });
     }
 
-    // 3. Přidání posluchače událostí na kliknutí na dlaždice
+    // --- 4. Přidání posluchačů událostí ---
     gridItems.on('click', function(event) {
-        // <<<=== ZMĚNA ZDE: Čteme nový 'data-target-id' atribut ===>>>
         const targetId = $(this).data('target-id');
 
-        // Pokud má dlaždice tento atribut (tedy má přiřazený citát)
         if (targetId) {
-            event.preventDefault(); // Zabráníme výchozí akci odkazu (přechod na #)
-            
-            // Najdeme skrytý div podle jeho ID a získáme jeho HTML obsah
+            event.preventDefault();
             const quoteHtmlContent = $('#' + targetId).html();
-
             if (quoteHtmlContent) {
-                openModal(quoteHtmlContent);
+                openModal(quoteHtmlContent, targetId);
             }
         }
-        // Pokud atribut nemá, skript nic neudělá a odkaz se normálně otevře.
     });
 
-    // 4. Přidání posluchačů pro zavření okna
-    closeModalBtn.on('click', closeModal); // Klik na zavírací tlačítko
-    modalOverlay.on('click', closeModal);  // Klik na pozadí (overlay)
+    closeModalBtn.on('click', closeModal);
+    modalOverlay.on('click', closeModal);
+    favoriteBtn.on('click', toggleFavorite); // Přidán listener na tlačítko oblíbených
 
-    // Bonus: Zavření okna klávesou Escape
     $(document).on('keydown', function(event) {
         if (event.key === "Escape" && modalContainer.hasClass('is-visible')) {
             closeModal();
         }
     });
-
 });

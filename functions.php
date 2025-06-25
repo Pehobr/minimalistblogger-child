@@ -102,6 +102,23 @@ function minimalistblogger_child_enqueue_assets() {
         }
     }
 
+    // --- Načtení CSS a JS POUZE pro stránku s oblíbenými položkami ---
+    if ( is_page_template('page-oblibene.php') ) {
+        wp_enqueue_style(
+            'minimalistblogger-oblibene-style',
+            get_stylesheet_directory_uri() . '/css/oblibene.css',
+            array('chld_thm_cfg_parent'),
+            filemtime( get_stylesheet_directory() . '/css/oblibene.css' )
+        );
+        wp_enqueue_script(
+            'minimalistblogger-oblibene-js',
+            get_stylesheet_directory_uri() . '/js/oblibene.js',
+            array('jquery'),
+            filemtime( get_stylesheet_directory() . '/js/oblibene.js' ),
+            true
+        );
+    }
+
     // --- Načtení JavaScriptu pro dolní lištu ---
     wp_enqueue_script(
         'minimalistblogger-dolni-lista-js',

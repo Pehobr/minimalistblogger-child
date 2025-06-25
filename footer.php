@@ -51,52 +51,87 @@
 
 <?php wp_footer(); ?>
 
-<div id="settings-overlay" class="settings-overlay"></div>
-<div id="settings-panel" class="settings-panel">
-    <div class="settings-header">
-        <h2>Nastavení</h2>
-        <button id="settings-close-btn" class="settings-close-btn" aria-label="Zavřít nastavení">&times;</button>
+<?php // --- ZOBRAZENÍ PANELŮ POUZE TAM, KDE JSOU POTŘEBA ---
+// Nezobrazovat na stránce s oblíbenými texty
+if ( !is_page_template('page-oblibene.php') ) : ?>
+
+    <div id="settings-overlay" class="settings-overlay"></div>
+    <div id="settings-panel" class="settings-panel">
+        <div class="settings-header">
+            <h2>Nastavení</h2>
+            <button id="settings-close-btn" class="settings-close-btn" aria-label="Zavřít nastavení">&times;</button>
+        </div>
+        <div class="settings-content">
+            <div class="setting-item">
+                <label for="toggle-player">Zobrazit hlavní přehrávač</label>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-player">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
     </div>
-    <div class="settings-content">
-        <div class="setting-item">
-            <label for="toggle-player">Zobrazit hlavní přehrávač</label>
-            <label class="switch">
-                <input type="checkbox" id="toggle-player">
-                <span class="slider round"></span>
-            </label>
+
+    <?php // Panel pro přidání vlastního rádia (také skryjeme na stránce oblíbených) ?>
+    <div id="add-radio-overlay" class="settings-overlay"></div>
+    <div id="add-radio-panel" class="settings-panel">
+        <div class="settings-header">
+            <h2>Přidat vlastní rádio</h2>
+            <button id="add-radio-close-btn" class="settings-close-btn" aria-label="Zavřít">&times;</button>
         </div>
+        <div class="settings-content">
+            <div class="add-radio-form">
+                <div class="form-group">
+                    <label for="custom-radio-name">Název rádia:</label>
+                    <input type="text" id="custom-radio-name" placeholder="Např. Rádio 7">
+                </div>
+                <div class="form-group">
+                    <label for="custom-radio-stream">URL adresa streamu:</label>
+                    <input type="url" id="custom-radio-stream" placeholder="https://icecast.proglas.cz/radio7-128.mp3">
+                </div>
+                <button id="save-custom-radio-btn" class="save-btn">Uložit rádio</button>
+            </div>
+            <div id="custom-radio-list-container">
+                 <h3>Moje rádia</h3>
+                 <ul id="custom-radio-list">
+                    <?php /* Seznam uživatelských rádií se sem vloží pomocí JavaScriptu */ ?>
+                 </ul>
+            </div>
         </div>
-</div>
+    </div>
+
+<?php endif; // --- KONEC PODMÍNKY --- ?>
+
 
 <nav class="bottom-nav-bar">
     <ul>
         <li>
-            <a href="/oblibene" aria-label="Oblíbené">
+            <a href="<?php echo esc_url( home_url('/oblibene-texty/') ); ?>" aria-label="Oblíbené">
                 <i class="fa fa-star" aria-hidden="true"></i>
                 <span>Oblíbené</span>
             </a>
         </li>
         
         <li>
-            <a href="/krestanska-radia/" aria-label="Rádia">
+            <a href="<?php echo esc_url( home_url('/krestanska-radia/') ); ?>" aria-label="Rádia">
                 <i class="fa fa-headphones" aria-hidden="true"></i>
                 <span>Rádia</span>
             </a>
         </li>
         <li>
-            <a href="/" class="active" aria-label="Domů">
+            <a href="<?php echo esc_url( home_url('/') ); ?>" class="active" aria-label="Domů">
                 <i class="fa fa-home" aria-hidden="true"></i>
                 <span>Domů</span>
             </a>
         </li>
         <li>
-            <a href="/liturgicke-cteni/" aria-label="Biblické texty">
+            <a href="<?php echo esc_url( home_url('/liturgicke-cteni/') ); ?>" aria-label="Biblické texty">
                 <i class="fa fa-book" aria-hidden="true"></i>
                 <span>Text</span>
             </a>
         </li>
         <li>
-            <a href="/informace" aria-label="Informace">
+            <a href="<?php echo esc_url( home_url('/informace/') ); ?>" aria-label="Informace">
                 <i class="fa fa-info-circle" aria-hidden="true"></i>
                 <span>Info</span>
             </a>
@@ -126,36 +161,6 @@
         ?>
     </div>
 </div>
-
-<?php // <<<=== ZDE ZAČÍNÁ NOVÝ KÓD ===>>> ?>
-<?php // Panel pro přidání vlastního rádia ?>
-<div id="add-radio-overlay" class="settings-overlay"></div>
-<div id="add-radio-panel" class="settings-panel">
-    <div class="settings-header">
-        <h2>Přidat vlastní rádio</h2>
-        <button id="add-radio-close-btn" class="settings-close-btn" aria-label="Zavřít">&times;</button>
-    </div>
-    <div class="settings-content">
-        <div class="add-radio-form">
-            <div class="form-group">
-                <label for="custom-radio-name">Název rádia:</label>
-                <input type="text" id="custom-radio-name" placeholder="Např. Rádio 7">
-            </div>
-            <div class="form-group">
-                <label for="custom-radio-stream">URL adresa streamu:</label>
-                <input type="url" id="custom-radio-stream" placeholder="https://icecast.proglas.cz/radio7-128.mp3">
-            </div>
-            <button id="save-custom-radio-btn" class="save-btn">Uložit rádio</button>
-        </div>
-        <div id="custom-radio-list-container">
-             <h3>Moje rádia</h3>
-             <ul id="custom-radio-list">
-                <?php /* Seznam uživatelských rádií se sem vloží pomocí JavaScriptu */ ?>
-             </ul>
-        </div>
-    </div>
-</div>
-<?php // <<<=== ZDE KONČÍ NOVÝ KÓD ===>>> ?>
 
 </body>
 </html>
