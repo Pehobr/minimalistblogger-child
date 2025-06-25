@@ -53,27 +53,32 @@ try {
     $daily_post_id = null;
 }
 
-// Data pro dlaždice (zůstávají stejná)
+// === ZMĚNA ZDE: AKTUALIZOVANÝ SEZNAM DLAŽDIC A KLÍČŮ PRO CITÁTY ===
 $grid_items = [
-    ['name' => 'Sv. Jan Pavel II', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel'],
+    ['name' => 'Sv. Jan Pavel II.', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel'],
     ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt'],
     ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_frantisek'],
+    ['name' => 'Augustin', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-augustin.png', 'citat_key' => 'citat_augustin'],
+    ['name' => 'Papež Lev XIII.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev'],
     ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'citat_modlitba'],
-    ['name' => 'Papež Lev XIV.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev'],
-    ['name' => 'Fotocitát', 'slug' => 'citaty', 'icon' => 'ikona-citaty.png', 'citat_key' => 'citat_citaty'],
-    ['name' => 'Svatost', 'slug' => 'svatost', 'icon' => 'ikona-svatost.png', 'citat_key' => 'citat_svatost'],
-    ['name' => 'Augustin', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-augustin.png', 'citat_key' => 'citat_texty'],
-    ['name' => 'Komunita', 'slug' => 'komunita', 'icon' => 'ikona-komunita.png', 'citat_key' => 'citat_komunita'],
+    ['name' => 'Text 1', 'slug' => 'citaty', 'icon' => 'ikona-citaty.png', 'citat_key' => 'citat_text1'],
+    ['name' => 'Text 2', 'slug' => 'svatost', 'icon' => 'ikona-svatost.png', 'citat_key' => 'citat_text2'],
+    ['name' => 'Komunita', 'slug' => 'komunita', 'icon' => 'ikona-komunita.png'], // Tato dlaždice již nemá 'citat_key'
 ];
+
 
 // Naplníme pole citátů buď z denního příspěvku, nebo z výchozích hodnot na stránce
 foreach ($grid_items as $item) {
-    // Pokud máme ID denního příspěvku, použijeme ho
-    if (isset($daily_post_id)) {
-        $quotes[$item['citat_key']] = get_post_meta($daily_post_id, $item['citat_key'], true);
-    } else {
-        // Jinak použijeme výchozí hodnoty zadané na stránce "Home"
-        $quotes[$item['citat_key']] = get_post_meta($page_id_for_defaults, $item['citat_key'], true);
+    // Přidáváme citát jen pokud pro dlaždici existuje klíč
+    if (isset($item['citat_key'])) {
+        $citat_key = $item['citat_key'];
+        // Pokud máme ID denního příspěvku, použijeme ho
+        if (isset($daily_post_id)) {
+            $quotes[$citat_key] = get_post_meta($daily_post_id, $citat_key, true);
+        } else {
+            // Jinak použijeme výchozí hodnoty zadané na stránce "Home"
+            $quotes[$citat_key] = get_post_meta($page_id_for_defaults, $citat_key, true);
+        }
     }
 }
 
@@ -87,7 +92,8 @@ foreach ($grid_items as $item) {
             <div id="intro-grid-container">
                 <?php
                 foreach ($grid_items as $item) :
-                    $quote_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
+                    // Zkontrolujeme, zda pro danou dlaždici existuje citát
+                    $quote_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
                     $has_quote = !empty($quote_html);
                     $link_url = $has_quote ? '#' : home_url('/' . $item['slug'] . '/');
                 ?>
@@ -109,20 +115,24 @@ foreach ($grid_items as $item) {
 <div id="hidden-quotes-container" style="display: none; visibility: hidden;">
     <?php
     foreach ($grid_items as $item) :
-        $quote_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
-        if (!empty($quote_html)) :
-            $allowed_html = [
-                'p' => ['style' => []], 'em' => [], 'strong' => [], 'br' => [], 'span' => ['style' => []],
-            ];
-            ?>
-            <div id="quote-content-<?php echo esc_attr($item['citat_key']); ?>">
-                <?php echo wp_kses($quote_html, $allowed_html); ?>
-            </div>
-            <?php
-        endif;
+        // Vytvoříme skrytý div jen pokud pro dlaždici existuje citát
+        if (isset($item['citat_key'])) {
+            $quote_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
+            if (!empty($quote_html)) :
+                $allowed_html = [
+                    'p' => ['style' => []], 'em' => [], 'strong' => [], 'br' => [], 'span' => ['style' => []],
+                ];
+                ?>
+                <div id="quote-content-<?php echo esc_attr($item['citat_key']); ?>">
+                    <?php echo wp_kses($quote_html, $allowed_html); ?>
+                </div>
+                <?php
+            endif;
+        }
     endforeach;
     ?>
 </div>
+
 
 <div id="quote-modal-overlay" class="quote-modal-overlay"></div>
 <div id="quote-modal-container" class="quote-modal-container">

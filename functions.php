@@ -46,7 +46,7 @@ function minimalistblogger_child_enqueue_assets() {
     wp_enqueue_style( 'minimalistblogger-vzhled-mobil', get_stylesheet_directory_uri() . '/css/vzhled-mobil.css', array('chld_thm_cfg_parent'), $theme_version );
     wp_enqueue_style( 'minimalistblogger-vzhled-pc', get_stylesheet_directory_uri() . '/css/vzhled-pc.css', array('chld_thm_cfg_parent'), $theme_version, 'screen and (min-width: 992px)' );
 
-    // --- ZMĚNA: Načtení mobilního menu na VŠECH stránkách ---
+    // --- Načtení mobilního menu na VŠECH stránkách ---
     if (file_exists(get_stylesheet_directory() . '/css/mobile-menu.css')) {
         wp_enqueue_style(
             'minimalistblogger-mobile-menu',
@@ -145,30 +145,23 @@ add_action( 'wp_enqueue_scripts', 'minimalistblogger_child_enqueue_assets', 20 )
  */
 function moje_aplikace_assets() {
     $theme_version = wp_get_theme()->get('Version');
-
     $is_liturgicka_stranka = is_page_template('page-liturgicke-cteni.php') || (is_singular('post') && has_category('liturgicke-cteni'));
 
     if ( $is_liturgicka_stranka ) {
-        
         wp_enqueue_style( 
             'liturgicke-cteni-style', 
             get_stylesheet_directory_uri() . '/css/liturgicke-cteni.css', 
-            array(),
-            $theme_version 
+            array(), $theme_version 
         );
-
         wp_enqueue_script( 
             'liturgicke-cteni-script', 
             get_stylesheet_directory_uri() . '/js/liturgicke-cteni.js', 
-            array('jquery'),
-            $theme_version, 
-            true
+            array('jquery'), $theme_version, true
         );
 
         if ( is_singular('post') && has_category('liturgicke-cteni') ) {
             global $post;
             $audio_data = array();
-            
             $cteni1_url = get_post_meta($post->ID, 'audio_cteni_1', true);
             $cteni2_url = get_post_meta($post->ID, 'audio_cteni_2', true);
             $evangelium_url = get_post_meta($post->ID, 'audio_evangelium', true);
@@ -191,20 +184,15 @@ function poboznosti_app_assets() {
 
     if ( $is_poboznosti_stranka ) {
         $theme_version = wp_get_theme()->get('Version');
-        
         wp_enqueue_style( 
             'poboznosti-style', 
             get_stylesheet_directory_uri() . '/css/poboznosti.css', 
-            array(),
-            $theme_version 
+            array(), $theme_version 
         );
-
         wp_enqueue_script( 
             'poboznosti-script', 
             get_stylesheet_directory_uri() . '/js/poboznosti.js', 
-            array('jquery'),
-            $theme_version, 
-            true
+            array('jquery'), $theme_version, true 
         );
 
         global $post;
@@ -220,7 +208,6 @@ function poboznosti_app_assets() {
                 break;
             }
         }
-        
         if (!empty($audio_data)) {
             wp_localize_script( 'poboznosti-script', 'poboznostiUdaje', array('audioUrls' => $audio_data) );
         }
@@ -230,51 +217,36 @@ add_action( 'wp_enqueue_scripts', 'poboznosti_app_assets' );
     
 // END ENQUEUE PARENT ACTION
 
-
 /**
  * Automaticky mění barevné téma webu podle liturgického kalendáře.
- * Přidává na <body> tag CSS třídu, např. 'theme-cervena'.
  */
 function pehobr_add_liturgical_color_body_class($classes) {
-    
-    // Načteme konfiguraci barev z externího souboru pro lepší přehlednost
     $config_path = get_stylesheet_directory() . '/zmena-liturgicke-barvy.php';
-    
     if ( file_exists($config_path) ) {
         $liturgicky_kalendar = include $config_path;
     } else {
         $liturgicky_kalendar = array();
     }
 
-    // <<<=== ZDE ZAČÍNÁ NOVÁ UPRAVENÁ LOGIKA ===>>>
-
-    // Nastavení časové zóny a získání dnešního data jako PHP objektu
     $timezone = new DateTimeZone('Europe/Prague');
     $dnesni_datum_obj = new DateTime('now', $timezone);
 
-    // --- Definice pravidel pro změnu barvy ---
     $trvala_zmena_od_data = new DateTime('2026-04-06', $timezone);
     $barva_po_zmene = 'bezova';
     $vychozi_barva = 'fialova';
 
-    // Ve výchozím stavu nastavíme základní barvu
     $barva_dnes = $vychozi_barva;
 
-    // 1. Zkontrolujeme, zda jsme již v období trvalé změny
     if ($dnesni_datum_obj >= $trvala_zmena_od_data) {
         $barva_dnes = $barva_po_zmene;
     } else {
-        // 2. Pokud ne, zkontrolujeme specifické svátky a slavnosti z konfiguračního souboru
         $dnesni_datum_format = $dnesni_datum_obj->format('Y-m-d');
         if (isset($liturgicky_kalendar[$dnesni_datum_format])) {
             $barva_dnes = $liturgicky_kalendar[$dnesni_datum_format];
         }
-        // 3. Pokud ani tam není shoda, zůstává výchozí fialová, kterou jsme nastavili na začátku.
     }
 
-    // Přidáme výslednou CSS třídu k ostatním třídám na <body>
     $classes[] = 'theme-' . $barva_dnes;
-    
     return $classes;
 }
 add_filter('body_class', 'pehobr_add_liturgical_color_body_class');
@@ -305,13 +277,13 @@ function pehobr_register_daily_drops_cpt() {
         'label'                 => __( 'Denní kapka', 'minimalistblogger-child' ),
         'description'           => __( 'Obsah pro denní zobrazení na úvodní stránce.', 'minimalistblogger-child' ),
         'labels'                => $labels,
-        'supports'              => array( 'title', 'custom-fields' ), // Podporuje název a vlastní pole
+        'supports'              => array( 'title', 'custom-fields' ),
         'hierarchical'          => false,
         'public'                => true,
         'show_ui'               => true,
         'show_in_menu'          => true,
         'menu_position'         => 5,
-        'menu_icon'             => 'dashicons-calendar-alt', // Ikonka v menu
+        'menu_icon'             => 'dashicons-calendar-alt',
         'show_in_admin_bar'     => true,
         'show_in_nav_menus'     => true,
         'can_export'            => true,
@@ -324,112 +296,3 @@ function pehobr_register_daily_drops_cpt() {
     register_post_type( 'denni_kapka', $args );
 }
 add_action( 'init', 'pehobr_register_daily_drops_cpt', 0 );
-
-/**
- * Vytvoření vlastního REST API endpointu pro import Denních kapek.
- * Endpoint bude dostupný na adrese: /wp-json/pkapky/v1/import
- */
-add_action( 'rest_api_init', function () {
-    register_rest_route( 'pkapky/v1', '/import', array(
-        'methods' => 'POST',
-        'callback' => 'pehobr_handle_daily_drops_import',
-        'permission_callback' => 'pehobr_import_permission_check'
-    ) );
-} );
-
-/**
- * Bezpečnostní kontrola pro import.
- * Povolí přístup pouze pokud požadavek obsahuje správný tajný klíč.
- */
-function pehobr_import_permission_check( $request ) {
-    // --- ZDE NASTAVTE SVŮJ TAJNÝ KLÍČ ---
-    // Můžete si vymyslet jakýkoliv dlouhý a složitý řetězec.
-    $secret_key = 'TohleJedfs52985MujSuperTa665dfs2jnyKlicProMadfsdf6s8e2keDotCom';
-    // ------------------------------------
-    
-    $sent_key = $request->get_header('X-Import-Key'); // Klíč očekáváme v hlavičce požadavku
-
-    if ( $sent_key === $secret_key ) {
-        return true; // Klíče se shodují, přístup povolen
-    }
-    
-    // Pro debugování můžete odkomentovat následující řádek:
-    // error_log('Pokus o neautorizovaný import. Odeslaný klíč: ' . $sent_key);
-
-    return new WP_Error( 'rest_forbidden', 'Neplatný bezpečnostní klíč.', array( 'status' => 403 ) );
-}
-
-/**
- * Funkce, která zpracuje data odeslaná z Make.com.
- */
-function pehobr_handle_daily_drops_import( WP_REST_Request $request ) {
-    $items = $request->get_json_params();
-    $created_posts = 0;
-    $updated_posts = 0;
-
-    if ( empty( $items ) ) {
-        return new WP_Error( 'no_data', 'Nebyla přijata žádná data k importu.', array( 'status' => 400 ) );
-    }
-
-    // Projdeme všechny položky (řádky z tabulky) odeslané z Make.com
-    foreach ( $items as $item ) {
-        // Základní kontrola, zda máme potřebná data
-        if ( !isset( $item['datum'] ) || !isset( $item['nazev'] ) ) {
-            continue; // Přeskočíme položku, pokud nemá datum nebo název
-        }
-
-        // Připravíme data pro vytvoření nebo aktualizaci příspěvku
-        $post_args = array(
-            'post_type'    => 'denni_kapka',
-            'post_title'   => sanitize_text_field( $item['nazev'] ),
-            'post_content' => '', // Obsah nepotřebujeme
-            'post_status'  => 'publish',
-            'post_date'    => sanitize_text_field( $item['datum'] ) . ' 12:00:00', // Publikujeme v poledne daného dne
-        );
-
-        // Zkusíme najít, zda příspěvek s tímto datem již neexistuje
-        $existing_posts = get_posts(array(
-            'post_type' => 'denni_kapka',
-            'date_query' => array(
-                'year'  => substr($item['datum'], 0, 4),
-                'month' => substr($item['datum'], 5, 2),
-                'day'   => substr($item['datum'], 8, 2),
-            ),
-        ));
-
-        if ( $existing_posts ) {
-            // Příspěvek existuje, aktualizujeme ho
-            $post_id = $existing_posts[0]->ID;
-            $post_args['ID'] = $post_id;
-            wp_update_post( $post_args );
-            $updated_posts++;
-        } else {
-            // Příspěvek neexistuje, vytvoříme nový
-            $post_id = wp_insert_post( $post_args );
-            $created_posts++;
-        }
-
-        // Pokud byl příspěvek úspěšně vytvořen/aktualizován, uložíme vlastní pole (citáty)
-        if ( $post_id && !is_wp_error( $post_id ) ) {
-            // Projdeme všechny možné klíče citátů
-            $citat_keys = ['citat_janpavel', 'citat_benedikt', 'citat_frantisek', 'citat_modlitba', 'citat_lev', 'citat_citaty', 'citat_svatost', 'citat_texty', 'citat_komunita'];
-            foreach ($citat_keys as $key) {
-                if ( isset($item[$key]) ) {
-                    // Povolíme HTML kód, který chcete používat
-                    $allowed_html = [ 'p' => ['style' => []], 'em' => [], 'strong' => [], 'br' => [], 'span' => ['style' => []] ];
-                    $sanitized_value = wp_kses($item[$key], $allowed_html);
-                    update_post_meta( $post_id, $key, $sanitized_value );
-                }
-            }
-        }
-    }
-
-    // Vrátíme odpověď pro Make.com
-    return new WP_REST_Response(
-        array(
-            'status' => 'success',
-            'message' => 'Import dokončen.',
-            'created' => $created_posts,
-            'updated' => $updated_posts
-        ), 200 );
-}
