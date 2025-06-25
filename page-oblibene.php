@@ -18,8 +18,18 @@ get_header();
             </header>
 
             <div class="entry-content">
+
+                <div id="favorites-actions">
+                    <button id="export-favorites-btn" class="favorite-action-btn">
+                        <i class="fa fa-download"></i> Exportovat do .TXT
+                    </button>
+                    <button id="copy-favorites-btn" class="favorite-action-btn">
+                        <i class="fa fa-copy"></i> Kopírovat vše
+                    </button>
+                </div>
                 <div id="favorites-container">
                     </div>
+
             </div>
         </article>
 

@@ -80,3 +80,57 @@
     border: 2px dashed #3b0f5d;
     border-radius: 8px;
 }
+
+/* --- STYLY PRO OVLÁDACÍ TLAČÍTKA (EXPORT, KOPÍROVÁNÍ) --- */
+
+#favorites-actions {
+    display: flex;
+    justify-content: center; /* Vystředění tlačítek */
+    gap: 15px; /* Mezera mezi tlačítky */
+    margin-bottom: 25px; /* Odsazení od seznamu oblíbených */
+}
+
+.favorite-action-btn {
+    display: inline-flex; /* Použijeme flexbox pro zarovnání ikony a textu */
+    align-items: center;
+    gap: 8px; /* Mezera mezi ikonou a textem */
+    padding: 8px 15px;
+    background-color: #3b0f5d;
+    color: #ffffff !important;
+    border: 2px solid #3b0f5d;
+    border-radius: 7px;
+    text-decoration: none !important;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.favorite-action-btn:hover {
+    background-color: #5a2b82; /* Mírně světlejší fialová při najetí */
+    transform: translateY(-1px);
+}
+
+.favorite-action-btn i {
+    font-size: 1em;
+}
+
+
+/* --- RESPONZIVNÍ ZOBRAZENÍ TLAČÍTEK --- */
+
+/* Výchozí stav (pro mobily) */
+#export-favorites-btn {
+    display: none; /* Tlačítko pro export je na mobilech skryté */
+}
+#copy-favorites-btn {
+    display: inline-flex; /* Tlačítko pro kopírování je viditelné */
+}
+
+/* Stav pro větší obrazovky (tablety a PC, od 768px) */
+@media screen and (min-width: 768px) {
+    #export-favorites-btn {
+        display: inline-flex; /* Tlačítko pro export se zobrazí */
+    }
+    #copy-favorites-btn {
+        display: none; /* Tlačítko pro kopírování se skryje */
+    }
+}
