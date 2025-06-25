@@ -32,14 +32,14 @@ header#masthead.sheader { z-index: 999; }
     font-size: 1.6rem; 
     font-weight: bold;
     font-family: 'Superclarendon', serif;
-    color: #e6e0f3; /* <-- OPRAVA: Barva aplikována přímo zde */
+    color: #e6e0f3; 
 }
 
 #daily-info-date {
     margin: 5px 0 0 0;
     font-size: 1.1rem; 
     font-family: sans-serif;
-    color: #e6e0f3; /* <-- OPRAVA: Barva aplikována přímo zde */
+    color: #e6e0f3; 
 }
 
 #intro-grid-container {
@@ -53,6 +53,23 @@ header#masthead.sheader { z-index: 999; }
     z-index: 10;
 }
 
+/* <<-- ZDE JSOU NOVÉ A UPRAVENÉ STYLY -->> */
+.grid-item-wrapper {
+    display: flex;
+    flex-direction: column; /* Uspořádá ikonu a popisek pod sebe */
+    align-items: center;
+    text-align: center;
+    grid-column: span 2; /* Každá položka zabere 2 sloupce */
+}
+
+/* Umístění pro 4. a 5. položku (druhá řada) */
+.grid-item-wrapper:nth-child(4) {
+    grid-column: 2 / span 2;
+}
+.grid-item-wrapper:nth-child(5) {
+    grid-column: 4 / span 2;
+}
+
 .icon-grid-item {
     display: flex; align-items: center; justify-content: center;
     padding: 5px;
@@ -62,15 +79,8 @@ header#masthead.sheader { z-index: 999; }
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     height: 95px;
+    width: 100%; /* Kontejner s ikonou zabere celou šířku wrapperu */
     border: 2px solid #3b0f5d;
-    grid-column: span 2; 
-}
-
-.icon-grid-item:nth-child(4) {
-    grid-column: 2 / span 2;
-}
-.icon-grid-item:nth-child(5) {
-    grid-column: 4 / span 2;
 }
 
 .icon-grid-item:hover, .icon-grid-item:focus {
@@ -82,12 +92,21 @@ header#masthead.sheader { z-index: 999; }
     height: 98%; width: auto; max-width: 98%; object-fit: contain;
 }
 
+.grid-item-label {
+    margin-top: 8px; /* Mezera mezi kontejnerem a popiskem */
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #e6e0f3; /* Stejná barva jako název dne */
+}
+/* <<-- KONEC ZMĚN -->> */
+
 .grid-erb {
     position: absolute;
     height: 95px; 
     width: 21%; 
     object-fit: contain; 
-    top: 110px; 
+    /* Pozice erbů se musí upravit, protože popisky zabírají místo navíc */
+    top: 138px; /* Hodnota bude záviset na výšce popisků, možná bude třeba doladit */
 }
 #erb-augustin {
     left: 0; 
@@ -100,11 +119,13 @@ header#masthead.sheader { z-index: 999; }
     #intro-grid-container { 
         gap: 10px; 
         grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1.5fr;
+        row-gap: 20px; /* Větší mezera mezi řádky kvůli popiskům */
     }
     .icon-grid-item { height: 80px; }
+    .grid-item-label { font-size: 0.8rem; margin-top: 5px; }
     .grid-erb { 
         height: 80px; 
-        top: 90px;
+        top: 115px; /* Upravená pozice pro mobil */
         width: 21%; 
     }
     #daily-info-title {

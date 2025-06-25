@@ -12,8 +12,8 @@ get_header();
 
 $page_id_for_defaults = get_the_ID();
 $quotes = [];
-$nazev_dne = ''; // Výchozí hodnota pro název dne
-$datum_dne = ''; // Výchozí hodnota pro datum
+$nazev_dne = ''; 
+$datum_dne = ''; 
 
 $start_date_str = get_option( 'start_date_setting', '2026-02-18' );
 try {
@@ -31,7 +31,6 @@ try {
             while ($daily_query->have_posts()) {
                 $daily_query->the_post();
                 $daily_post_id = get_the_ID();
-                // <<-- ZDE NAČÍTÁME NOVÁ POLE -->>
                 $nazev_dne = get_post_meta($daily_post_id, 'nazev_dne', true);
                 $datum_dne = get_post_meta($daily_post_id, 'datum_dne', true);
             }
@@ -40,16 +39,16 @@ try {
     }
 } catch (Exception $e) { $daily_post_id = null; }
 
-// --- Původní seznam 8 dlaždic ---
+// --- Seznam dlaždic s novými popisky ---
 $grid_items = [
-    ['name' => 'Sv. Jan Pavel II.', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel'],
-    ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt'],
-    ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_frantisek'],
-    ['name' => 'Augustin', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-augustin.png', 'citat_key' => 'citat_augustin'],
-    ['name' => 'Papež Lev XIII.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev'],
-    ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'citat_modlitba'],
-    ['name' => 'Text 1', 'slug' => 'citaty', 'icon' => 'ikona-bible.png', 'citat_key' => 'citat_text1'],
-    ['name' => 'Text 2', 'slug' => 'svatost', 'icon' => 'ikona-inspirace.png', 'citat_key' => 'citat_text2'],
+    ['name' => 'Sv. Jan Pavel II.', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel', 'label' => 'Jan Pavel II.'],
+    ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt', 'label' => 'Benedikt XVI.'],
+    ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_frantisek', 'label' => 'František'],
+    ['name' => 'Augustin', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-augustin.png', 'citat_key' => 'citat_augustin', 'label' => 'Augustin'],
+    ['name' => 'Papež Lev XIII.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev', 'label' => 'Lev XIII.'],
+    ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'citat_modlitba', 'label' => 'Modlitba'],
+    ['name' => 'Text 1', 'slug' => 'citaty', 'icon' => 'ikona-bible.png', 'citat_key' => 'citat_text1', 'label' => 'Bible'],
+    ['name' => 'Text 2', 'slug' => 'svatost', 'icon' => 'ikona-inspirace.png', 'citat_key' => 'citat_text2', 'label' => 'Inspirace'],
 ];
 
 foreach ($grid_items as $item) {
@@ -68,7 +67,6 @@ foreach ($grid_items as $item) {
     <main id="main" class="site-main">
         <div id="intro-wrapper">
             
-            <?php // <<-- ZDE VKLÁDÁME NOVÝ HTML BLOK -->> ?>
             <?php if ( ! empty( $nazev_dne ) || ! empty( $datum_dne ) ) : ?>
                 <div id="daily-info-container">
                     <?php if ( ! empty( $nazev_dne ) ) : ?>
@@ -82,20 +80,23 @@ foreach ($grid_items as $item) {
             
             <div id="intro-grid-container">
                 <?php
-                // Smyčka pro generování 8 boxů
+                // Smyčka pro generování 8 boxů s popisky
                 foreach ($grid_items as $item) :
                     $quote_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
                     $has_quote = !empty($quote_html);
                     $link_url = $has_quote ? '#' : home_url('/' . $item['slug'] . '/');
                 ?>
-                    <a href="<?php echo esc_url($link_url); ?>" 
-                       class="icon-grid-item"
-                       <?php if ($has_quote) : ?>
-                           data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>"
-                       <?php endif; ?>
-                    >
-                        <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
-                    </a>
+                    <div class="grid-item-wrapper">
+                        <a href="<?php echo esc_url($link_url); ?>" 
+                           class="icon-grid-item"
+                           <?php if ($has_quote) : ?>
+                               data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>"
+                           <?php endif; ?>
+                        >
+                            <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
+                        </a>
+                        <span class="grid-item-label"><?php echo esc_html($item['label']); ?></span>
+                    </div>
                 <?php endforeach; ?>
 
                 <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-augustin.png'); ?>" alt="Erb Augustiniánů" id="erb-augustin" class="grid-erb">
