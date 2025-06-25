@@ -14,7 +14,6 @@ $page_id_for_defaults = get_the_ID();
 $quotes = []; // Připravíme si prázdné pole pro citáty
 
 // Datum se nyní načítá z globálního nastavení (Nastavení -> Nastavení Aplikace)
-// Jako druhý parametr je výchozí hodnota, pokud v nastavení není nic uloženo.
 $start_date_str = get_option( 'start_date_setting', '2026-02-18' );
 
 try {
@@ -28,7 +27,7 @@ try {
 
         // Argumenty pro nalezení správného příspěvku v "Denních kapkách"
         $args = array(
-            'post_type'      => 'denni_kapka', // Náš nový CPT
+            'post_type'      => 'denni_kapka',
             'post_status'    => 'publish',
             'posts_per_page' => 1,
             'offset'         => $day_offset,
@@ -41,7 +40,6 @@ try {
         if ($daily_query->have_posts()) {
             while ($daily_query->have_posts()) {
                 $daily_query->the_post();
-                // Získáme ID nalezeného denního příspěvku
                 $daily_post_id = get_the_ID();
             }
             wp_reset_postdata();
@@ -49,25 +47,25 @@ try {
     }
 
 } catch (Exception $e) {
-    // V případě chyby v datu se nic nestane, použijí se výchozí hodnoty
     $daily_post_id = null;
 }
 
-// Seznam dlaždic a klíčů pro citáty
+// === ZMĚNA ZDE: SEZNAM OBSAHUJE POUZE 8 DLAŽDIC ===
 $grid_items = [
     ['name' => 'Sv. Jan Pavel II.', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel'],
     ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt'],
     ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_frantisek'],
+    
     ['name' => 'Augustin', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-augustin.png', 'citat_key' => 'citat_augustin'],
     ['name' => 'Papež Lev XIII.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev'],
+    
     ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'citat_modlitba'],
     ['name' => 'Text 1', 'slug' => 'citaty', 'icon' => 'ikona-citaty.png', 'citat_key' => 'citat_text1'],
     ['name' => 'Text 2', 'slug' => 'svatost', 'icon' => 'ikona-svatost.png', 'citat_key' => 'citat_text2'],
-    ['name' => 'Komunita', 'slug' => 'komunita', 'icon' => 'ikona-komunita.png'],
 ];
 
 
-// Naplníme pole citátů buď z denního příspěvku, nebo z výchozích hodnot na stránce
+// Naplníme pole citátů
 foreach ($grid_items as $item) {
     if (isset($item['citat_key'])) {
         $citat_key = $item['citat_key'];

@@ -1,135 +1,137 @@
-/* * Styly pro úvodní obrazovku s mřížkou ikon (page-home.css)
+/*
+ * Styly pro úvodní obrazovku s mřížkou ikon (page-home.css)
  */
 
-/* Základní styly pro celou obrazovku, aby se mřížka vycentrovala */
 body, html {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Důležité: zabrání rolování a umožní kapkám padat */
-    font-family: sans-serif; /* Písmo pro čitelnost */
-    background-color: #f0f8ff; /* Světlounce modré pozadí pro celou stránku */
+    overflow: hidden;
+    font-family: sans-serif;
+    background-color: #f0f8ff;
 }
 
-/* Odsazení obsahu stránky, aby nebyl překryt fixní hlavičkou a patičkou */
-/* Tyto hodnoty pochází z vašich stávajících CSS souborů */
 body {
-    padding-top: 67px; /* Z `css/fixni-hlavicka.css` */
-    padding-bottom: calc(var(--nav-height) + 15px); /* Z `css/dolni-lista.css` */
+    padding-top: 67px;
+    padding-bottom: calc(var(--nav-height) + 15px);
 }
 
-/* Přesahy fixní hlavičky a dolní lišty */
 header#masthead.sheader {
-    z-index: 999; /* Zajišťuje, že hlavička je nad obsahem */
+    z-index: 999;
 }
 
 .bottom-nav-bar {
-    z-index: 1000; /* Zajišťuje, že dolní lišta je nad obsahem a hlavičkou */
+    z-index: 1000;
 }
 
 #intro-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Dynamicky vypočítaná výška, aby se vešla mezi hlavičku a patičku */
-    min-height: calc(100vh - 67px - var(--nav-height, 70px) - 40px); /* 40px pro padding shora/zdola */
-    padding: 20px; /* Vnitřní odsazení od okrajů */
-    box-sizing: border-box; /* Zahrne padding do celkové šířky/výšky */
+    min-height: calc(100vh - 67px - var(--nav-height, 70px) - 40px);
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-/* Styly pro kontejner mřížky */
+/* === NOVÉ ROZLOŽENÍ MŘÍŽKY "I" (3-2-3) === */
+
 #intro-grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 sloupce, každý se stejnou šířkou */
-    grid-template-rows: repeat(3, 1fr);    /* 3 řádky, každý se stejnou výškou */
-    gap: 15px; /* Mezera mezi jednotlivými ikonami */
-    width: 90vw; /* Šířka mřížky bude 90% šířky viewportu */
-    max-width: 600px; /* Ale nepřesáhne 600px na velkých obrazovkách */
-    margin: auto; /* Centrování mřížky */
-    position: relative; /* Klíčové pro z-index a kapky, které budou "pod" mřížkou */
-    z-index: 10; /* Zajistí, že ikony budou nad padajícími kapkami */
+    /* Mřížka má 6 sloupců pro maximální flexibilitu */
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
+    width: 90vw;
+    max-width: 600px;
+    margin: auto;
+    position: relative;
+    z-index: 10;
 }
 
-/* Styly pro každý jednotlivý prvek v mřížce (ikonu) */
 .icon-grid-item {
     display: flex;
-    align-items: center; /* Centrování obsahu (jen obrázku) horizontálně */
-    justify-content: center; /* Centrování obsahu (jen obrázku) vertikálně */
-    
+    align-items: center;
+    justify-content: center;
     padding: 10px;
-    background-color: rgba(255, 255, 255, 0.9); /* Bílé pozadí s lehkou průhledností */
-    border-radius: 12px; /* Zaoblené rohy */
-    text-decoration: none; /* Odstraní podtržení odkazu */
-    color: #333; /* Barva textu (už se nepoužije, ale pro pořádek) */
-    font-size: 0.9em; /* Velikost písma pro popisek (už se nepoužije) */
-    text-align: center; /* (už se nepoužije) */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Jemný stín pro 3D efekt */
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Plynulá animace při najetí/kliknutí */
-    aspect-ratio: 1 / 1; /* Zajistí, že každý prvek bude čtvercový */
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    
+    /* ZMĚNA 1: Pevná a stejná výška pro všechny boxy */
+    height: 95px;
+
+    /* Výchozí šířka pro boxy v 1. a 3. řadě (zabere 2 sloupce ze 6) */
+    grid-column: span 2;
+}
+
+/* ZMĚNA 2: Nové umístění pro 4. a 5. box (vytvoření stonku "I") */
+/* 4. box začne na 2. sloupci mřížky a zabere 2 sloupce */
+.icon-grid-item:nth-child(4) {
+    grid-column: 2 / span 2;
+}
+
+/* 5. box začne na 4. sloupci mřížky a zabere 2 sloupce */
+.icon-grid-item:nth-child(5) {
+    grid-column: 4 / span 2;
 }
 
 .icon-grid-item:hover,
-.icon-grid-item:focus { /* Styly pro interakci */
-    transform: scale(1.05); /* Mírné zvětšení */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Výraznější stín */
-    outline: none; /* Odstraní výchozí obrys při focusu */
+.icon-grid-item:focus {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    outline: none;
 }
 
-/* Styly pro samotné obrázky ikon uvnitř .icon-grid-item */
+/* ZMĚNA 3: Zvětšení ikon uvnitř boxů na 90 % výšky */
 .icon-grid-item img {
-    width: 90%; /* Ikona zabere 90% šířky svého kontejneru */
-    height: auto; /* Automatická výška pro zachování proporcí */
-    object-fit: contain; /* Zajistí, že obrázek se vejde bez ořezání */
-    max-height: 90%; /* ZABRÁNÍ PŘÍLIŠ VELKÉ IKONĚ A ZAJISTÍ 90% VÝŠKY */
+    height: 90%; /* Ikona zabere 90 % výšky svého boxu */
+    width: auto;   /* Šířka se přizpůsobí, aby se zachoval poměr stran */
+    max-width: 90%; /* Pojistka, aby ikona nepřetekla na šířku */
+    object-fit: contain;
 }
 
-/* Základní responzivita pro menší obrazovky (volitelné, ale dobré) */
+/* === KONEC ZMĚN === */
+
 @media (max-width: 480px) {
     #intro-grid-container {
-        gap: 10px; /* Menší mezera na menších obrazovkách */
+        gap: 10px;
     }
     .icon-grid-item {
-        padding: 8px;
-    }
-    .icon-grid-item img {
-        width: 85%; /* Na menších obrazovkách možná trochu zmenšit, aby se vešly */
-        max-height: 85%;
+        height: 80px; /* Mírné zmenšení na mobilech */
     }
 }
-/* === STYLY PRO MODÁLNÍ OKNO S CITÁTEM === */
 
-/* Překryvná vrstva pozadí */
+/* STYLY PRO MODÁLNÍ OKNO (ZŮSTÁVAJÍ STEJNÉ) */
 .quote-modal-overlay {
-    display: none; /* Skryto ve výchozím stavu */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    z-index: 10001; /* Musí být vysoko, aby překrylo vše */
+    z-index: 10001;
 }
 
-/* Kontejner samotného okna */
 .quote-modal-container {
-    display: none; /* Skryto ve výchozím stavu */
+    display: none;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 90%;
     max-width: 500px;
-    background-color: #e6e0f3; /* Stejná barva jako boxy příspěvků */
-    border: 2px solid #3b0f5d; /* Stejný okraj */
+    background-color: #e6e0f3;
+    border: 2px solid #3b0f5d;
     border-radius: 12px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-    padding: 40px 25px 25px 25px; /* Více místa nahoře pro tlačítko */
-    z-index: 10002; /* Nad překryvnou vrstvou */
+    padding: 40px 25px 25px 25px;
+    z-index: 10002;
     box-sizing: border-box;
 }
 
-/* Tlačítko pro zavření okna */
 .quote-modal-close-btn {
     position: absolute;
     top: 10px;
@@ -147,23 +149,19 @@ header#masthead.sheader {
     color: #870e2c;
 }
 
-/* Obsah okna (text citátu) */
 .quote-modal-content {
-    font-family: 'Superclarendon', serif; /* Použijeme stejné písmo jako u příspěvků */
+    font-family: 'Superclarendon', serif;
     font-size: 1.2rem;
     color: #3b0f5d;
     text-align: center;
-    /* <<<=== ZMĚNA ZDE: Snížení výšky řádku ===>>> */
     line-height: 1.4;
 }
 
-/* <<<=== NOVÝ KÓD ZDE: Snížení mezer mezi odstavci uvnitř modálního okna ===>>> */
 .quote-modal-content p {
     margin-top: 0;
-    margin-bottom: 0.75em; /* Menší spodní okraj mezi odstavci */
+    margin-bottom: 0.75em;
 }
 
-/* Poslednímu odstavci můžeme odebrat i spodní okraj */
 .quote-modal-content p:last-child {
     margin-bottom: 0;
 }
