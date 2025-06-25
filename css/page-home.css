@@ -3,165 +3,98 @@
  */
 
 body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    font-family: sans-serif;
-    background-color: #f0f8ff;
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    overflow: hidden; font-family: sans-serif; background-color: #f0f8ff;
 }
-
 body {
-    padding-top: 67px;
-    padding-bottom: calc(var(--nav-height) + 15px);
+    padding-top: 67px; padding-bottom: calc(var(--nav-height) + 15px);
 }
-
-header#masthead.sheader {
-    z-index: 999;
-}
-
-.bottom-nav-bar {
-    z-index: 1000;
-}
+header#masthead.sheader { z-index: 999; }
+.bottom-nav-bar { z-index: 1000; }
 
 #intro-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: flex; justify-content: center; align-items: center;
     min-height: calc(100vh - 67px - var(--nav-height, 70px) - 40px);
-    padding: 20px;
-    box-sizing: border-box;
+    padding: 20px; box-sizing: border-box;
 }
-
-/* === NOVÉ ROZLOŽENÍ MŘÍŽKY "I" (3-2-3) === */
 
 #intro-grid-container {
     display: grid;
-    /* Mřížka má 6 sloupců pro maximální flexibilitu */
-    grid-template-columns: repeat(6, 1fr);
+    /* ZMĚNĚNO: Krajní sloupce jsou širší, aby bylo více místa pro erby */
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1.5fr;
     gap: 15px;
     width: 90vw;
     max-width: 600px;
     margin: auto;
-    position: relative;
+    position: relative; /* Nutné pro absolutní pozicování erbů */
     z-index: 10;
 }
 
 .icon-grid-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     padding: 5px;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 12px;
     text-decoration: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    
-    /* ZMĚNA 1: Pevná a stejná výška pro všechny boxy */
     height: 95px;
-
-    /* Výchozí šířka pro boxy v 1. a 3. řadě (zabere 2 sloupce ze 6) */
-    grid-column: span 2;
+    border: 2px solid #3b0f5d;
+    /* Tento řádek určuje, že boxy v 1. a 3. řadě zaberou 2 (užší) sloupce */
+    grid-column: span 2; 
 }
 
-/* ZMĚNA 2: Nové umístění pro 4. a 5. box (vytvoření stonku "I") */
-/* 4. box začne na 2. sloupci mřížky a zabere 2 sloupce */
+/* Umístění pro 4. a 5. box (druhá řada) */
 .icon-grid-item:nth-child(4) {
     grid-column: 2 / span 2;
 }
-
-/* 5. box začne na 4. sloupci mřížky a zabere 2 sloupce */
 .icon-grid-item:nth-child(5) {
     grid-column: 4 / span 2;
 }
 
-.icon-grid-item:hover,
-.icon-grid-item:focus {
+.icon-grid-item:hover, .icon-grid-item:focus {
     transform: scale(1.05);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     outline: none;
 }
-
-/* ZMĚNA 3: Zvětšení ikon uvnitř boxů na 90 % výšky */
 .icon-grid-item img {
-    height: 100%; /* Ikona zabere 90 % výšky svého boxu */
-    width: auto;   /* Šířka se přizpůsobí, aby se zachoval poměr stran */
-    max-width: 100%; /* Pojistka, aby ikona nepřetekla na šířku */
-    object-fit: contain;
+    height: 98%; width: auto; max-width: 98%; object-fit: contain;
 }
 
-/* === KONEC ZMĚN === */
+/* === OPRAVENO: Styly pro pozicování erbů === */
+.grid-erb {
+    position: absolute;
+    height: 95px; /* Stejná výška jako boxy */
+    width: 21%; /* ZVĚTŠENO: Šířka přizpůsobená novému volnému prostoru */
+    object-fit: contain; 
+    top: 110px; 
+}
+#erb-augustin {
+    left: 0; 
+}
+#erb-lev {
+    right: 0; 
+}
 
 @media (max-width: 480px) {
-    #intro-grid-container {
-        gap: 10px;
+    #intro-grid-container { 
+        gap: 10px; 
+        /* Zachováme upravené rozložení i na mobilu */
+        grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1.5fr;
     }
-    .icon-grid-item {
-        height: 80px; /* Mírné zmenšení na mobilech */
+    .icon-grid-item { height: 80px; }
+    .grid-erb { 
+        height: 80px; 
+        top: 90px; /* 80px + 10px */
+        width: 21%; /* Zachováme stejný poměr šířky */
     }
 }
 
-/* STYLY PRO MODÁLNÍ OKNO (ZŮSTÁVAJÍ STEJNÉ) */
-.quote-modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 10001;
-}
-
-.quote-modal-container {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 500px;
-    background-color: #e6e0f3;
-    border: 2px solid #3b0f5d;
-    border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-    padding: 40px 25px 25px 25px;
-    z-index: 10002;
-    box-sizing: border-box;
-}
-
-.quote-modal-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: none;
-    border: none;
-    font-size: 32px;
-    line-height: 1;
-    color: #3b0f5d;
-    cursor: pointer;
-    padding: 0;
-}
-
-.quote-modal-close-btn:hover {
-    color: #870e2c;
-}
-
-.quote-modal-content {
-    font-family: 'Superclarendon', serif;
-    font-size: 1.2rem;
-    color: #3b0f5d;
-    text-align: center;
-    line-height: 1.4;
-}
-
-.quote-modal-content p {
-    margin-top: 0;
-    margin-bottom: 0.75em;
-}
-
-.quote-modal-content p:last-child {
-    margin-bottom: 0;
-}
+/* Styly pro modální okno zůstávají beze změny */
+.quote-modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 10001; }
+.quote-modal-container { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 500px; background-color: #e6e0f3; border: 2px solid #3b0f5d; border-radius: 12px; box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3); padding: 40px 25px 25px 25px; z-index: 10002; box-sizing: border-box; }
+.quote-modal-close-btn { position: absolute; top: 10px; right: 15px; background: none; border: none; font-size: 32px; line-height: 1; color: #3b0f5d; cursor: pointer; padding: 0; }
+.quote-modal-close-btn:hover { color: #870e2c; }
+.quote-modal-content { font-family: 'Superclarendon', serif; font-size: 1.2rem; color: #3b0f5d; text-align: center; line-height: 1.4; }
+.quote-modal-content p { margin-top: 0; margin-bottom: 0.75em; }
+.quote-modal-content p:last-child { margin-bottom: 0; }

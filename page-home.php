@@ -8,35 +8,23 @@
 
 get_header();
 
-// --- ZDE ZAČÍNÁ LOGIKA PRO NAČÍTÁNÍ DENNÍHO OBSAHU ---
+// --- Logika pro načítání denního obsahu zůstává stejná ---
 
 $page_id_for_defaults = get_the_ID();
-$quotes = []; // Připravíme si prázdné pole pro citáty
+$quotes = []; 
 
-// Datum se nyní načítá z globálního nastavení (Nastavení -> Nastavení Aplikace)
 $start_date_str = get_option( 'start_date_setting', '2026-02-18' );
-
 try {
     $start_date = new DateTime($start_date_str, new DateTimeZone('Europe/Prague'));
     $today = new DateTime('today', new DateTimeZone('Europe/Prague'));
-
-    // Zjistíme, jestli jsme v období cyklu
     if ($today >= $start_date) {
         $interval = $start_date->diff($today);
         $day_offset = $interval->days;
-
-        // Argumenty pro nalezení správného příspěvku v "Denních kapkách"
         $args = array(
-            'post_type'      => 'denni_kapka',
-            'post_status'    => 'publish',
-            'posts_per_page' => 1,
-            'offset'         => $day_offset,
-            'orderby'        => 'date',
-            'order'          => 'ASC',
+            'post_type' => 'denni_kapka', 'post_status' => 'publish', 'posts_per_page' => 1,
+            'offset' => $day_offset, 'orderby' => 'date', 'order' => 'ASC',
         );
-
         $daily_query = new WP_Query($args);
-
         if ($daily_query->have_posts()) {
             while ($daily_query->have_posts()) {
                 $daily_query->the_post();
@@ -45,27 +33,20 @@ try {
             wp_reset_postdata();
         }
     }
+} catch (Exception $e) { $daily_post_id = null; }
 
-} catch (Exception $e) {
-    $daily_post_id = null;
-}
-
-// === ZMĚNA ZDE: SEZNAM OBSAHUJE POUZE 8 DLAŽDIC ===
+// --- Původní seznam 8 dlaždic ---
 $grid_items = [
     ['name' => 'Sv. Jan Pavel II.', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel'],
     ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt'],
     ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_frantisek'],
-    
     ['name' => 'Augustin', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-augustin.png', 'citat_key' => 'citat_augustin'],
     ['name' => 'Papež Lev XIII.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev'],
-    
     ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'citat_modlitba'],
     ['name' => 'Text 1', 'slug' => 'citaty', 'icon' => 'ikona-citaty.png', 'citat_key' => 'citat_text1'],
     ['name' => 'Text 2', 'slug' => 'svatost', 'icon' => 'ikona-svatost.png', 'citat_key' => 'citat_text2'],
 ];
 
-
-// Naplníme pole citátů
 foreach ($grid_items as $item) {
     if (isset($item['citat_key'])) {
         $citat_key = $item['citat_key'];
@@ -80,10 +61,10 @@ foreach ($grid_items as $item) {
 
 <div id="primary" class="featured-content content-area intro-app">
     <main id="main" class="site-main">
-
         <div id="intro-wrapper">
             <div id="intro-grid-container">
                 <?php
+                // Smyčka pro generování 8 boxů
                 foreach ($grid_items as $item) :
                     $quote_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
                     $has_quote = !empty($quote_html);
@@ -98,9 +79,11 @@ foreach ($grid_items as $item) {
                         <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
                     </a>
                 <?php endforeach; ?>
+
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-augustin.png'); ?>" alt="Erb Augustiniánů" id="erb-augustin" class="grid-erb">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Erb Papeže Lva XIII." id="erb-lev" class="grid-erb">
             </div>
         </div>
-
     </main>
 </div>
 
@@ -110,9 +93,7 @@ foreach ($grid_items as $item) {
         if (isset($item['citat_key'])) {
             $quote_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
             if (!empty($quote_html)) :
-                $allowed_html = [
-                    'p' => ['style' => []], 'em' => [], 'strong' => [], 'br' => [], 'span' => ['style' => []],
-                ];
+                $allowed_html = ['p' => ['style' => []], 'em' => [], 'strong' => [], 'br' => [], 'span' => ['style' => []]];
                 ?>
                 <div id="quote-content-<?php echo esc_attr($item['citat_key']); ?>">
                     <?php echo wp_kses($quote_html, $allowed_html); ?>
