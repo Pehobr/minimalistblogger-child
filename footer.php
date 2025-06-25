@@ -51,10 +51,11 @@
 
 <?php wp_footer(); ?>
 
-<?php // --- ZOBRAZENÍ PANELŮ POUZE TAM, KDE JSOU POTŘEBA ---
-// Nezobrazovat na stránce s oblíbenými texty
-if ( !is_page_template('page-oblibene.php') ) : ?>
-
+<?php 
+// --- OPRAVA: Zobrazení panelů pouze tam, kde jsou potřeba ---
+// Podmínka nyní přesně odpovídá stránkám, které načítají příslušné skripty.
+if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 'page-home.php', 'page-radio.php')) ) : 
+?>
     <div id="settings-overlay" class="settings-overlay"></div>
     <div id="settings-panel" class="settings-panel">
         <div class="settings-header">
@@ -72,33 +73,35 @@ if ( !is_page_template('page-oblibene.php') ) : ?>
         </div>
     </div>
 
-    <?php // Panel pro přidání vlastního rádia (také skryjeme na stránce oblíbených) ?>
-    <div id="add-radio-overlay" class="settings-overlay"></div>
-    <div id="add-radio-panel" class="settings-panel">
-        <div class="settings-header">
-            <h2>Přidat vlastní rádio</h2>
-            <button id="add-radio-close-btn" class="settings-close-btn" aria-label="Zavřít">&times;</button>
-        </div>
-        <div class="settings-content">
-            <div class="add-radio-form">
-                <div class="form-group">
-                    <label for="custom-radio-name">Název rádia:</label>
-                    <input type="text" id="custom-radio-name" placeholder="Např. Rádio 7">
-                </div>
-                <div class="form-group">
-                    <label for="custom-radio-stream">URL adresa streamu:</label>
-                    <input type="url" id="custom-radio-stream" placeholder="https://icecast.proglas.cz/radio7-128.mp3">
-                </div>
-                <button id="save-custom-radio-btn" class="save-btn">Uložit rádio</button>
+    <?php // Panel pro přidání rádia, jehož funkčnost je nyní řízena skriptem `page-radia.js` a zobrazuje se jen tam. ?>
+    <?php if ( is_page_template('page-radio.php') ) : ?>
+        <div id="add-radio-overlay" class="settings-overlay"></div>
+        <div id="add-radio-panel" class="settings-panel">
+            <div class="settings-header">
+                <h2>Přidat vlastní rádio</h2>
+                <button id="add-radio-close-btn" class="settings-close-btn" aria-label="Zavřít">&times;</button>
             </div>
-            <div id="custom-radio-list-container">
-                 <h3>Moje rádia</h3>
-                 <ul id="custom-radio-list">
-                    <?php /* Seznam uživatelských rádií se sem vloží pomocí JavaScriptu */ ?>
-                 </ul>
+            <div class="settings-content">
+                <div class="add-radio-form">
+                    <div class="form-group">
+                        <label for="custom-radio-name">Název rádia:</label>
+                        <input type="text" id="custom-radio-name" placeholder="Např. Rádio 7">
+                    </div>
+                    <div class="form-group">
+                        <label for="custom-radio-stream">URL adresa streamu:</label>
+                        <input type="url" id="custom-radio-stream" placeholder="https://icecast.proglas.cz/radio7-128.mp3">
+                    </div>
+                    <button id="save-custom-radio-btn" class="save-btn">Uložit rádio</button>
+                </div>
+                <div id="custom-radio-list-container">
+                     <h3>Moje rádia</h3>
+                     <ul id="custom-radio-list">
+                        <?php /* Seznam uživatelských rádií se sem vloží pomocí JavaScriptu */ ?>
+                     </ul>
+                </div>
             </div>
         </div>
-    </div>
+    <?php endif; ?>
 
 <?php endif; // --- KONEC PODMÍNKY --- ?>
 

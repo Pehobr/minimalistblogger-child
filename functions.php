@@ -119,6 +119,16 @@ function minimalistblogger_child_enqueue_assets() {
         );
     }
 
+    // --- Načtení CSS pro stránku s návody ---
+    if ( is_page_template('page-navody.php') ) {
+        wp_enqueue_style(
+            'minimalistblogger-navody-style',
+            get_stylesheet_directory_uri() . '/css/navody.css',
+            array('chld_thm_cfg_parent'),
+            filemtime( get_stylesheet_directory() . '/css/navody.css' )
+        );
+    }
+
     // --- Načtení JavaScriptu pro dolní lištu ---
     wp_enqueue_script(
         'minimalistblogger-dolni-lista-js',
@@ -325,8 +335,8 @@ add_action( 'init', 'pehobr_register_daily_drops_cpt', 0 );
  */
 function pehobr_register_settings_page() {
     add_options_page(
-        'Nastavení Postní kapky',      // <<< ZMĚNA ZDE: Název stránky (v titulku okna)
-        'Nastavení Postní kapky',      // <<< ZMĚNA ZDE: Název v menu
+        'Nastavení Postní kapky',      
+        'Nastavení Postní kapky',      
         'manage_options',
         'pehobr-app-settings',
         'pehobr_render_settings_page_content'
