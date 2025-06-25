@@ -11,13 +11,17 @@
         padding-right: 0;
     }
 
-    /* Nastavíme šířku hlavního obsahu a sidebaru na 100% */
-    #primary.featured-content,
-    #secondary.featured-sidebar {
+    /* Hlavní obsah roztáhneme na celou šířku */
+    #primary.featured-content {
         width: 100%;
         margin-left: 0;
         margin-right: 0;
         margin-bottom: 20px;
+    }
+
+    /* <<-- ZMĚNA: Postranní panel (sidebar) na mobilu úplně skryjeme -->> */
+    #secondary.featured-sidebar {
+        display: none;
     }
 }
 
