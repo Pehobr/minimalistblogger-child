@@ -1,5 +1,4 @@
-/*   
- * Styly pro úvodní obrazovku s mřížkou ikon (page-home.css)
+/* * Styly pro úvodní obrazovku s mřížkou ikon (page-home.css)
  */
 
 /* Základní styly pro celou obrazovku, aby se mřížka vycentrovala */
@@ -152,7 +151,19 @@ header#masthead.sheader {
 .quote-modal-content {
     font-family: 'Superclarendon', serif; /* Použijeme stejné písmo jako u příspěvků */
     font-size: 1.2rem;
-    line-height: 1.6;
     color: #3b0f5d;
     text-align: center;
+    /* <<<=== ZMĚNA ZDE: Snížení výšky řádku ===>>> */
+    line-height: 1.4;
+}
+
+/* <<<=== NOVÝ KÓD ZDE: Snížení mezer mezi odstavci uvnitř modálního okna ===>>> */
+.quote-modal-content p {
+    margin-top: 0;
+    margin-bottom: 0.75em; /* Menší spodní okraj mezi odstavci */
+}
+
+/* Poslednímu odstavci můžeme odebrat i spodní okraj */
+.quote-modal-content p:last-child {
+    margin-bottom: 0;
 }
