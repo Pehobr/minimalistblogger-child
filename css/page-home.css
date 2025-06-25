@@ -13,20 +13,43 @@ header#masthead.sheader { z-index: 999; }
 .bottom-nav-bar { z-index: 1000; }
 
 #intro-wrapper {
-    display: flex; justify-content: center; align-items: center;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
     min-height: calc(100vh - 67px - var(--nav-height, 70px) - 40px);
-    padding: 20px; box-sizing: border-box;
+    padding: 20px; 
+    box-sizing: border-box;
+}
+
+#daily-info-container {
+    text-align: center;
+    margin-bottom: 25px; 
+}
+
+#daily-info-title {
+    margin: 0;
+    font-size: 1.6rem; 
+    font-weight: bold;
+    font-family: 'Superclarendon', serif;
+    color: #e6e0f3; /* <-- OPRAVA: Barva aplikována přímo zde */
+}
+
+#daily-info-date {
+    margin: 5px 0 0 0;
+    font-size: 1.1rem; 
+    font-family: sans-serif;
+    color: #e6e0f3; /* <-- OPRAVA: Barva aplikována přímo zde */
 }
 
 #intro-grid-container {
     display: grid;
-    /* ZMĚNĚNO: Krajní sloupce jsou širší, aby bylo více místa pro erby */
     grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1.5fr;
     gap: 15px;
     width: 90vw;
     max-width: 600px;
     margin: auto;
-    position: relative; /* Nutné pro absolutní pozicování erbů */
+    position: relative; 
     z-index: 10;
 }
 
@@ -40,11 +63,9 @@ header#masthead.sheader { z-index: 999; }
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     height: 95px;
     border: 2px solid #3b0f5d;
-    /* Tento řádek určuje, že boxy v 1. a 3. řadě zaberou 2 (užší) sloupce */
     grid-column: span 2; 
 }
 
-/* Umístění pro 4. a 5. box (druhá řada) */
 .icon-grid-item:nth-child(4) {
     grid-column: 2 / span 2;
 }
@@ -61,11 +82,10 @@ header#masthead.sheader { z-index: 999; }
     height: 98%; width: auto; max-width: 98%; object-fit: contain;
 }
 
-/* === OPRAVENO: Styly pro pozicování erbů === */
 .grid-erb {
     position: absolute;
-    height: 95px; /* Stejná výška jako boxy */
-    width: 21%; /* ZVĚTŠENO: Šířka přizpůsobená novému volnému prostoru */
+    height: 95px; 
+    width: 21%; 
     object-fit: contain; 
     top: 110px; 
 }
@@ -79,14 +99,19 @@ header#masthead.sheader { z-index: 999; }
 @media (max-width: 480px) {
     #intro-grid-container { 
         gap: 10px; 
-        /* Zachováme upravené rozložení i na mobilu */
         grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1.5fr;
     }
     .icon-grid-item { height: 80px; }
     .grid-erb { 
         height: 80px; 
-        top: 90px; /* 80px + 10px */
-        width: 21%; /* Zachováme stejný poměr šířky */
+        top: 90px;
+        width: 21%; 
+    }
+    #daily-info-title {
+        font-size: 1.4rem;
+    }
+    #daily-info-date {
+        font-size: 1rem;
     }
 }
 

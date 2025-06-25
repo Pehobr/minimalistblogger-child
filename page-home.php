@@ -8,10 +8,12 @@
 
 get_header();
 
-// --- Logika pro načítání denního obsahu zůstává stejná ---
+// --- Logika pro načítání denního obsahu ---
 
 $page_id_for_defaults = get_the_ID();
-$quotes = []; 
+$quotes = [];
+$nazev_dne = ''; // Výchozí hodnota pro název dne
+$datum_dne = ''; // Výchozí hodnota pro datum
 
 $start_date_str = get_option( 'start_date_setting', '2026-02-18' );
 try {
@@ -29,6 +31,9 @@ try {
             while ($daily_query->have_posts()) {
                 $daily_query->the_post();
                 $daily_post_id = get_the_ID();
+                // <<-- ZDE NAČÍTÁME NOVÁ POLE -->>
+                $nazev_dne = get_post_meta($daily_post_id, 'nazev_dne', true);
+                $datum_dne = get_post_meta($daily_post_id, 'datum_dne', true);
             }
             wp_reset_postdata();
         }
@@ -62,6 +67,19 @@ foreach ($grid_items as $item) {
 <div id="primary" class="featured-content content-area intro-app">
     <main id="main" class="site-main">
         <div id="intro-wrapper">
+            
+            <?php // <<-- ZDE VKLÁDÁME NOVÝ HTML BLOK -->> ?>
+            <?php if ( ! empty( $nazev_dne ) || ! empty( $datum_dne ) ) : ?>
+                <div id="daily-info-container">
+                    <?php if ( ! empty( $nazev_dne ) ) : ?>
+                        <h2 id="daily-info-title"><?php echo esc_html( $nazev_dne ); ?></h2>
+                    <?php endif; ?>
+                    <?php if ( ! empty( $datum_dne ) ) : ?>
+                        <p id="daily-info-date"><?php echo esc_html( $datum_dne ); ?></p>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+            
             <div id="intro-grid-container">
                 <?php
                 // Smyčka pro generování 8 boxů
