@@ -141,3 +141,44 @@ body.page #primary article.page {
 .entry-meta {
     display: none !important;
 }
+
+/*
+ * ===================================================================
+ * BAREVNÁ TÉMATA PODLE LITURGICKÉHO KALENDÁŘE
+ * ===================================================================
+ */
+
+/* --- Téma: Fialová (Výchozí) --- */
+body.theme-fialova,
+body.theme-fialova .site,
+body.theme-fialova header#masthead.sheader {
+    background: #741ea4;
+}
+
+/* --- Téma: Béžová / Bílá --- */
+body.theme-bezova,
+body.theme-bezova .site,
+body.theme-bezova header#masthead.sheader {
+    background: #f5f2eb;
+}
+
+/* --- Téma: Červená --- */
+body.theme-cervena,
+body.theme-cervena .site,
+body.theme-cervena header#masthead.sheader {
+    background: #b71c1c;
+}
+
+/* --- Téma: Modrá --- */
+body.theme-modra,
+body.theme-modra .site,
+body.theme-modra header#masthead.sheader {
+    background: #3a5a9d;
+}
+
+/* --- Téma: Růžová --- */
+body.theme-ruzova,
+body.theme-ruzova .site,
+body.theme-ruzova header#masthead.sheader {
+    background: #d8a1c4;
+}

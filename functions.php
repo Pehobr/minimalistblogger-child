@@ -120,7 +120,6 @@ function minimalistblogger_child_enqueue_assets() {
             filemtime( get_stylesheet_directory() . '/css/page-radia.css' )
         );
         
-        // <<<=== ZMĚNA ZDE ===>>>
         wp_enqueue_script(
             'minimalistblogger-page-radia-js',
             get_stylesheet_directory_uri() . '/js/page-radia.js',
@@ -131,20 +130,18 @@ function minimalistblogger_child_enqueue_assets() {
 
         // Předání cesty k adresáři šablony do JS souboru
         wp_localize_script(
-            'minimalistblogger-page-radia-js', // Cílíme na náš hlavní skript pro rádia
+            'minimalistblogger-page-radia-js',
             'radio_page_settings',
             array(
                 'template_url' => get_stylesheet_directory_uri()
             )
         );
-        // <<<=== KONEC ZMĚNY ===>>>
     }
 }
 add_action( 'wp_enqueue_scripts', 'minimalistblogger_child_enqueue_assets', 20 );
 
 /**
  * Načtení specifických stylů a skriptů pro šablonu "Aplikace Liturgické Čtení"
- * A také pro jednotlivé příspěvky z rubriky "liturgicke-cteni".
  */
 function moje_aplikace_assets() {
     $theme_version = wp_get_theme()->get('Version');
@@ -232,3 +229,52 @@ function poboznosti_app_assets() {
 add_action( 'wp_enqueue_scripts', 'poboznosti_app_assets' );
     
 // END ENQUEUE PARENT ACTION
+
+
+/**
+ * Automaticky mění barevné téma webu podle liturgického kalendáře.
+ * Přidává na <body> tag CSS třídu, např. 'theme-cervena'.
+ */
+function pehobr_add_liturgical_color_body_class($classes) {
+    
+    // Načteme konfiguraci barev z externího souboru pro lepší přehlednost
+    $config_path = get_stylesheet_directory() . '/zmena-liturgicke-barvy.php';
+    
+    if ( file_exists($config_path) ) {
+        $liturgicky_kalendar = include $config_path;
+    } else {
+        $liturgicky_kalendar = array();
+    }
+
+    // <<<=== ZDE ZAČÍNÁ NOVÁ UPRAVENÁ LOGIKA ===>>>
+
+    // Nastavení časové zóny a získání dnešního data jako PHP objektu
+    $timezone = new DateTimeZone('Europe/Prague');
+    $dnesni_datum_obj = new DateTime('now', $timezone);
+
+    // --- Definice pravidel pro změnu barvy ---
+    $trvala_zmena_od_data = new DateTime('2026-04-06', $timezone);
+    $barva_po_zmene = 'bezova';
+    $vychozi_barva = 'fialova';
+
+    // Ve výchozím stavu nastavíme základní barvu
+    $barva_dnes = $vychozi_barva;
+
+    // 1. Zkontrolujeme, zda jsme již v období trvalé změny
+    if ($dnesni_datum_obj >= $trvala_zmena_od_data) {
+        $barva_dnes = $barva_po_zmene;
+    } else {
+        // 2. Pokud ne, zkontrolujeme specifické svátky a slavnosti z konfiguračního souboru
+        $dnesni_datum_format = $dnesni_datum_obj->format('Y-m-d');
+        if (isset($liturgicky_kalendar[$dnesni_datum_format])) {
+            $barva_dnes = $liturgicky_kalendar[$dnesni_datum_format];
+        }
+        // 3. Pokud ani tam není shoda, zůstává výchozí fialová, kterou jsme nastavili na začátku.
+    }
+
+    // Přidáme výslednou CSS třídu k ostatním třídám na <body>
+    $classes[] = 'theme-' . $barva_dnes;
+    
+    return $classes;
+}
+add_filter('body_class', 'pehobr_add_liturgical_color_body_class');
