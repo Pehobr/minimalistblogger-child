@@ -52,7 +52,7 @@ header#masthead.sheader {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
+    padding: 5px;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 12px;
     text-decoration: none;
@@ -86,9 +86,9 @@ header#masthead.sheader {
 
 /* ZMĚNA 3: Zvětšení ikon uvnitř boxů na 90 % výšky */
 .icon-grid-item img {
-    height: 90%; /* Ikona zabere 90 % výšky svého boxu */
+    height: 100%; /* Ikona zabere 90 % výšky svého boxu */
     width: auto;   /* Šířka se přizpůsobí, aby se zachoval poměr stran */
-    max-width: 90%; /* Pojistka, aby ikona nepřetekla na šířku */
+    max-width: 100%; /* Pojistka, aby ikona nepřetekla na šířku */
     object-fit: contain;
 }
 
