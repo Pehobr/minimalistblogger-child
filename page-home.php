@@ -43,8 +43,8 @@ $grid_items = [
     ['name' => 'Augustin', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-augustin.png', 'citat_key' => 'citat_augustin'],
     ['name' => 'Papež Lev XIII.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev'],
     ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'citat_modlitba'],
-    ['name' => 'Text 1', 'slug' => 'citaty', 'icon' => 'ikona-citaty.png', 'citat_key' => 'citat_text1'],
-    ['name' => 'Text 2', 'slug' => 'svatost', 'icon' => 'ikona-svatost.png', 'citat_key' => 'citat_text2'],
+    ['name' => 'Text 1', 'slug' => 'citaty', 'icon' => 'ikona-bible.png', 'citat_key' => 'citat_text1'],
+    ['name' => 'Text 2', 'slug' => 'svatost', 'icon' => 'ikona-inspirace.png', 'citat_key' => 'citat_text2'],
 ];
 
 foreach ($grid_items as $item) {
