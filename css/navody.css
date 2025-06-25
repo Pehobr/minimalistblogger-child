@@ -5,6 +5,17 @@
     display: none;
 }
 
+/* * NOVÁ ÚPRAVA:
+ * Odstraníme pozadí a ohraničení hlavního boxu s obsahem,
+ * aby se mezi tlačítky zobrazilo fialové pozadí stránky.
+*/
+.page-template-page-navody #primary article.page {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+}
+
 /* Kontejner pro seznam tlačítek */
 .tutorial-list {
     list-style: none;
@@ -12,7 +23,7 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Mezera mezi tlačítky */
+    gap: 15px; /* Toto pravidlo vytváří fialovou mezeru mezi tlačítky */
 }
 
 /* Samotné tlačítko/odkaz - náš hezký styl */
@@ -28,7 +39,7 @@
     font-size: 1.1rem;
     font-family: sans-serif;
     transition: all 0.2s ease-in-out;
-    text-align: center; /* Text bude vycentrovaný */
+    text-align: center;
 }
 
 /* Efekt při najetí myší */
