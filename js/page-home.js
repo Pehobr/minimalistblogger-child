@@ -1,7 +1,7 @@
 /**
  * JavaScript pro úvodní stránku (page-home)
- * Zajišťuje funkčnost modálního okna pro zobrazení citátů a oblíbených položek.
- * VERZE 2: Přidána podpora pro video.
+ * Zajišťuje funkčnost modálního okna pro zobrazení citátů, videa a audia.
+ * VERZE 3: Přidána podpora pro audio.
  */
 jQuery(document).ready(function($) {
 
@@ -35,10 +35,8 @@ jQuery(document).ready(function($) {
 
     function toggleFavorite() {
         if (!currentQuoteId) return;
-
         let favorites = getFavorites();
         const quoteHtmlContent = $('#' + currentQuoteId).html();
-
         if (isFavorite(currentQuoteId)) {
             favorites = favorites.filter(fav => fav.id !== currentQuoteId);
             favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
@@ -58,14 +56,17 @@ jQuery(document).ready(function($) {
 
         // Podle typu obsahu upravíme zobrazení
         if (type === 'video') {
-            // Pro video skryjeme hvězdičku a přidáme třídu pro stylování
             favoriteBtn.hide();
             modalContent.html(`<div class="responsive-video-wrapper">${contentHtml}</div>`);
-            modalContainer.addClass('video-modal');
+            modalContainer.addClass('video-modal').removeClass('audio-modal');
+        } else if (type === 'audio') {
+            favoriteBtn.hide();
+            modalContent.html(contentHtml);
+            modalContainer.addClass('audio-modal').removeClass('video-modal');
         } else {
-            // Pro text zobrazíme hvězdičku a nastavíme její stav
             favoriteBtn.show();
             modalContent.html(contentHtml);
+            modalContainer.removeClass('video-modal audio-modal');
             if (isFavorite(currentQuoteId)) {
                 favoriteIcon.removeClass('fa-star-o').addClass('fa-star');
                 favoriteBtn.addClass('is-favorite');
@@ -83,9 +84,18 @@ jQuery(document).ready(function($) {
     function closeModal() {
         modalOverlay.fadeOut(300);
         modalContainer.fadeOut(200, function() {
-            modalContainer.removeClass('is-visible video-modal');
-            // DŮLEŽITÉ: Zastaví přehrávání videa při zavření okna
+            // Zastavíme video nebo audio
+            const mediaElement = modalContent.find('iframe, audio');
+            if (mediaElement.length) {
+                // Pro iframe smažeme src, pro audio zavoláme pause()
+                if (mediaElement.is('iframe')) {
+                    mediaElement.attr('src', mediaElement.attr('src'));
+                } else if (mediaElement.is('audio')) {
+                    mediaElement[0].pause();
+                }
+            }
             modalContent.empty();
+            modalContainer.removeClass('is-visible video-modal audio-modal');
             currentQuoteId = null;
         });
     }
@@ -93,8 +103,7 @@ jQuery(document).ready(function($) {
     // --- 4. Přidání posluchačů událostí ---
     gridItems.on('click', function(event) {
         const targetId = $(this).data('target-id');
-        const type = $(this).data('type'); // Získáme typ obsahu
-
+        const type = $(this).data('type');
         if (targetId) {
             event.preventDefault();
             openModal(targetId, type);

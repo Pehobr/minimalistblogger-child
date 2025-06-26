@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah.
- *
+ * VERZE 3: Přidána podpora pro audio.
  * @package minimalistblogger-child
  */
 
@@ -47,8 +47,8 @@ $grid_items = [
     ['name' => 'Augustin', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-augustin.png', 'citat_key' => 'citat_augustin', 'label' => 'Augustin', 'type' => 'text'],
     ['name' => 'Papež Lev XIII.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev', 'label' => 'Lev XIII.', 'type' => 'text'],
     ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'citat_modlitba', 'label' => 'Modlitba', 'type' => 'text'],
-    ['name' => 'Text 1', 'slug' => 'citaty', 'icon' => 'ikona-bible.png', 'citat_key' => 'citat_text1', 'label' => 'Bible', 'type' => 'text'],
-    // ZMĚNA ZDE: Jasně definujeme, že osmá položka je typu 'video'
+    // ZMĚNA ZDE: Sedmá položka je nyní typu 'audio'
+    ['name' => 'Text 1', 'slug' => 'citaty', 'icon' => 'ikona-bible.png', 'citat_key' => 'audio_bible_url', 'label' => 'Bible', 'type' => 'audio'],
     ['name' => 'Inspirace', 'slug' => 'svatost', 'icon' => 'ikona-inspirace.png', 'citat_key' => 'video_inspirace_embed', 'label' => 'Inspirace', 'type' => 'video'],
 ];
 
@@ -58,7 +58,6 @@ foreach ($grid_items as $item) {
         if (isset($daily_post_id)) {
             $quotes[$citat_key] = get_post_meta($daily_post_id, $citat_key, true);
         } else {
-            // Nouzové načtení z custom fields samotné stránky, pokud denní příspěvek neexistuje
             $quotes[$citat_key] = get_post_meta($page_id_for_defaults, $citat_key, true);
         }
     }
@@ -92,7 +91,7 @@ foreach ($grid_items as $item) {
                            class="icon-grid-item"
                            <?php if ($has_content) : ?>
                                data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>"
-                               data-type="<?php echo esc_attr($item['type']); // Přidáváme datový atribut pro typ obsahu ?>"
+                               data-type="<?php echo esc_attr($item['type']); ?>"
                            <?php endif; ?>
                         >
                             <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
@@ -114,15 +113,22 @@ foreach ($grid_items as $item) {
         if (isset($item['citat_key'])) {
             $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
             if (!empty($content_html)) :
-                // Pro video povolíme iframe, pro text ostatní tagy
+                $allowed_html = [];
+                // Sestavení obsahu pro modální okno podle typu
                 if ($item['type'] === 'video') {
                     $allowed_html = ['iframe' => ['width' => [], 'height' => [], 'src' => [], 'title' => [], 'frameborder' => [], 'allow' => [], 'allowfullscreen' => [], 'referrerpolicy' => []]];
+                    $modal_content = $content_html;
+                } elseif ($item['type'] === 'audio') {
+                    // Pro audio sestavíme HTML5 audio přehrávač
+                    $modal_content = '<audio controls src="' . esc_url($content_html) . '">Váš prohlížeč nepodporuje přehrávání audia.</audio>';
+                    $allowed_html = ['audio' => ['controls' => [], 'src' => []]];
                 } else {
                     $allowed_html = ['p' => ['style' => []], 'em' => [], 'strong' => [], 'br' => [], 'span' => ['style' => []]];
+                    $modal_content = $content_html;
                 }
                 ?>
                 <div id="quote-content-<?php echo esc_attr($item['citat_key']); ?>">
-                    <?php echo wp_kses($content_html, $allowed_html); ?>
+                    <?php echo wp_kses($modal_content, $allowed_html); ?>
                 </div>
                 <?php
             endif;
@@ -134,7 +140,7 @@ foreach ($grid_items as $item) {
 <div id="quote-modal-overlay" class="quote-modal-overlay"></div>
 <div id="quote-modal-container" class="quote-modal-container">
     <button id="quote-modal-favorite-btn" class="quote-modal-favorite-btn"><i class="fa fa-star-o"></i></button>
-    <button id="quote-modal-close-btn" class="quote-modal-close-btn">&times;</button>
+    <button id="quote-modal-close-btn" class="quote-modal-close-btn">×</button>
     <div id="quote-modal-content" class="quote-modal-content"></div>
 </div>
 

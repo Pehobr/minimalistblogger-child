@@ -234,3 +234,28 @@ header#masthead.sheader { z-index: 999; }
     background-color: #000; /* Pozadí může být černé pro lepší efekt */
     border: 2px solid #3b0f5d;
 }
+
+/* --- NOVÉ STYLY PRO MODÁLNÍ OKNO S AUDIEM --- */
+
+/* Úprava modálního okna pro audio */
+.quote-modal-container.audio-modal .quote-modal-content {
+    padding: 20px 15px; /* Přidáme trochu místa okolo přehrávače */
+}
+
+/* Stylování samotného audio přehrávače */
+.quote-modal-container.audio-modal audio {
+    width: 100%; /* Roztáhneme přehrávač na plnou šířku kontejneru */
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Můžete si pohrát s barvami ovládacích prvků, pokud to prohlížeč podporuje */
+.quote-modal-container.audio-modal audio::-webkit-media-controls-panel {
+    background-color: #f1f3f4;
+}
+
+.quote-modal-container.audio-modal audio::-webkit-media-controls-play-button {
+    background-color: #e6e0f3;
+    border-radius: 50%;
+}
