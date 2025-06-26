@@ -51,12 +51,12 @@
 }
 
 .radio-player-item .radio-play-btn {
-    width: 44px;
-    height: 44px;
-    background-color: #3b0f5d;
-    border: 2px solid #3b0f5d;
-    color: #ffffff;
-    border-radius: 50%;
+    width: 45px; /* Šířka pro obdélníkový tvar */
+    height: 40px;
+    background-color: transparent; /* Průhledné pozadí */
+    border: 2px solid #3b0f5d; /* Tmavé ohraničení */
+    color: #3b0f5d; /* Tmavá barva ikony */
+    border-radius: 10px; /* Zaoblení rohů o 10px */
     font-size: 18px;
     cursor: pointer;
     display: flex;
@@ -147,14 +147,14 @@
 
 #show-add-radio-form-btn {
     width: 60px;
-    height: 60px;
-    background-color: #3b0f5d;
-    color: #ffffff;
-    border: 2px solid #ffffff;
-    border-radius: 50%;
+    height: 44px;
+    background-color: transparent; /* Průhledné pozadí */
+    color: #3b0f5d; /* Tmavá barva ikony */
+    border: 2px solid #3b0f5d; /* Tmavé ohraničení */
+    border-radius: 10px; /* Zaoblení rohů 10px */
     font-size: 28px;
     cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    box-shadow: none; /* Odstraněn stín pro čistší vzhled */
     transition: all 0.2s ease-in-out;
     display: flex;
     justify-content: center;
