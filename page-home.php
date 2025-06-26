@@ -39,16 +39,17 @@ try {
     }
 } catch (Exception $e) { $daily_post_id = null; }
 
-// --- Seznam dlaždic s novými popisky ---
+// --- Seznam dlaždic s novými popisky a typy obsahu ---
 $grid_items = [
-    ['name' => 'Sv. Jan Pavel II.', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel', 'label' => 'Jan Pavel'],
-    ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt', 'label' => 'Benedikt'],
-    ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_frantisek', 'label' => 'František'],
-    ['name' => 'Augustin', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-augustin.png', 'citat_key' => 'citat_augustin', 'label' => 'Augustin'],
-    ['name' => 'Papež Lev XIII.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev', 'label' => 'Lev XIII.'],
-    ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'citat_modlitba', 'label' => 'Modlitba'],
-    ['name' => 'Text 1', 'slug' => 'citaty', 'icon' => 'ikona-bible.png', 'citat_key' => 'citat_text1', 'label' => 'Bible'],
-    ['name' => 'Text 2', 'slug' => 'svatost', 'icon' => 'ikona-inspirace.png', 'citat_key' => 'citat_text2', 'label' => 'Inspirace'],
+    ['name' => 'Sv. Jan Pavel II.', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel', 'label' => 'Jan Pavel', 'type' => 'text'],
+    ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt', 'label' => 'Benedikt', 'type' => 'text'],
+    ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_frantisek', 'label' => 'František', 'type' => 'text'],
+    ['name' => 'Augustin', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-augustin.png', 'citat_key' => 'citat_augustin', 'label' => 'Augustin', 'type' => 'text'],
+    ['name' => 'Papež Lev XIII.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev', 'label' => 'Lev XIII.', 'type' => 'text'],
+    ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'citat_modlitba', 'label' => 'Modlitba', 'type' => 'text'],
+    ['name' => 'Text 1', 'slug' => 'citaty', 'icon' => 'ikona-bible.png', 'citat_key' => 'citat_text1', 'label' => 'Bible', 'type' => 'text'],
+    // ZMĚNA ZDE: Jasně definujeme, že osmá položka je typu 'video'
+    ['name' => 'Inspirace', 'slug' => 'svatost', 'icon' => 'ikona-inspirace.png', 'citat_key' => 'video_inspirace_embed', 'label' => 'Inspirace', 'type' => 'video'],
 ];
 
 foreach ($grid_items as $item) {
@@ -57,6 +58,7 @@ foreach ($grid_items as $item) {
         if (isset($daily_post_id)) {
             $quotes[$citat_key] = get_post_meta($daily_post_id, $citat_key, true);
         } else {
+            // Nouzové načtení z custom fields samotné stránky, pokud denní příspěvek neexistuje
             $quotes[$citat_key] = get_post_meta($page_id_for_defaults, $citat_key, true);
         }
     }
@@ -80,17 +82,17 @@ foreach ($grid_items as $item) {
             
             <div id="intro-grid-container">
                 <?php
-                // Smyčka pro generování 8 boxů s popisky
                 foreach ($grid_items as $item) :
-                    $quote_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
-                    $has_quote = !empty($quote_html);
-                    $link_url = $has_quote ? '#' : home_url('/' . $item['slug'] . '/');
+                    $content_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
+                    $has_content = !empty($content_html);
+                    $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/');
                 ?>
                     <div class="grid-item-wrapper">
                         <a href="<?php echo esc_url($link_url); ?>" 
                            class="icon-grid-item"
-                           <?php if ($has_quote) : ?>
+                           <?php if ($has_content) : ?>
                                data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>"
+                               data-type="<?php echo esc_attr($item['type']); // Přidáváme datový atribut pro typ obsahu ?>"
                            <?php endif; ?>
                         >
                             <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
@@ -110,12 +112,17 @@ foreach ($grid_items as $item) {
     <?php
     foreach ($grid_items as $item) :
         if (isset($item['citat_key'])) {
-            $quote_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
-            if (!empty($quote_html)) :
-                $allowed_html = ['p' => ['style' => []], 'em' => [], 'strong' => [], 'br' => [], 'span' => ['style' => []]];
+            $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
+            if (!empty($content_html)) :
+                // Pro video povolíme iframe, pro text ostatní tagy
+                if ($item['type'] === 'video') {
+                    $allowed_html = ['iframe' => ['width' => [], 'height' => [], 'src' => [], 'title' => [], 'frameborder' => [], 'allow' => [], 'allowfullscreen' => [], 'referrerpolicy' => []]];
+                } else {
+                    $allowed_html = ['p' => ['style' => []], 'em' => [], 'strong' => [], 'br' => [], 'span' => ['style' => []]];
+                }
                 ?>
                 <div id="quote-content-<?php echo esc_attr($item['citat_key']); ?>">
-                    <?php echo wp_kses($quote_html, $allowed_html); ?>
+                    <?php echo wp_kses($content_html, $allowed_html); ?>
                 </div>
                 <?php
             endif;

@@ -203,3 +203,34 @@ header#masthead.sheader { z-index: 999; }
     content: "\f005"; /* Unicode pro plnou hvězdu */
     color: #ffc107; /* Zlatá barva pro vyplněnou hvězdu */
 }
+
+/* --- NOVÉ STYLY PRO MODÁLNÍ OKNO S VIDEEM --- */
+
+/* Kontejner pro responzivní video */
+.responsive-video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* Poměr stran 16:9 */
+    height: 0;
+    overflow: hidden;
+    width: 100%;
+}
+
+.responsive-video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* Úprava modálního okna pro video */
+.quote-modal-container.video-modal .quote-modal-content {
+    padding: 0; /* Odebereme vnitřní padding, aby video vyplnilo prostor */
+}
+
+.quote-modal-container.video-modal {
+    padding: 40px 10px 10px 10px; /* Upravíme padding samotného okna */
+    background-color: #000; /* Pozadí může být černé pro lepší efekt */
+    border: 2px solid #3b0f5d;
+}

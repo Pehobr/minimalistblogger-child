@@ -1,6 +1,7 @@
 /**
  * JavaScript pro úvodní stránku (page-home)
  * Zajišťuje funkčnost modálního okna pro zobrazení citátů a oblíbených položek.
+ * VERZE 2: Přidána podpora pro video.
  */
 jQuery(document).ready(function($) {
 
@@ -13,7 +14,7 @@ jQuery(document).ready(function($) {
     const favoriteBtn = $('#quote-modal-favorite-btn');
     const favoriteIcon = favoriteBtn.find('i');
 
-    let currentQuoteId = null; // Proměnná pro uložení ID aktuálně zobrazeného citátu
+    let currentQuoteId = null; 
 
     // --- 2. Správa oblíbených v LocalStorage ---
     const favoritesStorageKey = 'pehobr_favorite_quotes';
@@ -39,12 +40,10 @@ jQuery(document).ready(function($) {
         const quoteHtmlContent = $('#' + currentQuoteId).html();
 
         if (isFavorite(currentQuoteId)) {
-            // Odebrat z oblíbených
             favorites = favorites.filter(fav => fav.id !== currentQuoteId);
             favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
             favoriteBtn.removeClass('is-favorite');
         } else {
-            // Přidat do oblíbených
             favorites.push({ id: currentQuoteId, content: quoteHtmlContent });
             favoriteIcon.removeClass('fa-star-o').addClass('fa-star');
             favoriteBtn.addClass('is-favorite');
@@ -53,19 +52,29 @@ jQuery(document).ready(function($) {
     }
 
     // --- 3. Funkce pro otevření a zavření modálního okna ---
-    function openModal(quoteHtml, quoteId) {
-        currentQuoteId = quoteId; // Uložíme si ID pro další práci
-        modalContent.html(quoteHtml);
+    function openModal(targetId, type) {
+        currentQuoteId = targetId;
+        const contentHtml = $('#' + targetId).html();
 
-        // Zkontrolujeme, zda je citát v oblíbených, a podle toho nastavíme hvězdičku
-        if (isFavorite(currentQuoteId)) {
-            favoriteIcon.removeClass('fa-star-o').addClass('fa-star');
-            favoriteBtn.addClass('is-favorite');
+        // Podle typu obsahu upravíme zobrazení
+        if (type === 'video') {
+            // Pro video skryjeme hvězdičku a přidáme třídu pro stylování
+            favoriteBtn.hide();
+            modalContent.html(`<div class="responsive-video-wrapper">${contentHtml}</div>`);
+            modalContainer.addClass('video-modal');
         } else {
-            favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
-            favoriteBtn.removeClass('is-favorite');
+            // Pro text zobrazíme hvězdičku a nastavíme její stav
+            favoriteBtn.show();
+            modalContent.html(contentHtml);
+            if (isFavorite(currentQuoteId)) {
+                favoriteIcon.removeClass('fa-star-o').addClass('fa-star');
+                favoriteBtn.addClass('is-favorite');
+            } else {
+                favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
+                favoriteBtn.removeClass('is-favorite');
+            }
         }
-
+        
         modalOverlay.fadeIn(200);
         modalContainer.fadeIn(300);
         modalContainer.addClass('is-visible');
@@ -74,27 +83,27 @@ jQuery(document).ready(function($) {
     function closeModal() {
         modalOverlay.fadeOut(300);
         modalContainer.fadeOut(200, function() {
-            modalContainer.removeClass('is-visible');
-            currentQuoteId = null; // Vynulujeme ID po zavření okna
+            modalContainer.removeClass('is-visible video-modal');
+            // DŮLEŽITÉ: Zastaví přehrávání videa při zavření okna
+            modalContent.empty();
+            currentQuoteId = null;
         });
     }
 
     // --- 4. Přidání posluchačů událostí ---
     gridItems.on('click', function(event) {
         const targetId = $(this).data('target-id');
+        const type = $(this).data('type'); // Získáme typ obsahu
 
         if (targetId) {
             event.preventDefault();
-            const quoteHtmlContent = $('#' + targetId).html();
-            if (quoteHtmlContent) {
-                openModal(quoteHtmlContent, targetId);
-            }
+            openModal(targetId, type);
         }
     });
 
     closeModalBtn.on('click', closeModal);
     modalOverlay.on('click', closeModal);
-    favoriteBtn.on('click', toggleFavorite); // Přidán listener na tlačítko oblíbených
+    favoriteBtn.on('click', toggleFavorite);
 
     $(document).on('keydown', function(event) {
         if (event.key === "Escape" && modalContainer.hasClass('is-visible')) {
