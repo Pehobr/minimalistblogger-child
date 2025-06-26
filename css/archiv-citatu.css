@@ -1,0 +1,90 @@
+/* Styly pro stránku Archiv citátů */
+
+/* === ROZLOŽENÍ STRÁNKY NA PLNOU ŠÍŘKU === */
+.page-template-page-archiv-citatu #secondary {
+    display: none;
+}
+.page-template-page-archiv-citatu #primary {
+    width: 100%;
+    margin: 0;
+}
+
+/* === FILTRY === */
+#citat-filters {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e6e0f3;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.filter-btn {
+    background-color: #e6e0f3;
+    border: 1px solid #3b0f5d;
+    color: #3b0f5d;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.filter-btn:hover {
+    background-color: #dcd7e9;
+}
+
+.filter-btn.active {
+    background-color: #3b0f5d;
+    color: #ffffff;
+    border-color: #3b0f5d;
+}
+
+/* Kontejner pro seznam */
+#citat-list {
+    position: relative;
+    min-height: 200px;
+}
+
+/* Jednotlivé citáty */
+.citat-item {
+    background-color: #e6e0f3;
+    border: 2px solid #3b0f5d;
+    padding: 7px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* === NOVÁ OPRAVA: Cílené odstranění pozadí z bloku s citátem === */
+.citat-item .citat-text {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 0 15px 0;
+    font-size: 1.1em;
+    font-style: italic;
+    color: #333;
+}
+
+.citat-text p {
+    margin: 0;
+}
+
+/* Patička s autorem */
+.citat-meta {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 0.9em;
+    color: #555;
+    margin-top: 15px;
+    border-top: none;
+    padding-top: 0;
+}
+
+.citat-author {
+    font-weight: bold;
+    color: #3b0f5d;
+}
