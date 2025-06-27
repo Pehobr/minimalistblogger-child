@@ -264,3 +264,31 @@ function enqueue_archiv_citatu_assets() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_archiv_citatu_assets', 30 );
+
+/**
+ * Načtení stylů a skriptů POUZE pro stránku Zápisník.
+ */
+function enqueue_zapisnik_assets() {
+    // Načte se pouze pokud je aktivní šablona stránky 'page-zapisnik.php'
+    if ( is_page_template( 'page-zapisnik.php' ) ) {
+        $theme_version = wp_get_theme()->get('Version');
+        
+        // Načtení CSS
+        wp_enqueue_style(
+            'zapisnik-style',
+            get_stylesheet_directory_uri() . '/css/zapisnik.css',
+            array('chld_thm_cfg_parent'),
+            $theme_version
+        );
+
+        // Načtení JavaScriptu
+        wp_enqueue_script(
+            'zapisnik-script',
+            get_stylesheet_directory_uri() . '/js/zapisnik.js',
+            array( 'jquery' ),
+            $theme_version,
+            true // Načíst v patičce
+        );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_zapisnik_assets' );

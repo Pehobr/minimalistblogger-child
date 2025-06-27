@@ -1,0 +1,149 @@
+/* Styly pro stránku Zápisník (page-zapisnik.php) */
+
+/* Skrytí postranního panelu a nastavení plné šířky */
+.page-template-page-zapisnik #secondary {
+    display: none;
+}
+
+.page-template-page-zapisnik #primary {
+    width: 100%;
+    margin: 0;
+}
+
+/* Kontejner editoru */
+#zapisnik-editor-container {
+    margin-bottom: 25px;
+}
+
+#zapisnik-textarea {
+    width: 100%;
+    height: 180px;
+    padding: 12px;
+    border: 2px solid #3b0f5d;
+    border-radius: 8px;
+    font-family: 'Superclarendon', serif;
+    font-size: 1rem;
+    color: #3b0f5d;
+    background-color: #f8f5e6;
+    resize: vertical;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+#zapisnik-save-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background-color: #870e2c;
+    color: #ffffff !important;
+    border: 2px solid #870e2c;
+    border-radius: 7px;
+    text-decoration: none !important;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#zapisnik-save-btn:hover {
+    background-color: #6d0b23;
+    transform: translateY(-1px);
+}
+
+/* Tlačítka akcí */
+#zapisnik-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e6e0f3;
+}
+
+.zapisnik-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    background-color: #3b0f5d;
+    color: #ffffff !important;
+    border: 2px solid #3b0f5d;
+    border-radius: 7px;
+    text-decoration: none !important;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.zapisnik-action-btn:hover {
+    background-color: #5a2b82;
+    transform: translateY(-1px);
+}
+
+/* Mobilní zobrazení pro tlačítka akcí */
+@media screen and (max-width: 768px) {
+    #export-notes-btn {
+        display: none; /* Skryje export na mobilu */
+    }
+}
+@media screen and (min-width: 769px) {
+    #copy-all-notes-btn {
+        display: none; /* Skryje kopírování na PC */
+    }
+}
+
+/* Kontejner pro uložené zápisky */
+#zapisky-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.zapisnik-item {
+    background-color: #e6e0f3;
+    border: 2px solid #3b0f5d;
+    padding: 7px; /* <<< ZMĚNA: Vnitřní odsazení nastaveno na 7px */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.zapisnik-content {
+    flex-grow: 1;
+    margin-bottom: 8px; /* <<< ZMĚNA: Mezera pod textem snížena z 15px na 8px */
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'Superclarendon', serif;
+    font-size: 1rem;
+    color: #3b0f5d;
+    line-height: 1.4;
+}
+
+.zapisnik-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 0; /* <<< ZMĚNA: Odstraněno horní odsazení patičky */
+}
+
+.zapisnik-item-actions button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #3b0f5d;
+    cursor: pointer;
+    padding: 0 5px;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.zapisnik-item-actions button:hover {
+    color: #870e2c;
+    transform: scale(1.15);
+}
+
+.zapisnik-item-actions button.delete-btn {
+    margin-left: 10px;
+}
