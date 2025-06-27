@@ -1,7 +1,7 @@
 /**
  * JavaScript pro úvodní stránku (page-home)
  * Zajišťuje funkčnost modálního okna a ukládání oblíbených.
- * VERZE 4: Ukládá citát i se jménem autora.
+ * VERZE 5: Přidána třída na body pro opravu dotykového posouvání.
  */
 jQuery(document).ready(function($) {
 
@@ -13,9 +13,10 @@ jQuery(document).ready(function($) {
     const closeModalBtn = $('#quote-modal-close-btn');
     const favoriteBtn = $('#quote-modal-favorite-btn');
     const favoriteIcon = favoriteBtn.find('i');
+    const bodyElement = $('body'); // Uložíme si tělo stránky
 
     let currentQuoteId = null;
-    let currentAuthorName = null; // Přidáno pro uložení jména autora
+    let currentAuthorName = null;
 
     // --- 2. Správa oblíbených v LocalStorage ---
     const favoritesStorageKey = 'pehobr_favorite_quotes';
@@ -38,8 +39,6 @@ jQuery(document).ready(function($) {
         if (!currentQuoteId) return;
         let favorites = getFavorites();
         const quoteText = $('#' + currentQuoteId).html();
-
-        // Sestavíme kompletní HTML, které se uloží - včetně autora
         const finalContent = `
             <blockquote class="citat-text">
                 ${quoteText}
@@ -54,7 +53,6 @@ jQuery(document).ready(function($) {
             favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
             favoriteBtn.removeClass('is-favorite');
         } else {
-            // Uložíme nově sestavený obsah
             favorites.push({ id: currentQuoteId, content: finalContent });
             favoriteIcon.removeClass('fa-star-o').addClass('fa-star');
             favoriteBtn.addClass('is-favorite');
@@ -62,11 +60,14 @@ jQuery(document).ready(function($) {
         saveFavorites(favorites);
     }
 
-    // --- 3. Funkce pro otevření a zavření modálního okna ---
+    // --- 3. Funkce pro otevření a zavření modálního okna (UPRAVENO) ---
     function openModal(targetId, type, authorName) {
         currentQuoteId = targetId;
-        currentAuthorName = authorName; // Uložíme si jméno autora
+        currentAuthorName = authorName;
         const contentHtml = $('#' + targetId).html();
+
+        // OPRAVA POSOUVÁNÍ: Přidáme třídu na body
+        bodyElement.addClass('modal-is-open');
 
         if (type === 'video') {
             favoriteBtn.hide();
@@ -76,7 +77,7 @@ jQuery(document).ready(function($) {
             favoriteBtn.hide();
             modalContent.html(contentHtml);
             modalContainer.addClass('audio-modal').removeClass('video-modal');
-        } else { // Pro textové citáty
+        } else {
             favoriteBtn.show();
             modalContent.html(contentHtml);
             modalContainer.removeClass('video-modal audio-modal');
@@ -90,11 +91,14 @@ jQuery(document).ready(function($) {
         }
         
         modalOverlay.fadeIn(200);
-        modalContainer.fadeIn(300);
+        modalContainer.css('display', 'flex').hide().fadeIn(300); // Změna na display flex
         modalContainer.addClass('is-visible');
     }
 
     function closeModal() {
+        // OPRAVA POSOUVÁNÍ: Odebereme třídu z body
+        bodyElement.removeClass('modal-is-open');
+
         modalOverlay.fadeOut(300);
         modalContainer.fadeOut(200, function() {
             const mediaElement = modalContent.find('iframe, audio');
@@ -108,7 +112,7 @@ jQuery(document).ready(function($) {
             modalContent.empty();
             modalContainer.removeClass('is-visible video-modal audio-modal');
             currentQuoteId = null;
-            currentAuthorName = null; // Vynulujeme i jméno autora
+            currentAuthorName = null;
         });
     }
 
@@ -116,10 +120,10 @@ jQuery(document).ready(function($) {
     gridItems.on('click', function(event) {
         const targetId = $(this).data('target-id');
         const type = $(this).data('type');
-        const author = $(this).data('author-name'); // Načteme jméno autora
+        const author = $(this).data('author-name');
         if (targetId) {
             event.preventDefault();
-            openModal(targetId, type, author); // Předáme jméno autora
+            openModal(targetId, type, author);
         }
     });
 
