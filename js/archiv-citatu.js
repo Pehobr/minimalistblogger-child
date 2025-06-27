@@ -14,32 +14,26 @@ jQuery(function($) {
         });
     });
 
-    // --- ČÁST 2: NOVÁ FUNKČNOST PRO OBLÍBENÉ POLOŽKY ---
+    // --- ČÁST 2: FUNKČNOST PRO OBLÍBENÉ POLOŽKY (UPRAVENO) ---
     const favoritesStorageKey = 'pehobr_favorite_quotes';
 
-    // Funkce pro získání oblíbených z localStorage
     function getFavorites() {
         const favoritesJSON = localStorage.getItem(favoritesStorageKey);
         return favoritesJSON ? JSON.parse(favoritesJSON) : [];
     }
 
-    // Funkce pro uložení oblíbených do localStorage
     function saveFavorites(favorites) {
         localStorage.setItem(favoritesStorageKey, JSON.stringify(favorites));
     }
 
-    // Zkontroluje, zda je citát již v oblíbených
     function isFavorite(quoteId) {
         const favorites = getFavorites();
         return favorites.some(fav => fav.id === quoteId);
     }
 
-    // Přepne stav oblíbenosti pro daný citát
     function toggleFavorite(quoteId) {
         let favorites = getFavorites();
         const quoteElement = $('#' + quoteId);
-        // Získáme pouze HTML obsah bloku s textem a autorem
-        const quoteHtmlContent = quoteElement.find('.citat-content-wrapper').html();
         const favoriteBtn = quoteElement.find('.archive-favorite-btn');
         const favoriteIcon = favoriteBtn.find('i');
 
@@ -50,8 +44,21 @@ jQuery(function($) {
             favoriteBtn.removeClass('is-favorite');
         } else {
             // Přidat do oblíbených
-            if (quoteHtmlContent) {
-                favorites.push({ id: quoteId, content: quoteHtmlContent });
+            const quoteTextHtml = quoteElement.find('.citat-text').html();
+            const authorName = quoteElement.find('.citat-author').text();
+
+            // Sestavíme obsah pro uložení, aby odpovídal formátu z úvodní stránky
+            const finalContent = `
+                <blockquote class="citat-text">
+                    ${quoteTextHtml}
+                </blockquote>
+                <footer class="citat-meta">
+                    <span class="citat-author">${authorName}</span>
+                </footer>
+            `;
+
+            if (quoteTextHtml) {
+                favorites.push({ id: quoteId, content: finalContent });
                 favoriteIcon.removeClass('fa-star-o').addClass('fa-star');
                 favoriteBtn.addClass('is-favorite');
             }
@@ -59,7 +66,6 @@ jQuery(function($) {
         saveFavorites(favorites);
     }
 
-    // Inicializace stavu hvězdiček při načtení stránky
     function initializeFavoriteButtons() {
         $('.archive-favorite-btn').each(function() {
             const btn = $(this);
@@ -71,13 +77,10 @@ jQuery(function($) {
         });
     }
 
-    // Posluchač události pro kliknutí na tlačítko oblíbených
-    // Používáme delegování událostí, aby to fungovalo i po filtrování Isotopem
     $('#citat-list').on('click', '.archive-favorite-btn', function() {
         const quoteId = $(this).data('id');
         toggleFavorite(quoteId);
     });
 
-    // Spustíme inicializaci po načtení stránky
     initializeFavoriteButtons();
 });

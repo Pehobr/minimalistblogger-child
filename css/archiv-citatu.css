@@ -1,27 +1,19 @@
 /* Styly pro stránku Archiv citátů */
 
-/* === FINÁLNÍ OPRAVA: Plná šířka na všech zařízeních === */
-/* Cílení na třídu generovanou WordPressem pro tuto šablonu */
-.page-template-page-archiv-citatu-php #secondary {
-    display: none; /* Skryjeme postranní panel */
+/* === ŠÍŘKA STRÁNKY === */
+.page-template-page-archiv-citatu-php .content-wrap {
+    display: block !important;
+    max-width: 100% !important;
 }
-
 .page-template-page-archiv-citatu-php #primary {
-    width: 100%; /* Nastavíme obsah na plnou šířku */
-    margin: 0;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    float: none !important;
 }
-
-/* Přepsání dvousloupcového rozložení z 'vzhled-pc.css' pro desktop */
-@media screen and (min-width: 992px) {
-    .page-template-page-archiv-citatu-php .content-wrap {
-        display: block; /* Zrušíme flexbox layout */
-    }
-
-    .page-template-page-archiv-citatu-php #primary.content-area {
-        width: 100%; /* Potvrdíme plnou šířku pro jistotu */
-    }
+.page-template-page-archiv-citatu-php #secondary {
+    display: none !important;
 }
-
 
 /* === FILTRY === */
 #citat-filters {
@@ -32,7 +24,6 @@
     flex-wrap: wrap;
     gap: 10px;
 }
-
 .filter-btn {
     background-color: #e6e0f3;
     border: 1px solid #3b0f5d;
@@ -44,86 +35,75 @@
     font-weight: bold;
     transition: all 0.3s ease;
 }
-
-.filter-btn:hover {
-    background-color: #dcd7e9;
-}
-
+.filter-btn:hover { background-color: #dcd7e9; }
 .filter-btn.active {
     background-color: #3b0f5d;
     color: #ffffff;
     border-color: #3b0f5d;
 }
 
-/* Kontejner pro seznam */
+/* === SEZNAM CITÁTŮ === */
 #citat-list {
     position: relative;
     min-height: 200px;
 }
-
-/* Jednotlivé citáty */
 .citat-item {
     background-color: #e6e0f3;
     border: 2px solid #3b0f5d;
-    padding: 12px;
+    padding: 15px;
     border-radius: 8px;
     margin-bottom: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    position: relative;
-    padding-bottom: 40px;
+    display: flex;
+    flex-direction: column;
 }
 
-.citat-content-wrapper {
-    /* Pomocný wrapper */
-}
-
+/* === OPRAVA: Zmenšení mezer mezi řádky v citátu === */
 .citat-text {
-    background-color: transparent !important;
+    background: none !important;
     border: none !important;
     padding: 0 !important;
-    margin: 0 0 15px 0;
+    margin: 0 0 8px 0 !important; /* Snížena mezera pod hlavním textem */
+    font-style: normal;
     font-size: 1.1em;
-    font-style: italic;
     color: #333;
+    flex-grow: 1;
+    line-height: 1.4;
 }
-
 .citat-text p {
-    margin: 0;
+    padding: 0;
+    margin: 0 0 0.5em 0;
+}
+.citat-text p:last-child {
+    margin-bottom: 0;
 }
 
-/* Patička s autorem */
-.citat-meta {
-    position: absolute;
-    bottom: 12px;
-    right: 15px;
-    font-size: 0.9em;
-    color: #555;
+/* === OPRAVA: Zmenšení odsazení patičky === */
+.citat-item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 5px; /* Snížena mezera nad patičkou */
 }
-
 .citat-author {
+    order: 2;
     font-weight: bold;
     color: #3b0f5d;
+    font-size: 0.9em;
 }
-
-/* Tlačítko oblíbených */
 .archive-favorite-btn {
-    position: absolute;
-    bottom: 10px;
-    left: 12px;
+    order: 1;
     background: none;
     border: none;
     font-size: 22px;
     color: #3b0f5d;
     cursor: pointer;
-    padding: 5px;
+    padding: 0 5px 0 0;
     line-height: 1;
     transition: color 0.2s ease, transform 0.2s ease;
 }
-
-.archive-favorite-btn:hover {
-    transform: scale(1.15);
-}
-
+.archive-favorite-btn:hover { transform: scale(1.15); }
 .archive-favorite-btn.is-favorite .fa {
     font-family: "FontAwesome";
     font-weight: 900;

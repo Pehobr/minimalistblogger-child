@@ -1,7 +1,7 @@
 /**
  * JavaScript pro úvodní stránku (page-home)
- * Zajišťuje funkčnost modálního okna pro zobrazení citátů, videa a audia.
- * VERZE 3: Přidána podpora pro audio.
+ * Zajišťuje funkčnost modálního okna a ukládání oblíbených.
+ * VERZE 4: Ukládá citát i se jménem autora.
  */
 jQuery(document).ready(function($) {
 
@@ -14,7 +14,8 @@ jQuery(document).ready(function($) {
     const favoriteBtn = $('#quote-modal-favorite-btn');
     const favoriteIcon = favoriteBtn.find('i');
 
-    let currentQuoteId = null; 
+    let currentQuoteId = null;
+    let currentAuthorName = null; // Přidáno pro uložení jména autora
 
     // --- 2. Správa oblíbených v LocalStorage ---
     const favoritesStorageKey = 'pehobr_favorite_quotes';
@@ -36,13 +37,25 @@ jQuery(document).ready(function($) {
     function toggleFavorite() {
         if (!currentQuoteId) return;
         let favorites = getFavorites();
-        const quoteHtmlContent = $('#' + currentQuoteId).html();
+        const quoteText = $('#' + currentQuoteId).html();
+
+        // Sestavíme kompletní HTML, které se uloží - včetně autora
+        const finalContent = `
+            <blockquote class="citat-text">
+                ${quoteText}
+            </blockquote>
+            <footer class="citat-meta">
+                <span class="citat-author">${currentAuthorName}</span>
+            </footer>
+        `;
+
         if (isFavorite(currentQuoteId)) {
             favorites = favorites.filter(fav => fav.id !== currentQuoteId);
             favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
             favoriteBtn.removeClass('is-favorite');
         } else {
-            favorites.push({ id: currentQuoteId, content: quoteHtmlContent });
+            // Uložíme nově sestavený obsah
+            favorites.push({ id: currentQuoteId, content: finalContent });
             favoriteIcon.removeClass('fa-star-o').addClass('fa-star');
             favoriteBtn.addClass('is-favorite');
         }
@@ -50,11 +63,11 @@ jQuery(document).ready(function($) {
     }
 
     // --- 3. Funkce pro otevření a zavření modálního okna ---
-    function openModal(targetId, type) {
+    function openModal(targetId, type, authorName) {
         currentQuoteId = targetId;
+        currentAuthorName = authorName; // Uložíme si jméno autora
         const contentHtml = $('#' + targetId).html();
 
-        // Podle typu obsahu upravíme zobrazení
         if (type === 'video') {
             favoriteBtn.hide();
             modalContent.html(`<div class="responsive-video-wrapper">${contentHtml}</div>`);
@@ -63,7 +76,7 @@ jQuery(document).ready(function($) {
             favoriteBtn.hide();
             modalContent.html(contentHtml);
             modalContainer.addClass('audio-modal').removeClass('video-modal');
-        } else {
+        } else { // Pro textové citáty
             favoriteBtn.show();
             modalContent.html(contentHtml);
             modalContainer.removeClass('video-modal audio-modal');
@@ -84,10 +97,8 @@ jQuery(document).ready(function($) {
     function closeModal() {
         modalOverlay.fadeOut(300);
         modalContainer.fadeOut(200, function() {
-            // Zastavíme video nebo audio
             const mediaElement = modalContent.find('iframe, audio');
             if (mediaElement.length) {
-                // Pro iframe smažeme src, pro audio zavoláme pause()
                 if (mediaElement.is('iframe')) {
                     mediaElement.attr('src', mediaElement.attr('src'));
                 } else if (mediaElement.is('audio')) {
@@ -97,6 +108,7 @@ jQuery(document).ready(function($) {
             modalContent.empty();
             modalContainer.removeClass('is-visible video-modal audio-modal');
             currentQuoteId = null;
+            currentAuthorName = null; // Vynulujeme i jméno autora
         });
     }
 
@@ -104,9 +116,10 @@ jQuery(document).ready(function($) {
     gridItems.on('click', function(event) {
         const targetId = $(this).data('target-id');
         const type = $(this).data('type');
+        const author = $(this).data('author-name'); // Načteme jméno autora
         if (targetId) {
             event.preventDefault();
-            openModal(targetId, type);
+            openModal(targetId, type, author); // Předáme jméno autora
         }
     });
 

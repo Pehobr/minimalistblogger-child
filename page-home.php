@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah.
- * VERZE 3: Přidána podpora pro audio.
+ * VERZE 4: Doplněno předávání jména autora pro funkci oblíbených.
  * @package minimalistblogger-child
  */
 
@@ -12,8 +12,8 @@ get_header();
 
 $page_id_for_defaults = get_the_ID();
 $quotes = [];
-$nazev_dne = ''; 
-$datum_dne = ''; 
+$nazev_dne = '';
+$datum_dne = '';
 
 $start_date_str = get_option( 'start_date_setting', '2026-02-18' );
 try {
@@ -44,10 +44,9 @@ $grid_items = [
     ['name' => 'Sv. Jan Pavel II.', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel', 'label' => 'Jan Pavel', 'type' => 'text'],
     ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt', 'label' => 'Benedikt', 'type' => 'text'],
     ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_frantisek', 'label' => 'František', 'type' => 'text'],
-    ['name' => 'Augustin', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-augustin.png', 'citat_key' => 'citat_augustin', 'label' => 'Augustin', 'type' => 'text'],
+    ['name' => 'Sv. Augustin', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-augustin.png', 'citat_key' => 'citat_augustin', 'label' => 'Augustin', 'type' => 'text'],
     ['name' => 'Papež Lev XIII.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev', 'label' => 'Lev XIII.', 'type' => 'text'],
     ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'citat_modlitba', 'label' => 'Modlitba', 'type' => 'text'],
-    // ZMĚNA ZDE: Sedmá položka je nyní typu 'audio'
     ['name' => 'Text 1', 'slug' => 'citaty', 'icon' => 'ikona-bible.png', 'citat_key' => 'audio_bible_url', 'label' => 'Bible', 'type' => 'audio'],
     ['name' => 'Inspirace', 'slug' => 'svatost', 'icon' => 'ikona-inspirace.png', 'citat_key' => 'video_inspirace_embed', 'label' => 'Inspirace', 'type' => 'video'],
 ];
@@ -87,11 +86,12 @@ foreach ($grid_items as $item) {
                     $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/');
                 ?>
                     <div class="grid-item-wrapper">
-                        <a href="<?php echo esc_url($link_url); ?>" 
+                        <a href="<?php echo esc_url($link_url); ?>"
                            class="icon-grid-item"
                            <?php if ($has_content) : ?>
                                data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>"
                                data-type="<?php echo esc_attr($item['type']); ?>"
+                               data-author-name="<?php echo esc_attr($item['name']); ?>"
                            <?php endif; ?>
                         >
                             <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
@@ -114,12 +114,10 @@ foreach ($grid_items as $item) {
             $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
             if (!empty($content_html)) :
                 $allowed_html = [];
-                // Sestavení obsahu pro modální okno podle typu
                 if ($item['type'] === 'video') {
                     $allowed_html = ['iframe' => ['width' => [], 'height' => [], 'src' => [], 'title' => [], 'frameborder' => [], 'allow' => [], 'allowfullscreen' => [], 'referrerpolicy' => []]];
                     $modal_content = $content_html;
                 } elseif ($item['type'] === 'audio') {
-                    // Pro audio sestavíme HTML5 audio přehrávač
                     $modal_content = '<audio controls src="' . esc_url($content_html) . '">Váš prohlížeč nepodporuje přehrávání audia.</audio>';
                     $allowed_html = ['audio' => ['controls' => [], 'src' => []]];
                 } else {

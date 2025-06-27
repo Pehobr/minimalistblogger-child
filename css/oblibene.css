@@ -1,76 +1,78 @@
 /* Styly pro stránku Oblíbené texty */
 
-/* --- SKRYTÍ POSTRANNÍHO MENU (SIDEBARU) --- */
-/* Cílíme na stránku s naší šablonou a skrýváme sidebar */
+/* --- Plná šířka stránky --- */
 .page-template-page-oblibene-php #secondary {
     display: none;
 }
-
-/* Rozšíříme hlavní obsah na celou šířku */
 .page-template-page-oblibene-php #primary {
     width: 100%;
     margin: 0;
 }
 
-
-/* --- VZHLED OBLÍBENÝCH POLOŽEK --- */
-
-/* Kontejner pro všechny oblíbené položky */
+/* --- Kontejner pro všechny položky (s mezerami) --- */
 #favorites-container {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Mezera mezi jednotlivými položkami */
+    gap: 20px;
 }
 
-/* --- VZHLED OBLÍBENÝCH POLOŽEK (S OPRAVOU ZAROVNÁNÍ) --- */
-
-/* Váš upravený kontejner */
+/* === VZHLED JEDNOTLIVÉ OBLÍBENÉ POLOŽKY (NOVĚ) === */
 .favorite-item {
     background-color: #e6e0f3;
     border: 2px solid #3b0f5d;
+    padding: 15px;
     border-radius: 8px;
-    padding: 7px 7px 12px 7px; /* Váš nový padding */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    position: relative; 
+    display: flex;
+    flex-direction: column;
 }
 
-.favorite-item-content {
+/* Text citátu */
+.favorite-item .citat-text {
     font-family: 'Superclarendon', serif;
     font-size: 1.1rem;
     color: #3b0f5d;
     line-height: 1.4;
-    text-align: left; /* <-- ZMĚNA ZDE: Zarovnání textu vlevo */
-    /* Zajistíme, aby text nezasahoval pod ikonu */
-    padding-right: 30px; 
+    flex-grow: 1;
+    margin-bottom: 8px;
+}
+.favorite-item .citat-text p {
+    margin: 0 0 0.5em 0;
+    padding: 0;
+}
+.favorite-item .citat-text p:last-child {
+    margin-bottom: 0;
 }
 
-.favorite-item-content p {
-    margin-top: 0;
-    margin-bottom: 0.75em;
+/* Patička položky (autor + koš) */
+.favorite-item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 5px;
 }
-
-
-/* --- OPRAVENÝ STYL PRO TLAČÍTKO SMAZÁNÍ (IKONA KOŠE) --- */
+.favorite-item-footer .citat-author {
+    font-weight: bold;
+    font-size: 0.9em;
+    color: #3b0f5d;
+}
 .delete-favorite-btn {
-    position: absolute; 
-    bottom: 5px;       
-    right: 7px;        
     background: none;
     border: none;
-    cursor: pointer;
     font-size: 20px;
     color: #3b0f5d;
-    padding: 5px;
-    line-height: 1; 
+    cursor: pointer;
+    padding: 0 0 0 10px;
+    line-height: 1;
     transition: color 0.2s ease, transform 0.2s ease;
 }
-
 .delete-favorite-btn:hover {
     color: #870e2c;
     transform: scale(1.15);
 }
 
-/* Zpráva, pokud nejsou žádné oblíbené položky */
+/* --- Ostatní styly --- */
 .favorites-empty-message {
     text-align: center;
     font-size: 1.1rem;
@@ -80,20 +82,16 @@
     border: 2px dashed #3b0f5d;
     border-radius: 8px;
 }
-
-/* --- STYLY PRO OVLÁDACÍ TLAČÍTKA (EXPORT, KOPÍROVÁNÍ) --- */
-
 #favorites-actions {
     display: flex;
-    justify-content: center; /* Vystředění tlačítek */
-    gap: 15px; /* Mezera mezi tlačítky */
-    margin-bottom: 25px; /* Odsazení od seznamu oblíbených */
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
 }
-
 .favorite-action-btn {
-    display: inline-flex; /* Použijeme flexbox pro zarovnání ikony a textu */
+    display: inline-flex;
     align-items: center;
-    gap: 8px; /* Mezera mezi ikonou a textem */
+    gap: 8px;
     padding: 8px 15px;
     background-color: #3b0f5d;
     color: #ffffff !important;
@@ -104,33 +102,13 @@
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
-
 .favorite-action-btn:hover {
-    background-color: #5a2b82; /* Mírně světlejší fialová při najetí */
+    background-color: #5a2b82;
     transform: translateY(-1px);
 }
-
-.favorite-action-btn i {
-    font-size: 1em;
-}
-
-
-/* --- RESPONZIVNÍ ZOBRAZENÍ TLAČÍTEK --- */
-
-/* Výchozí stav (pro mobily) */
-#export-favorites-btn {
-    display: none; /* Tlačítko pro export je na mobilech skryté */
-}
-#copy-favorites-btn {
-    display: inline-flex; /* Tlačítko pro kopírování je viditelné */
-}
-
-/* Stav pro větší obrazovky (tablety a PC, od 768px) */
+#export-favorites-btn { display: none; }
+#copy-favorites-btn { display: inline-flex; }
 @media screen and (min-width: 768px) {
-    #export-favorites-btn {
-        display: inline-flex; /* Tlačítko pro export se zobrazí */
-    }
-    #copy-favorites-btn {
-        display: none; /* Tlačítko pro kopírování se skryje */
-    }
+    #export-favorites-btn { display: inline-flex; }
+    #copy-favorites-btn { display: none; }
 }
