@@ -1,7 +1,7 @@
 <?php
 /**
  * Template Name: Archiv citátů
- * Description: Zobrazí archiv všech citátů s možností filtrování.
+ * Description: Zobrazí archiv všech citátů s možností filtrování a přidávání do oblíbených.
  */
 get_header(); ?>
 
@@ -49,8 +49,8 @@ get_header(); ?>
                     <div id="citat-list">
                         <?php while ( $citaty_query->have_posts() ) : $citaty_query->the_post(); ?>
                             <?php
-                            // Zkontrolujeme, zda má příspěvek obsah
-                            if ( !empty( get_the_content() ) ) :
+                            $p_content = get_the_content();
+                            if ( !empty( $p_content ) ) :
 
                                 $papez_terms = get_the_terms( get_the_ID(), 'papez' );
                                 $papez_classes = '';
@@ -59,20 +59,26 @@ get_header(); ?>
                                         $papez_classes .= $term->slug . ' ';
                                     }
                                 }
+                                $quote_id = 'quote-' . get_the_ID();
                                 ?>
-                                <div class="citat-item <?php echo esc_attr( $papez_classes ); ?>">
-                                    <blockquote class="citat-text">
-                                        <?php the_content(); ?>
-                                    </blockquote>
-                                    <footer class="citat-meta">
-                                        <?php if ($papez_terms) : 
-                                            echo '<span class="citat-author">' . esc_html( $papez_terms[0]->name ) . '</span>';
-                                        endif; ?>
-                                    </footer>
+                                <div class="citat-item <?php echo esc_attr( $papez_classes ); ?>" id="<?php echo esc_attr($quote_id); ?>">
+                                    <div class="citat-content-wrapper">
+                                        <blockquote class="citat-text">
+                                            <?php echo $p_content; ?>
+                                        </blockquote>
+                                        <footer class="citat-meta">
+                                            <?php if ($papez_terms) :
+                                                echo '<span class="citat-author">' . esc_html( $papez_terms[0]->name ) . '</span>';
+                                            endif; ?>
+                                        </footer>
+                                    </div>
+                                    <button class="archive-favorite-btn" data-id="<?php echo esc_attr($quote_id); ?>" aria-label="Přidat do oblíbených">
+                                        <i class="fa fa-star-o"></i>
+                                    </button>
                                 </div>
-                            <?php 
-                            endif; // Konec podmínky pro kontrolu obsahu
-                        endwhile; 
+                            <?php
+                            endif;
+                        endwhile;
                         ?>
                     </div>
                     <?php

@@ -1,13 +1,27 @@
 /* Styly pro stránku Archiv citátů */
 
-/* === ROZLOŽENÍ STRÁNKY NA PLNOU ŠÍŘKU === */
-.page-template-page-archiv-citatu #secondary {
-    display: none;
+/* === FINÁLNÍ OPRAVA: Plná šířka na všech zařízeních === */
+/* Cílení na třídu generovanou WordPressem pro tuto šablonu */
+.page-template-page-archiv-citatu-php #secondary {
+    display: none; /* Skryjeme postranní panel */
 }
-.page-template-page-archiv-citatu #primary {
-    width: 100%;
+
+.page-template-page-archiv-citatu-php #primary {
+    width: 100%; /* Nastavíme obsah na plnou šířku */
     margin: 0;
 }
+
+/* Přepsání dvousloupcového rozložení z 'vzhled-pc.css' pro desktop */
+@media screen and (min-width: 992px) {
+    .page-template-page-archiv-citatu-php .content-wrap {
+        display: block; /* Zrušíme flexbox layout */
+    }
+
+    .page-template-page-archiv-citatu-php #primary.content-area {
+        width: 100%; /* Potvrdíme plnou šířku pro jistotu */
+    }
+}
+
 
 /* === FILTRY === */
 #citat-filters {
@@ -51,14 +65,19 @@
 .citat-item {
     background-color: #e6e0f3;
     border: 2px solid #3b0f5d;
-    padding: 7px;
+    padding: 12px;
     border-radius: 8px;
     margin-bottom: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    position: relative;
+    padding-bottom: 40px;
 }
 
-/* === NOVÁ OPRAVA: Cílené odstranění pozadí z bloku s citátem === */
-.citat-item .citat-text {
+.citat-content-wrapper {
+    /* Pomocný wrapper */
+}
+
+.citat-text {
     background-color: transparent !important;
     border: none !important;
     padding: 0 !important;
@@ -74,17 +93,39 @@
 
 /* Patička s autorem */
 .citat-meta {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    position: absolute;
+    bottom: 12px;
+    right: 15px;
     font-size: 0.9em;
     color: #555;
-    margin-top: 15px;
-    border-top: none;
-    padding-top: 0;
 }
 
 .citat-author {
     font-weight: bold;
     color: #3b0f5d;
+}
+
+/* Tlačítko oblíbených */
+.archive-favorite-btn {
+    position: absolute;
+    bottom: 10px;
+    left: 12px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: #3b0f5d;
+    cursor: pointer;
+    padding: 5px;
+    line-height: 1;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.archive-favorite-btn:hover {
+    transform: scale(1.15);
+}
+
+.archive-favorite-btn.is-favorite .fa {
+    font-family: "FontAwesome";
+    font-weight: 900;
+    color: #ffc107;
 }
