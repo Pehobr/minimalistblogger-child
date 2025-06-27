@@ -91,7 +91,7 @@ header#masthead.sheader { z-index: 999; }
 }
 
 .quote-modal-content {
-    font-family: 'Superclarendon', serif; font-size: 1.2rem;
+    font-family: 'Superclarendon', serif; font-size: 1rem;
     color: #3b0f5d; line-height: 1.4; text-align: left;
     flex-grow: 1;
     overflow-y: auto;
