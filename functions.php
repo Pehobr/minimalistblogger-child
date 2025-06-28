@@ -134,7 +134,7 @@ function poboznosti_app_assets() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'poboznosti_app_assets' );
-    
+
 // END ENQUEUE PARENT ACTION
 
 function pehobr_add_liturgical_color_body_class($classes) {
@@ -407,7 +407,6 @@ function pehobr_trigger_ecomail_api_send($data) {
         return 'Ecomail KROK 1 (Vytvoření) CHYBA: ' . $error_message;
     }
 
-    // Získání ID vytvořené kampaně z odpovědi
     $create_body = json_decode(wp_remote_retrieve_body($create_response), true);
     $campaign_id = isset($create_body['id']) ? $create_body['id'] : null;
 
@@ -419,8 +418,11 @@ function pehobr_trigger_ecomail_api_send($data) {
     $send_url = "https://api2.ecomailapp.cz/campaigns/{$campaign_id}/send-now";
 
     $send_response = wp_remote_post($send_url, [
-        'method'    => 'POST', // Podle novější dokumentace může být potřeba POST
-        'headers'   => [ 'key' => $api_key ]
+        'method'    => 'POST',
+        'headers'   => [ 
+            'key' => $api_key,
+            'Content-Type' => 'application/json' 
+        ]
     ]);
 
     if (is_wp_error($send_response) || wp_remote_retrieve_response_code($send_response) >= 400) {
@@ -428,10 +430,8 @@ function pehobr_trigger_ecomail_api_send($data) {
         return "Ecomail KROK 2 (Odeslání) CHYBA pro kampaň ID {$campaign_id}: " . $error_message;
     }
     
-    // Vše proběhlo úspěšně
     return "Ecomail ÚSPĚCH: Kampaň ID {$campaign_id} byla úspěšně vytvořena a odeslána. Odpověď serveru: " . wp_remote_retrieve_body($send_response);
 }
-
 
 /**
  * Manuální spouštěč pro odeslání testovacího e-mailu.
