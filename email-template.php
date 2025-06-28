@@ -56,7 +56,7 @@
         <p style="font-size: 12px; color: #555555; text-align: center; margin-top: 20px;">
             Tento e-mail jste obdrželi, protože jste se přihlásili k odběru.
             <br>
-            Přejete si odběr zrušit? <a href="*|unsubscribe|*" style="color: #555555;">Odhlásit zde.</a>
+            Přejete si odběr zrušit? <a href="*|UNSUB|*" style="color: #555555;">Odhlásit zde.</a>
         </p>
     </td>
 </tr>
