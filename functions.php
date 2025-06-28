@@ -388,7 +388,7 @@ function pehobr_trigger_ecomail_api_send($data) {
         'name'         => $data['subject'],
         'title'        => $data['subject'],
         'subject'      => $data['subject'],
-        'list_id'      => $list_id,
+       'recepient_lists' => [$list_id],
         'from_name'    => 'Postní kapky',
         'from_email'   => '2026@mail.postnikapky.cz',
         'reply_to'     => 'favnorovy@ado.cz',
@@ -415,22 +415,25 @@ function pehobr_trigger_ecomail_api_send($data) {
     }
     
     // --- KROK 2: Odeslání vytvořené kampaně ---
-    $send_url = "https://api2.ecomailapp.cz/campaigns/{$campaign_id}/send-now";
+// URL endpoint upravený podle dokumentace Ecomailu
+$send_url = "https://api2.ecomailapp.cz/campaign/{$campaign_id}/send";
 
-    $send_response = wp_remote_post($send_url, [
-        'method'    => 'POST',
-        'headers'   => [ 
-            'key' => $api_key,
-            'Content-Type' => 'application/json' 
-        ]
-    ]);
+// Použití metody GET pomocí funkce wp_remote_get namísto wp_remote_post
+$send_response = wp_remote_get($send_url, [
+       'headers' => [
+        'key'          => $api_key,
+        'Content-Type' => 'application/json'
+    ]
+]);
 
-    if (is_wp_error($send_response) || wp_remote_retrieve_response_code($send_response) >= 400) {
-        $error_message = is_wp_error($send_response) ? $send_response->get_error_message() : wp_remote_retrieve_body($send_response);
-        return "Ecomail KROK 2 (Odeslání) CHYBA pro kampaň ID {$campaign_id}: " . $error_message;
-    }
-    
-    return "Ecomail ÚSPĚCH: Kampaň ID {$campaign_id} byla úspěšně vytvořena a odeslána. Odpověď serveru: " . wp_remote_retrieve_body($send_response);
+// Kontrola chyb zůstává stejná
+if (is_wp_error($send_response) || wp_remote_retrieve_response_code($send_response) >= 400) {
+    $error_message = is_wp_error($send_response) ? $send_response->get_error_message() : wp_remote_retrieve_body($send_response);
+    return "Ecomail KROK 2 (Odeslání) CHYBA pro kampaň ID {$campaign_id}: " . $error_message;
+}
+
+// Zpráva o úspěchu zůstává stejná
+return "Ecomail ÚSPĚCH: Kampaň ID {$campaign_id} byla úspěšně odeslána. Odpověď serveru: " . wp_remote_retrieve_body($send_response);
 }
 
 /**
