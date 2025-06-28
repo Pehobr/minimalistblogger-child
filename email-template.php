@@ -46,18 +46,20 @@
             </td>
         </tr>
         <tr style="background-color: #e6e0f3;">
-            <td style="padding: 30px 30px;">
-                <p style="margin: 0; text-align: center;">
-                    Nedaří se vám e-mail správně zobrazit? <a href="<?php echo esc_url($web_view_url); ?>">Zobrazte si jej v prohlížeči.</a>
-                </p>
-                <p style="margin: 20px 0 0 0; text-align: center;">
-                    <a href="<?php echo home_url('/'); ?>">Přejít na web aplikace</a>
-                </p>
-                <p style="font-size: 12px; color: #555555; text-align: center; margin-top: 20px;">
-                    Tento e-mail jste obdrželi, protože jste se přihlásili k odběru. Odhlásit se můžete pomocí odkazu, který automaticky doplní Ecomail.
-                </p>
-            </td>
-        </tr>
+    <td style="padding: 30px 30px;">
+        <p style="margin: 0; text-align: center;">
+            Nedaří se vám e-mail správně zobrazit? <a href="<?php echo esc_url($web_view_url); ?>">Zobrazte si jej v prohlížeči.</a>
+        </p>
+        <p style="margin: 20px 0 0 0; text-align: center;">
+            <a href="<?php echo home_url('/'); ?>">Přejít na web aplikace</a>
+        </p>
+        <p style="font-size: 12px; color: #555555; text-align: center; margin-top: 20px;">
+            Tento e-mail jste obdrželi, protože jste se přihlásili k odběru.
+            <br>
+            Přejete si odběr zrušit? <a href="*|unsubscribe|*" style="color: #555555;">Odhlásit zde.</a>
+        </p>
+    </td>
+</tr>
     </table>
 </body>
 </html>
