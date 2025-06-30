@@ -1,0 +1,141 @@
+/* === STYLES FOR THE HEADER: HAMBURGER ICON AND TITLE === */
+.site-branding {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.site-branding .site-title { /* Your H1 or P tag for the site title */
+    flex-grow: 1;
+    text-align: center;
+    margin: 0;
+}
+
+#custom-hamburger-trigger {
+    flex-shrink: 0;
+    margin-left: 10px;
+    font-size: 24px;
+    color: #870e2c;
+    text-decoration: none;
+    cursor: pointer;
+    z-index: 10001;
+    padding: 8px;
+    line-height: 1;
+}
+
+#custom-hamburger-trigger:hover {
+    color: #600A1F;
+}
+
+/* Hides the hamburger/cross icon in the header when the side menu is open */
+#custom-hamburger-trigger.is-hidden-while-menu-open {
+    visibility: hidden;
+}
+
+/* === STYLES FOR THE CUSTOM SIDE MENU (Slides from the right) === */
+#custom-side-menu {
+    position: fixed;
+    top: 0;
+    right: -285px;
+    width: 280px;
+    height: 100%;
+    background-color: #f8f5e6;
+    border-left: 2px solid #870e2c;
+    box-shadow: -3px 0 8px rgba(0,0,0,0.15);
+    z-index: 10000;
+    transition: right 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+#custom-side-menu.active {
+    right: 0;
+}
+
+.custom-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #870e2c;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.custom-menu-title {
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+#custom-menu-close-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 1;
+}
+
+#custom-menu-close-btn:hover {
+    color: #f0f0f0;
+}
+
+.custom-menu-ul-container {
+    overflow-y: auto;
+    flex-grow: 1;
+    overscroll-behavior-y: contain;
+}
+
+#custom-side-menu ul.custom-menu-ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* === CHANGES HERE === */
+#custom-side-menu ul.custom-menu-ul li a {
+    display: block;
+    padding: 12px 20px;
+    color: #870e2c;
+    text-decoration: none;
+    border-bottom: 1px solid #c0b09a; /* NEW MORE DISTINCT SEPARATOR COLOR (you can change to e.g., 2px for thickness or another color) */
+    font-size: 15px;
+    font-weight: bold; /* ADDED: Bold text for menu items */
+    transition: background-color 0.2s ease;
+}
+/* === END OF CHANGES === */
+
+#custom-side-menu ul.custom-menu-ul li a:hover {
+    background-color: #e0dccc;
+}
+
+#custom-side-menu ul.custom-menu-ul li:last-child a {
+    border-bottom: none;
+}
+
+/* === STYLES FOR THE OVERLAY LAYER === */
+#mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.0s linear 0.3s;
+}
+
+#mobile-menu-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease-in-out, visibility 0.0s linear 0.0s;
+}
+
+/* === STYLES FOR THE BODY WHEN THE MENU IS OPEN === */
+body.custom-menu-open {
+    overflow: hidden;
+    overscroll-behavior-y: contain;
+}
