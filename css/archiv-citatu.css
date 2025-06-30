@@ -1,0 +1,111 @@
+/* Styly pro stránku Archiv citátů */
+
+/* === ŠÍŘKA STRÁNKY === */
+.page-template-page-archiv-citatu-php .content-wrap {
+    display: block !important;
+    max-width: 100% !important;
+}
+.page-template-page-archiv-citatu-php #primary {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    float: none !important;
+}
+.page-template-page-archiv-citatu-php #secondary {
+    display: none !important;
+}
+
+/* === FILTRY === */
+#citat-filters {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e6e0f3;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.filter-btn {
+    background-color: #e6e0f3;
+    border: 1px solid #3b0f5d;
+    color: #3b0f5d;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+.filter-btn:hover { background-color: #dcd7e9; }
+.filter-btn.active {
+    background-color: #3b0f5d;
+    color: #ffffff;
+    border-color: #3b0f5d;
+}
+
+/* === SEZNAM CITÁTŮ === */
+#citat-list {
+    position: relative;
+    min-height: 200px;
+}
+.citat-item {
+    background-color: #e6e0f3;
+    border: 2px solid #3b0f5d;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+/* === OPRAVA: Zmenšení mezer mezi řádky v citátu === */
+.citat-text {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 0 8px 0 !important; /* Snížena mezera pod hlavním textem */
+    font-style: normal;
+    font-size: 1.1em;
+    color: #333;
+    flex-grow: 1;
+    line-height: 1.4;
+}
+.citat-text p {
+    padding: 0;
+    margin: 0 0 0.5em 0;
+}
+.citat-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* === OPRAVA: Zmenšení odsazení patičky === */
+.citat-item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 5px; /* Snížena mezera nad patičkou */
+}
+.citat-author {
+    order: 2;
+    font-weight: bold;
+    color: #3b0f5d;
+    font-size: 0.9em;
+}
+.archive-favorite-btn {
+    order: 1;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: #3b0f5d;
+    cursor: pointer;
+    padding: 0 5px 0 0;
+    line-height: 1;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+.archive-favorite-btn:hover { transform: scale(1.15); }
+.archive-favorite-btn.is-favorite .fa {
+    font-family: "FontAwesome";
+    font-weight: 900;
+    color: #ffc107;
+}

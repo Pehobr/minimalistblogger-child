@@ -1,0 +1,117 @@
+/* Styly pro aplikaci Pobožnosti */
+
+/* --- Layout pro odstavce/nadpisy s audiem --- */
+.poboznosti-app .entry-content .has-audio {
+    display: flex;
+    justify-content: space-between; /* TOTO JE KLÍČOVÁ ZMĚNA: text bude vlevo, tlačítko vpravo */
+    align-items: center; /* Vertikální zarovnání na střed */
+    gap: 15px; /* Mezera mezi textem a tlačítkem */
+}
+
+/* --- Kulaté tlačítko u odstavce/nadpisu --- */
+.poboznosti-audio-button {
+    width: 36px;
+    height: 36px;
+    background-color: #e6e0f3;
+    border: 2px solid #3b0f5d;
+    color: #3b0f5d;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    transition: all 0.2s ease-in-out;
+    flex-shrink: 0; /* Zabrání zmenšování tlačítka */
+}
+.poboznosti-audio-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+}
+.poboznosti-audio-button.is-playing {
+    border-color: #870e2c;
+    color: #870e2c;
+}
+.poboznosti-audio-button.is-paused {
+    border-color: #5c4d00;
+    color: #5c4d00;
+}
+
+/* --- Hlavní přehrávač pro Pobožnosti --- */
+#poboznosti-player-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background-color: #e6e0f3;
+    border: 2px solid #3b0f5d;
+    border-radius: 8px;
+    padding: 12px;
+    box-sizing: border-box;
+    margin-bottom: 25px;
+}
+#poboznosti-player-container .player-controls {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+#poboznosti-player-container .player-control-btn {
+    background: none; border: none; color: #3b0f5d; cursor: pointer;
+    font-size: 20px; padding: 5px; margin: 0 10px;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+#poboznosti-player-container .player-control-btn:hover:not(:disabled) {
+    color: #870e2c; transform: scale(1.1);
+}
+#poboznosti-player-container .main-play-btn {
+    font-size: 32px; color: #870e2c; margin: 0 15px;
+}
+#poboznosti-player-container .main-play-btn:hover:not(:disabled) {
+    color: #6d0b23;
+}
+#poboznosti-player-container .player-control-btn:disabled {
+    color: rgba(59, 15, 93, 0.3); cursor: not-allowed; transform: none;
+}
+#poboznosti-player-container .progress-wrapper {
+    width: 100%;
+}
+#poboznosti-player-container .progress-bar-container {
+    width: 100%; height: 8px; background-color: rgba(59, 15, 93, 0.2);
+    border-radius: 4px; cursor: pointer; overflow: hidden; position: relative;
+}
+#poboznosti-player-container .progress-bar-progress {
+    width: 0%; height: 100%; background-color: #870e2c;
+    border-radius: 4px; transition: width 0.1s linear;
+}
+#poboznosti-player-container .progress-bar-container.disabled {
+    cursor: not-allowed;
+}
+#poboznosti-player-container .track-title {
+    font-size: 14px; color: #3b0f5d; text-align: center;
+    margin-top: 8px; height: 1.2em; font-weight: bold; font-family: sans-serif;
+}
+
+/* Mobilní zmenšení přehrávače Pobožností */
+@media screen and (max-width: 700px) {
+    #poboznosti-player-container {
+        padding-top: 8px; padding-bottom: 8px;
+    }
+    #poboznosti-player-container .player-controls {
+        margin-bottom: 8px;
+    }
+    #poboznosti-player-container .main-play-btn {
+        font-size: 24px; margin: 0 12px;
+    }
+    #poboznosti-player-container .player-control-btn {
+        font-size: 18px; margin: 0 8px;
+    }
+    #poboznosti-player-container .track-title {
+        margin-top: 6px; font-size: 13px;
+    }
+}
+
+/* Skrytí titulku příspěvku na stránce aplikace Pobožnosti */
+.page-template-page-poboznosti .posts-entry .entry-header .entry-title,
+.single-post.category-poboznosti .posts-entry .entry-header .entry-title {
+    display: none;
+}
