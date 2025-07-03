@@ -1,5 +1,8 @@
 <?php
 /**
+ * ZOBRAZIT HTML E-MAILU - ?zobrazit_html=1
+ * TESTOVAT E-MAIL S REÁLNÝMI DATY - ?test_ecomail=1
+ * Tento soubor obsahuje logiku pro odesílání e-mailů přes Ecomail.  
  * Logika pro odesílání e-mailů přes Ecomail.
  * VERZE 10: Sjednoceno. Obě testovací funkce nyní používají reálná data z nejnovější Denní kapky.
  *
