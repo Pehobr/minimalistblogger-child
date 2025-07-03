@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>*|SUBJECT|*</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+        .wrapper {
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .main-content {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff; /* Bílý podklad pro obsah, aby byl vždy čitelný */
+            border: 2px solid #3b0f5d; /* Fialový rámeček */
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .header {
+            padding: 15px;
+            text-align: center;
+            background-color: #f0ebf8; /* Velmi světlá fialová pro hlavičku */
+        }
+        .header h1 {
+            margin: 0;
+            font-family: 'Superclarendon', serif;
+            color: #3b0f5d;
+            font-size: 22px; /* Zmenšený hlavní nadpis */
+        }
+        .content {
+            padding: 15px 25px 25px 25px;
+        }
+        .daily-image {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            margin-bottom: 20px;
+            border-radius: 6px;
+        }
+        .quote-block {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eeeeee;
+            padding-bottom: 15px;
+        }
+        .quote-block:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .quote-block h2 {
+            font-family: 'Superclarendon', serif;
+            font-size: 16px; /* Zmenšené nadpisy citátů */
+            color: #870e2c;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+        .quote-block p {
+            font-family: 'Superclarendon', serif;
+            font-size: 14px; /* Zmenšený text citátů */
+            line-height: 1.5;
+            color: #333333;
+            margin: 0;
+        }
+        .footer {
+            padding: 15px;
+            text-align: center;
+            font-size: 11px; /* Zmenšené písmo v patičce */
+            color: #555555;
+            background-color: #f0ebf8;
+        }
+        .footer a {
+            color: #3b0f5d;
+            text-decoration: underline;
+        }
+        @media (max-width: 640px) {
+            .wrapper {
+                padding: 10px;
+            }
+            .content {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
+            <tr>
+                <td align="center">
+                    <div class="main-content">
+                        <div class="header">
+                            <h1>*|SUBJECT|*</h1>
+                        </div>
+
+                        <div class="content">
+                            <img src="*|IMAGE_URL|*" alt="Denní obrázek" class="daily-image">
+
+                            <div class="quote-block">
+                                <h2>Sv. Jan Pavel II.</h2>
+                                <p>*|JPII_QUOTE|*</p>
+                            </div>
+
+                            <div class="quote-block">
+                                <h2>Papež Benedikt XVI.</h2>
+                                <p>*|BENEDICT_QUOTE|*</p>
+                            </div>
+                            
+                            <div class="quote-block">
+                                <h2>Papež František</h2>
+                                <p>*|FRANCIS_QUOTE|*</p>
+                            </div>
+                            
+                            <div class="quote-block">
+                                <h2>Papež Lev XIII.</h2>
+                                <p>*|LEO_QUOTE|*</p>
+                            </div>
+
+                            <div class="quote-block">
+                                <h2>Sv. Augustin</h2>
+                                <p>*|AUGUSTINE_QUOTE|*</p>
+                            </div>
+
+                            <div class="quote-block">
+                                <h2>Modlitba</h2>
+                                <p>*|PRAYER|*</p>
+                            </div>
+                        </div>
+
+                        <div class="footer">
+                            <p style="margin-top: 15px;">
+                                <a href="*|UNSUB|*">Zrušit odběr</a> | <a href="https://postnikapky.cz">Přejít na web</a>
+                            </p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
