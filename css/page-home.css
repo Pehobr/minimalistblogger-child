@@ -128,3 +128,30 @@ header#masthead.sheader { z-index: 999; }
     #daily-info-title { font-size: 1.4rem; }
     #daily-info-date { font-size: 1rem; }
 }
+
+/* === ÚPRAVA PRO IKONY BEZ BOXU === */
+.grid-item-wrapper.image-only .icon-grid-item {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+.grid-item-wrapper.image-only .icon-grid-item:hover,
+.grid-item-wrapper.image-only .icon-grid-item:focus {
+    transform: scale(1.05); /* Zachováme efekt přiblížení */
+    box-shadow: none;
+}
+
+.grid-item-wrapper.image-only .icon-grid-item img {
+    height: 95px;
+    width: 100%;
+    object-fit: contain;
+}
+
+/* Responzivní úprava pro obrázky bez boxu */
+@media (max-width: 480px) {
+    .grid-item-wrapper.image-only .icon-grid-item img {
+        height: 80px; /* Sladění s ostatními ikonami na mobilu */
+    }
+}

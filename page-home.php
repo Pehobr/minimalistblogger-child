@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah.
- * VERZE 4: Doplněno předávání jména autora pro funkci oblíbených.
+ * VERZE 6: Oprava funkčnosti pro ikony zobrazené jako obrázky.
  * @package minimalistblogger-child
  */
 
@@ -80,15 +80,21 @@ foreach ($grid_items as $item) {
             
             <div id="intro-grid-container">
                 <?php
-                foreach ($grid_items as $item) :
+                foreach ($grid_items as $index => $item) :
                     $content_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
                     $has_content = !empty($content_html);
+
+                    // Prvních pět položek (index 0-4) bude mít pouze vizuální úpravu
+                    $is_image_only = $index < 5;
+                    $wrapper_class = 'grid-item-wrapper' . ($is_image_only ? ' image-only' : '');
+                    
+                    // Funkčnost: odkaz bude # pro otevření modálního okna, pokud je obsah
                     $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/');
                 ?>
-                    <div class="grid-item-wrapper">
+                    <div class="<?php echo esc_attr($wrapper_class); ?>">
                         <a href="<?php echo esc_url($link_url); ?>"
                            class="icon-grid-item"
-                           <?php if ($has_content) : ?>
+                           <?php if ($has_content) : // data-* atributy pro VŠECHNY položky s obsahem ?>
                                data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>"
                                data-type="<?php echo esc_attr($item['type']); ?>"
                                data-author-name="<?php echo esc_attr($item['name']); ?>"
@@ -96,7 +102,9 @@ foreach ($grid_items as $item) {
                         >
                             <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
                         </a>
+                        <?php if (!$is_image_only) : // Popisek zobrazíme jen u položek, které nejsou "image-only" ?>
                         <span class="grid-item-label"><?php echo esc_html($item['label']); ?></span>
+                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
 
