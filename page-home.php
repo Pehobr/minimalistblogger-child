@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah.
- * VERZE 13: Vytvořen společný rámeček pro citáty papežů.
+ * VERZE 14: Upraven layout a styl pro denní nadpis a datum.
  * @package minimalistblogger-child
  */
 
@@ -79,8 +79,8 @@ foreach ($grid_items as $item) {
             
             <?php if (!empty($nazev_dne) || !empty($datum_dne)): ?>
                 <div id="daily-info-container">
-                    <?php if (!empty($nazev_dne)): ?><h2 id="daily-info-title"><?php echo esc_html($nazev_dne); ?></h2><?php endif; ?>
-                    <?php if (!empty($datum_dne)): ?><p id="daily-info-date"><?php echo esc_html($datum_dne); ?></p><?php endif; ?>
+                    <?php if (!empty($nazev_dne)): ?><h2 id="daily-info-title" class="daily-info-item"><?php echo esc_html($nazev_dne); ?></h2><?php endif; ?>
+                    <?php if (!empty($datum_dne)): ?><p id="daily-info-date" class="daily-info-item"><?php echo esc_html($datum_dne); ?></p><?php endif; ?>
                 </div>
             <?php endif; ?>
             
@@ -88,7 +88,6 @@ foreach ($grid_items as $item) {
                 <h3 class="pope-quotes-title">Citáty našich papežů</h3>
                 <div class="pope-images-wrapper">
                     <?php
-                    // Ruční vykreslení prvních 3 položek (papežů) pro flexbox
                     for ($i = 0; $i < 3; $i++) {
                         $item = $grid_items[$i];
                         $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
@@ -109,7 +108,6 @@ foreach ($grid_items as $item) {
 
             <div id="intro-grid-container">
                 <?php
-                // Vykreslení zbývajících položek (od 4. dále) do původní CSS mřížky
                 for ($i = 3; $i < count($grid_items); $i++) {
                     $item = $grid_items[$i];
                     $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
