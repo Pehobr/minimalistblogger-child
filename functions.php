@@ -333,3 +333,18 @@ function enqueue_podcast_assets() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_podcast_assets' );
+
+/**
+ * Načtení stylů pro stránku Prezentace.
+ */
+function enqueue_prezentace_assets() {
+    if ( is_page_template( 'page-prezentace.php' ) ) {
+        wp_enqueue_style(
+            'prezentace-style',
+            get_stylesheet_directory_uri() . '/css/prezentace.css',
+            array('chld_thm_cfg_parent'),
+            wp_get_theme()->get('Version')
+        );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_prezentace_assets' );
