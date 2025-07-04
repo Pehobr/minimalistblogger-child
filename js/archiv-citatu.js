@@ -1,18 +1,17 @@
 jQuery(function($) {
     // --- ČÁST 1: FUNKČNOST FILTROVÁNÍ (ISOTOPE) ---
-    $(window).on('load', function() {
-        var $grid = $('#citat-list').isotope({
-            itemSelector: '.citat-item',
-            layoutMode: 'vertical'
-        });
-
-        $('#citat-filters').on('click', 'button', function() {
-            var filterValue = $(this).attr('data-filter');
-            $grid.isotope({ filter: filterValue });
-            $('#citat-filters button').removeClass('active');
-            $(this).addClass('active');
-        });
+    var $grid = $('#citat-list').isotope({
+        itemSelector: '.citat-item',
+        layoutMode: 'vertical'
     });
+
+    $('#citat-filters').on('click', 'button', function() {
+        var filterValue = $(this).attr('data-filter');
+        $grid.isotope({ filter: filterValue });
+        $('#citat-filters button').removeClass('active');
+        $(this).addClass('active');
+    });
+
 
     // --- ČÁST 2: FUNKČNOST PRO OBLÍBENÉ POLOŽKY (UPRAVENO) ---
     const favoritesStorageKey = 'pehobr_favorite_quotes';
