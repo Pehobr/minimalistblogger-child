@@ -4,7 +4,7 @@
  * TESTOVAT E-MAIL S REÁLNÝMI DATY - ?test_ecomail=1
  * Tento soubor obsahuje logiku pro odesílání e-mailů přes Ecomail.  
  * Logika pro odesílání e-mailů přes Ecomail.
- * VERZE 10: Sjednoceno. Obě testovací funkce nyní používají reálná data z nejnovější Denní kapky.
+ * VERZE 11: Změna 'citat_modlitba' na 'modlitba_text'.
  *
  * @package minimalistblogger-child
  */
@@ -59,13 +59,14 @@ function pehobr_find_and_send_daily_content() {
         if ($daily_query->have_posts()) {
             while ($daily_query->have_posts()) {
                 $daily_query->the_post();
+                // ZMĚNA ZDE: Používá se 'modlitba_text' místo 'citat_modlitba'
                 $data_for_email = [
                     '*|JPII_QUOTE|*'      => get_post_meta(get_the_ID(), 'citat_janpavel', true),
                     '*|BENEDICT_QUOTE|*'  => get_post_meta(get_the_ID(), 'citat_benedikt', true),
                     '*|FRANCIS_QUOTE|*'   => get_post_meta(get_the_ID(), 'citat_frantisek', true),
                     '*|LEO_QUOTE|*'       => get_post_meta(get_the_ID(), 'citat_lev', true),
                     '*|AUGUSTINE_QUOTE|*' => get_post_meta(get_the_ID(), 'citat_augustin', true),
-                    '*|PRAYER|*'          => get_post_meta(get_the_ID(), 'citat_modlitba', true),
+                    '*|PRAYER|*'          => get_post_meta(get_the_ID(), 'modlitba_text', true),
                     '*|IMAGE_URL|*'       => get_post_meta(get_the_ID(), 'image_url', true),
                     '*|SUBJECT|*'         => get_the_title(),
                 ];
@@ -176,13 +177,14 @@ add_action('init', function() {
 
     if ($latest_kapka_query->have_posts()) {
         $latest_kapka_query->the_post();
+        // ZMĚNA ZDE: Používá se 'modlitba_text' místo 'citat_modlitba'
         $real_data = [
             '*|JPII_QUOTE|*'      => get_post_meta(get_the_ID(), 'citat_janpavel', true),
             '*|BENEDICT_QUOTE|*'  => get_post_meta(get_the_ID(), 'citat_benedikt', true),
             '*|FRANCIS_QUOTE|*'   => get_post_meta(get_the_ID(), 'citat_frantisek', true),
             '*|LEO_QUOTE|*'       => get_post_meta(get_the_ID(), 'citat_lev', true),
             '*|AUGUSTINE_QUOTE|*' => get_post_meta(get_the_ID(), 'citat_augustin', true),
-            '*|PRAYER|*'          => get_post_meta(get_the_ID(), 'citat_modlitba', true),
+            '*|PRAYER|*'          => get_post_meta(get_the_ID(), 'modlitba_text', true),
             '*|IMAGE_URL|*'       => get_post_meta(get_the_ID(), 'image_url', true),
             '*|SUBJECT|*'         => '[REAL-DATA TEST] ' . get_the_title(), // Přidáme identifikátor testu
         ];

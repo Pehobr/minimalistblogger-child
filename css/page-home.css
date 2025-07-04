@@ -155,3 +155,110 @@ header#masthead.sheader { z-index: 999; }
         height: 80px; /* Sladění s ostatními ikonami na mobilu */
     }
 }
+
+/* === MINIMALISTICKÝ DVOUŘÁDKOVÝ PŘEHRÁVAČ v3.1 === */
+.modal-audio-player {
+    display: flex;
+    flex-direction: column; /* Uspořádá prvky pod sebe */
+    gap: 8px; /* Mezera mezi horním řádkem a lištou */
+    padding: 0px 0;
+    margin-top: 15px;
+    background-color: transparent;
+    border: none;
+}
+
+/* Horní řádek (tlačítko a čas) */
+.map-top-row {
+    display: flex;
+    justify-content: center; /* Vycentrování obsahu */
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+}
+
+.map-play-pause-btn {
+    flex-shrink: 0;
+    width: 27px;
+    height: 27px;
+    background-color: transparent;
+    border: none;
+    color: #3b0f5d;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease, color 0.2s ease;
+    padding: 0;
+    padding-left: 3px; /* Optické vycentrování trojúhelníku */
+}
+
+.map-play-pause-btn:hover {
+    color: #870e2c;
+    transform: scale(1.1);
+}
+
+.map-play-pause-btn .fa-pause {
+    padding-left: 0;
+}
+
+/* Blok pro zobrazení času */
+.map-time-display {
+    display: flex;
+    align-items: center;
+    font-family: 'Superclarendon', serif; /* <-- ZMĚNA: Písmo jako u modlitby */
+    font-weight: bold; /* <-- ZMĚNA: Tučné písmo */
+    font-size: 14px;
+    color: #555;
+    gap: 4px;
+}
+
+/* Spodní řádek (lišta průběhu) */
+.map-slider-wrapper {
+    width: 100%;
+    height: 15px; /* Neviditelná plocha pro snadnější kliknutí */
+    display: flex;
+    align-items: center;
+}
+
+.map-seek-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 7px; /* Požadovaná výška lišty */
+    background: #9d87ae; /* Barva dráhy */
+    outline: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Kolečko posuvníku pro Chrome, Safari, Opera */
+.map-seek-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px; /* Průměr kolečka */
+    height: 15px;
+    background: #3b0f5d; /* Barva kolečka */
+    border-radius: 50%; /* Tímto se vytvoří kolečko */
+    cursor: pointer;
+    border: none;
+    margin-top: -4px; /* Optické zarovnání na střed 7px lišty */
+}
+
+/* Kolečko posuvníku pro Firefox */
+.map-seek-slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #3b0f5d;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+/* Odstranění výchozích stylů prohlížeče, které by mohly ovlivnit vzhled */
+input[type=range], textarea {
+    color: #666;
+    border: 1px solid #e5e6e9;
+    padding: 0px;
+}

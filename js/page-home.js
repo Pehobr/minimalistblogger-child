@@ -1,72 +1,42 @@
-/**
- * JavaScript pro úvodní stránku (page-home)
- * Zajišťuje funkčnost modálního okna a ukládání oblíbených.
- * VERZE 5: Přidána třída na body pro opravu dotykového posouvání.
- */
 jQuery(document).ready(function($) {
+    "use strict";
 
-    // --- 1. Selekce všech potřebných prvků ---
-    const gridItems = $('.icon-grid-item');
-    const modalOverlay = $('#quote-modal-overlay');
+    const bodyElement = $('body');
     const modalContainer = $('#quote-modal-container');
+    const modalOverlay = $('#quote-modal-overlay');
     const modalContent = $('#quote-modal-content');
-    const closeModalBtn = $('#quote-modal-close-btn');
     const favoriteBtn = $('#quote-modal-favorite-btn');
     const favoriteIcon = favoriteBtn.find('i');
-    const bodyElement = $('body'); // Uložíme si tělo stránky
-
+    
+    let favorites = JSON.parse(localStorage.getItem('favoriteQuotes')) || [];
     let currentQuoteId = null;
     let currentAuthorName = null;
 
-    // --- 2. Správa oblíbených v LocalStorage ---
-    const favoritesStorageKey = 'pehobr_favorite_quotes';
-
-    function getFavorites() {
-        const favoritesJSON = localStorage.getItem(favoritesStorageKey);
-        return favoritesJSON ? JSON.parse(favoritesJSON) : [];
-    }
-
-    function saveFavorites(favorites) {
-        localStorage.setItem(favoritesStorageKey, JSON.stringify(favorites));
-    }
-
     function isFavorite(quoteId) {
-        const favorites = getFavorites();
         return favorites.some(fav => fav.id === quoteId);
     }
 
-    function toggleFavorite() {
-        if (!currentQuoteId) return;
-        let favorites = getFavorites();
-        const quoteText = $('#' + currentQuoteId).html();
-        const finalContent = `
-            <blockquote class="citat-text">
-                ${quoteText}
-            </blockquote>
-            <footer class="citat-meta">
-                <span class="citat-author">${currentAuthorName}</span>
-            </footer>
-        `;
-
-        if (isFavorite(currentQuoteId)) {
-            favorites = favorites.filter(fav => fav.id !== currentQuoteId);
-            favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
-            favoriteBtn.removeClass('is-favorite');
-        } else {
-            favorites.push({ id: currentQuoteId, content: finalContent });
-            favoriteIcon.removeClass('fa-star-o').addClass('fa-star');
-            favoriteBtn.addClass('is-favorite');
-        }
-        saveFavorites(favorites);
+    function saveFavorites() {
+        localStorage.setItem('favoriteQuotes', JSON.stringify(favorites));
     }
 
-    // --- 3. Funkce pro otevření a zavření modálního okna (UPRAVENO) ---
+    function addFavorite(quoteId, author, content) {
+        if (!isFavorite(quoteId)) {
+            favorites.push({ id: quoteId, author: author, content: content });
+            saveFavorites();
+        }
+    }
+
+    function removeFavorite(quoteId) {
+        favorites = favorites.filter(fav => fav.id !== quoteId);
+        saveFavorites();
+    }
+
     function openModal(targetId, type, authorName) {
         currentQuoteId = targetId;
         currentAuthorName = authorName;
         const contentHtml = $('#' + targetId).html();
 
-        // OPRAVA POSOUVÁNÍ: Přidáme třídu na body
         bodyElement.addClass('modal-is-open');
 
         if (type === 'video') {
@@ -85,55 +55,142 @@ jQuery(document).ready(function($) {
                 favoriteIcon.removeClass('fa-star-o').addClass('fa-star');
                 favoriteBtn.addClass('is-favorite');
             } else {
-                favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
+                favoriteIcon.removeClass('fa-star-o').addClass('fa-star-o');
                 favoriteBtn.removeClass('is-favorite');
             }
         }
         
+        // Inicializace vlastního audio přehrávače, pokud existuje v obsahu
+        const customPlayer = modalContent.find('.modal-audio-player');
+        if (customPlayer.length > 0) {
+            initializeCustomPlayer(customPlayer);
+        }
+
         modalOverlay.fadeIn(200);
-        modalContainer.css('display', 'flex').hide().fadeIn(300); // Změna na display flex
+        modalContainer.css('display', 'flex').hide().fadeIn(300);
         modalContainer.addClass('is-visible');
     }
 
     function closeModal() {
-        // OPRAVA POSOUVÁNÍ: Odebereme třídu z body
         bodyElement.removeClass('modal-is-open');
-
-        modalOverlay.fadeOut(300);
         modalContainer.fadeOut(200, function() {
-            const mediaElement = modalContent.find('iframe, audio');
-            if (mediaElement.length) {
-                if (mediaElement.is('iframe')) {
-                    mediaElement.attr('src', mediaElement.attr('src'));
-                } else if (mediaElement.is('audio')) {
-                    mediaElement[0].pause();
-                }
-            }
             modalContent.empty();
             modalContainer.removeClass('is-visible video-modal audio-modal');
-            currentQuoteId = null;
-            currentAuthorName = null;
+        });
+        modalOverlay.fadeOut(250);
+    }
+
+    $('.icon-grid-item').on('click', function(e) {
+        const targetId = $(this).data('target-id');
+        if (targetId) {
+            e.preventDefault();
+            const type = $(this).data('type');
+            const authorName = $(this).data('author-name');
+            openModal(targetId, type, authorName);
+        }
+    });
+
+    $('#quote-modal-close-btn, #quote-modal-overlay').on('click', function(e) {
+        e.preventDefault();
+        closeModal();
+    });
+
+    $(document).on('keydown', function(e) {
+        if (e.key === "Escape") {
+            if (modalContainer.hasClass('is-visible')) {
+                closeModal();
+            }
+        }
+    });
+
+    favoriteBtn.on('click', function() {
+        if (currentQuoteId) {
+            if (isFavorite(currentQuoteId)) {
+                removeFavorite(currentQuoteId);
+                favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
+                $(this).removeClass('is-favorite');
+            } else {
+                const quoteContent = modalContent.html();
+                addFavorite(currentQuoteId, currentAuthorName, quoteContent);
+                favoriteIcon.removeClass('fa-star-o').addClass('fa-star');
+                $(this).addClass('is-favorite');
+            }
+        }
+    });
+
+    // --- FUNKCE PRO VLASTNÍ AUDIO PŘEHRÁVAČ ---
+
+    /**
+     * Formátuje sekundy na formát m:ss (např. 1:05).
+     * @param {number} seconds - Celkový počet sekund.
+     * @returns {string} Čas ve formátu m:ss.
+     */
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    /**
+     * Inicializuje a ovládá vlastní audio přehrávač v modálním okně.
+     * @param {jQuery} playerElement - jQuery objekt obalující přehrávač (.modal-audio-player).
+     */
+    function initializeCustomPlayer(playerElement) {
+        const audioSrc = playerElement.data('audio-src');
+        if (!audioSrc) return;
+
+        const audio = new Audio(audioSrc);
+        const playBtn = playerElement.find('.map-play-pause-btn');
+        const playIcon = playBtn.find('i');
+        const slider = playerElement.find('.map-seek-slider');
+        const currentTimeEl = playerElement.find('.map-current-time');
+        const durationEl = playerElement.find('.map-duration');
+
+        playBtn.on('click', function() {
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        });
+
+        audio.addEventListener('play', () => {
+            playIcon.removeClass('fa-play').addClass('fa-pause');
+        });
+
+        audio.addEventListener('pause', () => {
+            playIcon.removeClass('fa-pause').addClass('fa-play');
+        });
+        
+        audio.addEventListener('ended', () => {
+            playIcon.removeClass('fa-pause').addClass('fa-play');
+            audio.currentTime = 0;
+            slider.val(0);
+        });
+
+        audio.addEventListener('loadedmetadata', () => {
+            durationEl.text(formatTime(audio.duration));
+            slider.attr('max', audio.duration);
+        });
+
+        audio.addEventListener('timeupdate', () => {
+            currentTimeEl.text(formatTime(audio.currentTime));
+            slider.val(audio.currentTime);
+        });
+        
+        slider.on('input', function() {
+            audio.currentTime = $(this).val();
+        });
+
+        // Ujistíme se, že se audio zastaví a uvolní zdroje při zavření modálního okna.
+        // Používáme .one() k navázání události, která se spustí jen jednou,
+        // abychom předešli vícenásobnému navázání při opakovaném otevírání modálu.
+        $('#quote-modal-close-btn, #quote-modal-overlay').one('click.audioPlayer', function() {
+            if (audio) {
+                audio.pause();
+                audio.src = ''; // Uvolníme zdroj, aby se audio nestahovalo na pozadí
+            }
         });
     }
 
-    // --- 4. Přidání posluchačů událostí ---
-    gridItems.on('click', function(event) {
-        const targetId = $(this).data('target-id');
-        const type = $(this).data('type');
-        const author = $(this).data('author-name');
-        if (targetId) {
-            event.preventDefault();
-            openModal(targetId, type, author);
-        }
-    });
-
-    closeModalBtn.on('click', closeModal);
-    modalOverlay.on('click', closeModal);
-    favoriteBtn.on('click', toggleFavorite);
-
-    $(document).on('keydown', function(event) {
-        if (event.key === "Escape" && modalContainer.hasClass('is-visible')) {
-            closeModal();
-        }
-    });
 });
