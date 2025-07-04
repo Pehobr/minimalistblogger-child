@@ -38,3 +38,126 @@ nav#primary-site-navigation {
     font-size: 27px;
     margin: 0;
 }
+
+/* === ZMĚNA PÍSMA V BOČNÍM MENU NA PC === */
+#secondary.featured-sidebar {
+    font-family: 'Superclarendon', serif;
+}
+
+.widget ul li {
+   padding: 0px 0;
+}
+
+/* === VZHLED MENU V SIDEBARU PODLE MOBILNÍ VERZE (MINIMÁLNÍ ODSADZENÍ) === */
+
+/* 1. Základní nastavení pro seznam menu */
+#secondary .widget_nav_menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* 2. Nastavení pro jednotlivé položky a oddělovací čáru */
+#secondary .widget_nav_menu li {
+    padding-bottom: 2px; /* ZMĚNA: Sníženo odsazení pod čarou */
+    margin: 0;
+}
+
+#secondary .widget_nav_menu li:not(:last-child)::after {
+    content: '';
+    display: block;
+    width: 70%;
+    height: 1px;
+    background-color: #3b0f5d;
+    margin: 2px auto 0; /* ZMĚNA: Snížena mezera nad čarou */
+    opacity: 0.5;
+}
+
+/* 3. Styl pro samotný odkaz (text) uvnitř položky */
+#secondary .widget_nav_menu li a {
+    display: block;
+    padding: 2px 15px; /* ZMĚNA: Výrazně sníženo horní a dolní odsazení */
+    color: #3b0f5d;
+    text-decoration: none;
+    font-size: 16px;
+    font-family: 'Superclarendon', serif;
+    text-align: center;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+/* 4. Efekt při najetí myší */
+#secondary .widget_nav_menu li a:hover {
+    background-color: #dcd7e9;
+}
+
+#secondary .widget {
+    background-color: #e6e0f3 !important;
+    border: 2px solid #3b0f5d !important;
+    padding: 2px !important;
+    margin-bottom: 7px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05) !important;
+    box-sizing
+}
+
+/* === STYLY PRO ROZBALOVACÍ POD-MENU V SIDEBARU (FINÁLNÍ VERZE 2.0) === */
+
+/* 1. Obecné nastavení pro položky a odstranění nežádoucích prvků */
+#secondary .widget_nav_menu li {
+    position: relative;
+    border-left: none !important;
+    background-image: none !important;
+}
+#secondary .widget_nav_menu li::before {
+    display: none !important;
+}
+
+/* 2. Styl odkazu v rodičovské položce (s vlastní šipkou) */
+#secondary .widget_nav_menu .menu-item-has-children > a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 3. Vzhled nové šipky */
+.submenu-arrow {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-right: 2px solid #3b0f5d;
+    border-bottom: 2px solid #3b0f5d;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease-in-out;
+}
+
+/* 4. Otočení šipky, když je pod-menu otevřené */
+#secondary .widget_nav_menu .submenu-is-open > a .submenu-arrow {
+    transform: rotate(225deg);
+}
+
+/* 5. Vzhled pod-menu a jeho položek */
+#secondary .widget_nav_menu ul.sub-menu {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* ZMĚNA: Skryje nežádoucí šipku vedle samotného pod-menu */
+#secondary .widget_nav_menu ul.sub-menu::before,
+#secondary .widget_nav_menu ul.sub-menu::after {
+    display: none !important;
+}
+
+#secondary .widget_nav_menu ul.sub-menu li a {
+    font-size: 15px;
+    font-weight: normal;
+    text-align: center;
+    padding: 4px 15px;
+}
+
+/* Skrytí oddělovacích čar v pod-menu */
+#secondary .widget_nav_menu ul.sub-menu li:not(:last-child)::after {
+    display: none;
+}

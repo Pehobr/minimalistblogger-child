@@ -88,7 +88,11 @@ if (file_exists(get_stylesheet_directory() . '/css/left-mobile-menu.css')) {
 if (file_exists(get_stylesheet_directory() . '/js/left-mobile-menu.js')) {
     wp_enqueue_script( 'minimalistblogger-left-mobile-menu-js', get_stylesheet_directory_uri() . '/js/left-mobile-menu.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/left-mobile-menu.js' ), true );
 }
+
+// Přidat tento řádek na konec funkce, před její uzavírací závorku }
+    wp_enqueue_script( 'sidebar-menu-js', get_stylesheet_directory_uri() . '/js/sidebar-menu.js', array('jquery'), wp_get_theme()->get('Version'), true );
 }
+
 add_action( 'wp_enqueue_scripts', 'minimalistblogger_child_enqueue_assets', 20 );
 
 function moje_aplikace_assets() {
