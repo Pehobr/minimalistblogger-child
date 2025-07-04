@@ -8,7 +8,9 @@ jQuery(document).ready(function($) {
     const favoriteBtn = $('#quote-modal-favorite-btn');
     const favoriteIcon = favoriteBtn.find('i');
     
-    let favorites = JSON.parse(localStorage.getItem('favoriteQuotes')) || [];
+    // OPRAVA 1: Používá se správný klíč 'pehobr_favorite_quotes'
+    const favoritesStorageKey = 'pehobr_favorite_quotes';
+    let favorites = JSON.parse(localStorage.getItem(favoritesStorageKey)) || [];
     let currentQuoteId = null;
     let currentAuthorName = null;
 
@@ -17,11 +19,13 @@ jQuery(document).ready(function($) {
     }
 
     function saveFavorites() {
-        localStorage.setItem('favoriteQuotes', JSON.stringify(favorites));
+        // OPRAVA 1: Ukládá se pod správným klíčem
+        localStorage.setItem(favoritesStorageKey, JSON.stringify(favorites));
     }
 
     function addFavorite(quoteId, author, content) {
         if (!isFavorite(quoteId)) {
+            // Vytvoříme objekt, který bude obsahovat i autora pro konzistenci
             favorites.push({ id: quoteId, author: author, content: content });
             saveFavorites();
         }
@@ -60,7 +64,6 @@ jQuery(document).ready(function($) {
             }
         }
         
-        // Inicializace vlastního audio přehrávače, pokud existuje v obsahu
         const customPlayer = modalContent.find('.modal-audio-player');
         if (customPlayer.length > 0) {
             initializeCustomPlayer(customPlayer);
@@ -103,6 +106,7 @@ jQuery(document).ready(function($) {
         }
     });
 
+    // OPRAVA 2: Ukládání obsahu ve správné HTML struktuře
     favoriteBtn.on('click', function() {
         if (currentQuoteId) {
             if (isFavorite(currentQuoteId)) {
@@ -110,8 +114,23 @@ jQuery(document).ready(function($) {
                 favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
                 $(this).removeClass('is-favorite');
             } else {
-                const quoteContent = modalContent.html();
-                addFavorite(currentQuoteId, currentAuthorName, quoteContent);
+                const rawQuoteHtml = modalContent.html();
+                const authorName = currentAuthorName;
+
+                // Sestavení finálního obsahu ve formátu,
+                // který očekává stránka s oblíbenými texty.
+                const finalContent = `
+                    <blockquote class="citat-text">
+                        ${rawQuoteHtml}
+                    </blockquote>
+                    <footer class="citat-meta">
+                        <span class="citat-author">${authorName}</span>
+                    </footer>
+                `;
+
+                // Uložení nově sestaveného obsahu
+                addFavorite(currentQuoteId, authorName, finalContent);
+                
                 favoriteIcon.removeClass('fa-star-o').addClass('fa-star');
                 $(this).addClass('is-favorite');
             }
@@ -120,21 +139,12 @@ jQuery(document).ready(function($) {
 
     // --- FUNKCE PRO VLASTNÍ AUDIO PŘEHRÁVAČ ---
 
-    /**
-     * Formátuje sekundy na formát m:ss (např. 1:05).
-     * @param {number} seconds - Celkový počet sekund.
-     * @returns {string} Čas ve formátu m:ss.
-     */
     function formatTime(seconds) {
         const minutes = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);
         return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     }
 
-    /**
-     * Inicializuje a ovládá vlastní audio přehrávač v modálním okně.
-     * @param {jQuery} playerElement - jQuery objekt obalující přehrávač (.modal-audio-player).
-     */
     function initializeCustomPlayer(playerElement) {
         const audioSrc = playerElement.data('audio-src');
         if (!audioSrc) return;
@@ -182,13 +192,10 @@ jQuery(document).ready(function($) {
             audio.currentTime = $(this).val();
         });
 
-        // Ujistíme se, že se audio zastaví a uvolní zdroje při zavření modálního okna.
-        // Používáme .one() k navázání události, která se spustí jen jednou,
-        // abychom předešli vícenásobnému navázání při opakovaném otevírání modálu.
         $('#quote-modal-close-btn, #quote-modal-overlay').one('click.audioPlayer', function() {
             if (audio) {
                 audio.pause();
-                audio.src = ''; // Uvolníme zdroj, aby se audio nestahovalo na pozadí
+                audio.src = ''; 
             }
         });
     }

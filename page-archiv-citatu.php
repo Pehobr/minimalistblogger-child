@@ -1,9 +1,36 @@
 <?php
 /**
  * Template Name: Archiv citátů
- * Description: Zobrazí archiv všech citátů s možností filtrování a přidávání do oblíbených.
+ * Description: Zobrazí archiv všech citátů přímo z custom fields denních kapek s možností filtrování a přidávání do oblíbených.
+ * VERZE 2.1: Odebrání slova "Papež" a úprava jmen.
  */
-get_header(); ?>
+get_header(); 
+
+// Definice autorů, jejich custom field klíčů a slugů pro filtrování
+$autori = [
+    'jan-pavel-ii' => [
+        'name' => 'sv. Jan Pavel II.',
+        'meta_key' => 'citat_janpavel'
+    ],
+    'benedikt-xvi' => [
+        'name' => 'Benedikt XVI.',
+        'meta_key' => 'citat_benedikt'
+    ],
+    'frantisek' => [
+        'name' => 'František',
+        'meta_key' => 'citat_frantisek'
+    ],
+    'lev-xiii' => [
+        'name' => 'Lev XIV.',
+        'meta_key' => 'citat_lev'
+    ],
+    'augustin' => [
+        'name' => 'sv. Augustin',
+        'meta_key' => 'citat_augustin'
+    ],
+];
+
+?>
 
 <div id="primary" class="content-area">
     <main id="main" class="site-main" role="main">
@@ -14,62 +41,60 @@ get_header(); ?>
             </header>
 
             <div class="entry-content">
-                <?php
-                $terms = get_terms( array( 'taxonomy' => 'papez', 'hide_empty' => true ) );
-
-                if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) : ?>
-                    <div id="citat-filters">
-                        <button class="filter-btn active" data-filter="*">Zobrazit vše</button>
-                        <?php foreach ( $terms as $term ) : ?>
-                            <button class="filter-btn" data-filter=".<?php echo esc_attr( $term->slug ); ?>">
-                                <?php echo esc_html( $term->name ); ?>
-                            </button>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
+                <?php // Tlačítka pro filtrování generovaná z pole $autori ?>
+                <div id="citat-filters">
+                    <button class="filter-btn active" data-filter="*">Zobrazit vše</button>
+                    <?php foreach ( $autori as $slug => $data ) : ?>
+                        <button class="filter-btn" data-filter=".<?php echo esc_attr( $slug ); ?>">
+                            <?php echo esc_html( $data['name'] ); ?>
+                        </button>
+                    <?php endforeach; ?>
+                </div>
 
                 <?php
+                // Dotaz na všechny Denní kapky
                 $args = array(
                     'post_type' => 'denni_kapka',
                     'posts_per_page' => -1,
                     'orderby' => 'date',
-                    'order' => 'DESC',
+                    'order' => 'DESC', // Od nejnovějších
                 );
                 $citaty_query = new WP_Query( $args );
 
                 if ( $citaty_query->have_posts() ) : ?>
                     <div id="citat-list">
-                        <?php while ( $citaty_query->have_posts() ) : $citaty_query->the_post(); ?>
-                            <?php
-                            // APLIKUJEME FILTRY PRO ZACHOVÁNÍ ŘÁDKOVÁNÍ
-                            $p_content = apply_filters('the_content', get_the_content());
+                        <?php 
+                        // Projdeme všechny Denní kapky
+                        while ( $citaty_query->have_posts() ) : $citaty_query->the_post();
+                            $post_id = get_the_ID();
 
-                            if ( !empty( trim( $p_content ) ) ) :
-                                $papez_terms = get_the_terms( get_the_ID(), 'papez' );
-                                $papez_classes = '';
-                                if ( $papez_terms && ! is_wp_error( $papez_terms ) ) {
-                                    foreach( $papez_terms as $term ) {
-                                        $papez_classes .= $term->slug . ' ';
-                                    }
+                            // Pro každou Denní kapku projdeme všechny definované autory
+                            foreach ($autori as $slug => $autor_data) {
+                                $meta_key = $autor_data['meta_key'];
+                                $citat_text = get_post_meta($post_id, $meta_key, true);
+
+                                // Pokud pro daného autora existuje citát, zobrazíme ho
+                                if ( !empty( trim( $citat_text ) ) ) {
+                                    // Vytvoříme unikátní ID pro každý citát (kombinace ID příspěvku a slug autora)
+                                    $quote_id = 'quote-' . $post_id . '-' . $slug;
+                                    ?>
+                                    <div class="citat-item <?php echo esc_attr( $slug ); ?>" id="<?php echo esc_attr($quote_id); ?>">
+                                        
+                                        <blockquote class="citat-text">
+                                            <?php echo wpautop( esc_html( $citat_text ) ); // wpautop pro zachování řádkování ?>
+                                        </blockquote>
+                                        
+                                        <footer class="citat-item-footer">
+                                            <button class="archive-favorite-btn" data-id="<?php echo esc_attr($quote_id); ?>" aria-label="Přidat do oblíbených">
+                                                <i class="fa fa-star-o"></i>
+                                            </button>
+                                            <span class="citat-author"><?php echo esc_html( $autor_data['name'] ); ?></span>
+                                        </footer>
+
+                                    </div>
+                                    <?php
                                 }
-                                $quote_id = 'quote-' . get_the_ID();
-                                ?>
-                                <div class="citat-item <?php echo esc_attr( $papez_classes ); ?>" id="<?php echo esc_attr($quote_id); ?>">
-                                    <blockquote class="citat-text">
-                                        <?php echo $p_content; ?>
-                                    </blockquote>
-                                    
-                                    <footer class="citat-item-footer">
-                                        <button class="archive-favorite-btn" data-id="<?php echo esc_attr($quote_id); ?>" aria-label="Přidat do oblíbených">
-                                            <i class="fa fa-star-o"></i>
-                                        </button>
-                                        <?php if ($papez_terms) : ?>
-                                            <span class="citat-author"><?php echo esc_html( $papez_terms[0]->name ); ?></span>
-                                        <?php endif; ?>
-                                    </footer>
-                                </div>
-                            <?php
-                            endif;
+                            }
                         endwhile;
                         ?>
                     </div>

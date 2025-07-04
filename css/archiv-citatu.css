@@ -56,6 +56,8 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
+    width: 100%; /* << NOVĚ PŘIDÁNO: Box zabere celou dostupnou šířku */
+    box-sizing: border-box; /* << NOVĚ PŘIDÁNO: Správný výpočet šířky vč. paddingu a borderu */
 }
 
 /* === OPRAVA: Zmenšení mezer mezi řádky v citátu === */
