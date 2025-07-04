@@ -24,15 +24,17 @@ nav#primary-site-navigation {
     margin-left: 2%;
 }
 
-/* === Úprava velikosti hlavního nadpisu webu pro PC === */
-.site-branding .site-title {
-    font-size: 27px; /* Původní velikost 48px je příliš velká, zde ji zmenšujeme */
-    margin: 0px 0;  /* Můžeme přidat trochu prostoru kolem nadpisu */
+/* === NOVÁ ÚPRAVA: Zarovnání ikon menu a titulku na PC === */
+.site-branding {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
 }
 
-/* === Úprava šířky a centrování boxu s titulkem pro PC === */
-
-.site-branding {
-    width: 100%;           /* Nastaví šířku na 30% rodičovského prvku */
-   
+.site-branding .site-title {
+    flex-grow: 1; /* Titulek zabere všechen volný prostor a vycentruje se */
+    text-align: center;
+    font-size: 27px;
+    margin: 0;
 }
