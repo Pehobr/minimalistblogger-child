@@ -1,4 +1,4 @@
-/* Styly pro stránku Prezentace (verze s tlačítkem) */
+/* Styly pro stránku Prezentace (verze se seznamem) */
 
 .page-template-page-prezentace-php #secondary {
     display: none;
@@ -16,7 +16,11 @@
     box-shadow: none !important;
 }
 
-.presentation-link-container {
+/* === ZMĚNA ZDE: Přidán styl pro kontejner seznamu, který vytvoří mezery === */
+.presentation-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 7px; /* Toto pravidlo vytvoří mezeru 15px mezi jednotlivými boxy */
     padding-top: 20px;
     padding-bottom: 20px;
 }
