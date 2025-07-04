@@ -43,7 +43,7 @@ $grid_items = [
     ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt', 'label' => 'Benedikt', 'type' => 'text'],
     ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_frantisek', 'label' => 'František', 'type' => 'text'],
     ['name' => 'Sv. Augustin', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-augustin.png', 'citat_key' => 'citat_augustin', 'label' => 'Augustin', 'type' => 'text'],
-    ['name' => 'Papež Lev XIII.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev', 'label' => 'Lev XIII.', 'type' => 'text'],
+    ['name' => 'Papež Lev XIV.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev', 'label' => 'Lev XIV.', 'type' => 'text'],
     ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'modlitba_text', 'audio_key' => 'modlitba_url', 'label' => 'Modlitba', 'type' => 'text'],
     ['name' => 'Bible', 'slug' => 'citaty', 'icon' => 'ikona-bible.png', 'citat_key' => 'audio_bible_url', 'label' => 'Bible', 'type' => 'audio'],
     ['name' => 'Inspirace', 'slug' => 'svatost', 'icon' => 'ikona-inspirace.png', 'citat_key' => 'video_inspirace_embed', 'label' => 'Inspirace', 'type' => 'video'],
@@ -124,7 +124,7 @@ foreach ($grid_items as $item) {
                 }
                 ?>
                 <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-augustin.png'); ?>" alt="Erb Augustiniánů" id="erb-augustin" class="grid-erb">
-                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Erb Papeže Lva XIII." id="erb-lev" class="grid-erb">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Erb Papeže Lva XIV." id="erb-lev" class="grid-erb">
             </div>
         </div>
     </main>

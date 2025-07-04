@@ -134,9 +134,10 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
             </a>
         </li>
         <li>
-            <a href="<?php echo esc_url( home_url('/informace/') ); ?>" aria-label="Informace">
-                <i class="fa fa-info-circle" aria-hidden="true"></i>
-                <span>Info</span>
+            <?php // ZMĚNA: Odkaz, ikona a text pro Zápisník ?>
+            <a href="<?php echo esc_url( home_url('/zapisnik/') ); ?>" aria-label="Zápisník">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+                <span>Zápisník</span>
             </a>
         </li>
     </ul>
