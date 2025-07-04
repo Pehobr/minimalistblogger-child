@@ -8,7 +8,7 @@
     color: #3b0f5d;
     font-size: 24px;
     cursor: pointer;
-    padding: 5px 10px; /* Zvětšený padding pro snadnější kliknutí */
+    padding: 5px 5px; /* Zvětšený padding pro snadnější kliknutí */
     line-height: 1;
     z-index: 100;
     /* Následující řádky zajistí, že ikona bude mít fixní šířku a nebude se natahovat */
