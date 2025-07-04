@@ -1,0 +1,140 @@
+/*
+ * Styly pro stránku Podcastu (page-podcast.php)
+ */
+
+/* === ZÁKLADNÍ ROZLOŽENÍ === */
+.page-template-page-podcast #secondary {
+    display: none;
+}
+.page-template-page-podcast #primary {
+    width: 100%;
+    margin: 0;
+}
+.page-podcast .entry-title {
+    display: none;
+}
+.page-podcast .entry-content {
+    padding: 0 !important;
+}
+
+/* === SEZNAM EPIZOD === */
+.podcast-episode-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+.podcast-episode {
+    background-color: #e6e0f3;
+    border: 2px solid #3b0f5d;
+    border-radius: 8px;
+    padding: 7px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* === VZHLED JEDNOTLIVÉ EPIZODY === */
+.episode-title {
+    font-family: 'Superclarendon', serif;
+    font-size: 1.3rem;
+    color: #870e2c;
+    margin: 0 0 5px 0; /* ZMĚNA: Snížena mezera pod nadpisem */
+    text-align: center !important;
+}
+.episode-notes {
+    margin-top: 0px;
+}
+.episode-notes p:first-child {
+    margin-top: 0;
+}
+.episode-notes p:last-child {
+    margin-bottom: 0;
+}
+
+/* === VZHLED VLASTNÍHO AUDIO PŘEHRÁVAČE === */
+.podcast-player {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 0 10px 0; /* ZMĚNA: Odstraněna horní mezera */
+}
+.pp-top-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 15px;
+}
+/* ZMĚNA: Tlačítko Play/Pause bez kruhu */
+.pp-play-pause-btn {
+    flex-shrink: 0;
+    width: auto; /* Automatická šířka */
+    height: auto; /* Automatická výška */
+    background-color: transparent;
+    border: none; /* Odstraněn rámeček */
+    color: #3b0f5d;
+    border-radius: 0;
+    font-size: 28px; /* Zvětšena ikona pro lepší klikatelnost */
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.2s ease, color 0.2s ease;
+    padding: 0;
+}
+.pp-play-pause-btn:hover {
+    color: #870e2c;
+    transform: scale(1.1);
+}
+.pp-play-pause-btn .fa-pause {
+    padding-left: 0;
+}
+.pp-time-display {
+    display: flex;
+    align-items: center;
+    font-family: 'Superclarendon', serif;
+    font-weight: bold;
+    font-size: 14px;
+    color: #3b0f5d;
+    gap: 4px;
+}
+.pp-slider-wrapper {
+    width: 100%;
+    height: 15px;
+    display: flex;
+    align-items: center;
+}
+/* ZMĚNA: Zajištění správné výšky lišty */
+.podcast-player .pp-seek-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 7px;
+    background: #9d87ae;
+    outline: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.podcast-player .pp-seek-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #3b0f5d;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    margin-top: -4px;
+}
+.podcast-player .pp-seek-slider::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #3b0f5d;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+input[type=range], textarea {
+    color: #666;
+    border: 1px solid #e5e6e9;
+    padding: 0px;
+}

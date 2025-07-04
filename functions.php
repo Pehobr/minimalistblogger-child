@@ -295,3 +295,28 @@ add_action( 'wp_enqueue_scripts', 'enqueue_zapisnik_assets' );
 
 // --- Načtení logiky pro odesílání e-mailů ---
 require_once( get_stylesheet_directory() . '/ecomail-sender.php' );
+
+/**
+ * Načtení stylů a skriptů pro stránku Podcastu.
+ */
+function enqueue_podcast_assets() {
+    if ( is_page_template( 'page-podcast.php' ) ) {
+        // Načtení CSS
+        wp_enqueue_style(
+            'page-podcast-style',
+            get_stylesheet_directory_uri() . '/css/page-podcast.css',
+            array(),
+            wp_get_theme()->get('Version')
+        );
+
+        // Načtení JavaScriptu
+        wp_enqueue_script(
+            'page-podcast-script',
+            get_stylesheet_directory_uri() . '/js/page-podcast.js',
+            array( 'jquery' ), // Závislost na jQuery
+            wp_get_theme()->get('Version'),
+            true // Načíst v patičce
+        );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_podcast_assets' );
