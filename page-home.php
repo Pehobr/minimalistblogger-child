@@ -2,43 +2,27 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah.
- * VERZE 11: Doplnění popisků pod ikony bez boxu.
+ * VERZE 13: Vytvořen společný rámeček pro citáty papežů.
  * @package minimalistblogger-child
  */
 
 get_header();
 
 // --- Logika pro načítání denního obsahu ---
-
 $page_id_for_defaults = get_the_ID();
 $quotes = [];
 $nazev_dne = '';
 $datum_dne = '';
-$daily_post_id = null; // Inicializace pro případ, že se nenajde denní kapka
-
-// Načtení startovního data z nastavení WordPressu
-$start_date_str = get_option( 'start_date_setting', '2026-02-18' );
-
+$daily_post_id = null;
+$start_date_str = get_option('start_date_setting', '2026-02-18');
 try {
     $start_date = new DateTime($start_date_str, new DateTimeZone('Europe/Prague'));
     $today = new DateTime('today', new DateTimeZone('Europe/Prague'));
-    
-    // Zobrazíme obsah, pouze pokud je dnešní datum větší nebo rovno startovnímu datu
     if ($today >= $start_date) {
         $interval = $start_date->diff($today);
         $day_offset = $interval->days;
-
-        // Dotaz na nalezení správného příspěvku typu 'denni_kapka'
-        $args = array(
-            'post_type' => 'denni_kapka',
-            'post_status' => 'publish',
-            'posts_per_page' => 1,
-            'offset' => $day_offset,
-            'orderby' => 'date',
-            'order' => 'ASC',
-        );
+        $args = ['post_type' => 'denni_kapka', 'post_status' => 'publish', 'posts_per_page' => 1, 'offset' => $day_offset, 'orderby' => 'date', 'order' => 'ASC'];
         $daily_query = new WP_Query($args);
-
         if ($daily_query->have_posts()) {
             while ($daily_query->have_posts()) {
                 $daily_query->the_post();
@@ -50,7 +34,6 @@ try {
         }
     }
 } catch (Exception $e) {
-    // V případě chyby s datem se nepřiřadí žádný denní příspěvek
     $daily_post_id = null;
 }
 
@@ -70,42 +53,20 @@ $grid_items = [
 foreach ($grid_items as $item) {
     if (isset($item['citat_key'])) {
         $citat_key = $item['citat_key'];
-        // Pokud máme ID denní kapky, použijeme ho. Jinak se použijí výchozí hodnoty ze stránky.
         $source_post_id = $daily_post_id ?? $page_id_for_defaults;
-
-        // Speciální logika pro "Modlitbu", která má text i audio
         if (isset($item['audio_key'])) {
             $audio_key = $item['audio_key'];
             $text_content = get_post_meta($source_post_id, $citat_key, true);
             $audio_url = get_post_meta($source_post_id, $audio_key, true);
-            
             $combined_content = '';
             if (!empty($text_content)) {
-                $combined_content = wpautop($text_content); // Formátuje text do odstavců
-                
-                // Pokud je k dispozici URL audia, přidá se vlastní audio přehrávač
+                $combined_content = wpautop($text_content);
                 if (!empty($audio_url)) {
-                    $combined_content .= '
-                        <div class="modal-audio-player" data-audio-src="' . esc_url($audio_url) . '">
-                            <div class="map-top-row">
-                                <button class="map-play-pause-btn" aria-label="Přehrát / Pauza">
-                                    <i class="fa fa-play" aria-hidden="true"></i>
-                                </button>
-                                <div class="map-time-display">
-                                    <span class="map-current-time">0:00</span>
-                                    <span class="map-time-divider">/</span>
-                                    <span class="map-duration">0:00</span>
-                                </div>
-                            </div>
-                            <div class="map-slider-wrapper">
-                                <input type="range" class="map-seek-slider" value="0" min="0" max="100" step="0.1">
-                            </div>
-                        </div>';
+                    $combined_content .= '<div class="modal-audio-player" data-audio-src="' . esc_url($audio_url) . '"><div class="map-top-row"><button class="map-play-pause-btn" aria-label="Přehrát / Pauza"><i class="fa fa-play" aria-hidden="true"></i></button><div class="map-time-display"><span class="map-current-time">0:00</span><span class="map-time-divider">/</span><span class="map-duration">0:00</span></div></div><div class="map-slider-wrapper"><input type="range" class="map-seek-slider" value="0" min="0" max="100" step="0.1"></div></div>';
                 }
             }
             $quotes[$citat_key] = $combined_content;
         } else {
-            // Standardní logika pro ostatní dlaždice
             $quotes[$citat_key] = get_post_meta($source_post_id, $citat_key, true);
         }
     }
@@ -116,44 +77,54 @@ foreach ($grid_items as $item) {
     <main id="main" class="site-main">
         <div id="intro-wrapper">
             
-            <?php if ( ! empty( $nazev_dne ) || ! empty( $datum_dne ) ) : ?>
+            <?php if (!empty($nazev_dne) || !empty($datum_dne)): ?>
                 <div id="daily-info-container">
-                    <?php if ( ! empty( $nazev_dne ) ) : ?>
-                        <h2 id="daily-info-title"><?php echo esc_html( $nazev_dne ); ?></h2>
-                    <?php endif; ?>
-                    <?php if ( ! empty( $datum_dne ) ) : ?>
-                        <p id="daily-info-date"><?php echo esc_html( $datum_dne ); ?></p>
-                    <?php endif; ?>
+                    <?php if (!empty($nazev_dne)): ?><h2 id="daily-info-title"><?php echo esc_html($nazev_dne); ?></h2><?php endif; ?>
+                    <?php if (!empty($datum_dne)): ?><p id="daily-info-date"><?php echo esc_html($datum_dne); ?></p><?php endif; ?>
                 </div>
             <?php endif; ?>
             
+            <div class="pope-section-container">
+                <h3 class="pope-quotes-title">Citáty našich papežů</h3>
+                <div class="pope-images-wrapper">
+                    <?php
+                    // Ruční vykreslení prvních 3 položek (papežů) pro flexbox
+                    for ($i = 0; $i < 3; $i++) {
+                        $item = $grid_items[$i];
+                        $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
+                        $has_content = !empty($content_html);
+                        $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/');
+                        ?>
+                        <div class="pope-item">
+                            <a href="<?php echo esc_url($link_url); ?>" class="pope-icon-link" <?php if ($has_content): ?>data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>" data-type="<?php echo esc_attr($item['type']); ?>" data-author-name="<?php echo esc_attr($item['name']); ?>"<?php endif; ?>>
+                                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
+                            </a>
+                            <span class="grid-item-label"><?php echo esc_html($item['label']); ?></span>
+                        </div>
+                        <?php
+                    }
+                    ?>
+                </div>
+            </div>
+
             <div id="intro-grid-container">
                 <?php
-                foreach ($grid_items as $index => $item) :
-                    $content_html = isset($item['citat_key'], $quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
+                // Vykreslení zbývajících položek (od 4. dále) do původní CSS mřížky
+                for ($i = 3; $i < count($grid_items); $i++) {
+                    $item = $grid_items[$i];
+                    $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
                     $has_content = !empty($content_html);
                     $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/');
-                    
-                    // Logika, která přidá třídu .image-only prvním pěti položkám
-                    $is_image_only = $index < 5;
-                    $wrapper_class = 'grid-item-wrapper' . ($is_image_only ? ' image-only' : '');
-                ?>
-                    <div class="<?php echo esc_attr($wrapper_class); ?>">
-                        <a href="<?php echo esc_url($link_url); ?>"
-                           class="icon-grid-item"
-                           <?php if ($has_content) : ?>
-                               data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>"
-                               data-type="<?php echo esc_attr($item['type']); ?>"
-                               data-author-name="<?php echo esc_attr($item['name']); ?>"
-                           <?php endif; ?>
-                        >
+                    ?>
+                    <div class="grid-item-wrapper">
+                        <a href="<?php echo esc_url($link_url); ?>" class="icon-grid-item" <?php if ($has_content): ?>data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>" data-type="<?php echo esc_attr($item['type']); ?>" data-author-name="<?php echo esc_attr($item['name']); ?>"<?php endif; ?>>
                             <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
                         </a>
-                        <?php // Podmínka pro zobrazení popisku byla odstraněna, zobrazí se vždy ?>
                         <span class="grid-item-label"><?php echo esc_html($item['label']); ?></span>
                     </div>
-                <?php endforeach; ?>
-
+                    <?php
+                }
+                ?>
                 <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-augustin.png'); ?>" alt="Erb Augustiniánů" id="erb-augustin" class="grid-erb">
                 <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Erb Papeže Lva XIII." id="erb-lev" class="grid-erb">
             </div>
@@ -167,23 +138,8 @@ foreach ($grid_items as $item) {
         if (isset($item['citat_key'])) {
             $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
             if (!empty($content_html)) :
-                // Definice povolených HTML tagů a atributů pro bezpečné vypsání
-                $allowed_html = [
-                    'p' => ['style' => []], 'em' => [], 'strong' => [], 'br' => [],
-                    'iframe' => ['width' => [], 'height' => [], 'src' => [], 'title' => [], 'frameborder' => [], 'allow' => [], 'allowfullscreen' => [], 'referrerpolicy' => []],
-                    // Povolené tagy pro vlastní audio přehrávač
-                    'div' => ['class' => [], 'data-audio-src' => []],
-                    'button' => ['class' => [], 'aria-label' => []],
-                    'i' => ['class' => [], 'aria-hidden' => []],
-                    'span' => ['class' => [], 'style' => []],
-                    'input' => ['type' => [], 'class' => [], 'value' => [], 'min' => [], 'max' => [], 'step' => []],
-                    // Ponecháno pro standardní audio (např. Bible)
-                    'audio' => ['controls' => [], 'src' => [], 'style' => []]
-                ];
-                
+                $allowed_html = ['p' => ['style' => []], 'em' => [], 'strong' => [], 'br' => [], 'iframe' => ['width' => [], 'height' => [], 'src' => [], 'title' => [], 'frameborder' => [], 'allow' => [], 'allowfullscreen' => [], 'referrerpolicy' => []], 'div' => ['class' => [], 'data-audio-src' => []], 'button' => ['class' => [], 'aria-label' => []], 'i' => ['class' => [], 'aria-hidden' => []], 'span' => ['class' => [], 'style' => []], 'input' => ['type' => [], 'class' => [], 'value' => [], 'min' => [], 'max' => [], 'step' => []], 'audio' => ['controls' => [], 'src' => [], 'style' => []]];
                 $modal_content = $content_html;
-
-                // Zvláštní ošetření pro standardní audio
                 if ($item['type'] === 'audio' && $item['citat_key'] !== 'modlitba_text') {
                     $modal_content = '<audio controls src="' . esc_url($content_html) . '">Váš prohlížeč nepodporuje přehrávání audia.</audio>';
                 }

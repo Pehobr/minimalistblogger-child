@@ -8,7 +8,6 @@ jQuery(document).ready(function($) {
     const favoriteBtn = $('#quote-modal-favorite-btn');
     const favoriteIcon = favoriteBtn.find('i');
     
-    // OPRAVA 1: Používá se správný klíč 'pehobr_favorite_quotes'
     const favoritesStorageKey = 'pehobr_favorite_quotes';
     let favorites = JSON.parse(localStorage.getItem(favoritesStorageKey)) || [];
     let currentQuoteId = null;
@@ -19,13 +18,11 @@ jQuery(document).ready(function($) {
     }
 
     function saveFavorites() {
-        // OPRAVA 1: Ukládá se pod správným klíčem
         localStorage.setItem(favoritesStorageKey, JSON.stringify(favorites));
     }
 
     function addFavorite(quoteId, author, content) {
         if (!isFavorite(quoteId)) {
-            // Vytvoříme objekt, který bude obsahovat i autora pro konzistenci
             favorites.push({ id: quoteId, author: author, content: content });
             saveFavorites();
         }
@@ -83,7 +80,10 @@ jQuery(document).ready(function($) {
         modalOverlay.fadeOut(250);
     }
 
-    $('.icon-grid-item').on('click', function(e) {
+    // === OPRAVA ZDE ===
+    // Skript nyní naslouchá kliknutí na obě třídy odkazů - původní .icon-grid-item
+    // i novou .pope-icon-link pro tři papeže v rámečku.
+    $('.icon-grid-item, .pope-icon-link').on('click', function(e) {
         const targetId = $(this).data('target-id');
         if (targetId) {
             e.preventDefault();
@@ -106,7 +106,6 @@ jQuery(document).ready(function($) {
         }
     });
 
-    // OPRAVA 2: Ukládání obsahu ve správné HTML struktuře
     favoriteBtn.on('click', function() {
         if (currentQuoteId) {
             if (isFavorite(currentQuoteId)) {
@@ -117,8 +116,6 @@ jQuery(document).ready(function($) {
                 const rawQuoteHtml = modalContent.html();
                 const authorName = currentAuthorName;
 
-                // Sestavení finálního obsahu ve formátu,
-                // který očekává stránka s oblíbenými texty.
                 const finalContent = `
                     <blockquote class="citat-text">
                         ${rawQuoteHtml}
@@ -127,8 +124,6 @@ jQuery(document).ready(function($) {
                         <span class="citat-author">${authorName}</span>
                     </footer>
                 `;
-
-                // Uložení nově sestaveného obsahu
                 addFavorite(currentQuoteId, authorName, finalContent);
                 
                 favoriteIcon.removeClass('fa-star-o').addClass('fa-star');
