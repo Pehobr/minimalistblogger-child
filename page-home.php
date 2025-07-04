@@ -130,6 +130,8 @@ foreach ($grid_items as $item) {
     </main>
 </div>
 
+<?php get_sidebar(); ?>
+
 <div id="hidden-quotes-container" style="display: none; visibility: hidden;">
     <?php
     foreach ($grid_items as $item) :
