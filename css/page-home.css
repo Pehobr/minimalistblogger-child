@@ -87,7 +87,7 @@ header#masthead.sheader { z-index: 999; }
     width: 90%; max-width: 500px; max-height: 85vh;
     background-color: #e6e0f3; border: 2px solid #3b0f5d; border-radius: 12px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-    padding: 45px 25px 25px 25px; z-index: 10002; box-sizing: border-box;
+    padding: 50px 15px 15px 15px; z-index: 10002; box-sizing: border-box;
 }
 
 .quote-modal-content {
@@ -109,7 +109,7 @@ header#masthead.sheader { z-index: 999; }
     line-height: 1; color: #3b0f5d; cursor: pointer; padding: 0; z-index: 10;
 }
 .quote-modal-close-btn { top: 10px; right: 15px; font-size: 32px; }
-.quote-modal-favorite-btn { top: 12px; left: 15px; font-size: 26px; transition: color 0.2s ease, transform 0.2s ease; }
+.quote-modal-favorite-btn { top: 12px; left: 15px; font-size: 23px; transition: color 0.2s ease, transform 0.2s ease; }
 .quote-modal-favorite-btn:hover { transform: scale(1.1); }
 .quote-modal-favorite-btn.is-favorite .fa { font-family: "FontAwesome"; font-weight: 900; color: #ffc107; }
 
