@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah.
- * VERZE 9: Implementován dvouřádkový minimalistický přehrávač.
+ * VERZE 11: Doplnění popisků pod ikony bez boxu.
  * @package minimalistblogger-child
  */
 
@@ -132,9 +132,11 @@ foreach ($grid_items as $item) {
                 foreach ($grid_items as $index => $item) :
                     $content_html = isset($item['citat_key'], $quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
                     $has_content = !empty($content_html);
+                    $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/');
+                    
+                    // Logika, která přidá třídu .image-only prvním pěti položkám
                     $is_image_only = $index < 5;
                     $wrapper_class = 'grid-item-wrapper' . ($is_image_only ? ' image-only' : '');
-                    $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/');
                 ?>
                     <div class="<?php echo esc_attr($wrapper_class); ?>">
                         <a href="<?php echo esc_url($link_url); ?>"
@@ -147,9 +149,8 @@ foreach ($grid_items as $item) {
                         >
                             <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
                         </a>
-                        <?php if (!$is_image_only) : ?>
+                        <?php // Podmínka pro zobrazení popisku byla odstraněna, zobrazí se vždy ?>
                         <span class="grid-item-label"><?php echo esc_html($item['label']); ?></span>
-                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
 
