@@ -1,9 +1,10 @@
 <?php
-// Registrace nové pozice pro mobilní menu
+// Registrace nových pozic pro mobilní menu
 function register_mobile_menu_location() {
     register_nav_menus(
         array(
-            'mobile_extra_menu' => __( 'Extra mobilní menu', 'minimalistblogger-child' ),
+            'mobile_extra_menu' => __( 'Pravé mobilní menu', 'minimalistblogger-child' ),
+            'left_mobile_menu'  => __( 'Levé mobilní menu', 'minimalistblogger-child' ),
         )
     );
 }
@@ -79,6 +80,14 @@ function minimalistblogger_child_enqueue_assets() {
         wp_enqueue_script( 'minimalistblogger-page-radia-js', get_stylesheet_directory_uri() . '/js/page-radia.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/page-radia.js' ), true );
         wp_localize_script( 'minimalistblogger-page-radia-js', 'radio_page_settings', array( 'template_url' => get_stylesheet_directory_uri() ) );
     }
+
+    // Načtení stylů a skriptů pro LEVÉ mobilní menu
+if (file_exists(get_stylesheet_directory() . '/css/left-mobile-menu.css')) {
+    wp_enqueue_style( 'minimalistblogger-left-mobile-menu-css', get_stylesheet_directory_uri() . '/css/left-mobile-menu.css', array(), filemtime( get_stylesheet_directory() . '/css/left-mobile-menu.css' ) );
+}
+if (file_exists(get_stylesheet_directory() . '/js/left-mobile-menu.js')) {
+    wp_enqueue_script( 'minimalistblogger-left-mobile-menu-js', get_stylesheet_directory_uri() . '/js/left-mobile-menu.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/left-mobile-menu.js' ), true );
+}
 }
 add_action( 'wp_enqueue_scripts', 'minimalistblogger_child_enqueue_assets', 20 );
 

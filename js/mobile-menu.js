@@ -6,7 +6,7 @@ jQuery(document).ready(function($) {
     // 1. Vytvoření ikony a její vložení do hlavičky
     // Cílíme na .site-branding, což je box s názvem aplikace
     const menuIconHTML = '<button id="menu-open-btn" aria-label="Otevřít menu"><i class="fa fa-bars"></i></button>';
-    $('.site-branding').first().css('position', 'relative').prepend(menuIconHTML);
+    $('.site-branding').first().css('position', 'relative').append(menuIconHTML);
 
     // 2. Selekce všech potřebných prvků menu
     const menuPanel = $('#mobile-menu-panel');

@@ -1,0 +1,67 @@
+/* === STYLY PRO LEVÉ VYSOUVACÍ MOBILNÍ MENU (OPRAVA CENTROVÁNÍ) === */
+
+/* --- Ikona pro otevření levého menu (hamburger) --- */
+#left-menu-open-btn {
+    /* Odebrali jsme absolutní pozicování, ikona je nyní součástí toku stránky. */
+    background: none;
+    border: none;
+    color: #3b0f5d;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px 10px; /* Zvětšený padding pro snadnější kliknutí */
+    line-height: 1;
+    z-index: 100;
+    /* Následující řádky zajistí, že ikona bude mít fixní šířku a nebude se natahovat */
+    flex-shrink: 0;
+    width: 44px; /* Fixní šířka (24px ikona + 20px padding) */
+}
+#left-menu-open-btn:hover {
+    color: #870e2c;
+}
+
+/* --- Panel s levým menu (beze změny) --- */
+#left-mobile-menu-panel {
+    position: fixed;
+    top: 0;
+    left: -320px;
+    width: 300px;
+    max-width: 85%;
+    height: 100%;
+    background-color: #e6e0f3;
+    z-index: 10003;
+    transition: left 0.3s ease-in-out;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+}
+#left-mobile-menu-panel.is-open {
+    left: 0;
+}
+
+/* --- Překryvná vrstva (beze změny) --- */
+#left-mobile-menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10002;
+}
+#left-mobile-menu-overlay.is-visible {
+    display: block;
+}
+
+/* Hlavička a obsah panelu (beze změny) */
+#left-mobile-menu-panel .mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #cfc9da;
+    border-bottom: 1px solid #dcd7e9;
+    flex-shrink: 0;
+}
+#left-mobile-menu-panel .mobile-menu-header h2 { margin: 0; font-size: 18px; color: #3b0f5d; }
+#left-mobile-menu-panel .mobile-menu-close-btn { background: none; border: none; font-size: 32px; cursor: pointer; color: #3b0f5d; line-height: 1; }

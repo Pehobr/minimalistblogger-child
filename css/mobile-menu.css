@@ -2,18 +2,18 @@
 
 /* --- Ikona pro otevření menu (hamburger) --- */
 #menu-open-btn {
-    position: absolute;
-    top: 50%;
-    right: 15px;
-    transform: translateY(-50%);
+    /* Odebrali jsme absolutní pozicování */
     background: none;
     border: none;
     color: #3b0f5d;
     font-size: 24px;
     cursor: pointer;
-    padding: 5px;
+    padding: 5px 10px;
     line-height: 1;
     z-index: 100;
+    /* Následující řádky zajistí, že ikona bude mít fixní šířku */
+    flex-shrink: 0;
+    width: 44px;
 }
 #menu-open-btn:hover {
     color: #870e2c;

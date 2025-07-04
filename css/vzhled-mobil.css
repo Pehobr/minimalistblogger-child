@@ -28,10 +28,18 @@
 /* Pravidla pro obrazovky do 700px (převážně mobily) */
 @media screen and (max-width: 700px) {
     
-    /* === NOVÁ ÚPRAVA: Zarovnání titulku vlevo === */
-    .site-branding {
-        text-align: left; /* Přepíše původní 'center' na 'left' */
-    }
+    /* === NOVÁ ÚPRAVA: Vycentrování titulku pomocí Flexboxu === */
+.site-branding {
+    display: flex; /* Použijeme Flexbox */
+    align-items: center; /* Vertikálně zarovná ikony a titulek */
+    justify-content: space-between; /* Rozmístí prvky od sebe */
+    text-align: center; /* Toto zajistí, že titulek bude vycentrovaný */
+}
+
+/* Zajistíme, aby se titulek roztáhl a vyplnil prostor mezi ikonami */
+.site-branding .site-title {
+    flex-grow: 1; /* Titulek zabere všechen volný prostor */
+}
     
     /* ODSAZENÍ OBSAHU */
     article .entry-content {

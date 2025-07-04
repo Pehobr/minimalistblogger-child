@@ -141,6 +141,29 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
     </ul>
 </nav>
 
+<div id="left-mobile-menu-overlay" class="mobile-menu-overlay"></div>
+<div id="left-mobile-menu-panel" class="mobile-menu-panel">
+    <div class="mobile-menu-header">
+        <h2>Menu</h2>
+        <button id="left-mobile-menu-close-btn" class="mobile-menu-close-btn">&times;</button>
+    </div>
+    <div class="mobile-menu-content">
+        <?php
+        if ( has_nav_menu( 'left_mobile_menu' ) ) {
+            wp_nav_menu(
+                array(
+                    'theme_location' => 'left_mobile_menu',
+                    'container'      => false,
+                    'menu_class'     => 'mobile-menu-ul',
+                )
+            );
+        } else {
+            echo '<p>Vytvořte a přiřaďte menu k pozici "Levé mobilní menu".</p>';
+        }
+        ?>
+    </div>
+</div>
+
 <div id="mobile-menu-main-overlay" class="mobile-menu-overlay"></div>
 <div id="mobile-menu-panel" class="mobile-menu-panel">
     <div class="mobile-menu-header">
@@ -158,7 +181,7 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
                 )
             );
         } else {
-            echo '<p>Vytvořte a přiřaďte menu k pozici "Extra mobilní menu".</p>';
+            echo '<p>Vytvořte a přiřaďte menu k pozici "Pravé mobilní menu".</p>';
         }
         ?>
     </div>
