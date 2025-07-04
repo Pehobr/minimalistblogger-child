@@ -53,7 +53,6 @@
 
 <?php 
 // --- OPRAVA: Zobrazení panelů pouze tam, kde jsou potřeba ---
-// Podmínka nyní přesně odpovídá stránkám, které načítají příslušné skripty.
 if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 'page-home.php', 'page-radio.php')) ) : 
 ?>
     <div id="settings-overlay" class="settings-overlay"></div>
@@ -73,7 +72,6 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
         </div>
     </div>
 
-    <?php // Panel pro přidání rádia, jehož funkčnost je nyní řízena skriptem `page-radia.js` a zobrazuje se jen tam. ?>
     <?php if ( is_page_template('page-radio.php') ) : ?>
         <div id="add-radio-overlay" class="settings-overlay"></div>
         <div id="add-radio-panel" class="settings-panel">
@@ -103,7 +101,7 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
         </div>
     <?php endif; ?>
 
-<?php endif; // --- KONEC PODMÍNKY --- ?>
+<?php endif; ?>
 
 
 <nav class="bottom-nav-bar">
@@ -116,9 +114,10 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
         </li>
         
         <li>
-            <a href="<?php echo esc_url( home_url('/krestanska-radia/') ); ?>" aria-label="Rádia">
-                <i class="fa fa-headphones" aria-hidden="true"></i>
-                <span>Rádia</span>
+            <?php // ZMĚNA: Ikona a odkaz pro Prezentace ?>
+            <a href="<?php echo esc_url( home_url('/prezentace/') ); ?>" aria-label="Prezentace">
+                <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                <span>Prezentace</span>
             </a>
         </li>
         <li>
@@ -128,13 +127,12 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
             </a>
         </li>
         <li>
-            <a href="<?php echo esc_url( home_url('/liturgicke-cteni/') ); ?>" aria-label="Biblické texty">
-                <i class="fa fa-book" aria-hidden="true"></i>
-                <span>Text</span>
+            <a href="<?php echo esc_url( home_url('/podcast/') ); ?>" aria-label="Podcast">
+                <i class="fa fa-podcast" aria-hidden="true"></i>
+                <span>Podcast</span>
             </a>
         </li>
         <li>
-            <?php // ZMĚNA: Odkaz, ikona a text pro Zápisník ?>
             <a href="<?php echo esc_url( home_url('/zapisnik/') ); ?>" aria-label="Zápisník">
                 <i class="fa fa-pencil" aria-hidden="true"></i>
                 <span>Zápisník</span>
