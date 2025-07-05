@@ -54,19 +54,15 @@
     color: #870e2c;
 }
 
-/* === ZMĚNA ZDE: Povolení zalamování textu === */
+/* === ZMĚNA ZDE: Zobrazení celého názvu === */
 .player-video-title {
     margin: 0 0 10px 0;
     font-size: 1rem;
     color: #3b0f5d;
     font-weight: bold;
-    line-height: 1.3;
-    min-height: 2.6em; /* Rezervuje místo pro dva řádky */
-    white-space: normal; /* Povolí zalamování */
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    line-height: 1.4;
+    white-space: normal; /* Povolí zalamování na libovolný počet řádků */
+    word-break: break-word;
 }
 
 .player-controls {
