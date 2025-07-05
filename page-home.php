@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah.
- * VERZE 14: Upraven layout a styl pro denní nadpis a datum.
+ * VERZE 15: Oprava zobrazení názvu dne a data.
  * @package minimalistblogger-child
  */
 
@@ -14,6 +14,8 @@ $quotes = [];
 $nazev_dne = '';
 $datum_dne = '';
 $daily_post_id = null;
+
+// --- ÚPRAVA: Načteme obsah podle data, ale pokud pro daný den nic není (např. před startem), zobrazíme nejnovější příspěvek jako zástupný. ---
 $start_date_str = get_option('start_date_setting', '2026-02-18');
 try {
     $start_date = new DateTime($start_date_str, new DateTimeZone('Europe/Prague'));
@@ -24,18 +26,30 @@ try {
         $args = ['post_type' => 'denni_kapka', 'post_status' => 'publish', 'posts_per_page' => 1, 'offset' => $day_offset, 'orderby' => 'date', 'order' => 'ASC'];
         $daily_query = new WP_Query($args);
         if ($daily_query->have_posts()) {
-            while ($daily_query->have_posts()) {
-                $daily_query->the_post();
-                $daily_post_id = get_the_ID();
-                $nazev_dne = get_post_meta($daily_post_id, 'nazev_dne', true);
-                $datum_dne = get_post_meta($daily_post_id, 'datum_dne', true);
-            }
+            $daily_query->the_post();
+            $daily_post_id = get_the_ID();
+            $nazev_dne = get_post_meta($daily_post_id, 'nazev_dne', true);
+            $datum_dne = get_post_meta($daily_post_id, 'datum_dne', true);
             wp_reset_postdata();
         }
     }
 } catch (Exception $e) {
     $daily_post_id = null;
 }
+
+// Fallback: Pokud se nenašel žádný příspěvek podle data, načteme ten nejnovější
+if ( empty($daily_post_id) ) {
+    $fallback_args = ['post_type' => 'denni_kapka', 'post_status' => 'publish', 'posts_per_page' => 1, 'orderby' => 'date', 'order' => 'DESC'];
+    $fallback_query = new WP_Query($fallback_args);
+    if ($fallback_query->have_posts()) {
+        $fallback_query->the_post();
+        $daily_post_id = get_the_ID();
+        $nazev_dne = get_post_meta($daily_post_id, 'nazev_dne', true);
+        $datum_dne = get_post_meta($daily_post_id, 'datum_dne', true);
+        wp_reset_postdata();
+    }
+}
+
 
 // --- Definice dlaždic na úvodní stránce ---
 $grid_items = [
@@ -61,6 +75,7 @@ $library_items = [
 foreach ($grid_items as $item) {
     if (isset($item['citat_key'])) {
         $citat_key = $item['citat_key'];
+        // Použijeme ID nalezeného příspěvku (ať už denního nebo fallbacku), nebo výchozí z aktuální stránky
         $source_post_id = $daily_post_id ?? $page_id_for_defaults;
         if (isset($item['audio_key'])) {
             $audio_key = $item['audio_key'];
@@ -93,7 +108,6 @@ foreach ($grid_items as $item) {
             <?php endif; ?>
             
             <div class="pope-section-container">
-                <h3 class="pope-quotes-title">Citáty našich papežů</h3>
                 <div class="pope-images-wrapper">
                     <?php
                     for ($i = 0; $i < 3; $i++) {
