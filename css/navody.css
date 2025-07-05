@@ -23,7 +23,7 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Toto pravidlo vytváří fialovou mezeru mezi tlačítky */
+    gap: 7px; /* Toto pravidlo vytváří fialovou mezeru mezi tlačítky */
 }
 
 /* Samotné tlačítko/odkaz - náš hezký styl */
