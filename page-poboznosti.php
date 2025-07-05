@@ -20,8 +20,10 @@ $audio_data_pro_js = array();
         // ====================================================================
         // NASTAVENÍ APLIKACE POBOŽNOSTI
         // ====================================================================
-        $kategorie_slug = 'poboznosti'; // Změněno na novou rubriku
-        $startovni_datum_str = '2025-06-23'; // <--- ZDE NASTAVTE START DATUM PRO POBOŽNOSTI
+        $kategorie_slug = 'poboznosti'; // Slug rubriky pro pobožnosti
+
+        // ZMĚNA: Datum se nyní načítá z globálního nastavení WordPressu
+        $startovni_datum_str = get_option('start_date_setting', '2026-02-18'); 
         // ====================================================================
 
         try {
@@ -57,7 +59,6 @@ $audio_data_pro_js = array();
                         global $post;
                         
                         // Zde je logika pro vložení přehrávače, pokud existuje audio.
-                        // Upraveno pro dynamické hledání 'audio_cast_'.
                         $all_meta = get_post_meta($post->ID);
                         $has_audio = false;
                         foreach ($all_meta as $key => $value) {
@@ -94,7 +95,6 @@ $audio_data_pro_js = array();
                         get_template_part( 'template-parts/content', 'single' );
 
                         // Sběr audio dat pro JavaScript
-                        // Nová dynamická metoda
                         $audio_data = [];
                         $i = 1;
                         while(true) {
@@ -136,3 +136,4 @@ if ( ! empty( $audio_data_pro_js ) ) :
 endif;
 
 get_footer();
+?>

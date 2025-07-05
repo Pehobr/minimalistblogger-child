@@ -22,7 +22,9 @@ $audio_data_pro_js = array();
         // NASTAVENÍ APLIKACE
         // ====================================================================
         $kategorie_slug = 'liturgicke-cteni';
-        $startovni_datum_str = '2025-06-23'; // <--- ZDE MĚŇTE DATUM
+        
+        // ZMĚNA: Datum se nyní načítá z globálního nastavení WordPressu
+        $startovni_datum_str = get_option('start_date_setting', '2026-02-18');
         // ====================================================================
 
         try {
@@ -55,7 +57,6 @@ $audio_data_pro_js = array();
                     while ( $denni_cteni_query->have_posts() ) {
                         $denni_cteni_query->the_post();
                         
-                        // <<<<<<< ZMĚNA: FINÁLNÍ VERZE PŘEHRÁVAČE >>>>>>>>>
                         global $post;
                         $cteni1_url_check = get_post_meta($post->ID, 'audio_cteni_1', true);
                         $cteni2_url_check = get_post_meta($post->ID, 'audio_cteni_2', true);
@@ -83,7 +84,6 @@ $audio_data_pro_js = array();
                                 </div>
                             </div>';
                         }
-                        // <<<<<<< KONEC ZMĚNY >>>>>>>>>
 
                         // ZOBRAZENÍ OBSAHU PŘÍSPĚVKU
                         get_template_part( 'template-parts/content', 'single' );

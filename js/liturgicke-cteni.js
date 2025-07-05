@@ -1,6 +1,6 @@
 /**
  * JavaScript pro stránku "Aplikace Liturgické Čtení" a její příspěvky.
- * VERZE 7: Přesun ikony nastavení do obsahu příspěvku.
+ * VERZE 8: Robustnější detekce nadpisů pro přidání ikon.
  */
 jQuery(document).ready(function($) {
 
@@ -32,22 +32,34 @@ jQuery(document).ready(function($) {
     prevBtn.prop('disabled', true);
     nextBtn.prop('disabled', true);
 
-    const headingMap = { '1. čtení': 'cteni_1', '2. čtení': 'cteni_2', 'evangelium': 'evangelium' };
-
-    // --- 2. VYTVOŘENÍ AUDIO PRVKŮ ---
+    // --- 2. VYTVOŘENÍ AUDIO PRVKŮ (OPRAVENÁ LOGIKA) ---
+    const headingMap = {
+        '1. čtení': 'cteni_1',
+        'evangelium': 'evangelium',
+        '2. čtení': 'cteni_2'
+    };
+    
+    // Projdeme všechny h3 nadpisy v obsahu
     $('.entry-content h3').each(function() {
         const headingElement = $(this);
-        const headingText = headingElement.text().toLowerCase();
-        for (const [searchText, audioKey] of Object.entries(headingMap)) {
-            if (headingText.includes(searchText) && audioUrls[audioKey]) {
+        const headingText = headingElement.text().toLowerCase().trim();
+
+        // Projdeme náš seznam klíčových slov
+        for (const [keyword, audioKey] of Object.entries(headingMap)) {
+            // Pokud nadpis obsahuje klíčové slovo a existuje pro něj audio
+            if (headingText.includes(keyword) && audioUrls[audioKey]) {
+                
                 const audioElement = new Audio(audioUrls[audioKey]);
                 audioElement.preload = 'none';
                 audioElements[audioKey] = audioElement;
                 
-                const playerButton = $(`<button class="audio-player-button" data-audio-key="${audioKey}" aria-label="Přehrát ${searchText}"><i class="fa fa-headphones" aria-hidden="true"></i></button>`);
+                const playerButton = $(`<button class="audio-player-button" data-audio-key="${audioKey}" aria-label="Přehrát ${keyword}"><i class="fa fa-headphones" aria-hidden="true"></i></button>`);
+                
+                // Přidáme tlačítko a třídy k nadpisu
                 headingElement.wrapInner('<span class="heading-text"></span>').append(playerButton);
                 headingElement.addClass('heading-with-player');
                 
+                // Nastavíme, co se stane po skončení přehrávání
                 audioElement.onended = function() {
                     if (playlistState === 'playing' && playlist[currentTrackIndex] === audioKey) {
                         playTrackInPlaylist(currentTrackIndex + 1);
@@ -56,16 +68,21 @@ jQuery(document).ready(function($) {
                     }
                 };
 
+                // Aktualizace progress baru během přehrávání
                 audioElement.ontimeupdate = function() {
                     if (playlistState !== 'stopped' && playlist[currentTrackIndex] === audioKey && this.duration) {
                         const progressPercent = (this.currentTime / this.duration) * 100;
                         progress.css('width', progressPercent + '%');
                     }
                 };
+
+                // Našli jsme shodu, můžeme přejít na další h3
+                break; 
             }
         }
     });
 
+    // Sestavení playlistu ve správném pořadí
     if (audioElements.cteni_1) playlist.push('cteni_1');
     if (audioElements.cteni_2) playlist.push('cteni_2');
     if (audioElements.evangelium) playlist.push('evangelium');
@@ -181,4 +198,4 @@ jQuery(document).ready(function($) {
         }
     });
 
-    
+});
