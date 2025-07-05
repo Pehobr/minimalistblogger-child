@@ -1,0 +1,92 @@
+/* Styly pro stránku Papez Lev App */
+
+/* === SKRYTÍ HLAVIČKY A PATIČKY (NOVÉ) === */
+.page-template-page-papezlev #masthead,
+.page-template-page-papezlev #colophon {
+    display: none !important;
+}
+
+.page-template-page-papezlev #primary {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.page-template-page-papezlev #secondary {
+    display: none;
+}
+
+.page-template-page-papezlev .site-content {
+    padding: 0;
+}
+
+.page-template-page-papezlev .bottom-nav-bar {
+    display: none !important;
+}
+
+/* === ÚPRAVA BODY PRO ODSTRANĚNÍ ODSZENÍ (NOVÉ) === */
+body.page-template-page-papezlev {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Úprava odsazení, pokud je přihlášený uživatel a je vidět admin lišta */
+body.admin-bar.page-template-page-papezlev {
+    padding-top: 32px !important;
+}
+@media screen and (max-width: 782px) {
+    body.admin-bar.page-template-page-papezlev {
+        padding-top: 46px !important;
+    }
+}
+
+.iframe-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh; 
+}
+
+body.admin-bar.page-template-page-papezlev .iframe-container {
+    height: calc(100vh - 32px);
+}
+@media screen and (max-width: 782px) {
+    body.admin-bar.page-template-page-papezlev .iframe-container {
+        height: calc(100vh - 46px);
+    }
+}
+
+.iframe-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* === TLAČÍTKO ZPĚT (NOVÉ) === */
+.back-to-home-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 50px;
+    height: 50px;
+    background-color: #3b0f5d;
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+}
+
+.back-to-home-btn:hover {
+    transform: scale(1.1);
+    background-color: #5a2b82;
+    color: #ffffff;
+}
