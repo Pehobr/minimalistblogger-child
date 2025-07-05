@@ -98,13 +98,13 @@ body.admin-bar.page-template-page-papezlev .iframe-container {
     opacity: 0;
     transition: all 0.5s ease-in-out;
     padding-left: 5px; /* Malá mezera mezi ikonou a textem */
-    font-size: 16px; /* Velikost písma textu */
+    font-size: 15px; /* Velikost písma textu */
     line-height: 1;
 }
 
 /* Stav po načtení stránky (rozbalený) */
 .back-to-home-btn.expanded {
-    width: 250px; /* Šířka rozbaleného tlačítka */
+    width: 277px; /* Šířka rozbaleného tlačítka */
 }
 
 .back-to-home-btn.expanded .back-btn-text {
