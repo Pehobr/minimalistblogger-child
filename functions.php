@@ -105,6 +105,11 @@ if ( is_page_template('page-videokapky.php') ) {
         wp_enqueue_script( 'page-postni-pisne-js', get_stylesheet_directory_uri() . '/js/page-postni-pisne.js', array('jquery'), '1.0', true );
     }
 
+    if ( is_page_template('page-playlist-audio.php') ) {
+        wp_enqueue_style( 'page-playlist-audio-style', get_stylesheet_directory_uri() . '/css/page-playlist-audio.css', array(), '1.0' );
+        wp_enqueue_script( 'page-playlist-audio-js', get_stylesheet_directory_uri() . '/js/page-playlist-audio.js', array('jquery'), '1.0', true );
+    }
+
     wp_enqueue_script( 'sidebar-menu-js', get_stylesheet_directory_uri() . '/js/sidebar-menu.js', array('jquery'), wp_get_theme()->get('Version'), true );
 }
 
