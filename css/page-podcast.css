@@ -34,7 +34,7 @@
 /* === VZHLED JEDNOTLIVÉ EPIZODY === */
 .episode-title {
     font-family: 'Superclarendon', serif;
-    font-size: 1.3rem;
+    font-size: 1rem;
     color: #870e2c;
     margin: 0 0 5px 0; /* ZMĚNA: Snížena mezera pod nadpisem */
     text-align: center !important;
