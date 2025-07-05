@@ -1,6 +1,8 @@
 jQuery(document).ready(function($) {
     window.ytPlayers = [];
     window.ytPlayerStates = [];
+    // Uložíme si data publikování pro pozdější použití
+    window.ytPublishingDates = [];
 
     window.onYouTubeIframeAPIReady = function() {
         $('.custom-audio-player').each(function(index) {
@@ -13,6 +15,15 @@ jQuery(document).ready(function($) {
         tag.src = "https://www.youtube.com/iframe_api";
         const firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    }
+
+    // Pomocná funkce pro formátování data
+    function formatYouTubeDate(dateString) {
+        const date = new Date(dateString);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Měsíce jsou od 0
+        const year = date.getFullYear();
+        return `${day}. ${month}. ${year}`;
     }
 
     function fetchLatestVideo(index) {
@@ -37,8 +48,12 @@ jQuery(document).ready(function($) {
                 const videoId = latestVideo.resourceId.videoId;
                 const videoTitle = latestVideo.title;
 
+                // === ZMĚNA ZDE: Uložíme si naformátované datum publikování ===
+                window.ytPublishingDates[index] = formatYouTubeDate(latestVideo.publishedAt);
+
                 titleEl.text(videoTitle);
-                statusEl.text('Připraveno');
+                // === ZMĚNA ZDE: Zobrazíme datum publikování ===
+                statusEl.text(`Publikováno: ${window.ytPublishingDates[index]}`);
                 playerWrapper.removeClass('loading');
                 createPlayer(index, videoId);
             } else {
@@ -86,6 +101,7 @@ jQuery(document).ready(function($) {
             playIcon.removeClass('fa-play').addClass('fa-pause');
             statusEl.text('Přehrává se...');
             playerWrapper.addClass('is-playing');
+            // Zastavíme ostatní přehrávače
             for (let i = 0; i < window.ytPlayers.length; i++) {
                 if (i !== index && window.ytPlayers[i] && typeof window.ytPlayers[i].pauseVideo === 'function') {
                     window.ytPlayers[i].pauseVideo();
@@ -95,12 +111,10 @@ jQuery(document).ready(function($) {
             window.ytPlayerStates[index].isPlaying = false;
             playIcon.removeClass('fa-pause').addClass('fa-play');
             playerWrapper.removeClass('is-playing');
-             if (event.data === YT.PlayerState.PAUSED) {
-                statusEl.text('Pozastaveno');
-            } else if (event.data === YT.PlayerState.ENDED) {
-                statusEl.text('Přehráno do konce');
-            } else {
-                statusEl.text('Připraveno');
+            
+            // === ZMĚNA ZDE: Zobrazíme datum, když se audio nehraje ===
+            if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED || event.data === YT.PlayerState.UNSTARTED) {
+                 statusEl.text(`Publikováno: ${window.ytPublishingDates[index]}`);
             }
         }
     }
