@@ -114,9 +114,26 @@ foreach ($grid_items as $item) {
                 </div>
             </div>
 
-            <div id="intro-grid-container">
+            <div class="saints-section-container">
+                <div class="saints-images-wrapper">
+                    <div class="saints-item">
+                        <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-augustin.png'); ?>" alt="sv. Augustin">
+                        <span class="grid-item-label">sv. Augustin</span>
+                    </div>
+                    <div class="saints-item">
+                        <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-lev.png'); ?>" alt="Lev XIV.">
+                        <span class="grid-item-label">Lev XIV.</span>
+                    </div>
+                    <div class="saints-item">
+                        <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Svatý stolec">
+                        <span class="grid-item-label">Svatý stolec</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="third-row-container">
                 <?php
-                for ($i = 3; $i < count($grid_items); $i++) {
+                for ($i = 5; $i < count($grid_items); $i++) {
                     $item = $grid_items[$i];
                     $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
                     $has_content = !empty($content_html);
@@ -131,8 +148,6 @@ foreach ($grid_items as $item) {
                     <?php
                 }
                 ?>
-                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-augustin.png'); ?>" alt="Erb Augustiniánů" id="erb-augustin" class="grid-erb">
-                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Erb Papeže Lva XIV." id="erb-lev" class="grid-erb">
             </div>
 
             <div id="library-grid-container">
