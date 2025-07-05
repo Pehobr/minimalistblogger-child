@@ -51,7 +51,7 @@ function minimalistblogger_child_enqueue_assets() {
     if (file_exists(get_stylesheet_directory() . '/js/mobile-menu.js')) {
         wp_enqueue_script( 'minimalistblogger-mobile-menu-js', get_stylesheet_directory_uri() . '/js/mobile-menu.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/mobile-menu.js' ), true );
     }
-    
+
     if ( is_page_template('page-liturgicke-cteni.php') || is_page_template('page-poboznosti.php') || is_page_template('page-home.php') || is_page_template('page-radio.php') ) {
         wp_enqueue_style( 'minimalistblogger-nastaveni-panel', get_stylesheet_directory_uri() . '/css/nastaveni-panel.css', array('chld_thm_cfg_parent'), $theme_version );
         wp_enqueue_script( 'minimalistblogger-nastaveni-panel-js', get_stylesheet_directory_uri() . '/js/nastaveni-panel.js', array('jquery'), $theme_version, true );
@@ -89,11 +89,21 @@ function minimalistblogger_child_enqueue_assets() {
         wp_enqueue_script( 'minimalistblogger-left-mobile-menu-js', get_stylesheet_directory_uri() . '/js/left-mobile-menu.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/left-mobile-menu.js' ), true );
     }
 
+    // === ZMĚNA: Kód pro načítání stylů a skriptů pro Video a Audio Kapky ===
     if ( is_page_template('page-videokapky.php') ) {
-        wp_enqueue_style( 'page-videokapky-style', get_stylesheet_directory_uri() . '/css/page-videokapky.css', array(), '1.0' );
+        // Načte styly a skripty pro video modální okno
+        wp_enqueue_style( 'page-videokapky-style', get_stylesheet_directory_uri() . '/css/page-videokapky.css', array(), '1.1' );
         wp_enqueue_script( 'page-videokapky-js', get_stylesheet_directory_uri() . '/js/page-videokapky.js', array('jquery'), '1.0', true );
+
+        // Navíc načte styly a skripty pro audio přehrávače
+        if (file_exists(get_stylesheet_directory() . '/css/page-audio-youtube.css')) {
+            wp_enqueue_style( 'page-audio-youtube-style', get_stylesheet_directory_uri() . '/css/page-audio-youtube.css', array(), filemtime( get_stylesheet_directory() . '/css/page-audio-youtube.css' ) );
+        }
+        if (file_exists(get_stylesheet_directory() . '/js/page-audio-youtube.js')) {
+            wp_enqueue_script( 'page-audio-youtube-js', get_stylesheet_directory_uri() . '/js/page-audio-youtube.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/page-audio-youtube.js' ), true );
+        }
     }
-    
+
     if ( is_page_template('page-papezlev.php') ) {
         wp_enqueue_style( 'minimalistblogger-papezlev-style', get_stylesheet_directory_uri() . '/css/page-papezlev.css', array('chld_thm_cfg_parent'), $theme_version );
         wp_enqueue_script( 'minimalistblogger-papezlev-js', get_stylesheet_directory_uri() . '/js/page-papezlev.js', array('jquery'), $theme_version, true );
@@ -108,10 +118,9 @@ function minimalistblogger_child_enqueue_assets() {
         wp_enqueue_style( 'page-playlist-audio-style', get_stylesheet_directory_uri() . '/css/page-playlist-audio.css', array(), '1.0' );
         wp_enqueue_script( 'page-playlist-audio-js', get_stylesheet_directory_uri() . '/js/page-playlist-audio.js', array('jquery'), '1.0', true );
     }
-    
-    // === NOVÝ KÓD PRO AUDIO YOUTUBE APP ===
+
+    // Kód pro samostatnou stránku "Audio YouTube App" (ponecháno pro případné budoucí použití)
     if ( is_page_template('page-audio-youtube.php') ) {
-        // Kontrolujeme existenci souborů, abychom předešli chybám
         if (file_exists(get_stylesheet_directory() . '/css/page-audio-youtube.css')) {
             wp_enqueue_style( 'page-audio-youtube-style', get_stylesheet_directory_uri() . '/css/page-audio-youtube.css', array(), filemtime( get_stylesheet_directory() . '/css/page-audio-youtube.css' ) );
         }
@@ -123,7 +132,6 @@ function minimalistblogger_child_enqueue_assets() {
     wp_enqueue_script( 'sidebar-menu-js', get_stylesheet_directory_uri() . '/js/sidebar-menu.js', array('jquery'), wp_get_theme()->get('Version'), true );
 }
 add_action( 'wp_enqueue_scripts', 'minimalistblogger_child_enqueue_assets', 20 );
-
 
 function moje_aplikace_assets() {
     $theme_version = wp_get_theme()->get('Version');
@@ -278,7 +286,6 @@ function create_papez_taxonomy() {
     register_taxonomy( 'papez', array( 'denni_kapka' ), $args );
 }
 add_action( 'init', 'create_papez_taxonomy' );
-
 
 /**
  * Načtení stylů a skriptů POUZE pro stránku archivu citátů.

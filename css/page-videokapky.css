@@ -1,139 +1,121 @@
-/* Styly pro stránku Video Kapek */
+/* Styly pro stránku Video Kapky - Finální verze s bloky Video+Audio */
 
-.page-template-page-videokapky #primary {
-    width: 100%;
-}
-.page-template-page-videokapky #secondary {
-    display: none;
-}
+.page-template-page-videokapky #primary { width: 100%; }
+.page-template-page-videokapky #secondary { display: none; }
 
-/* Styl pro nadpisy sekcí (OPRAVENO) */
+/* Nadpis sekce (Denní promluvy, Příprava na neděli) */
 .video-section-title {
     font-family: 'Superclarendon', serif;
-    color: #3b0f5d; /* ZMĚNA: Tmavá barva pro lepší kontrast */
+    color: #3b0f5d;
     text-align: center;
     font-size: 1.3rem;
     margin-top: 30px;
     margin-bottom: 15px;
-    text-shadow: none; /* Odstraněn stín, na tmavém textu není potřeba */
 }
 .video-section-title:first-of-type {
     margin-top: 10px;
 }
 
-.video-grid-container {
+/* Kontejner pro mřížku (společný pro obě sekce) */
+.media-grid-container {
     display: grid;
-    gap: 20px;
+    gap: 7px; /* Mezera mezi jednotlivými bloky */
     margin-bottom: 20px;
 }
 
-/* Specifické mřížky pro denní a týdenní videa */
-.video-grid-container.daily-videos {
-    grid-template-columns: repeat(2, 1fr);
-}
-.video-grid-container.weekly-videos {
-    grid-template-columns: repeat(3, 1fr);
+/* Specifické rozložení mřížky pro každou sekci na desktopu */
+@media screen and (min-width: 768px) {
+    .media-grid-container.daily-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .media-grid-container.weekly-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
-.video-grid-item {
+/* Blok pro jeden pár (video + audio) */
+.media-item-block {
+    display: flex;
+    flex-direction: column;
     background-color: #F5F2EB;
     border: 1px solid #c8bca9;
     border-radius: 12px;
     overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Box s videem (horní část bloku) */
+.video-grid-item {
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
+    border-bottom: 1px solid #ddd;
 }
-
-.video-grid-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+.video-grid-item:hover .video-item-title {
+    background-color: #e9e4d9;
 }
-
 .video-item-image {
     height: 160px;
     background-size: cover;
     background-position: center;
 }
-
 .video-item-title {
     padding: 15px;
     margin: 0;
     font-size: 1.1rem;
     color: #3b0f5d;
     text-align: center;
-    background-color: #F5F2EB;
-    border-top: 1px solid #c8bca9;
     flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background-color 0.2s ease;
 }
 
-/* ZMĚNA PRO MOBILNÍ ZOBRAZENÍ */
-@media screen and (max-width: 768px) {
-    /* Oba kontejnery budou mít na mobilu 2 sloupce */
-    .video-grid-container.daily-videos,
-    .video-grid-container.weekly-videos {
-        grid-template-columns: repeat(2, 1fr);
-    }
+/* Audio přehrávač (spodní část bloku) */
+.custom-audio-player {
+    padding: 10px 15px;
+    background-color: #e9e4d9; /* TOTO JE NOVÝ ŘÁDEK */
+}
+.custom-audio-player .player-info {
+    min-width: 0;
+    flex-grow: 1;
+}
+.custom-audio-player .player-image {
+    display: none; /* Skryjeme duplicitní obrázek v audio části */
+}
+.custom-audio-player .player-video-title {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.custom-audio-player .player-playlist-title {
+    display: none; /* Skryjeme duplicitní název playlistu */
 }
 
-@media screen and (max-width: 480px) {
-    /* Na velmi malých mobilech bude vše pod sebou */
-    .video-grid-container.daily-videos,
-    .video-grid-container.weekly-videos {
-        grid-template-columns: 1fr;
-    }
-}
 
-
-/* Styly pro modální okno */
+/* Modální okno pro video (beze změny) */
 #video-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
-    z-index: 10001;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8); z-index: 10001;
 }
-
 #video-modal-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    max-width: 800px;
+    position: fixed; top: 50%; left: 50%;
+    transform: translate(-50%, -50%); width: 90%; max-width: 800px;
     z-index: 10002;
 }
-
 #video-modal-close-btn {
-    position: absolute;
-    top: -35px;
-    right: 0;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 35px;
-    font-weight: bold;
-    cursor: pointer;
+    position: absolute; top: -35px; right: 0;
+    background: none; border: none; color: white;
+    font-size: 35px; font-weight: bold; cursor: pointer;
 }
-
 #video-modal-content {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    height: 0;
-    overflow: hidden;
+    position: relative; padding-bottom: 56.25%; /* 16:9 */
+    height: 0; overflow: hidden;
 }
-
 #video-modal-content iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%; border: 0;
 }
