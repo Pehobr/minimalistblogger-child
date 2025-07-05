@@ -100,6 +100,11 @@ if ( is_page_template('page-videokapky.php') ) {
         wp_enqueue_script( 'minimalistblogger-papezlev-js', get_stylesheet_directory_uri() . '/js/page-papezlev.js', array('jquery'), $theme_version, true );
     }
 
+     if ( is_page_template('page-postni-pisne.php') ) {
+        wp_enqueue_style( 'page-postni-pisne-style', get_stylesheet_directory_uri() . '/css/page-postni-pisne.css', array(), '1.0' );
+        wp_enqueue_script( 'page-postni-pisne-js', get_stylesheet_directory_uri() . '/js/page-postni-pisne.js', array('jquery'), '1.0', true );
+    }
+
     wp_enqueue_script( 'sidebar-menu-js', get_stylesheet_directory_uri() . '/js/sidebar-menu.js', array('jquery'), wp_get_theme()->get('Version'), true );
 }
 
