@@ -82,25 +82,24 @@ function minimalistblogger_child_enqueue_assets() {
     }
 
     // Načtení stylů a skriptů pro LEVÉ mobilní menu
-if (file_exists(get_stylesheet_directory() . '/css/left-mobile-menu.css')) {
-    wp_enqueue_style( 'minimalistblogger-left-mobile-menu-css', get_stylesheet_directory_uri() . '/css/left-mobile-menu.css', array(), filemtime( get_stylesheet_directory() . '/css/left-mobile-menu.css' ) );
-}
-if (file_exists(get_stylesheet_directory() . '/js/left-mobile-menu.js')) {
-    wp_enqueue_script( 'minimalistblogger-left-mobile-menu-js', get_stylesheet_directory_uri() . '/js/left-mobile-menu.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/left-mobile-menu.js' ), true );
-}
+    if (file_exists(get_stylesheet_directory() . '/css/left-mobile-menu.css')) {
+        wp_enqueue_style( 'minimalistblogger-left-mobile-menu-css', get_stylesheet_directory_uri() . '/css/left-mobile-menu.css', array(), filemtime( get_stylesheet_directory() . '/css/left-mobile-menu.css' ) );
+    }
+    if (file_exists(get_stylesheet_directory() . '/js/left-mobile-menu.js')) {
+        wp_enqueue_script( 'minimalistblogger-left-mobile-menu-js', get_stylesheet_directory_uri() . '/js/left-mobile-menu.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/left-mobile-menu.js' ), true );
+    }
 
-if ( is_page_template('page-videokapky.php') ) {
+    if ( is_page_template('page-videokapky.php') ) {
         wp_enqueue_style( 'page-videokapky-style', get_stylesheet_directory_uri() . '/css/page-videokapky.css', array(), '1.0' );
         wp_enqueue_script( 'page-videokapky-js', get_stylesheet_directory_uri() . '/js/page-videokapky.js', array('jquery'), '1.0', true );
     }
     
-   if ( is_page_template('page-papezlev.php') ) {
+    if ( is_page_template('page-papezlev.php') ) {
         wp_enqueue_style( 'minimalistblogger-papezlev-style', get_stylesheet_directory_uri() . '/css/page-papezlev.css', array('chld_thm_cfg_parent'), $theme_version );
-        // Přidání nového JS souboru
         wp_enqueue_script( 'minimalistblogger-papezlev-js', get_stylesheet_directory_uri() . '/js/page-papezlev.js', array('jquery'), $theme_version, true );
     }
 
-     if ( is_page_template('page-postni-pisne.php') ) {
+    if ( is_page_template('page-postni-pisne.php') ) {
         wp_enqueue_style( 'page-postni-pisne-style', get_stylesheet_directory_uri() . '/css/page-postni-pisne.css', array(), '1.0' );
         wp_enqueue_script( 'page-postni-pisne-js', get_stylesheet_directory_uri() . '/js/page-postni-pisne.js', array('jquery'), '1.0', true );
     }
@@ -109,11 +108,22 @@ if ( is_page_template('page-videokapky.php') ) {
         wp_enqueue_style( 'page-playlist-audio-style', get_stylesheet_directory_uri() . '/css/page-playlist-audio.css', array(), '1.0' );
         wp_enqueue_script( 'page-playlist-audio-js', get_stylesheet_directory_uri() . '/js/page-playlist-audio.js', array('jquery'), '1.0', true );
     }
+    
+    // === NOVÝ KÓD PRO AUDIO YOUTUBE APP ===
+    if ( is_page_template('page-audio-youtube.php') ) {
+        // Kontrolujeme existenci souborů, abychom předešli chybám
+        if (file_exists(get_stylesheet_directory() . '/css/page-audio-youtube.css')) {
+            wp_enqueue_style( 'page-audio-youtube-style', get_stylesheet_directory_uri() . '/css/page-audio-youtube.css', array(), filemtime( get_stylesheet_directory() . '/css/page-audio-youtube.css' ) );
+        }
+        if (file_exists(get_stylesheet_directory() . '/js/page-audio-youtube.js')) {
+            wp_enqueue_script( 'page-audio-youtube-js', get_stylesheet_directory_uri() . '/js/page-audio-youtube.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/page-audio-youtube.js' ), true );
+        }
+    }
 
     wp_enqueue_script( 'sidebar-menu-js', get_stylesheet_directory_uri() . '/js/sidebar-menu.js', array('jquery'), wp_get_theme()->get('Version'), true );
 }
-
 add_action( 'wp_enqueue_scripts', 'minimalistblogger_child_enqueue_assets', 20 );
+
 
 function moje_aplikace_assets() {
     $theme_version = wp_get_theme()->get('Version');
