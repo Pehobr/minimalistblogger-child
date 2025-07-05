@@ -49,6 +49,14 @@ $grid_items = [
     ['name' => 'Inspirace', 'slug' => 'svatost', 'icon' => 'ikona-inspirace.png', 'citat_key' => 'video_inspirace_embed', 'label' => 'Inspirace', 'type' => 'video'],
 ];
 
+// --- Nová řada ikon pro knihovnu ---
+$library_items = [
+    ['name' => 'Video', 'icon' => 'knihovna-video.png', 'url' => '/knihovna-video'],
+    ['name' => 'Audio', 'icon' => 'knihovna-audio.png', 'url' => '/knihovna-audio'],
+    ['name' => 'Rádio', 'icon' => 'knihovna-radio.png', 'url' => '/krestanska-radia'],
+    ['name' => 'Podcast', 'icon' => 'knihovna-podcast.png', 'url' => '/podcast'],
+];
+
 // --- Načtení obsahu pro jednotlivé dlaždice ---
 foreach ($grid_items as $item) {
     if (isset($item['citat_key'])) {
@@ -126,6 +134,17 @@ foreach ($grid_items as $item) {
                 <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-augustin.png'); ?>" alt="Erb Augustiniánů" id="erb-augustin" class="grid-erb">
                 <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Erb Papeže Lva XIV." id="erb-lev" class="grid-erb">
             </div>
+
+            <div id="library-grid-container">
+                <?php foreach ($library_items as $item) : ?>
+                    <div class="library-item-wrapper">
+                        <a href="<?php echo esc_url(home_url($item['url'])); ?>" class="library-grid-item">
+                            <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+
         </div>
     </main>
 </div>
