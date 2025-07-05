@@ -117,15 +117,21 @@ foreach ($grid_items as $item) {
             <div class="saints-section-container">
                 <div class="saints-images-wrapper">
                     <div class="saints-item">
-                        <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-augustin.png'); ?>" alt="Augustin">
+                        <a href="<?php echo esc_url( home_url( '/nabozenske-texty/' ) ); ?>">
+                            <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-augustin.png'); ?>" alt="Augustin">
+                        </a>
                         <span class="grid-item-label">Augustin</span>
                     </div>
                     <div class="saints-item">
-                        <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-lev.png'); ?>" alt="Lev XIV.">
+                        <a href="<?php echo esc_url( home_url( '/papez-lev/' ) ); ?>">
+                            <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-lev.png'); ?>" alt="Lev XIV.">
+                        </a>
                         <span class="grid-item-label">Lev XIV.</span>
                     </div>
                     <div class="saints-item">
-                        <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Vatikán">
+                        <a href="<?php echo esc_url( home_url( '/papez-lev-xiv/' ) ); ?>">
+                            <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Vatikán">
+                        </a>
                         <span class="grid-item-label">Vatikán</span>
                     </div>
                 </div>
