@@ -1,6 +1,6 @@
 /* Styly pro stránku Papez Lev App */
 
-/* === SKRYTÍ HLAVIČKY A PATIČKY (NOVÉ) === */
+/* === SKRYTÍ HLAVIČKY A PATIČKY === */
 .page-template-page-papezlev #masthead,
 .page-template-page-papezlev #colophon {
     display: none !important;
@@ -24,7 +24,7 @@
     display: none !important;
 }
 
-/* === ÚPRAVA BODY PRO ODSTRANĚNÍ ODSZENÍ (NOVÉ) === */
+/* === ÚPRAVA BODY PRO ODSTRANĚNÍ ODSZENÍ === */
 body.page-template-page-papezlev {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
@@ -65,16 +65,16 @@ body.admin-bar.page-template-page-papezlev .iframe-container {
     border: 0;
 }
 
-/* === TLAČÍTKO ZPĚT (NOVÉ) === */
+/* === TLAČÍTKO ZPĚT (UPRAVENO S ANIMACÍ) === */
 .back-to-home-btn {
     position: fixed;
-    bottom: 25px;
+    bottom: 85px; 
     right: 25px;
     width: 50px;
     height: 50px;
     background-color: #3b0f5d;
     color: #ffffff;
-    border-radius: 50%;
+    border-radius: 25px; /* Kulaté rohy */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,11 +82,32 @@ body.admin-bar.page-template-page-papezlev .iframe-container {
     text-decoration: none;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     z-index: 1000;
-    transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    transition: all 0.5s ease-in-out; /* Plynulá animace pro všechny vlastnosti */
+    white-space: nowrap; /* Zabrání zalomení textu */
+    overflow: hidden; /* Skryje text, který se nevejde */
 }
 
 .back-to-home-btn:hover {
-    transform: scale(1.1);
     background-color: #5a2b82;
     color: #ffffff;
+}
+
+/* Text uvnitř tlačítka */
+.back-to-home-btn .back-btn-text {
+    max-width: 0;
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+    padding-left: 5px; /* Malá mezera mezi ikonou a textem */
+    font-size: 16px; /* Velikost písma textu */
+    line-height: 1;
+}
+
+/* Stav po načtení stránky (rozbalený) */
+.back-to-home-btn.expanded {
+    width: 250px; /* Šířka rozbaleného tlačítka */
+}
+
+.back-to-home-btn.expanded .back-btn-text {
+    max-width: 200px; /* Dostatečný prostor pro text */
+    opacity: 1;
 }

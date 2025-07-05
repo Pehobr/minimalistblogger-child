@@ -17,6 +17,7 @@ get_header();
         
         <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="back-to-home-btn" aria-label="Zpět na domovskou stránku">
             <i class="fa fa-arrow-left"></i>
+            <span class="back-btn-text">Zpět na Postní kapky</span>
         </a>
     </main>
 </div>
