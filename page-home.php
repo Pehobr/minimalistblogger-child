@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah.
- * VERZE 16: Odebrání nadpisu "Citáty našich papežů".
+ * VERZE 17: Úprava odkazu pro ikonu Bible.
  * @package minimalistblogger-child
  */
 
@@ -59,7 +59,7 @@ $grid_items = [
     ['name' => 'Sv. Augustin', 'slug' => 'nabozenske-texty', 'icon' => 'ikona-augustin.png', 'citat_key' => 'citat_augustin', 'label' => 'Augustin', 'type' => 'text'],
     ['name' => 'Papež Lev XIV.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev', 'label' => 'Lev XIV.', 'type' => 'text'],
     ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'modlitba_text', 'audio_key' => 'modlitba_url', 'label' => 'Modlitba', 'type' => 'text'],
-    ['name' => 'Bible', 'slug' => 'citaty', 'icon' => 'ikona-bible.png', 'citat_key' => 'audio_bible_url', 'label' => 'Bible', 'type' => 'audio'],
+    ['name' => 'Bible', 'slug' => 'liturgicke-cteni', 'icon' => 'ikona-bible.png', 'label' => 'Bible'], // ZMĚNA ODKAZU
     ['name' => 'Inspirace', 'slug' => 'svatost', 'icon' => 'ikona-inspirace.png', 'citat_key' => 'video_inspirace_embed', 'label' => 'Inspirace', 'type' => 'video'],
 ];
 
@@ -155,7 +155,7 @@ foreach ($grid_items as $item) {
                 <?php
                 for ($i = 5; $i < count($grid_items); $i++) {
                     $item = $grid_items[$i];
-                    $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
+                    $content_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
                     $has_content = !empty($content_html);
                     $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/');
                     ?>
