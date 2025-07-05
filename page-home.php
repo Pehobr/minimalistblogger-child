@@ -65,8 +65,8 @@ $grid_items = [
 
 // --- Nová řada ikon pro knihovnu ---
 $library_items = [
-    ['name' => 'Video', 'icon' => 'knihovna-video.png', 'url' => '/video-kapky/'], // ZMĚNA ODKAZU
-    ['name' => 'Audio', 'icon' => 'knihovna-audio.png', 'url' => '/knihovna-audio'],
+    ['name' => 'Video', 'icon' => 'knihovna-video.png', 'url' => '/video-kapky/'],
+    ['name' => 'Audio', 'icon' => 'knihovna-audio.png', 'url' => '/postni-pisne/'], // ZMĚNA ODKAZU
     ['name' => 'Rádio', 'icon' => 'knihovna-radio.png', 'url' => '/krestanska-radia'],
     ['name' => 'Podcast', 'icon' => 'knihovna-podcast.png', 'url' => '/podcast'],
 ];
