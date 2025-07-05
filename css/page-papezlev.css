@@ -24,7 +24,7 @@
     display: none !important;
 }
 
-/* === ÚPRAVA BODY PRO ODSTRANĚNÍ ODSZENÍ === */
+/* === ÚPRAVA BODY PRO ODSTRANĚNÍ ODSAZENÍ === */
 body.page-template-page-papezlev {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
@@ -32,11 +32,11 @@ body.page-template-page-papezlev {
 
 /* Úprava odsazení, pokud je přihlášený uživatel a je vidět admin lišta */
 body.admin-bar.page-template-page-papezlev {
-    padding-top: 32px !important;
+    padding-top: 30px !important;
 }
 @media screen and (max-width: 782px) {
     body.admin-bar.page-template-page-papezlev {
-        padding-top: 46px !important;
+        padding-top: 40px !important;
     }
 }
 
@@ -78,7 +78,7 @@ body.admin-bar.page-template-page-papezlev .iframe-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 24px;
+    font-size: 20px;
     text-decoration: none;
     box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     z-index: 1000;
@@ -97,7 +97,7 @@ body.admin-bar.page-template-page-papezlev .iframe-container {
     max-width: 0;
     opacity: 0;
     transition: all 0.5s ease-in-out;
-    padding-left: 5px; /* Malá mezera mezi ikonou a textem */
+    padding-left: 7px; /* Malá mezera mezi ikonou a textem */
     font-size: 15px; /* Velikost písma textu */
     line-height: 1;
 }
