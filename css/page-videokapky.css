@@ -75,24 +75,31 @@
 /* Audio přehrávač (spodní část bloku) */
 .custom-audio-player {
     padding: 10px 15px;
-    background-color: #e9e4d9; /* TOTO JE NOVÝ ŘÁDEK */
+    background-color: #e9e4d9; /* Tmavší pozadí pro odlišení */
 }
 .custom-audio-player .player-info {
     min-width: 0;
     flex-grow: 1;
 }
 .custom-audio-player .player-image {
-    display: none; /* Skryjeme duplicitní obrázek v audio části */
+    display: none;
 }
+.custom-audio-player .player-playlist-title {
+    display: none;
+}
+
+/* === ZMĚNA ZDE: Povolení zalamování textu pro název audia === */
 .custom-audio-player .player-video-title {
     font-size: 0.95rem;
     margin-bottom: 8px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.custom-audio-player .player-playlist-title {
-    display: none; /* Skryjeme duplicitní název playlistu */
+    font-weight: bold;
+    line-height: 1.3;      /* Výška řádku pro lepší čitelnost */
+    min-height: 2.6em;     /* Rezervuje místo pro dva řádky textu */
+    white-space: normal;   /* Povolí zalamování textu */
+    overflow: hidden;      /* Skryje přebytečný text, pokud by byly více než 2 řádky */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Omezení na 2 řádky pro Webkit prohlížeče (Chrome, Safari) */
+    -webkit-box-orient: vertical;
 }
 
 
