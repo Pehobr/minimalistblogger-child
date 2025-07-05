@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah.
- * VERZE 15: Oprava zobrazení názvu dne a data.
+ * VERZE 16: Odebrání nadpisu "Citáty našich papežů".
  * @package minimalistblogger-child
  */
 
@@ -66,7 +66,7 @@ $grid_items = [
 // --- Nová řada ikon pro knihovnu ---
 $library_items = [
     ['name' => 'Video', 'icon' => 'knihovna-video.png', 'url' => '/video-kapky/'],
-    ['name' => 'Audio', 'icon' => 'knihovna-audio.png', 'url' => '/postni-pisne/'], // ZMĚNA ODKAZU
+    ['name' => 'Audio', 'icon' => 'knihovna-audio.png', 'url' => '/postni-pisne/'],
     ['name' => 'Rádio', 'icon' => 'knihovna-radio.png', 'url' => '/krestanska-radia'],
     ['name' => 'Podcast', 'icon' => 'knihovna-podcast.png', 'url' => '/podcast'],
 ];
@@ -108,7 +108,6 @@ foreach ($grid_items as $item) {
             <?php endif; ?>
             
             <div class="pope-section-container">
-                <h3 class="pope-quotes-title">Citáty našich papežů</h3>
                 <div class="pope-images-wrapper">
                     <?php
                     for ($i = 0; $i < 3; $i++) {
