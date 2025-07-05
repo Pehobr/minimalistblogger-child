@@ -54,14 +54,13 @@
     color: #870e2c;
 }
 
-/* === ZMĚNA ZDE: Zobrazení celého názvu === */
 .player-video-title {
     margin: 0 0 10px 0;
     font-size: 1rem;
     color: #3b0f5d;
     font-weight: bold;
     line-height: 1.4;
-    white-space: normal; /* Povolí zalamování na libovolný počet řádků */
+    white-space: normal;
     word-break: break-word;
 }
 
@@ -71,25 +70,26 @@
     gap: 15px;
 }
 
+/* === ZMĚNA ZDE: Úprava tlačítka Play/Pause === */
 .player-play-pause-btn {
-    width: 45px;
-    height: 45px;
-    background-color: #3b0f5d;
-    color: white;
+    background-color: transparent;
     border: none;
-    border-radius: 50%;
-    font-size: 20px;
+    color: #3b0f5d; /* Barva ikony */
+    border-radius: 0;
+    font-size: 28px; /* Větší ikona */
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
+    transition: color 0.2s, transform 0.2s;
     flex-shrink: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0;
 }
 .player-play-pause-btn:hover {
-    background-color: #5a2b82;
-    transform: scale(1.05);
+    transform: scale(1.1);
+    color: #870e2c;
 }
+
 
 .player-status {
     font-size: 0.9rem;

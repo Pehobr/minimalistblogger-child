@@ -75,7 +75,7 @@
 /* Audio přehrávač (spodní část bloku) */
 .custom-audio-player {
     padding: 10px 15px;
-    background-color: #e9e4d9; /* Tmavší pozadí pro odlišení */
+    background-color: #e9e4d9;
 }
 .custom-audio-player .player-info {
     min-width: 0;
@@ -87,17 +87,29 @@
 .custom-audio-player .player-playlist-title {
     display: none;
 }
-
-/* === ZMĚNA ZDE: Zobrazení celého názvu audia === */
 .custom-audio-player .player-video-title {
     font-size: 0.95rem;
     margin-bottom: 8px;
     font-weight: bold;
-    line-height: 1.4;      /* Výška řádku pro lepší čitelnost */
-    white-space: normal;   /* Povolí zalamování na libovolný počet řádků */
-    word-break: break-word; /* Pomůže se zalamováním dlouhých slov */
+    line-height: 1.4;
+    white-space: normal;
+    word-break: break-word;
 }
 
+/* === ZMĚNA ZDE: Úprava tlačítka Play/Pause === */
+.custom-audio-player .player-controls .player-play-pause-btn {
+    background-color: transparent;
+    border: none;
+    color: #3b0f5d; /* Barva samotné ikony */
+    font-size: 28px; /* Větší ikona pro snadné kliknutí */
+    padding: 0;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+}
+.custom-audio-player .player-controls .player-play-pause-btn:hover {
+    color: #870e2c;
+    transform: scale(1.1);
+}
 
 /* Modální okno pro video (beze změny) */
 #video-modal-overlay {
@@ -115,7 +127,7 @@
     font-size: 35px; font-weight: bold; cursor: pointer;
 }
 #video-modal-content {
-    position: relative; padding-bottom: 56.25%; /* 16:9 */
+    position: relative; padding-bottom: 56.25%;
     height: 0; overflow: hidden;
 }
 #video-modal-content iframe {
