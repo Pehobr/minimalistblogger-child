@@ -65,7 +65,7 @@ $grid_items = [
 
 // --- Nová řada ikon pro knihovnu ---
 $library_items = [
-    ['name' => 'Video', 'icon' => 'knihovna-video.png', 'url' => '/knihovna-video'],
+    ['name' => 'Video', 'icon' => 'knihovna-video.png', 'url' => '/video-kapky/'], // ZMĚNA ODKAZU
     ['name' => 'Audio', 'icon' => 'knihovna-audio.png', 'url' => '/knihovna-audio'],
     ['name' => 'Rádio', 'icon' => 'knihovna-radio.png', 'url' => '/krestanska-radia'],
     ['name' => 'Podcast', 'icon' => 'knihovna-podcast.png', 'url' => '/podcast'],
@@ -108,6 +108,7 @@ foreach ($grid_items as $item) {
             <?php endif; ?>
             
             <div class="pope-section-container">
+                <h3 class="pope-quotes-title">Citáty našich papežů</h3>
                 <div class="pope-images-wrapper">
                     <?php
                     for ($i = 0; $i < 3; $i++) {

@@ -89,6 +89,11 @@ if (file_exists(get_stylesheet_directory() . '/js/left-mobile-menu.js')) {
     wp_enqueue_script( 'minimalistblogger-left-mobile-menu-js', get_stylesheet_directory_uri() . '/js/left-mobile-menu.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/left-mobile-menu.js' ), true );
 }
 
+if ( is_page_template('page-videokapky.php') ) {
+        wp_enqueue_style( 'page-videokapky-style', get_stylesheet_directory_uri() . '/css/page-videokapky.css', array(), '1.0' );
+        wp_enqueue_script( 'page-videokapky-js', get_stylesheet_directory_uri() . '/js/page-videokapky.js', array('jquery'), '1.0', true );
+    }
+    
    if ( is_page_template('page-papezlev.php') ) {
         wp_enqueue_style( 'minimalistblogger-papezlev-style', get_stylesheet_directory_uri() . '/css/page-papezlev.css', array('chld_thm_cfg_parent'), $theme_version );
         // Přidání nového JS souboru
