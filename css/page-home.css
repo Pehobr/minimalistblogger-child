@@ -13,6 +13,7 @@ header#masthead.sheader { z-index: 999; }
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 20px;
     box-sizing: border-box;
 }
 
@@ -23,19 +24,19 @@ header#masthead.sheader { z-index: 999; }
     align-items: baseline;
     width: 90vw;
     max-width: 600px;
-    margin-bottom: 12px;
+    margin-bottom: 25px;
     gap: 20px;
 }
 
 .daily-info-item {
-    font-family: 'Superclarendon', serif; /* Společné patkové písmo */
-    color: #e6e0f3;
+    font-family: 'Superclarendon', serif;
+    color: #e6e0f3; /* Světlý text na fialovém pozadí */
 }
 
 #daily-info-title {
     margin: 0;
-    font-size: 1.2rem; /* Menší písmo */
-    font-weight: bold; /* ZMĚNA: Nastavení tučného písma pro den */
+    font-size: 1.2rem;
+    font-weight: bold;
     text-align: left;
 }
 
@@ -44,41 +45,46 @@ header#masthead.sheader { z-index: 999; }
     font-size: 1.2rem;
     font-weight: normal;
     text-align: right;
-    flex-shrink: 0; /* Zabrání zalamování data */
+    flex-shrink: 0;
 }
 
-/* === STYLY PRO SEKCÍ PAPEŽŮ === */
-.pope-section-container {
+/* === STYLY PRO SEKCÍ PAPEŽŮ & SVĚTCŮ (UPRAVENO) === */
+.pope-section-container,
+.saints-section-container {
     width: 90vw;
     max-width: 600px;
-    border: 2px solid #e6e0f3; /* Světlý rámeček */
+    border: 2px solid #3b0f5d;
     border-radius: 12px;
-    padding: 7px;
-    margin-bottom: 4px;
+    padding: 7px; /* ZMĚNA: Vnitřní odsazení nastaveno na 7px */
+    margin-bottom: 14px;
     box-sizing: border-box;
+    background-color: #F5F2EB; /* Teplé béžové pozadí */
 }
 
 .pope-quotes-title {
     text-align: center;
-    color: #e6e0f3;
+    color: #870e2c; /* Vínový nadpis */
     font-family: 'Superclarendon', serif; 
     font-size: 1rem;
     font-weight: bold;
-    margin: 0 0 5px 0;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    margin: 0 0 10px 0;
 }
 
-.pope-images-wrapper {
+.pope-images-wrapper,
+.saints-images-wrapper {
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
     gap: 15px;
 }
-.pope-item {
+
+.pope-item,
+.saints-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 30%;
+    text-align: center;
 }
 .pope-icon-link {
     display: block;
@@ -88,113 +94,84 @@ header#masthead.sheader { z-index: 999; }
 .pope-icon-link:hover {
     transform: scale(1.05);
 }
-.pope-icon-link img {
+.pope-icon-link img,
+.saints-item img {
     width: 100%;
     height: auto;
     display: block;
+    max-height: 95px;
+    object-fit: contain;
 }
 
 .grid-item-label {
-    margin-top: 8px;
+    margin-top: 4px; 
     font-size: 0.9rem;
     font-weight: bold;
+    color: #3b0f5d; 
+    text-shadow: none;
+}
+
+/* === TŘETÍ A ČTVRTÝ ŘÁDEK IKON === */
+#third-row-container,
+#library-grid-container {
+    display: grid;
+    gap: 15px;
+    width: 90vw;
+    max-width: 600px;
+    margin-top: 0;
+}
+
+#third-row-container {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+#library-grid-container {
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 20px;
+}
+
+.grid-item-wrapper,
+.library-item-wrapper { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+}
+
+.icon-grid-item,
+.library-grid-item {
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    padding: 5px; 
+    background-color: #F5F2EB; 
+    border-radius: 12px;
+    text-decoration: none; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    height: 95px; 
+    width: 100%; 
+    border: 1px solid #c8bca9; 
+}
+.icon-grid-item:hover, .icon-grid-item:focus,
+.library-grid-item:hover, .library-grid-item:focus { 
+    transform: translateY(-3px); 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    border-color: #3b0f5d;
+}
+.icon-grid-item img,
+.library-grid-item img { 
+    height: 98%; 
+    width: auto; 
+    max-width: 98%; 
+    object-fit: contain; 
+}
+
+#third-row-container .grid-item-label,
+#library-grid-container .grid-item-label {
     color: #e6e0f3;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-/* === STYLY PRO SEKCÍ SVĚTCŮ (NOVÉ) === */
-.saints-section-container {
-    width: 90vw;
-    max-width: 600px;
-    border: 2px solid #e6e0f3;
-    border-radius: 12px;
-    padding: 12px 7px 0px 7px; /* Přidání horního paddingu pro lepší vzhled */
-    margin-top: 5px;
-    box-sizing: border-box;
-}
-
-.saints-images-wrapper {
-    display: flex;
-    justify-content: space-around;
-    align-items: flex-end; /* Zarovná položky dolů kvůli popiskům */
-    gap: 15px;
-}
-
-.saints-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 30%;
-    text-align: center;
-}
-
-.saints-item img {
-    height: 95px;
-    max-width: 100%;
-    object-fit: contain;
-}
-
-
-/* === TŘETÍ ŘÁDEK IKON === */
-#third-row-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    width: 90vw;
-    max-width: 600px;
-    margin-top: 20px;
-}
-
-.grid-item-wrapper { display: flex; flex-direction: column; align-items: center; }
-
-.icon-grid-item {
-    display: flex; align-items: center; justify-content: center;
-    padding: 5px; background-color: rgba(255, 255, 255, 0.9); border-radius: 12px;
-    text-decoration: none; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    height: 95px; width: 100%; border: 2px solid #3b0f5d;
-}
-.icon-grid-item:hover, .icon-grid-item:focus { transform: scale(1.05); box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); }
-.icon-grid-item img { height: 98%; width: auto; max-width: 98%; object-fit: contain; }
-
-/* === MŘÍŽKA PRO KNIHOVNU === */
-#library-grid-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    width: 90vw;
-    max-width: 600px;
-    margin-top: 20px;
-}
-.library-item-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.library-grid-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 12px;
-    text-decoration: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    height: 95px;
-    width: 100%;
-    border: 2px solid #3b0f5d;
-}
-.library-grid-item:hover, .library-grid-item:focus {
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-.library-grid-item img {
-    height: 98%;
-    width: auto;
-    max-width: 98%;
-    object-fit: contain;
-}
 
 /* === MODÁLNÍ OKNO === */
 .quote-modal-overlay {
@@ -241,7 +218,6 @@ header#masthead.sheader { z-index: 999; }
 @media (max-width: 480px) {
     .pope-section-container, .saints-section-container, #third-row-container, #library-grid-container { gap: 10px; row-gap: 20px; }
     .saints-item img, .icon-grid-item, .library-grid-item { height: 80px; }
-    .grid-item-label { font-size: 0.8rem; margin-top: 0px; }
     #daily-info-title, #daily-info-date { font-size: 1rem; }
 }
 
