@@ -9,6 +9,8 @@ if ( !defined( 'ABSPATH' ) ) exit;
 function pehobr_register_settings_page() {
     add_menu_page( 'Postní kapky', 'Postní kapky', 'manage_options', 'postni-kapky-menu', null, 'dashicons-drop', 20 );
     add_submenu_page( 'postni-kapky-menu', 'Nastavení začátku doby postní', 'Nastavení data', 'manage_options', 'pehobr-app-settings', 'pehobr_render_settings_page_content' );
+    // === PŘIDANÝ ŘÁDEK ZDE ===
+    add_submenu_page( 'postni-kapky-menu', 'Nastavení YouTube Playlistů', 'YouTube Playlisty', 'manage_options', 'pehobr-youtube-settings', 'pehobr_render_youtube_settings_page' );
 }
 add_action( 'admin_menu', 'pehobr_register_settings_page' );
 
