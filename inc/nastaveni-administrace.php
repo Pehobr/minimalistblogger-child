@@ -1,18 +1,40 @@
 <?php
 /**
  * Funkce pro administraci WordPressu.
+ * VERZE 4: Hlavní menu "Postní kapky" odkazuje přímo na nastavení data.
  */
 
 // Zabráníme přímému přístupu
 if ( !defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Registruje stránky s nastavením.
+ */
 function pehobr_register_settings_page() {
-    add_menu_page( 'Postní kapky', 'Postní kapky', 'manage_options', 'postni-kapky-menu', null, 'dashicons-drop', 20 );
-    add_submenu_page( 'postni-kapky-menu', 'Nastavení začátku doby postní', 'Nastavení data', 'manage_options', 'pehobr-app-settings', 'pehobr_render_settings_page_content' );
-    // === PŘIDANÝ ŘÁDEK ZDE ===
-    add_submenu_page( 'postni-kapky-menu', 'Nastavení YouTube Playlistů', 'YouTube Playlisty', 'manage_options', 'pehobr-youtube-settings', 'pehobr_render_youtube_settings_page' );
+    // Vytvoření hlavní položky menu "Postní kapky",
+    // která přímo odkazuje na stránku "Nastavení data".
+    add_menu_page(
+        'Nastavení začátku doby postní', // Titulek stránky v prohlížeči
+        'Postní kapky', // Název v menu
+        'manage_options', // Oprávnění
+        'pehobr-app-settings', // Slug, který je stejný jako u první podpoložky
+        'pehobr_render_settings_page_content', // Funkce pro vykreslení obsahu
+        'dashicons-drop', // Ikona
+        20 // Pozice
+    );
+
+    // Přidání podstránky pro nastavení YouTube playlistů
+    add_submenu_page(
+        'pehobr-app-settings', // Slug rodičovského menu (stejný jako u add_menu_page)
+        'Nastavení YouTube Playlistů', // Titulek stránky
+        'YouTube Playlisty', // Název v podmenu
+        'manage_options', // Oprávnění
+        'pehobr-youtube-settings', // Slug této podstránky
+        'pehobr_render_youtube_settings_page' // Funkce pro vykreslení obsahu
+    );
 }
 add_action( 'admin_menu', 'pehobr_register_settings_page' );
+
 
 function pehobr_register_settings() {
     register_setting( 'pehobr_app_options_group', 'start_date_setting', array( 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => '2026-02-18', ) );
