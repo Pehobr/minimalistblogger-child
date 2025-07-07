@@ -19,7 +19,7 @@ function pehobr_register_settings_page() {
         'manage_options', // Oprávnění
         'pehobr-app-settings', // Slug, který je stejný jako u první podpoložky
         'pehobr_render_settings_page_content', // Funkce pro vykreslení obsahu
-        'dashicons-drop', // Ikona
+        'dashicons-admin-generic', // Ikona
         20 // Pozice
     );
 
