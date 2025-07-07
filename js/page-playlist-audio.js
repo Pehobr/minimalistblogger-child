@@ -14,18 +14,17 @@ jQuery(document).ready(function($) {
     let isPlayerReady = false;
     let isPlaying = false;
 
-    // 1. Načtení YouTube IFrame API
+    // === ZMĚNA ZDE: Použití správné URL pro načtení YouTube IFrame API ===
     const tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     const firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    // 2. Funkce, která se zavolá, jakmile je API připraveno
+    // Funkce se zavolá, jakmile je API připraveno
     window.onYouTubeIframeAPIReady = function() {
         fetchLatestVideo();
     };
 
-    // 3. Získání informací o posledním videu z playlistu
     function fetchLatestVideo() {
         const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=1&key=${apiKey}`;
 
@@ -39,7 +38,6 @@ jQuery(document).ready(function($) {
                 statusEl.text('Připraveno k přehrání');
                 playerWrapper.removeClass('loading');
                 
-                // Vytvoření skrytého YT přehrávače
                 createPlayer(videoId);
             } else {
                 titleEl.text('Chyba');
@@ -51,7 +49,6 @@ jQuery(document).ready(function($) {
         });
     }
 
-    // 4. Vytvoření instance YT přehrávače
     function createPlayer(videoId) {
         ytPlayer = new YT.Player('youtube-player-container', {
             height: '0',
@@ -64,7 +61,6 @@ jQuery(document).ready(function($) {
         });
     }
 
-    // 5. Funkce, které reagují na stav přehrávače
     function onPlayerReady(event) {
         isPlayerReady = true;
     }
@@ -87,7 +83,6 @@ jQuery(document).ready(function($) {
         }
     }
 
-    // 6. Ovládání přehrávače kliknutím na naše tlačítko
     playPauseBtn.on('click', function() {
         if (!isPlayerReady) return;
 

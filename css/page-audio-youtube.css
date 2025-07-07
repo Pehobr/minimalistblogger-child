@@ -64,13 +64,27 @@
     word-break: break-word;
 }
 
+/* === ZMĚNA ZDE: Nové styly pro rozmístění ovládacích prvků === */
 .player-controls {
     display: flex;
     align-items: center;
-    gap: 15px;
+    justify-content: space-between; /* Rozdělí prvky na levou a pravou stranu */
 }
 
-/* === ZMĚNA ZDE: Úprava tlačítka Play/Pause === */
+.player-controls-left {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Mezera mezi tlačítkem play a textem */
+}
+
+.player-audio-icon {
+    font-size: 24px;
+    color: #3b0f5d;
+    opacity: 0.6; /* Ikona bude mírně průhledná */
+}
+/* === KONEC ZMĚN === */
+
+
 .player-play-pause-btn {
     background-color: transparent;
     border: none;
