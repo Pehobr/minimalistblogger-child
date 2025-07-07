@@ -1,3 +1,13 @@
+/* === NOVÁ ÚPRAVA: Odstranění hlavního boxu === */
+.page-template-page-radio #primary article.page {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+/* === KONEC NOVÉ ÚPRAVY === */
+
+
 /* Styly pro stránku s přehrávačem rádií (page-radia.css) */
 
 #radio-player-container {
@@ -145,10 +155,11 @@
     justify-content: center;
 }
 
+/* === ZMĚNA ZDE: Přidána barva pozadí pro tlačítko '+' === */
 #show-add-radio-form-btn {
     width: 60px;
     height: 44px;
-    background-color: transparent; /* Průhledné pozadí */
+    background-color: #e6e0f3; /* Stejná barva jako u rádií */
     color: #3b0f5d; /* Tmavá barva ikony */
     border: 2px solid #3b0f5d; /* Tmavé ohraničení */
     border-radius: 10px; /* Zaoblení rohů 10px */
@@ -165,7 +176,7 @@
 
 #show-add-radio-form-btn:hover {
     transform: scale(1.1);
-    background-color: #870e2c;
+    background-color: #dcd7e9; /* Mírné ztmavení při najetí myší */
 }
 
 #add-radio-form-container,
