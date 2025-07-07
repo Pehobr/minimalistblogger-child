@@ -3,7 +3,7 @@ jQuery(document).ready(function($) {
     if (!playerContainer.length) return;
 
     // =================================================================
-    // ČÁST 1: LOGIKA PRO PŘEHRÁVÁNÍ RÁDIÍ
+    // ČÁST 1: LOGIKA PRO PŘEHRÁVÁNÍ RÁDIÍ (pro admin i uživatelská)
     // =================================================================
     const audioPlayer = new Audio();
     audioPlayer.preload = 'none';
@@ -51,7 +51,7 @@ jQuery(document).ready(function($) {
     });
 
     // =================================================================
-    // ČÁST 2: SPRÁVA VLASTNÍCH RÁDIÍ (PŘIDÁNÍ, MAZÁNÍ, ÚPRAVY)
+    // ČÁST 2: SPRÁVA VLASTNÍCH UŽIVATELSKÝCH RÁDIÍ
     // =================================================================
     const showFormBtn = $('#show-add-radio-form-btn');
     const hideFormBtn = $('#hide-add-radio-form-btn');
@@ -114,10 +114,7 @@ jQuery(document).ready(function($) {
         const radios = getCustomRadios();
         const radioToEdit = radios.find(radio => radio.id == radioId);
 
-        if (!radioToEdit) {
-            console.error("Chyba: Rádio k úpravě nebylo nalezeno. ID:", radioId);
-            return;
-        }
+        if (!radioToEdit) return;
         
         const editFormHTML = `
             <div class="inline-edit-form" style="width: 100%;">
@@ -133,7 +130,6 @@ jQuery(document).ready(function($) {
                 </div>
             </div>`;
         
-        // Místo skrytí původních prvků nahradíme celý vnitřek položky formulářem
         radioItem.html(editFormHTML);
     });
     
@@ -176,33 +172,17 @@ jQuery(document).ready(function($) {
 
     function getCustomRadios() {
         const radiosJSON = localStorage.getItem(storageKey);
-        let radios = radiosJSON ? JSON.parse(radiosJSON) : [];
-        let needsSave = false;
-
-        radios.forEach((radio, index) => {
-            if (!radio.hasOwnProperty('id') || !radio.id) {
-                radio.id = (Date.now() + index).toString();
-                needsSave = true;
-            }
-        });
-
-        if (needsSave) {
-            saveCustomRadios(radios);
-        }
-        return radios;
+        return radiosJSON ? JSON.parse(radiosJSON) : [];
     }
 
     function saveCustomRadios(radios) {
         localStorage.setItem(storageKey, JSON.stringify(radios));
     }
-
-    // <<<=== ZMĚNA ZDE: Funkce pro generování HTML s novou strukturou ===>>>
+    
     function generateRadioHTML(radio) {
         const safeName = escapeHTML(radio.name);
         const safeStream = escapeHTML(radio.stream);
 
-        // Uživatelká rádia mají navíc třídu "custom-radio"
-        // a data-id pro jejich identifikaci
         return `
             <div class="radio-player-item custom-radio" data-stream-url="${safeStream}" data-id="${radio.id}">
                 <img src="${defaultIconUrl}" alt="${safeName}" class="radio-icon">
@@ -223,6 +203,7 @@ jQuery(document).ready(function($) {
         playerContainer.append(generateRadioHTML(radio));
     }
     
+    // Načte a zobrazí uživatelská rádia při startu
     const allCustomRadios = getCustomRadios();
     allCustomRadios.forEach(radio => renderSingleRadio(radio));
 });

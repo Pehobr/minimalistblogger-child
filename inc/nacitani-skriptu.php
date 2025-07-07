@@ -101,6 +101,17 @@ function minimalistblogger_child_enqueue_assets() {
 }
 add_action( 'wp_enqueue_scripts', 'minimalistblogger_child_enqueue_assets', 20 );
 
+// === PŘIDANÁ FUNKCE PRO NAČTENÍ SKRIPTU V ADMINISTRACI ===
+function pehobr_enqueue_admin_scripts($hook) {
+    // Načte skript pouze na stránce s nastavením rádií
+    if ( 'postni-kapky_page_pehobr-radio-settings' !== $hook ) {
+        return;
+    }
+    wp_enqueue_script('jquery-ui-sortable');
+}
+add_action( 'admin_enqueue_scripts', 'pehobr_enqueue_admin_scripts' );
+// === KONEC PŘIDANÉ FUNKCE ===
+
 function moje_aplikace_assets() {
     $theme_version = wp_get_theme()->get('Version');
     $is_liturgicka_stranka = is_page_template('page-liturgicke-cteni.php') || (is_singular('post') && has_category('liturgicke-cteni'));

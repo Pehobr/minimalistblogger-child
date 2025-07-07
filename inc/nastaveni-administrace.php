@@ -32,6 +32,17 @@ function pehobr_register_settings_page() {
         'pehobr-youtube-settings', // Slug této podstránky
         'pehobr_render_youtube_settings_page' // Funkce pro vykreslení obsahu
     );
+
+    // === PŘIDANÁ SEKCE PRO INTERNETOVÁ RÁDIA ===
+    add_submenu_page(
+        'pehobr-app-settings', // Slug rodičovského menu
+        'Nastavení internetových rádií', // Titulek stránky
+        'Internetová rádia', // Název v podmenu
+        'manage_options', // Oprávnění
+        'pehobr-radio-settings', // Slug této podstránky
+        'pehobr_render_radio_settings_page' // Funkce pro vykreslení obsahu
+    );
+    // === KONEC PŘIDANÉ SEKCE ===
 }
 add_action( 'admin_menu', 'pehobr_register_settings_page' );
 

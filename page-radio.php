@@ -1,42 +1,19 @@
 <?php
 /**
  * Template Name: Přehrávač rádií
- * Description: Zobrazí stránku s přehrávačem internetových rádií. Data načítá z Custom Fields.
+ * Description: Zobrazí stránku s přehrávačem internetových rádií. Kombinuje rádia z nastavení a uživatelská rádia.
  *
  * @package minimalistblogger-child
  */
 
 get_header();
 
-// Získáme ID aktuální stránky pro načtení Custom Fields
-$page_id = get_the_ID();
-
-// <<<=== ZMĚNA ZDE: Přidání 'site_url' k rádiím ===>>>
-$radia = [
-    [
-        'name' => 'Proglas',
-        'icon' => 'ikona-proglas.png',
-        'meta_key' => 'radio_stream_proglas',
-        'site_url' => 'https://www.proglas.cz/'
-    ],
-    [
-        'name' => 'Timea',
-        'icon' => 'ikona-timea.png',
-        'meta_key' => 'radio_stream_timea',
-        'site_url' => 'https://radiotimea.jednoduse.cz/'
-    ],
-    [
-        'name' => 'Lumen',
-        'icon' => 'ikona-lumen.png',
-        'meta_key' => 'radio_stream_lumen',
-        'site_url' => 'https://www.lumen.sk/'
-    ]
-];
+// Načteme rádia uložená v nastavení "Postní kapky -> Internetová rádia"
+$nastavena_radia = get_option('pehobr_internet_radia', array());
 ?>
 
 <div id="primary" class="featured-content content-area">
     <main id="main" class="site-main">
-
         <article class="page">
             <header class="entry-header">
                 <h1 class="entry-title">Rádia</h1>
@@ -44,25 +21,32 @@ $radia = [
 
             <div class="entry-content">
                 <div id="radio-player-container">
-                    <?php foreach ($radia as $radio) : ?>
-                        <?php
-                        $stream_url = get_post_meta($page_id, $radio['meta_key'], true);
-                        if ( !empty($stream_url) ) :
-                        ?>
+                    <?php // Část pro rádia z administrace ?>
+                    <?php if ( ! empty( $nastavena_radia ) ) : ?>
+                        <?php foreach ( $nastavena_radia as $radio ) : ?>
+                            <?php
+                            $nazev = $radio['nazev'] ?? 'Neznámé rádio';
+                            $stream_url = $radio['stream_url'] ?? '';
+                            $image_url = !empty($radio['image_url']) ? $radio['image_url'] : get_stylesheet_directory_uri() . '/img/ikona-vlastni.png';
+                            if ( empty($stream_url) ) continue;
+                            ?>
                             <div class="radio-player-item" data-stream-url="<?php echo esc_url($stream_url); ?>">
-                                <?php // <<<=== ZMĚNA ZDE: Obrázek a název jsou nyní v odkazu ===>>> ?>
-                                <a href="<?php echo esc_url($radio['site_url']); ?>" target="_blank" rel="noopener noreferrer" class="radio-info-link">
-                                    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $radio['icon']); ?>" alt="<?php echo esc_attr($radio['name']); ?>" class="radio-icon">
-                                    <h2 class="radio-title"><?php echo esc_html($radio['name']); ?></h2>
+                                <?php // Odkaz je zde ponechán pro případné budoucí využití, ale je neaktivní ?>
+                                <a href="#" class="radio-info-link" onclick="return false;">
+                                    <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($nazev); ?>" class="radio-icon">
+                                    <h2 class="radio-title"><?php echo esc_html($nazev); ?></h2>
                                 </a>
-                                <button class="radio-play-btn" aria-label="Přehrát <?php echo esc_attr($radio['name']); ?>">
+                                <button class="radio-play-btn" aria-label="Přehrát <?php echo esc_attr($nazev); ?>">
                                     <i class="fa fa-play" aria-hidden="true"></i>
                                 </button>
                             </div>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+
+                    <?php // Zde JavaScript vloží rádia přidaná uživatelem ?>
                 </div>
 
+                <?php // Formulář pro přidání vlastního rádia uživatelem ?>
                 <div id="add-radio-button-container">
                     <button id="show-add-radio-form-btn" aria-label="Přidat nové rádio">
                         <i class="fa fa-plus"></i>
@@ -71,7 +55,7 @@ $radia = [
 
                 <div id="add-radio-form-container" style="display: none;">
                     <form id="custom-radio-form">
-                        <h3>Přidat nové rádio</h3>
+                        <h3>Přidat vlastní rádio</h3>
                         <div class="form-group">
                             <label for="custom-radio-name">Název rádia:</label>
                             <input type="text" id="custom-radio-name" placeholder="Např. Rádio 7" required>
@@ -86,9 +70,17 @@ $radia = [
                         </div>
                     </form>
                 </div>
+
+                 <?php
+                // Zobrazí se případný další obsah, pokud ho vložíte do editoru stránky
+                while ( have_posts() ) :
+                    the_post();
+                    the_content();
+                endwhile;
+                ?>
+
             </div>
         </article>
-
     </main>
 </div>
 
