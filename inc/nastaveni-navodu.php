@@ -77,8 +77,7 @@ function pehobr_render_sort_navody_page() {
 
 // 3. Načtení skriptů pro drag&drop (s kontrolou existence souboru)
 add_action('admin_enqueue_scripts', function($hook) {
-    if ($hook != 'postni-kapky_page_nastaveni-poradi-navodu') {
-        return;
+if ($hook != 'nastaveni-pk_page_nastaveni-poradi-navodu') {        return;
     }
 
     wp_enqueue_script('jquery-ui-sortable');

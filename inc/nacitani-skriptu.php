@@ -104,8 +104,7 @@ add_action( 'wp_enqueue_scripts', 'minimalistblogger_child_enqueue_assets', 20 )
 // === PŘIDANÁ FUNKCE PRO NAČTENÍ SKRIPTU V ADMINISTRACI ===
 function pehobr_enqueue_admin_scripts($hook) {
     // Načte skript pouze na stránce s nastavením rádií
-    if ( 'postni-kapky_page_pehobr-radio-settings' !== $hook ) {
-        return;
+if ( 'nastaveni-pk_page_pehobr-radio-settings' !== $hook ) {        return;
     }
     wp_enqueue_script('jquery-ui-sortable');
 }
