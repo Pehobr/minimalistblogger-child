@@ -55,7 +55,7 @@ header#masthead.sheader { z-index: 999; }
     max-width: 600px;
     border: 2px solid #3b0f5d;
     border-radius: 12px;
-    padding: 7px; /* ZMĚNA: Vnitřní odsazení nastaveno na 7px */
+    padding: 7px;
     margin-bottom: 14px;
     box-sizing: border-box;
     background-color: #F5F2EB; /* Teplé béžové pozadí */
@@ -64,7 +64,7 @@ header#masthead.sheader { z-index: 999; }
 .pope-quotes-title {
     text-align: center;
     color: #870e2c; /* Vínový nadpis */
-    font-family: 'Superclarendon', serif; 
+    font-family: 'Superclarendon', serif;
     font-size: 1rem;
     font-weight: bold;
     margin: 0 0 10px 0;
@@ -104,10 +104,10 @@ header#masthead.sheader { z-index: 999; }
 }
 
 .grid-item-label {
-    margin-top: 4px; 
+    margin-top: 4px;
     font-size: 0.9rem;
     font-weight: bold;
-    color: #3b0f5d; 
+    color: #3b0f5d;
     text-shadow: none;
 }
 
@@ -131,39 +131,59 @@ header#masthead.sheader { z-index: 999; }
 }
 
 .grid-item-wrapper,
-.library-item-wrapper { 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
+.library-item-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.icon-grid-item,
-.library-grid-item {
-    display: flex; 
-    align-items: center; 
+/* Boxy pro horní řadu ikon ("Modlitba", "Bible", "Inspirace") */
+.icon-grid-item {
+    display: flex;
+    align-items: center;
     justify-content: center;
-    padding: 5px; 
-    background-color: #F5F2EB; 
+    padding: 5px;
+    background-color: #F5F2EB;
     border-radius: 12px;
-    text-decoration: none; 
+    text-decoration: none;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    height: 95px; 
-    width: 100%; 
-    border: 1px solid #c8bca9; 
+    height: 95px;
+    width: 100%;
+    border: 1px solid #c8bca9;
 }
-.icon-grid-item:hover, .icon-grid-item:focus,
-.library-grid-item:hover, .library-grid-item:focus { 
-    transform: translateY(-3px); 
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+
+/* === ZMĚNA ZDE: Boxy pro spodní řadu ikon ("Knihovna") byly odstraněny === */
+.library-grid-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    background-color: transparent; /* Bez pozadí */
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out;
+    height: 95px;
+    width: 100%;
+    border: none; /* Bez rámečku */
+    box-shadow: none; /* Bez stínu */
+}
+
+/* Efekt při najetí myší */
+.icon-grid-item:hover, .icon-grid-item:focus {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     border-color: #3b0f5d;
 }
+.library-grid-item:hover, .library-grid-item:focus {
+    transform: translateY(-3px);
+}
+
 .icon-grid-item img,
-.library-grid-item img { 
-    height: 98%; 
-    width: auto; 
-    max-width: 98%; 
-    object-fit: contain; 
+.library-grid-item img {
+    height: 98%;
+    width: auto;
+    max-width: 98%;
+    object-fit: contain;
 }
 
 #third-row-container .grid-item-label,
