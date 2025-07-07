@@ -15,7 +15,7 @@ function pehobr_register_settings_page() {
     // která přímo odkazuje na stránku "Nastavení data".
     add_menu_page(
         'Nastavení začátku doby postní', // Titulek stránky v prohlížeči
-        'Postní kapky', // Název v menu
+        'Nastavení PK', // Název v menu
         'manage_options', // Oprávnění
         'pehobr-app-settings', // Slug, který je stejný jako u první podpoložky
         'pehobr_render_settings_page_content', // Funkce pro vykreslení obsahu
@@ -26,8 +26,8 @@ function pehobr_register_settings_page() {
     // Přidání podstránky pro nastavení YouTube playlistů
     add_submenu_page(
         'pehobr-app-settings', // Slug rodičovského menu (stejný jako u add_menu_page)
-        'Nastavení YouTube Playlistů', // Titulek stránky
-        'YouTube Playlisty', // Název v podmenu
+        'Nastavení Youtube playlistů', // Titulek stránky
+        'Youtube playlisty', // Název v podmenu
         'manage_options', // Oprávnění
         'pehobr-youtube-settings', // Slug této podstránky
         'pehobr_render_youtube_settings_page' // Funkce pro vykreslení obsahu
