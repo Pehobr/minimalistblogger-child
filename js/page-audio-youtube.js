@@ -12,7 +12,7 @@ jQuery(document).ready(function($) {
         });
     };
 
-    // === OPRAVA ZDE: Použití oficiální a spolehlivé URL pro načtení YouTube API ===
+    // Načtení skriptu pro YouTube IFrame API, pokud ještě není načten
     if (!$('script[src="https://www.youtube.com/iframe_api"]').length) {
         const tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
@@ -69,7 +69,7 @@ jQuery(document).ready(function($) {
     // Funkce pro vytvoření skrytého YouTube přehrávače
     function createPlayer(playerWrapper, videoId) {
         const uniqueId = playerWrapper.attr('id');
-        const youtubeContainerId = uniqueId.replace('audio-player-', 'youtube-player-container-');
+        const youtubeContainerId = 'youtube-player-container-' + uniqueId.replace('audio-player-', '');
 
         window.ytPlayers[uniqueId] = new YT.Player(youtubeContainerId, {
             height: '0', width: '0', videoId: videoId,
@@ -85,52 +85,41 @@ jQuery(document).ready(function($) {
         window.ytPlayerStates[uniqueId] = { isReady: true, isPlaying: false };
     }
     
-    // Klíčová funkce, která reaguje na změny stavu přehrávače (hraje, pauza, atd.)
+    // Klíčová funkce, která reaguje na změny stavu přehrávače
     function onPlayerStateChange(event, uniqueId) {
-        const playerWrapper = $('#' + uniqueId);
+        const playerWrapper = $('#' + uniqueId.replace(/ /g, '\\ ')); // Oprava pro ID s mezerami
         const playIcon = playerWrapper.find('.player-play-pause-btn i');
         const statusEl = playerWrapper.find('.player-status');
+        const defaultStatusText = `Publikováno: ${window.ytPublishingDates[uniqueId] || 'Připraveno'}`;
 
-        // Když se video začne přehrávat
+        // Přesně reagujeme na konkrétní stav
         if (event.data === YT.PlayerState.PLAYING) {
             window.ytPlayerStates[uniqueId].isPlaying = true;
             playIcon.removeClass('fa-play').addClass('fa-pause');
             statusEl.text('Přehrává se...');
             playerWrapper.addClass('is-playing');
 
-            // Projdeme všechny ostatní přehrávače a pozastavíme je, POKUD právě hrají
+            // Pozastavíme všechny ostatní přehrávače
             for (const id in window.ytPlayers) {
-                if (id !== uniqueId && window.ytPlayers[id] && typeof window.ytPlayers[id].pauseVideo === 'function') {
-                    if (window.ytPlayers[id].getPlayerState() === YT.PlayerState.PLAYING) {
-                       window.ytPlayers[id].pauseVideo();
-                    }
+                if (id !== uniqueId && window.ytPlayers[id] && typeof window.ytPlayers[id].getPlayerState === 'function' && window.ytPlayers[id].getPlayerState() === YT.PlayerState.PLAYING) {
+                   window.ytPlayers[id].pauseVideo();
                 }
             }
-        // Když se video zastaví (pauza, konec, atd.)
-        } else {
-            if (window.ytPlayerStates[uniqueId]) { // Pojistka, aby se kód nespustil příliš brzy
-                window.ytPlayerStates[uniqueId].isPlaying = false;
-            }
+        } else if (event.data === YT.PlayerState.PAUSED) {
+            window.ytPlayerStates[uniqueId].isPlaying = false;
             playIcon.removeClass('fa-pause').addClass('fa-play');
+            statusEl.text('Pozastaveno');
             playerWrapper.removeClass('is-playing');
-            
-            // Zobrazíme konkrétní stav
-            if (event.data === YT.PlayerState.PAUSED) {
-                statusEl.text('Pozastaveno');
-            } else if (event.data === YT.PlayerState.ENDED) {
-                statusEl.text('Přehráno do konce');
-            } else { // Pro ostatní stavy (včetně "připraveno")
-                if(window.ytPublishingDates[uniqueId]) {
-                    statusEl.text(`Publikováno: ${window.ytPublishingDates[uniqueId]}`);
-                 } else {
-                    statusEl.text('Připraveno');
-                 }
-            }
+        } else if (event.data === YT.PlayerState.ENDED) {
+            window.ytPlayerStates[uniqueId].isPlaying = false;
+            playIcon.removeClass('fa-pause').addClass('fa-play');
+            statusEl.text('Přehráno do konce');
+            playerWrapper.removeClass('is-playing');
         }
     }
 
     // Kliknutí na naše tlačítko play/pause
-    $('.player-play-pause-btn').on('click', function() {
+    $(document).on('click', '.player-play-pause-btn', function() {
         const playerWrapper = $(this).closest('.custom-audio-player');
         const uniqueId = playerWrapper.attr('id');
 
