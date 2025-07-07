@@ -2,7 +2,7 @@
 /**
  * Template Name: Podcast
  * Description: Zobrazí stránku s podcastem načteným z externího RSS kanálu.
- * VERZE 2.3: Implementován vlastní design přehrávače.
+ * VERZE 4.0: Přidáno tlačítko "Načíst další" pro epizody.
  */
 get_header();
 ?>
@@ -20,19 +20,33 @@ get_header();
                     $rss_url = 'https://anchor.fm/s/e86f5db8/podcast/rss';
                     $feed = fetch_feed($rss_url);
 
-                    if (!is_wp_error($feed)) :
-                        $max_items = $feed->get_item_quantity(7);
-                        $rss_items = $feed->get_items(0, $max_items);
-                    else :
-                        $rss_items = [];
-                    endif;
+                    $initial_items = [];
+                    $remaining_items_for_js = [];
 
-                    if (empty($rss_items)) : ?>
+                    if (!is_wp_error($feed)) {
+                        $max_items = $feed->get_item_quantity();
+                        $rss_items = $feed->get_items(0, $max_items);
+                        
+                        // Rozdělíme položky na počáteční a zbývající
+                        $initial_items = array_slice($rss_items, 0, 7);
+                        $remaining_items = array_slice($rss_items, 7);
+
+                        // Připravíme data pro JavaScript
+                        foreach ($remaining_items as $item) {
+                            $remaining_items_for_js[] = [
+                                'title' => $item->get_title(),
+                                'audio_url' => $item->get_enclosure()->get_link(),
+                                'description' => $item->get_description(),
+                            ];
+                        }
+                    }
+
+                    if (empty($initial_items)) : ?>
                         <div class="podcast-episode">
                             <p>Podcast se nepodařilo načíst nebo zatím neobsahuje žádné epizody.</p>
                         </div>
                     <?php else :
-                        foreach ($rss_items as $item) :
+                        foreach ($initial_items as $item) :
                             $audio_url = $item->get_enclosure()->get_link();
                             ?>
                             <div class="podcast-episode">
@@ -63,11 +77,27 @@ get_header();
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
+
+                <?php if (!empty($remaining_items_for_js)) : ?>
+                    <div id="podcast-load-more-container">
+                        <button id="load-more-podcasts-btn">Načíst starší epizody</button>
+                    </div>
+                <?php endif; ?>
+
             </div>
         </article>
     </main>
 </div>
 
-<?php get_sidebar(); ?>
+<?php 
+// Předání zbývajících epizod do JavaScriptu
+if (!empty($remaining_items_for_js)) {
+    wp_enqueue_script( 'page-podcast-script' ); // ujistíme se, že je skript v очереди
+    wp_localize_script( 'page-podcast-script', 'podcast_data', array(
+        'remaining_episodes' => $remaining_items_for_js,
+    ));
+}
 
-<?php get_footer(); ?>
+get_sidebar(); 
+get_footer(); 
+?>
