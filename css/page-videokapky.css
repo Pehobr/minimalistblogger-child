@@ -19,7 +19,7 @@
 /* Kontejner pro mřížku (společný pro obě sekce) */
 .media-grid-container {
     display: grid;
-    gap: 7px; /* Mezera mezi jednotlivými bloky */
+    gap: 12px; /* Mezera mezi jednotlivými bloky */
     margin-bottom: 20px;
 }
 
