@@ -16,9 +16,11 @@ require_once( $inc_dir . '/nastaveni-sablony.php' );
 require_once( $inc_dir . '/vlastni-prispevky.php' );
 require_once( $inc_dir . '/nastaveni-administrace.php' );
 require_once( $inc_dir . '/nastaveni-youtube.php' );
+
 // === PŘIDANÝ ŘÁDEK ZDE ===
 require_once( $inc_dir . '/nastaveni-radia.php' );
-
+// Načtení nastavení pro řazení návodů
+require_once get_stylesheet_directory() . '/inc/nastaveni-navodu.php';
 
 // Načtení logiky pro odesílání e-mailů (pokud existuje)
 if ( file_exists( get_stylesheet_directory() . '/ecomail-sender.php' ) ) {
