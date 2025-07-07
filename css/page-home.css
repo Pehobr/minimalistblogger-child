@@ -17,7 +17,6 @@ header#masthead.sheader { z-index: 999; }
     box-sizing: border-box;
 }
 
-/* === Styly pro dvousloupcové zobrazení dne a data === */
 #daily-info-container {
     display: flex;
     justify-content: space-between;
@@ -30,7 +29,7 @@ header#masthead.sheader { z-index: 999; }
 
 .daily-info-item {
     font-family: 'Superclarendon', serif;
-    color: #e6e0f3; /* Světlý text na fialovém pozadí */
+    color: #e6e0f3;
 }
 
 #daily-info-title {
@@ -48,7 +47,6 @@ header#masthead.sheader { z-index: 999; }
     flex-shrink: 0;
 }
 
-/* === STYLY PRO SEKCÍ PAPEŽŮ & SVĚTCŮ (UPRAVENO) === */
 .pope-section-container,
 .saints-section-container {
     width: 90vw;
@@ -58,16 +56,7 @@ header#masthead.sheader { z-index: 999; }
     padding: 7px;
     margin-bottom: 14px;
     box-sizing: border-box;
-    background-color: #F5F2EB; /* Teplé béžové pozadí */
-}
-
-.pope-quotes-title {
-    text-align: center;
-    color: #870e2c; /* Vínový nadpis */
-    font-family: 'Superclarendon', serif;
-    font-size: 1rem;
-    font-weight: bold;
-    margin: 0 0 10px 0;
+    background-color: #F5F2EB;
 }
 
 .pope-images-wrapper,
@@ -111,7 +100,6 @@ header#masthead.sheader { z-index: 999; }
     text-shadow: none;
 }
 
-/* === TŘETÍ A ČTVRTÝ ŘÁDEK IKON === */
 #third-row-container,
 #library-grid-container {
     display: grid;
@@ -137,7 +125,6 @@ header#masthead.sheader { z-index: 999; }
     align-items: center;
 }
 
-/* Boxy pro horní řadu ikon ("Modlitba", "Bible", "Inspirace") */
 .icon-grid-item {
     display: flex;
     align-items: center;
@@ -153,22 +140,20 @@ header#masthead.sheader { z-index: 999; }
     border: 1px solid #c8bca9;
 }
 
-/* === ZMĚNA ZDE: Boxy pro spodní řadu ikon ("Knihovna") byly odstraněny === */
 .library-grid-item {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 5px;
-    background-color: transparent; /* Bez pozadí */
+    background-color: transparent;
     text-decoration: none;
     transition: transform 0.2s ease-in-out;
     height: 95px;
     width: 100%;
-    border: none; /* Bez rámečku */
-    box-shadow: none; /* Bez stínu */
+    border: none;
+    box-shadow: none;
 }
 
-/* Efekt při najetí myší */
 .icon-grid-item:hover, .icon-grid-item:focus {
     transform: translateY(-3px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -192,11 +177,10 @@ header#masthead.sheader { z-index: 999; }
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-
 /* === MODÁLNÍ OKNO === */
 .quote-modal-overlay {
     display: none; position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 10001;
+    width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.75); z-index: 10001;
 }
 .quote-modal-container {
     display: none;
@@ -214,12 +198,10 @@ header#masthead.sheader { z-index: 999; }
     flex-grow: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
 }
-.quote-modal-content::-webkit-scrollbar { display: none; }
 .quote-modal-content p { margin: 0 0 0.75em 0; padding: 0; }
 .quote-modal-content p:last-child { margin-bottom: 0; }
+
 .quote-modal-close-btn, .quote-modal-favorite-btn {
     position: absolute; background: none; border: none;
     line-height: 1; color: #3b0f5d; cursor: pointer; padding: 0; z-index: 10;
@@ -228,11 +210,53 @@ header#masthead.sheader { z-index: 999; }
 .quote-modal-favorite-btn { top: 12px; left: 15px; font-size: 23px; transition: color 0.2s ease, transform 0.2s ease; }
 .quote-modal-favorite-btn:hover { transform: scale(1.1); }
 .quote-modal-favorite-btn.is-favorite .fa { font-family: "FontAwesome"; font-weight: 900; color: #ffc107; }
-.quote-modal-container.video-modal, .quote-modal-container.audio-modal { padding: 40px 10px 10px 10px; }
-.quote-modal-container.video-modal .quote-modal-content, .quote-modal-container.audio-modal .quote-modal-content { padding: 0; overflow: hidden; }
+
+/* Styly pro video a audio modály */
+.quote-modal-container.video-modal {
+    padding: 40px 10px 10px 10px;
+    background-color: #000;
+    border: 2px solid #fff;
+}
+.quote-modal-container.video-modal .quote-modal-content {
+    padding: 0; overflow: hidden;
+}
+.quote-modal-container.video-modal .quote-modal-close-btn { color: #fff; }
 .responsive-video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
 .responsive-video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-.quote-modal-container.audio-modal audio { width: 100%; }
+
+/* === ZMĚNA ZDE: Styly pro modální okno s obrázkem === */
+.quote-modal-container.image-modal {
+    background-color: transparent; /* Průhledné pozadí, aby vynikl overlay */
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+}
+.quote-modal-container.image-modal .quote-modal-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px; /* Odsazení od okrajů obrazovky */
+    height: 100%;
+}
+.quote-modal-container.image-modal .quote-modal-content img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Zajistí zobrazení celého obrázku bez ořezu */
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+}
+.quote-modal-container.image-modal .quote-modal-close-btn {
+    color: #ffffff; /* Bílá barva křížku pro lepší kontrast */
+    top: 15px;
+    right: 15px;
+    font-size: 35px;
+    text-shadow: 0 0 5px rgba(0,0,0,0.7);
+}
+
 
 /* Responzivita */
 @media (max-width: 480px) {
@@ -241,15 +265,13 @@ header#masthead.sheader { z-index: 999; }
     #daily-info-title, #daily-info-date { font-size: 1rem; }
 }
 
-/* === MINIMALISTICKÝ DVOUŘÁDKOVÝ PŘEHRÁVAČ v3.1 === */
+/* Audio přehrávač v modálním okně */
 .modal-audio-player {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    padding: 0px 0;
+    padding: 0;
     margin-top: 15px;
-    background-color: transparent;
-    border: none;
 }
 .map-top-row {
     display: flex;
@@ -320,9 +342,4 @@ header#masthead.sheader { z-index: 999; }
     border-radius: 50%;
     cursor: pointer;
     border: none;
-}
-input[type=range], textarea {
-    color: #666;
-    border: 1px solid #e5e6e9;
-    padding: 0px;
 }
