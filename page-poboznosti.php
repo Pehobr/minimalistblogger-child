@@ -10,6 +10,7 @@
 
 get_header();
 
+// Připravíme si proměnnou, do které uložíme data pro JavaScript
 $audio_data_pro_js = array();
 ?>
 
@@ -17,28 +18,19 @@ $audio_data_pro_js = array();
     <main id="main" class="site-main">
 
         <?php
-        // ====================================================================
-        // NASTAVENÍ APLIKACE POBOŽNOSTI
-        // ====================================================================
-        $kategorie_slug = 'poboznosti'; // Slug rubriky pro pobožnosti
-
-        // ZMĚNA: Datum se nyní načítá z globálního nastavení WordPressu
+        $kategorie_slug = 'poboznosti';
         $startovni_datum_str = get_option('start_date_setting', '2026-02-18'); 
-        // ====================================================================
 
         try {
             $startovni_datum = new DateTime($startovni_datum_str, new DateTimeZone('Europe/Prague'));
             $dnesni_datum = new DateTime('today', new DateTimeZone('Europe/Prague'));
 
             if ($dnesni_datum < $startovni_datum) {
-                echo '<div class="zprava-aplikace">';
-                echo '<h2>Pobožnosti ještě nezačaly.</h2>';
-                echo '<p>Cyklus začíná dne ' . esc_html($startovni_datum->format('d. m. Y')) . '. Prosím, vraťte se později.</p>';
-                echo '</div>';
+                // Zpráva pokud cyklus ještě nezačal
+                echo '<div class="zprava-aplikace"><h2>Pobožnosti ještě nezačaly.</h2><p>Cyklus začíná dne ' . esc_html($startovni_datum->format('d. m. Y')) . '. Prosím, vraťte se později.</p></div>';
             } else {
                 $interval = $startovni_datum->diff($dnesni_datum);
-                $pocet_dni_od_startu = $interval->days;
-                $offset_prispevku = $pocet_dni_od_startu;
+                $offset_prispevku = $interval->days;
 
                 $args = array(
                     'post_type'      => 'post',
@@ -55,37 +47,29 @@ $audio_data_pro_js = array();
                 if ( $denni_poboznost_query->have_posts() ) {
                     while ( $denni_poboznost_query->have_posts() ) {
                         $denni_poboznost_query->the_post();
-                        
                         global $post;
-                        
-                        // Zde je logika pro vložení přehrávače, pokud existuje audio.
+
+                        // Zjistíme, jestli existuje alespoň jedno audio pole
                         $all_meta = get_post_meta($post->ID);
                         $has_audio = false;
                         foreach ($all_meta as $key => $value) {
-                            if (strpos($key, 'audio_cast_') === 0 && !empty($value[0])) {
+                            if (strpos($key, 'audio_') === 0 && !empty($value[0])) {
                                 $has_audio = true;
                                 break;
                             }
                         }
 
+                        // Pokud ano, zobrazíme hlavní přehrávač
                         if ($has_audio) {
                             echo '
                             <div id="poboznosti-player-container">
                                 <div class="player-controls">
-                                    <button id="poboznosti-prev-btn" class="player-control-btn" aria-label="Předchozí stopa">
-                                        <i class="fa fa-step-backward" aria-hidden="true"></i>
-                                    </button>
-                                    <button id="poboznosti-play-pause-btn" class="player-control-btn main-play-btn" aria-label="Přehrát / Pauza">
-                                        <i class="fa fa-play" aria-hidden="true"></i>
-                                    </button>
-                                    <button id="poboznosti-next-btn" class="player-control-btn" aria-label="Další stopa">
-                                        <i class="fa fa-step-forward" aria-hidden="true"></i>
-                                    </button>
+                                    <button id="poboznosti-prev-btn" class="player-control-btn" aria-label="Předchozí stopa"><i class="fa fa-step-backward" aria-hidden="true"></i></button>
+                                    <button id="poboznosti-play-pause-btn" class="player-control-btn main-play-btn" aria-label="Přehrát / Pauza"><i class="fa fa-play" aria-hidden="true"></i></button>
+                                    <button id="poboznosti-next-btn" class="player-control-btn" aria-label="Další stopa"><i class="fa fa-step-forward" aria-hidden="true"></i></button>
                                 </div>
                                 <div class="progress-wrapper">
-                                    <div id="poboznosti-progress-bar" class="progress-bar-container">
-                                        <div id="poboznosti-progress" class="progress-bar-progress"></div>
-                                    </div>
+                                    <div id="poboznosti-progress-bar" class="progress-bar-container"><div id="poboznosti-progress" class="progress-bar-progress"></div></div>
                                     <div id="poboznosti-track-title" class="track-title"></div>
                                 </div>
                             </div>';
@@ -94,46 +78,43 @@ $audio_data_pro_js = array();
                         // Zobrazení obsahu příspěvku
                         get_template_part( 'template-parts/content', 'single' );
 
-                        // Sběr audio dat pro JavaScript
-                        $audio_data = [];
-                        $i = 1;
-                        while(true) {
-                            $meta_key = 'audio_cast_' . $i;
+                        // Sběr audio dat pro JavaScript v přesném pořadí
+                        $audio_fields_ordered = [
+                            'audio_1sloka', 'audio_uvodnimodlitba', 'audio_1cteni', 'audio_zalm', 'audio_2cteni', 
+                            'audio_2sloka', 'audio_evang', 'audio_3sloka', 'audio_impulz', 'audio_4sloka', 
+                            'audio_zaverecnamodlitba', 'audio_5sloka'
+                        ];
+
+                        $temp_audio_data = [];
+                        foreach ($audio_fields_ordered as $meta_key) {
                             $url = get_post_meta($post->ID, $meta_key, true);
                             if (!empty($url)) {
-                                $audio_data[$meta_key] = esc_url($url);
-                                $i++;
-                            } else {
-                                break;
+                                $temp_audio_data[$meta_key] = esc_url($url);
                             }
                         }
-                        $audio_data_pro_js = $audio_data;
+                        $audio_data_pro_js = $temp_audio_data;
                     }
                 } else {
-                    echo '<div class="zprava-aplikace">';
-                    echo '<h2>Pro dnešní den není k dispozici žádná pobožnost.</h2>';
-                    echo '</div>';
+                    echo '<div class="zprava-aplikace"><h2>Pro dnešní den není k dispozici žádná pobožnost.</h2></div>';
                 }
                 wp_reset_postdata();
             }
         } catch (Exception $e) {
-            echo '<div class="zprava-aplikace chyba">';
-            echo '<h2>Chyba v nastavení šablony Pobožnosti.</h2>';
-            echo '</div>';
+            echo '<div class="zprava-aplikace chyba"><h2>Chyba v nastavení šablony Pobožnosti.</h2></div>';
         }
         ?>
+    </main>
+</div>
 
-    </main></div><?php
-
-if ( ! empty( $audio_data_pro_js ) ) :
-?>
+<?php 
+// Blok, který předá data do JavaScriptu. Vloží se pouze pokud byla nalezena nějaká audio data.
+if ( ! empty( $audio_data_pro_js ) ) : ?>
 <script type="text/javascript" id="poboznosti-data-js">
     var poboznostiUdaje = {
         "audioUrls": <?php echo wp_json_encode( $audio_data_pro_js ); ?>
     };
 </script>
-<?php
-endif;
+<?php endif;
 
 get_footer();
 ?>

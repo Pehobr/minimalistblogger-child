@@ -3,9 +3,13 @@
 /* --- Layout pro odstavce/nadpisy s audiem --- */
 .poboznosti-app .entry-content .has-audio {
     display: flex;
-    justify-content: space-between; /* TOTO JE KLÍČOVÁ ZMĚNA: text bude vlevo, tlačítko vpravo */
-    align-items: center; /* Vertikální zarovnání na střed */
-    gap: 15px; /* Mezera mezi textem a tlačítkem */
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+.has-audio .audio-text-content {
+    flex-grow: 1;
 }
 
 /* --- Kulaté tlačítko u odstavce/nadpisu --- */
@@ -22,7 +26,7 @@
     align-items: center;
     font-size: 16px;
     transition: all 0.2s ease-in-out;
-    flex-shrink: 0; /* Zabrání zmenšování tlačítka */
+    flex-shrink: 0;
 }
 .poboznosti-audio-button:hover {
     transform: scale(1.1);

@@ -136,30 +136,21 @@ function moje_aplikace_assets() {
 }
 add_action( 'wp_enqueue_scripts', 'moje_aplikace_assets' );
 
+/**
+ * Načte styly a skripty pro aplikaci Pobožnosti.
+ */
 function poboznosti_app_assets() {
+    // Podmínka pro zobrazení na stránce s šablonou nebo v příspěvku z dané rubriky
     $is_poboznosti_stranka = is_page_template('page-poboznosti.php') || (is_singular('post') && has_category('poboznosti'));
 
     if ( $is_poboznosti_stranka ) {
         $theme_version = wp_get_theme()->get('Version');
+        
+        // Načtení CSS
         wp_enqueue_style( 'poboznosti-style', get_stylesheet_directory_uri() . '/css/poboznosti.css', array(), $theme_version );
+        
+        // Načtení JavaScriptu
         wp_enqueue_script( 'poboznosti-script', get_stylesheet_directory_uri() . '/js/poboznosti.js', array('jquery'), $theme_version, true );
-
-        global $post;
-        $audio_data = [];
-        $i = 1;
-        while(true) {
-            $meta_key = 'audio_cast_' . $i;
-            $url = get_post_meta($post->ID, $meta_key, true);
-            if (!empty($url)) {
-                $audio_data[$meta_key] = esc_url($url);
-                $i++;
-            } else {
-                break;
-            }
-        }
-        if (!empty($audio_data)) {
-            wp_localize_script( 'poboznosti-script', 'poboznostiUdaje', array('audioUrls' => $audio_data) );
-        }
     }
 }
 add_action( 'wp_enqueue_scripts', 'poboznosti_app_assets' );
