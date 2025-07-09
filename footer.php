@@ -117,8 +117,8 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
         </li>
         
         <li>
-            <a href="<?php echo esc_url( home_url('/prezentace/') ); ?>" aria-label="Prezentace">
-                <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+            <a href="<?php echo esc_url( home_url('/modlitba/') ); ?>" aria-label="Prezentace">
+                <i class="fa fa-fire" aria-hidden="true"></i>
                 <span>Prezentace</span>
             </a>
         </li>
@@ -129,8 +129,8 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
             </a>
         </li>
         <li>
-            <a href="<?php echo esc_url( home_url('/podcast/') ); ?>" aria-label="Podcast">
-                <i class="fa fa-podcast" aria-hidden="true"></i>
+            <a href="<?php echo esc_url( home_url('/poboznosti/') ); ?>" aria-label="Podcast">
+                <i class="fa fa-book" aria-hidden="true"></i>
                 <span>Podcast</span>
             </a>
         </li>

@@ -74,7 +74,7 @@ header#masthead.sheader { z-index: 999; }
 .third-row-items-wrapper {
     display: flex;
     justify-content: space-around;
-    align-items: center; /* Změna: vertikální zarovnání na střed */
+    align-items: center; 
     gap: 15px;
 }
 
@@ -137,7 +137,7 @@ header#masthead.sheader { z-index: 999; }
 
 .grid-item-label {
     margin-top: 4px;
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     font-weight: bold;
     color: #3b0f5d;
     text-shadow: none;
@@ -160,7 +160,6 @@ header#masthead.sheader { z-index: 999; }
 }
 
 
-/* === ÚPRAVA PRO TŘETÍ ŘÁDEK BEZ POPISKŮ === */
 .third-row-section-container .grid-item-wrapper {
     width: 30%;
 }
@@ -168,14 +167,14 @@ header#masthead.sheader { z-index: 999; }
     background-color: transparent;
     border: none;
     box-shadow: none;
-    height: 50px;
+    height: 95px;
 }
 .third-row-section-container .icon-grid-item:hover {
     transform: translateY(-3px);
     box-shadow: none;
 }
 .third-row-section-container .grid-item-label {
-    display: none; /* Skryje popisky v tomto kontejneru */
+    display: none; 
 }
 
 
@@ -210,7 +209,6 @@ header#masthead.sheader { z-index: 999; }
 }
 
 
-/* === MODÁLNÍ OKNO (beze změn) === */
 .quote-modal-overlay {
     display: none; position: fixed; top: 0; left: 0;
     width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.75); z-index: 10001;
@@ -271,3 +269,8 @@ header#masthead.sheader { z-index: 999; }
 .map-seek-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 7px; background: #9d87ae; outline: none; border-radius: 4px; cursor: pointer; }
 .map-seek-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 15px; height: 15px; background: #3b0f5d; border-radius: 50%; cursor: pointer; border: none; margin-top: -4px; }
 .map-seek-slider::-moz-range-thumb { width: 15px; height: 15px; background: #3b0f5d; border-radius: 50%; cursor: pointer; border: none; }
+
+/* === NOVÉ PRAVIDLO PRO SKRYTÍ TŘETÍHO ŘÁDKU === */
+.third-row-section-container {
+    display: none !important;
+}
