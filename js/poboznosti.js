@@ -1,6 +1,6 @@
 /**
  * JavaScript pro stránku "Aplikace Pobožnosti".
- * VERZE 14: Finální oprava, která vrací chybějící nastavení a zajišťuje správnou funkci filtru i přehrávače.
+ * VERZE 15: Finální oprava funkce individuálních tlačítek u biblických textů.
  */
 jQuery(document).ready(function($) {
 
@@ -9,7 +9,7 @@ jQuery(document).ready(function($) {
         if ($('#poboznosti-player-container').length) {
             $('#poboznosti-player-container').hide();
         }
-        return;
+        return; 
     }
 
     const audioUrls = poboznostiUdaje.audioUrls;
@@ -38,16 +38,16 @@ jQuery(document).ready(function($) {
     prevBtn.prop('disabled', true);
     nextBtn.prop('disabled', true);
 
-    // --- Zpracování obsahu a vytvoření audio prvků ---
-    $('.poboznosti-app .entry-content h3').each(function() {
-        const heading = $(this);
-        const headingHtml = heading.html();
-        const match = headingHtml.match(/\[AUDIO:([\w_]+)\]/);
-
+    // --- Robustní metoda klasifikace obsahu a tvorby tlačítek ---
+    $('.poboznosti-app .entry-content > *').each(function() {
+        const element = $(this);
+        let htmlContent = element.html();
+        const match = htmlContent.match(/\[AUDIO:([\w_]+)\]/);
+        
         if (match && audioUrls[match[1]]) {
             const audioKey = match[1];
-            const updatedHtml = headingHtml.replace(match[0], '').trim();
-            heading.html(updatedHtml).wrapInner('<span class="audio-text-content"></span>').append(`<button class="poboznosti-audio-button" data-audio-key="${audioKey}" aria-label="Přehrát ${titleMap[audioKey] || ''}"><i class="fa fa-headphones"></i></button>`).addClass('has-audio');
+            const updatedHtml = htmlContent.replace(match[0], '').trim();
+            element.html(updatedHtml).wrapInner('<span class="audio-text-content"></span>').append(`<button class="poboznosti-audio-button" data-audio-key="${audioKey}" aria-label="Přehrát ${titleMap[audioKey] || ''}"><i class="fa fa-headphones"></i></button>`).addClass('has-audio');
             
             const audioElement = new Audio(audioUrls[audioKey]);
             audioElement.preload = 'none';
@@ -169,36 +169,31 @@ jQuery(document).ready(function($) {
     if ($('.poboznosti-app').length) {
         const settingsContent = $('#settings-panel .settings-content');
         
-        // --- KLÍČOVÁ OPRAVA: Vytvoření VŠECH prvků nastavení ---
         const biblicalOnlyHTML = `<div class="setting-item" id="toggle-biblical-only-container"><label for="toggle-biblical-only">Zobrazit pouze biblická čtení</label><label class="switch"><input type="checkbox" id="toggle-biblical-only"><span class="slider round"></span></label></div>`;
         const playerToggleHTML = `<div class="setting-item" id="toggle-individual-players-container"><label for="toggle-individual-players">Zobrazit tlačítka u textů</label><label class="switch"><input type="checkbox" id="toggle-individual-players"><span class="slider round"></span></label></div>`;
         const fontControlsHTML = `<div class="setting-item" id="font-size-controls-container"><label>Velikost písma</label><div class="font-size-controls"><button id="poboznosti-font-decrease" class="font-size-btn" aria-label="Zmenšit písmo">-</button><span id="poboznosti-font-indicator">100%</span><button id="poboznosti-font-increase" class="font-size-btn" aria-label="Zvětšit písmo">+</button></div></div>`;
         
-        // Přidání prvků do panelu ve správném pořadí
-        settingsContent.append(biblicalOnlyHTML);
-        settingsContent.append(playerToggleHTML);
-        settingsContent.append(fontControlsHTML);
+        settingsContent.append(biblicalOnlyHTML, playerToggleHTML, fontControlsHTML);
 
-        // -- Funkce pro skrývání/zobrazování biblických textů --
         const biblicalOnlyToggle = $('#toggle-biblical-only');
         const biblicalOnlyKey = 'poboznosti_showBiblicalOnly';
         
         function applyBiblicalOnlyMode() {
+            const shouldShowOnlyBiblical = localStorage.getItem(biblicalOnlyKey) === 'true';
+            poboznostiAppContainer.toggleClass('biblical-readings-only', shouldShowOnlyBiblical);
+            biblicalOnlyToggle.prop('checked', shouldShowOnlyBiblical);
+
             let inBiblicalSection = false;
             $('.poboznosti-app .entry-content > *').each(function() {
                 const element = $(this);
                 if (element.is('h3')) {
                     const headingText = element.text().toLowerCase();
-                    const match = element.html().match(/\[AUDIO:([\w_]+)\]/);
+                    const match = element.html().match(/data-audio-key="([\w_]+)"/);
                     inBiblicalSection = (match && biblicalKeys.includes(match[1])) || (!match && (headingText.includes('čtení') || headingText.includes('evangelium') || headingText.includes('žalm')));
                 }
                 element.toggleClass('non-biblical-content', !inBiblicalSection);
             });
 
-            const shouldShowOnlyBiblical = localStorage.getItem(biblicalOnlyKey) === 'true';
-            poboznostiAppContainer.toggleClass('biblical-readings-only', shouldShowOnlyBiblical);
-            biblicalOnlyToggle.prop('checked', shouldShowOnlyBiblical);
-            
             if (typeof buildPlaylist === 'function') {
                 resetPlaylist();
                 buildPlaylist();
@@ -210,7 +205,6 @@ jQuery(document).ready(function($) {
             applyBiblicalOnlyMode();
         });
 
-        // -- Ostatní nastavení --
         const playerToggle = $('#toggle-individual-players');
         const playerVisibilityKey = 'poboznosti_showIndividualPlayers';
         function applyPlayerVisibility() {
@@ -236,12 +230,10 @@ jQuery(document).ready(function($) {
         $('#poboznosti-font-increase').on('click', () => applyFontSize(currentSizeRem + 0.1));
         $('#poboznosti-font-decrease').on('click', () => applyFontSize(currentSizeRem - 0.1));
 
-        // -- Prvotní aplikace všech nastavení --
         applyBiblicalOnlyMode();
         applyPlayerVisibility();
         applyFontSize(currentSizeRem);
     }
     
-    // První sestavení playlistu po načtení stránky
     buildPlaylist();
 });
