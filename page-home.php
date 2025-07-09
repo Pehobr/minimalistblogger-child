@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah.
- * VERZE 22: Přesun erbu doprostřed, Augustin a Lev XIV. po stranách v boxech.
+ * VERZE 24: Odstranění popisků u třetího řádku ikon (Modlitba, Bible, Inspirace).
  * @package minimalistblogger-child
  */
 
@@ -53,7 +53,7 @@ $grid_items = [
     ['name' => 'Sv. Augustin', 'slug' => '#', 'icon' => 'ikona-augustin.png', 'citat_key' => 'citat_augustin', 'label' => 'Augustin', 'type' => 'image'],
     ['name' => 'Papež Lev XIV.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev', 'label' => 'Lev XIV.', 'type' => 'text'],
     ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'modlitba_text', 'audio_key' => 'modlitba_url', 'label' => 'Modlitba', 'type' => 'text'],
-    ['name' => 'Bible', 'slug' => 'poboznosti', 'icon' => 'ikona-bible.png', 'label' => 'Bible'],
+    ['name' => 'Bible', 'slug' => 'poboznosti', 'icon' => 'ikona-bible.png', 'label' => 'Bible', 'type' => 'text'],
     ['name' => 'Inspirace', 'slug' => 'svatost', 'icon' => 'ikona-inspirace.png', 'citat_key' => 'video_inspirace_embed', 'label' => 'Inspirace', 'type' => 'video'],
 ];
 
@@ -84,7 +84,7 @@ foreach ($grid_items as $item) {
             <?php endif; ?>
             
             <div class="pope-section-container">
-                <div class="pope-images-wrapper">
+                <div class="pope-items-wrapper">
                     <?php for ($i = 0; $i < 3; $i++): $item = $grid_items[$i]; $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : ''; $has_content = !empty($content_html); $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/'); ?>
                         <div class="pope-item">
                             <a href="<?php echo esc_url($link_url); ?>" class="pope-icon-link" <?php if ($has_content): ?>data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>" data-type="<?php echo esc_attr($item['type']); ?>" data-author-name="<?php echo esc_attr($item['name']); ?>"<?php endif; ?>>
@@ -97,8 +97,7 @@ foreach ($grid_items as $item) {
             </div>
 
             <div class="saints-section-container">
-                <div class="saints-images-wrapper">
-                    
+                <div class="saints-items-wrapper">
                     <div class="saints-item-boxed">
                         <?php $augustin_item = $grid_items[3]; $augustin_content = isset($quotes[$augustin_item['citat_key']]) ? $quotes[$augustin_item['citat_key']] : ''; $augustin_has_content = !empty($augustin_content); $augustin_link_url = $augustin_has_content ? '#' : home_url('/' . $augustin_item['slug'] . '/'); ?>
                         <a href="<?php echo esc_url($augustin_link_url); ?>" class="pope-icon-link" <?php if ($augustin_has_content): ?>data-target-id="quote-content-<?php echo esc_attr($augustin_item['citat_key']); ?>" data-type="<?php echo esc_attr($augustin_item['type']); ?>" data-author-name="<?php echo esc_attr($augustin_item['name']); ?>"<?php endif; ?>>
@@ -106,32 +105,31 @@ foreach ($grid_items as $item) {
                         </a>
                         <span class="grid-item-label">Augustin</span>
                     </div>
-
                     <div class="saints-item-center">
                         <a href="<?php echo esc_url(home_url('/papez-lev-xiv/')); ?>">
                             <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Vatikán">
                         </a>
                     </div>
-                    
                     <div class="saints-item-boxed">
                          <a href="<?php echo esc_url(home_url('/papez-lev/')); ?>">
                             <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-lev.png'); ?>" alt="Lev XIV.">
                         </a>
                         <span class="grid-item-label">Lev XIV.</span>
                     </div>
-
                 </div>
             </div>
 
-            <div id="third-row-container">
-                <?php for ($i = 5; $i < count($grid_items); $i++): $item = $grid_items[$i]; $content_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : ''; $has_content = !empty($content_html); $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/'); ?>
-                    <div class="grid-item-wrapper">
-                        <a href="<?php echo esc_url($link_url); ?>" class="icon-grid-item" <?php if ($has_content): ?>data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>" data-type="<?php echo esc_attr($item['type']); ?>" data-author-name="<?php echo esc_attr($item['name']); ?>"<?php endif; ?>>
-                            <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
-                        </a>
-                        <span class="grid-item-label"><?php echo esc_html($item['label']); ?></span>
-                    </div>
-                <?php endfor; ?>
+            <div class="third-row-section-container">
+                <div class="third-row-items-wrapper">
+                    <?php for ($i = 5; $i < count($grid_items); $i++): $item = $grid_items[$i]; $content_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : ''; $has_content = !empty($content_html); $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/'); ?>
+                        <div class="grid-item-wrapper">
+                            <a href="<?php echo esc_url($link_url); ?>" class="icon-grid-item" <?php if ($has_content): ?>data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>" data-type="<?php echo esc_attr($item['type']); ?>" data-author-name="<?php echo esc_attr($item['name']); ?>"<?php endif; ?>>
+                                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
+                            </a>
+                            <?php // Popisek je nyní odstraněn ?>
+                        </div>
+                    <?php endfor; ?>
+                </div>
             </div>
 
             <div id="library-grid-container">
