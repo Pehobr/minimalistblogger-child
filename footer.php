@@ -52,7 +52,7 @@
 <?php wp_footer(); ?>
 
 <?php 
-// --- OPRAVA: Zobrazení panelů pouze tam, kde jsou potřeba ---
+// Zobrazení panelů pouze tam, kde jsou potřeba
 if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 'page-home.php', 'page-radio.php')) ) : 
 ?>
     <div id="settings-overlay" class="settings-overlay"></div>
@@ -62,6 +62,7 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
             <button id="settings-close-btn" class="settings-close-btn" aria-label="Zavřít nastavení">&times;</button>
         </div>
         <div class="settings-content">
+            <?php // Zde se přidává obecné nastavení, které může být na více stránkách ?>
             <div class="setting-item">
                 <label for="toggle-player">Zobrazit hlavní přehrávač</label>
                 <label class="switch">
@@ -69,6 +70,8 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
                     <span class="slider round"></span>
                 </label>
             </div>
+            
+            <?php // Specifická nastavení pro Pobožnosti se vloží dynamicky pomocí JS ?>
         </div>
     </div>
 
@@ -114,7 +117,6 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
         </li>
         
         <li>
-            <?php // ZMĚNA: Ikona a odkaz pro Prezentace ?>
             <a href="<?php echo esc_url( home_url('/prezentace/') ); ?>" aria-label="Prezentace">
                 <i class="fa fa-newspaper-o" aria-hidden="true"></i>
                 <span>Prezentace</span>

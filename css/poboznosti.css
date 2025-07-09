@@ -120,7 +120,9 @@
     display: none;
 }
 
-/* === STYLY PRO OVLÁDÁNÍ VELIKOSTI PÍSMA V PANELU === */
+/* === STYLY PRO OVLÁDACÍ PRVKY V PANELU NASTAVENÍ === */
+
+#toggle-individual-players-container,
 #font-size-controls-container {
     margin-top: 15px;
     padding-top: 15px;
@@ -129,7 +131,7 @@
     justify-content: space-between;
     align-items: center;
 }
-
+#toggle-individual-players-container label,
 #font-size-controls-container label {
     color: #3b0f5d;
     font-family: sans-serif;
@@ -141,7 +143,6 @@
     align-items: center;
     gap: 12px;
 }
-
 .font-size-btn {
     width: 32px;
     height: 32px;
@@ -171,11 +172,10 @@
     color: #3b0f5d;
     font-family: sans-serif;
     font-size: 16px;
-    min-width: 55px; /* Rezervuje místo, aby se layout nerozpadl */
+    min-width: 55px;
     text-align: center;
 }
 
-/* === ÚPRAVA Z 9. 7. 2025: Zmenšení velikosti nadpisů h3 === */
 .poboznosti-app .entry-content h3 {
     font-size: 1rem;
     color: #3b0f5d;

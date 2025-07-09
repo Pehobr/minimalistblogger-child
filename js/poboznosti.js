@@ -1,6 +1,6 @@
 /**
  * JavaScript pro stránku "Aplikace Pobožnosti".
- * VERZE 7: Oprava funkce pro změnu velikosti písma na mobilních zařízeních.
+ * VERZE 8: Přidána možnost skrytí tlačítek přehrávání u textů.
  */
 jQuery(document).ready(function($) {
 
@@ -213,9 +213,10 @@ jQuery(document).ready(function($) {
         }
     }
 
-    // --- 2. SEKCE NASTAVENÍ VELIKOSTI PÍSMA (S OPRAVOU) ---
+    // --- 2. SEKCE NASTAVENÍ VZHLEDU (S NOVOU MOŽNOSTÍ) ---
     if ($('.poboznosti-app').length) {
         
+        // --- Nastavení velikosti písma ---
         const fontControlsHTML = `
             <div class="setting-item" id="font-size-controls-container">
                 <label>Velikost písma</label>
@@ -225,45 +226,68 @@ jQuery(document).ready(function($) {
                     <button id="poboznosti-font-increase" class="font-size-btn" aria-label="Zvětšit písmo">+</button>
                 </div>
             </div>`;
-        
-        $('#settings-panel .settings-content').append(fontControlsHTML);
+        const settingsContent = $('#settings-panel .settings-content');
+        settingsContent.append(fontControlsHTML);
 
         const decreaseBtn = $('#poboznosti-font-decrease');
         const increaseBtn = $('#poboznosti-font-increase');
         const sizeIndicator = $('#poboznosti-font-indicator');
-        
-        // *** KLÍČOVÁ ZMĚNA ZDE ***
-        // Cílíme přímo na odstavce uvnitř obsahu, což je spolehlivější.
         const textElements = $('.poboznosti-app .entry-content p');
-        
-        const fontSizeStorageKey = 'poboznosti_font_size_rem'; // Použijeme novou jednotku pro lepší škálování
-        const baseFontSize = 1; // Základní velikost v 'rem'
-        
+        const fontSizeStorageKey = 'poboznosti_font_size_rem';
+        const baseFontSize = 1; 
         let currentSizeRem = parseFloat(localStorage.getItem(fontSizeStorageKey)) || baseFontSize;
 
         function applyFontSize(sizeInRem) {
-            // Omezení minimální a maximální velikosti
             const newSizeRem = Math.max(0.7, Math.min(2.0, sizeInRem));
-            
             textElements.css('font-size', newSizeRem + 'rem');
-            
-            // Přepočet na procenta pro zobrazení uživateli
             const percentage = Math.round((newSizeRem / baseFontSize) * 100);
             sizeIndicator.text(percentage + '%');
-            
             localStorage.setItem(fontSizeStorageKey, newSizeRem);
             currentSizeRem = newSizeRem;
         }
 
-        increaseBtn.on('click', function() {
-            applyFontSize(currentSizeRem + 0.1);
-        });
-
-        decreaseBtn.on('click', function() {
-            applyFontSize(currentSizeRem - 0.1);
-        });
-
-        // Aplikujeme uloženou velikost při načtení stránky
+        increaseBtn.on('click', () => applyFontSize(currentSizeRem + 0.1));
+        decreaseBtn.on('click', () => applyFontSize(currentSizeRem - 0.1));
         applyFontSize(currentSizeRem);
+
+        // --- NOVÁ ČÁST: Nastavení viditelnosti tlačítek přehrávačů ---
+        const individualPlayerControlsHTML = `
+            <div class="setting-item" id="toggle-individual-players-container">
+                <label for="toggle-individual-players">Zobrazit audio tlačítka u textů</label>
+                <label class="switch">
+                    <input type="checkbox" id="toggle-individual-players">
+                    <span class="slider round"></span>
+                </label>
+            </div>`;
+        settingsContent.append(individualPlayerControlsHTML);
+        
+        const individualPlayerToggle = $('#toggle-individual-players');
+        const individualPlayers = $('.poboznosti-audio-button');
+        const playerVisibilityKey = 'poboznosti_showIndividualPlayers';
+
+        function applyPlayerVisibility() {
+            const shouldShow = localStorage.getItem(playerVisibilityKey);
+            // Výchozí stav je "zobrazeno", tedy pokud není uloženo 'false', tak se zobrazí.
+            if (shouldShow === 'false') {
+                individualPlayers.hide();
+                individualPlayerToggle.prop('checked', false);
+            } else {
+                individualPlayers.show();
+                individualPlayerToggle.prop('checked', true);
+            }
+        }
+
+        individualPlayerToggle.on('change', function() {
+            if ($(this).is(':checked')) {
+                individualPlayers.fadeIn(200);
+                localStorage.setItem(playerVisibilityKey, 'true');
+            } else {
+                individualPlayers.fadeOut(200);
+                localStorage.setItem(playerVisibilityKey, 'false');
+            }
+        });
+
+        // Aplikujeme uložené nastavení při načtení stránky
+        applyPlayerVisibility();
     }
 });
