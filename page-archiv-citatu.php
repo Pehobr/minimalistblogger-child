@@ -109,5 +109,8 @@ $autori = [
 
     </main>
 </div>
+<?php
 
-<?php get_footer(); ?>
+get_sidebar(); // <-- PŘIDANÝ ŘÁDEK
+get_footer();
+?>

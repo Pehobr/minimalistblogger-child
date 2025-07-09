@@ -1,14 +1,5 @@
 /* Styly pro stránku Oblíbené texty */
 
-/* --- Plná šířka stránky --- */
-.page-template-page-oblibene-php #secondary {
-    display: none;
-}
-.page-template-page-oblibene-php #primary {
-    width: 100%;
-    margin: 0;
-}
-
 /* --- Kontejner pro všechny položky (s mezerami) --- */
 #favorites-container {
     display: flex;

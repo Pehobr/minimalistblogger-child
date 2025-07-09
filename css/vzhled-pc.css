@@ -212,3 +212,15 @@ nav#primary-site-navigation {
     color: #3b0f5d;
     font-family: 'Superclarendon', serif;
 }
+
+/* === SKRYTÍ SIDEBARU POUZE NA HOME STRÁNCE (PC) === */
+body.page-template-page-home #secondary.featured-sidebar {
+    display: none;
+}
+
+/* === ROZŠÍŘENÍ OBSAHU NA 100% POUZE NA HOME STRÁNCE (PC) === */
+body.page-template-page-home #primary.featured-content {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}

@@ -1,15 +1,5 @@
 /* Styly pro stránku Zápisník (page-zapisnik.php)  */
 
-/* Skrytí postranního panelu a nastavení plné šířky */
-.page-template-page-zapisnik #secondary {
-    display: none;
-}
-
-.page-template-page-zapisnik #primary {
-    width: 100%;
-    margin: 0;
-}
-
 /* Kontejner editoru */
 #zapisnik-editor-container {
     margin-bottom: 25px;

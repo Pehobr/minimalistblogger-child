@@ -116,5 +116,6 @@ if ( ! empty( $audio_data_pro_js ) ) : ?>
 </script>
 <?php endif;
 
+get_sidebar(); // <-- PŘIDANÝ ŘÁDEK
 get_footer();
 ?>

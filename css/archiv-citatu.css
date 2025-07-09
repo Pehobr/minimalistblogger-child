@@ -1,20 +1,5 @@
 /* Styly pro stránku Archiv citátů */
 
-/* === ŠÍŘKA STRÁNKY === */
-.page-template-page-archiv-citatu-php .content-wrap {
-    display: block !important;
-    max-width: 100% !important;
-}
-.page-template-page-archiv-citatu-php #primary {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    float: none !important;
-}
-.page-template-page-archiv-citatu-php #secondary {
-    display: none !important;
-}
-
 /* === FILTRY === */
 #citat-filters {
     margin-bottom: 30px;

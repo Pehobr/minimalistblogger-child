@@ -49,6 +49,8 @@ get_header();
     </main>
 </div>
 
-<?php get_sidebar(); ?>
+<?php
 
-<?php get_footer(); ?>
+get_sidebar(); // <-- PŘIDANÝ ŘÁDEK
+get_footer();
+?>
