@@ -9,7 +9,6 @@ nav#primary-site-navigation {
 .site-content > .content-wrap {
     display: flex;
     flex-wrap: nowrap;
-    justify-content: space-between;
 }
 
 /* 3. Levý sloupec s obsahem */
@@ -18,10 +17,13 @@ nav#primary-site-navigation {
     margin-right: 0;
 }
 
-/* 4. Pravý sloupec se sidebarem (menu) */
+/* 4. Pravý sloupec se sidebarem (menu) (přilepený) */
 #secondary.featured-sidebar {
-    width: 30%;
+    width: 20%;
     margin-left: 2%;
+    position: sticky;
+    top: 100px; /* Mezera od horního okraje (kvůli fixní hlavičce) */
+    align-self: flex-start; /* Důležité pro správné přichycení v kontejneru */
 }
 
 /* === NOVÁ ÚPRAVA: Zarovnání ikon menu a titulku na PC === */
