@@ -106,9 +106,7 @@ foreach ($grid_items as $item) {
                         <span class="grid-item-label">Augustin</span>
                     </div>
                     <div class="saints-item-center">
-                        <a href="<?php echo esc_url(home_url('/papez-lev-xiv/')); ?>">
                             <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Vatikán">
-                        </a>
                     </div>
                     <div class="saints-item-boxed">
                          <a href="<?php echo esc_url(home_url('/papez-lev/')); ?>">
