@@ -120,7 +120,7 @@
     display: none;
 }
 
-/* === NOVÉ STYLY PRO OVLÁDÁNÍ VELIKOSTI PÍSMA V PANELU === */
+/* === STYLY PRO OVLÁDÁNÍ VELIKOSTI PÍSMA V PANELU === */
 #font-size-controls-container {
     margin-top: 15px;
     padding-top: 15px;
@@ -173,4 +173,13 @@
     font-size: 16px;
     min-width: 55px; /* Rezervuje místo, aby se layout nerozpadl */
     text-align: center;
+}
+
+/* === ÚPRAVA Z 9. 7. 2025: Zmenšení velikosti nadpisů h3 === */
+.poboznosti-app .entry-content h3 {
+    font-size: 1rem;
+    color: #3b0f5d;
+    margin-top: 1.5em;
+    margin-bottom: 0.8em;
+    font-weight: bold;
 }
