@@ -51,24 +51,68 @@ header#masthead.sheader { z-index: 999; }
 .saints-section-container {
     width: 90vw;
     max-width: 600px;
-    border: 2px solid #3b0f5d;
     border-radius: 12px;
     padding: 7px;
     margin-bottom: 14px;
     box-sizing: border-box;
-    background-color: #F5F2EB;
 }
 
-.pope-images-wrapper,
-.saints-images-wrapper {
+/* Kontejner pro papeže má rámeček a pozadí */
+.pope-section-container {
+     background-color: #F5F2EB;
+     border: 2px solid #3b0f5d;
+}
+
+/* Kontejner pro svaté nemá rámeček ani pozadí, funguje jen jako obálka */
+.saints-section-container {
+    border: none;
+    background-color: transparent;
+}
+
+
+.pope-images-wrapper {
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
     gap: 15px;
 }
 
-.pope-item,
-.saints-item {
+/* === NOVÁ PRAVIDLA PRO ROZLOŽENÍ SVATÝCH === */
+.saints-images-wrapper {
+    display: flex;
+    justify-content: space-between; /* Klíčové pro rozmístění */
+    align-items: center; /* Vertikální zarovnání na střed */
+    gap: 7px; /* Mezery mezi boxy a erbem */
+}
+
+.saints-item-boxed,
+.saints-item-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+/* Styly pro boxy vlevo a vpravo */
+.saints-item-boxed {
+    width: 32%; /* Šířka pro postranní boxy */
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
+    border-radius: 12px;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+/* Styly pro prostřední erb */
+.saints-item-center {
+    width: 28%; /* Erb zabere o něco méně místa */
+}
+.saints-item-center img {
+    max-height: 105px !important; /* Mírně větší obrázek erbu */
+}
+
+
+.pope-item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -84,7 +128,8 @@ header#masthead.sheader { z-index: 999; }
     transform: scale(1.05);
 }
 .pope-icon-link img,
-.saints-item img {
+.saints-item-boxed img,
+.saints-item-center img {
     width: 100%;
     height: auto;
     display: block;
@@ -224,7 +269,7 @@ header#masthead.sheader { z-index: 999; }
 .responsive-video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
 .responsive-video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-/* === ZMĚNA ZDE: Upravené styly pro modální okno s obrázkem === */
+/* Styly pro modální okno s obrázkem */
 .quote-modal-container.image-modal {
     background-color: transparent;
     border: none;
@@ -240,12 +285,12 @@ header#masthead.sheader { z-index: 999; }
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0; /* Odebráno odsazení, aby obrázek mohl sahat k okrajům */
+    padding: 0; 
     height: 100%;
 }
 .quote-modal-container.image-modal .quote-modal-content img {
-    width: 100%; /* Obrázek se roztáhne na celou šířku kontejneru */
-    height: auto; /* Výška se dopočítá automaticky pro zachování poměru stran */
+    width: 100%; 
+    height: auto; 
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;

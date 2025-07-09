@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah.
- * VERZE 21: Zjednodušení logiky pro zobrazení obrázku v modálu.
+ * VERZE 22: Přesun erbu doprostřed, Augustin a Lev XIV. po stranách v boxech.
  * @package minimalistblogger-child
  */
 
@@ -98,25 +98,28 @@ foreach ($grid_items as $item) {
 
             <div class="saints-section-container">
                 <div class="saints-images-wrapper">
-                    <?php $augustin_item = $grid_items[3]; $augustin_content = isset($quotes[$augustin_item['citat_key']]) ? $quotes[$augustin_item['citat_key']] : ''; $augustin_has_content = !empty($augustin_content); $augustin_link_url = $augustin_has_content ? '#' : home_url('/' . $augustin_item['slug'] . '/'); ?>
-                    <div class="saints-item">
+                    
+                    <div class="saints-item-boxed">
+                        <?php $augustin_item = $grid_items[3]; $augustin_content = isset($quotes[$augustin_item['citat_key']]) ? $quotes[$augustin_item['citat_key']] : ''; $augustin_has_content = !empty($augustin_content); $augustin_link_url = $augustin_has_content ? '#' : home_url('/' . $augustin_item['slug'] . '/'); ?>
                         <a href="<?php echo esc_url($augustin_link_url); ?>" class="pope-icon-link" <?php if ($augustin_has_content): ?>data-target-id="quote-content-<?php echo esc_attr($augustin_item['citat_key']); ?>" data-type="<?php echo esc_attr($augustin_item['type']); ?>" data-author-name="<?php echo esc_attr($augustin_item['name']); ?>"<?php endif; ?>>
                             <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-augustin.png'); ?>" alt="Augustin">
                         </a>
                         <span class="grid-item-label">Augustin</span>
                     </div>
-                    <div class="saints-item">
-                        <a href="<?php echo esc_url(home_url('/papez-lev/')); ?>">
+
+                    <div class="saints-item-center">
+                        <a href="<?php echo esc_url(home_url('/papez-lev-xiv/')); ?>">
+                            <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Vatikán">
+                        </a>
+                    </div>
+                    
+                    <div class="saints-item-boxed">
+                         <a href="<?php echo esc_url(home_url('/papez-lev/')); ?>">
                             <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-lev.png'); ?>" alt="Lev XIV.">
                         </a>
                         <span class="grid-item-label">Lev XIV.</span>
                     </div>
-                    <div class="saints-item">
-                        <a href="<?php echo esc_url(home_url('/papez-lev-xiv/')); ?>">
-                            <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Vatikán">
-                        </a>
-                        <span class="grid-item-label">Vatikán</span>
-                    </div>
+
                 </div>
             </div>
 
