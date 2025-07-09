@@ -169,11 +169,11 @@ jQuery(document).ready(function($) {
     if ($('.poboznosti-app').length) {
         const settingsContent = $('#settings-panel .settings-content');
         
+        const playerToggleHTML = `<div class="setting-item" id="toggle-individual-players-container"><label for="toggle-individual-players">Skrýt audio tlačítka u textů</label><label class="switch"><input type="checkbox" id="toggle-individual-players"><span class="slider round"></span></label></div>`;
         const biblicalOnlyHTML = `<div class="setting-item" id="toggle-biblical-only-container"><label for="toggle-biblical-only">Zobrazit pouze biblická čtení</label><label class="switch"><input type="checkbox" id="toggle-biblical-only"><span class="slider round"></span></label></div>`;
-        const playerToggleHTML = `<div class="setting-item" id="toggle-individual-players-container"><label for="toggle-individual-players">Zobrazit tlačítka u textů</label><label class="switch"><input type="checkbox" id="toggle-individual-players"><span class="slider round"></span></label></div>`;
         const fontControlsHTML = `<div class="setting-item" id="font-size-controls-container"><label>Velikost písma</label><div class="font-size-controls"><button id="poboznosti-font-decrease" class="font-size-btn" aria-label="Zmenšit písmo">-</button><span id="poboznosti-font-indicator">100%</span><button id="poboznosti-font-increase" class="font-size-btn" aria-label="Zvětšit písmo">+</button></div></div>`;
         
-        settingsContent.append(biblicalOnlyHTML, playerToggleHTML, fontControlsHTML);
+        settingsContent.append(playerToggleHTML,biblicalOnlyHTML,fontControlsHTML);
 
         const biblicalOnlyToggle = $('#toggle-biblical-only');
         const biblicalOnlyKey = 'poboznosti_showBiblicalOnly';
