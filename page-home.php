@@ -66,9 +66,9 @@ $library_items = [
 
 $desktop_nav_items = [
     ['name' => 'Oblíbené', 'fa_icon' => 'fa-star', 'url' => '/oblibene-texty/'],
-    ['name' => 'Prezentace', 'fa_icon' => 'fa-fire', 'url' => '/modlitba/'],
-    ['name' => 'Domů', 'fa_icon' => 'fa-home', 'url' => '/'],
-    ['name' => 'Podcast', 'fa_icon' => 'fa-book', 'url' => '/poboznosti/'],
+    ['name' => 'Archiv', 'fa_icon' => 'fa-folder-open', 'url' => '/archiv-citatu/'],
+    ['name' => 'Návody', 'fa_icon' => 'fa-cubes', 'url' => '/navody/'],
+    ['name' => 'Pobožnosti', 'fa_icon' => 'fa-book', 'url' => '/poboznosti/'],
     ['name' => 'Zápisník', 'fa_icon' => 'fa-pencil', 'url' => '/zapisnik/'],
 ];
 
@@ -95,8 +95,8 @@ foreach ($grid_items as $item) {
                     width: 90vw;
                     max-width: 600px;
                     border-radius: 12px;
-                    padding: 15px;
-                    margin-top: 20px;
+                    padding: 0px;
+                    margin-top: 0px;
                     box-sizing: border-box;
                     background-color: #F5F2EB;
                     border: 2px solid #3b0f5d;
