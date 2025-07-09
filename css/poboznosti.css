@@ -96,6 +96,7 @@
 }
 #poboznosti-player-container .progress-wrapper {
     width: 100%;
+    margin-bottom: 5px; /* Přidáno pro vytvoření mezery pod názvem skladby */
 }
 #poboznosti-player-container .progress-bar-container {
     width: 100%; height: 8px; background-color: rgba(59, 15, 93, 0.2);
