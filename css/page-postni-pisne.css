@@ -1,7 +1,3 @@
-/* Styly pro stránku Postní Písně */
-.page-template-page-postni-pisne #primary { width: 100%; }
-.page-template-page-postni-pisne #secondary { display: none; }
-
 .songs-list-container {
     display: flex;
     flex-direction: column;

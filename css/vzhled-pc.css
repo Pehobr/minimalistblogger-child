@@ -5,25 +5,28 @@ nav#primary-site-navigation {
     display: none !important;
 }
 
-/* 2. Dvousloupcové rozložení pro obsah a sidebar */
+/* --- Vylepšené dvousloupcové rozložení --- */
+
+/* 2. Hlavní kontejner s mezerou mezi sloupci */
 .site-content > .content-wrap {
     display: flex;
     flex-wrap: nowrap;
+    gap: 2%; /* Mezera mezi obsahem a menu */
 }
 
-/* 3. Levý sloupec s obsahem */
-#primary.featured-content {
-    width: 68%;
-    margin-right: 0;
+/* 3. Levý sloupec s obsahem (roztáhne se) */
+#primary {
+    flex: 1; /* Klíčové pravidlo: obsah zabere všechno volné místo */
+    min-width: 0; /* Prevence proti "přetékání" obsahu */
 }
 
-/* 4. Pravý sloupec se sidebarem (menu) (přilepený) */
+/* 4. Pravý sloupec se sidebarem (pevná šířka, přilepený) */
 #secondary.featured-sidebar {
-    width: 20%;
-    margin-left: 2%;
+    width: 280px; /* Pevná a dostatečná šířka pro menu */
+    flex-shrink: 0; /* Zajistí, že se menu nikdy nezmenší */
     position: sticky;
-    top: 100px; /* Mezera od horního okraje (kvůli fixní hlavičce) */
-    align-self: flex-start; /* Důležité pro správné přichycení v kontejneru */
+    top: 85px;
+    align-self: flex-start;
 }
 
 /* === NOVÁ ÚPRAVA: Zarovnání ikon menu a titulku na PC === */

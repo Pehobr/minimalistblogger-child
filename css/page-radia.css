@@ -136,19 +136,6 @@
     background-color: #dcd7e9;
 }
 
-.page-template-page-radio .entry-title {
-    display: none;
-}
-
-.page-template-page-radio #secondary {
-    display: none;
-}
-
-.page-template-page-radio #primary {
-    width: 100%;
-    margin: 0;
-}
-
 #add-radio-button-container {
     margin-top: 25px;
     display: flex;

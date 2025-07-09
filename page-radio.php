@@ -84,6 +84,8 @@ $nastavena_radia = get_option('pehobr_internet_radia', array());
     </main>
 </div>
 
-<?php get_sidebar(); ?>
+<?php
 
-<?php get_footer(); ?>
+get_sidebar(); // <-- PŘIDANÝ ŘÁDEK
+get_footer();
+?>

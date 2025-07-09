@@ -104,5 +104,7 @@ $pisne = fetch_google_sheet_data_robust();
 </div>
 
 <?php
+
+get_sidebar(); // <-- PŘIDANÝ ŘÁDEK
 get_footer();
 ?>

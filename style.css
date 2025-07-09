@@ -182,3 +182,11 @@ body.theme-ruzova .site,
 body.theme-ruzova header#masthead.sheader {
     background: #d8a1c4;
 }
+
+/* === Globální vycentrování hlavního obsahu stránky === */
+.content-wrap {
+    max-width: 1200px; /* Můžete upravit, pokud chcete web širší nebo užší */
+    margin-left: auto !important;
+    margin-right: auto !important;
+    float: none !important; /* Zruší případné obtékání z původní šablony */
+}

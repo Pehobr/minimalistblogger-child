@@ -98,5 +98,7 @@ foreach ($playlists as $playlist) {
 </div>
 
 <?php
+
+get_sidebar(); // <-- PŘIDANÝ ŘÁDEK
 get_footer();
 ?>
