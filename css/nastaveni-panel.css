@@ -1,21 +1,24 @@
-/* --- Ikona pro otevření nastavení (nová verze) --- */
-.entry-content p[style*="text-align: center"] {
+/* --- Ikona pro otevření nastavení (nová verze v hlavičce) --- */
+.entry-header {
     position: relative; /* Nutné pro absolutní pozicování ikony uvnitř */
 }
+
 #settings-open-btn {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -5px;  /* Upravte dle potřeby */
+    right: 0; /* Upravte dle potřeby */
     background: none;
     border: none;
     color: #3b0f5d; /* Tmavě fialová, dobře viditelná na světlém pozadí */
-    font-size: 20px;
+    font-size: 22px;
     cursor: pointer;
-    padding: 0 5px;
-    line-height: 1.5; /* Upraví vertikální zarovnání s textem */
+    padding: 5px;
+    line-height: 1;
+    transition: transform 0.2s ease-in-out;
 }
 #settings-open-btn:hover {
     color: #870e2c;
+    transform: scale(1.1);
 }
 
 /* --- Panel s nastavením (zůstává stejný) --- */
@@ -78,12 +81,17 @@
 .settings-content {
     padding: 20px;
     flex-grow: 1;
+    overflow-y: auto; /* Přidáno pro případ více nastavení */
 }
 
 .setting-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 15px; /* Přidána mezera mezi položkami */
+}
+.setting-item:last-child {
+    margin-bottom: 0;
 }
 .setting-item label {
     color: #3b0f5d;
