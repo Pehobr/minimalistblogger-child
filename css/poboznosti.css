@@ -119,3 +119,58 @@
 .single-post.category-poboznosti .posts-entry .entry-header .entry-title {
     display: none;
 }
+
+/* === NOVÉ STYLY PRO OVLÁDÁNÍ VELIKOSTI PÍSMA V PANELU === */
+#font-size-controls-container {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #dcd7e9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#font-size-controls-container label {
+    color: #3b0f5d;
+    font-family: sans-serif;
+    margin-right: 15px;
+}
+
+.font-size-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.font-size-btn {
+    width: 32px;
+    height: 32px;
+    background-color: #fff;
+    border: 2px solid #3b0f5d;
+    color: #3b0f5d;
+    border-radius: 50%;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    transition: background-color 0.2s, color 0.2s, transform 0.2s;
+}
+
+.font-size-btn:hover {
+    background-color: #3b0f5d;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+#poboznosti-font-indicator {
+    font-weight: bold;
+    color: #3b0f5d;
+    font-family: sans-serif;
+    font-size: 16px;
+    min-width: 55px; /* Rezervuje místo, aby se layout nerozpadl */
+    text-align: center;
+}
