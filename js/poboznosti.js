@@ -1,6 +1,6 @@
 /**
  * JavaScript pro stránku "Aplikace Pobožnosti".
- * VERZE 8: Přidána možnost skrytí tlačítek přehrávání u textů.
+ * VERZE 10: Opraveno skrývání celých nebiblických sekcí (nadpis + obsah).
  */
 jQuery(document).ready(function($) {
 
@@ -40,7 +40,26 @@ jQuery(document).ready(function($) {
         progressBar.addClass('disabled');
         prevBtn.prop('disabled', true);
         nextBtn.prop('disabled', true);
+        
+        // --- KLÍČOVÁ ZMĚNA V IDENTIFIKACI OBSAHU ---
+        const biblicalKeys = ['audio_1cteni', 'audio_2cteni', 'audio_evang'];
+        
+        // Nejprve projdeme všechny H3, abychom označili celé sekce
+        $('.poboznosti-app .entry-content h3').each(function() {
+            const heading = $(this);
+            const match = heading.html().match(/\[AUDIO:([\w_]+)\]/);
+            
+            if (match) {
+                const audioKey = match[1];
+                if (!biblicalKeys.includes(audioKey)) {
+                    // Označíme nadpis a všechny následující elementy až do dalšího H3
+                    heading.addClass('non-biblical-content');
+                    heading.nextUntil('h3').addClass('non-biblical-content');
+                }
+            }
+        });
 
+        // Poté projdeme všechny relevantní elementy a přidáme tlačítka
         $('.poboznosti-app .entry-content p, .poboznosti-app .entry-content h3').each(function() {
             const element = $(this);
             let element_html = element.html();
@@ -54,7 +73,7 @@ jQuery(document).ready(function($) {
                     element_html = element_html.replace(placeholder, '').trim();
                     element.html(element_html);
                     const button = $(`<button class="poboznosti-audio-button" data-audio-key="${audioKey}" aria-label="Přehrát ${titleMap[audioKey] || audioKey}"><i class="fa fa-headphones"></i></button>`);
-                    element.append(button);
+                    element.wrapInner('<span class="audio-text-content"></span>').append(button);
                     element.addClass('has-audio');
 
                     const audioElement = new Audio(audioUrls[audioKey]);
@@ -213,25 +232,15 @@ jQuery(document).ready(function($) {
         }
     }
 
-    // --- 2. SEKCE NASTAVENÍ VZHLEDU (S NOVOU MOŽNOSTÍ) ---
+    // --- 2. SEKCE NASTAVENÍ VZHLEDU ---
     if ($('.poboznosti-app').length) {
         
-        // --- Nastavení velikosti písma ---
-        const fontControlsHTML = `
-            <div class="setting-item" id="font-size-controls-container">
-                <label>Velikost písma</label>
-                <div class="font-size-controls">
-                    <button id="poboznosti-font-decrease" class="font-size-btn" aria-label="Zmenšit písmo">-</button>
-                    <span id="poboznosti-font-indicator">100%</span>
-                    <button id="poboznosti-font-increase" class="font-size-btn" aria-label="Zvětšit písmo">+</button>
-                </div>
-            </div>`;
         const settingsContent = $('#settings-panel .settings-content');
+
+        // --- Nastavení velikosti písma ---
+        const fontControlsHTML = `<div class="setting-item" id="font-size-controls-container"><label>Velikost písma</label><div class="font-size-controls"><button id="poboznosti-font-decrease" class="font-size-btn" aria-label="Zmenšit písmo">-</button><span id="poboznosti-font-indicator">100%</span><button id="poboznosti-font-increase" class="font-size-btn" aria-label="Zvětšit písmo">+</button></div></div>`;
         settingsContent.append(fontControlsHTML);
 
-        const decreaseBtn = $('#poboznosti-font-decrease');
-        const increaseBtn = $('#poboznosti-font-increase');
-        const sizeIndicator = $('#poboznosti-font-indicator');
         const textElements = $('.poboznosti-app .entry-content p');
         const fontSizeStorageKey = 'poboznosti_font_size_rem';
         const baseFontSize = 1; 
@@ -241,53 +250,68 @@ jQuery(document).ready(function($) {
             const newSizeRem = Math.max(0.7, Math.min(2.0, sizeInRem));
             textElements.css('font-size', newSizeRem + 'rem');
             const percentage = Math.round((newSizeRem / baseFontSize) * 100);
-            sizeIndicator.text(percentage + '%');
+            $('#poboznosti-font-indicator').text(percentage + '%');
             localStorage.setItem(fontSizeStorageKey, newSizeRem);
             currentSizeRem = newSizeRem;
         }
 
-        increaseBtn.on('click', () => applyFontSize(currentSizeRem + 0.1));
-        decreaseBtn.on('click', () => applyFontSize(currentSizeRem - 0.1));
+        $('#poboznosti-font-increase').on('click', () => applyFontSize(currentSizeRem + 0.1));
+        $('#poboznosti-font-decrease').on('click', () => applyFontSize(currentSizeRem - 0.1));
         applyFontSize(currentSizeRem);
 
-        // --- NOVÁ ČÁST: Nastavení viditelnosti tlačítek přehrávačů ---
-        const individualPlayerControlsHTML = `
-            <div class="setting-item" id="toggle-individual-players-container">
-                <label for="toggle-individual-players">Zobrazit audio tlačítka u textů</label>
-                <label class="switch">
-                    <input type="checkbox" id="toggle-individual-players">
-                    <span class="slider round"></span>
-                </label>
-            </div>`;
+        // --- Nastavení viditelnosti tlačítek přehrávačů ---
+        const individualPlayerControlsHTML = `<div class="setting-item" id="toggle-individual-players-container"><label for="toggle-individual-players">Zobrazit tlačítka u textů</label><label class="switch"><input type="checkbox" id="toggle-individual-players"><span class="slider round"></span></label></div>`;
         settingsContent.append(individualPlayerControlsHTML);
         
         const individualPlayerToggle = $('#toggle-individual-players');
-        const individualPlayers = $('.poboznosti-audio-button');
         const playerVisibilityKey = 'poboznosti_showIndividualPlayers';
 
         function applyPlayerVisibility() {
             const shouldShow = localStorage.getItem(playerVisibilityKey);
-            // Výchozí stav je "zobrazeno", tedy pokud není uloženo 'false', tak se zobrazí.
             if (shouldShow === 'false') {
-                individualPlayers.hide();
+                $('.poboznosti-audio-button').hide();
                 individualPlayerToggle.prop('checked', false);
             } else {
-                individualPlayers.show();
+                $('.poboznosti-audio-button').show();
                 individualPlayerToggle.prop('checked', true);
             }
         }
 
         individualPlayerToggle.on('change', function() {
             if ($(this).is(':checked')) {
-                individualPlayers.fadeIn(200);
+                $('.poboznosti-audio-button').fadeIn(200);
                 localStorage.setItem(playerVisibilityKey, 'true');
             } else {
-                individualPlayers.fadeOut(200);
+                $('.poboznosti-audio-button').fadeOut(200);
                 localStorage.setItem(playerVisibilityKey, 'false');
             }
         });
-
-        // Aplikujeme uložené nastavení při načtení stránky
         applyPlayerVisibility();
+
+        // --- Zobrazit pouze biblická čtení ---
+        const biblicalOnlyHTML = `<div class="setting-item" id="toggle-biblical-only-container"><label for="toggle-biblical-only">Zobrazit pouze biblická čtení</label><label class="switch"><input type="checkbox" id="toggle-biblical-only"><span class="slider round"></span></label></div>`;
+        settingsContent.append(biblicalOnlyHTML);
+
+        const biblicalOnlyToggle = $('#toggle-biblical-only');
+        const poboznostiAppContainer = $('.poboznosti-app');
+        const biblicalOnlyKey = 'poboznosti_showBiblicalOnly';
+        
+        function applyBiblicalOnlyMode() {
+            const shouldShowOnlyBiblical = localStorage.getItem(biblicalOnlyKey) === 'true';
+            if (shouldShowOnlyBiblical) {
+                poboznostiAppContainer.addClass('biblical-readings-only');
+                biblicalOnlyToggle.prop('checked', true);
+            } else {
+                poboznostiAppContainer.removeClass('biblical-readings-only');
+                biblicalOnlyToggle.prop('checked', false);
+            }
+        }
+        
+        biblicalOnlyToggle.on('change', function() {
+            localStorage.setItem(biblicalOnlyKey, $(this).is(':checked'));
+            applyBiblicalOnlyMode();
+        });
+
+        applyBiblicalOnlyMode();
     }
 });

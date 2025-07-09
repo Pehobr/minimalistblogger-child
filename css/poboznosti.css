@@ -8,6 +8,24 @@
     gap: 15px;
 }
 
+.poboznosti-app .entry-content .has-audio,
+.poboznosti-app .entry-content .non-biblical-content {
+    transition: opacity 0.4s ease, max-height 0.4s ease, margin 0.4s ease, padding 0.4s ease;
+    overflow: hidden;
+}
+
+/* === PRAVIDLO PRO SKRYTÍ NEBIBLICKÝCH TEXTŮ === */
+.poboznosti-app.biblical-readings-only .non-biblical-content {
+    opacity: 0;
+    max-height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border: 0;
+}
+
+
 .has-audio .audio-text-content {
     flex-grow: 1;
 }
@@ -122,6 +140,7 @@
 
 /* === STYLY PRO OVLÁDACÍ PRVKY V PANELU NASTAVENÍ === */
 
+#toggle-biblical-only-container,
 #toggle-individual-players-container,
 #font-size-controls-container {
     margin-top: 15px;
@@ -131,6 +150,7 @@
     justify-content: space-between;
     align-items: center;
 }
+#toggle-biblical-only-container label,
 #toggle-individual-players-container label,
 #font-size-controls-container label {
     color: #3b0f5d;
