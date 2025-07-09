@@ -69,7 +69,6 @@ header#masthead.sheader { z-index: 999; }
     background-color: transparent;
 }
 
-
 .pope-items-wrapper,
 .third-row-items-wrapper {
     display: flex;
@@ -108,7 +107,6 @@ header#masthead.sheader { z-index: 999; }
 .saints-item-center img {
     max-height: 105px !important;
 }
-
 
 .pope-item {
     display: flex;
@@ -159,7 +157,6 @@ header#masthead.sheader { z-index: 999; }
     align-items: center;
 }
 
-
 .third-row-section-container .grid-item-wrapper {
     width: 30%;
 }
@@ -176,7 +173,6 @@ header#masthead.sheader { z-index: 999; }
 .third-row-section-container .grid-item-label {
     display: none; 
 }
-
 
 .library-grid-item {
     display: flex;
@@ -207,7 +203,6 @@ header#masthead.sheader { z-index: 999; }
 #library-grid-container .grid-item-label {
    display: none;
 }
-
 
 .quote-modal-overlay {
     display: none; position: fixed; top: 0; left: 0;
@@ -270,7 +265,12 @@ header#masthead.sheader { z-index: 999; }
 .map-seek-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 15px; height: 15px; background: #3b0f5d; border-radius: 50%; cursor: pointer; border: none; margin-top: -4px; }
 .map-seek-slider::-moz-range-thumb { width: 15px; height: 15px; background: #3b0f5d; border-radius: 50%; cursor: pointer; border: none; }
 
-/* === NOVÉ PRAVIDLO PRO SKRYTÍ TŘETÍHO ŘÁDKU === */
+/* === PRAVIDLO PRO SKRYTÍ TŘETÍHO ŘÁDKU === */
 .third-row-section-container {
     display: none !important;
+}
+
+/* Skrytí nové navigační mřížky ve výchozím stavu (na mobilu) */
+#desktop-nav-grid-container {
+    display: none;
 }

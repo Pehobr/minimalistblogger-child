@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah.
- * VERZE 24: Odstranění popisků u třetího řádku ikon (Modlitba, Bible, Inspirace).
+ * VERZE 30: Finální seřazení ikon na desktopu (navigace, pak knihovna).
  * @package minimalistblogger-child
  */
 
@@ -64,6 +64,14 @@ $library_items = [
     ['name' => 'Podcast', 'icon' => 'knihovna-podcast.png', 'url' => '/podcast'],
 ];
 
+$desktop_nav_items = [
+    ['name' => 'Oblíbené', 'fa_icon' => 'fa-star', 'url' => '/oblibene-texty/'],
+    ['name' => 'Prezentace', 'fa_icon' => 'fa-fire', 'url' => '/modlitba/'],
+    ['name' => 'Domů', 'fa_icon' => 'fa-home', 'url' => '/'],
+    ['name' => 'Podcast', 'fa_icon' => 'fa-book', 'url' => '/poboznosti/'],
+    ['name' => 'Zápisník', 'fa_icon' => 'fa-pencil', 'url' => '/zapisnik/'],
+];
+
 foreach ($grid_items as $item) {
     if (isset($item['citat_key'])) {
         $source_post_id = $daily_post_id ?? $page_id_for_defaults;
@@ -74,6 +82,61 @@ foreach ($grid_items as $item) {
 
 <div id="primary" class="featured-content content-area intro-app">
     <main id="main" class="site-main">
+    
+        <style type="text/css">
+            #desktop-nav-grid-container {
+                display: none;
+            }
+
+            @media screen and (min-width: 992px) {
+                /* Zobrazíme a nastyulujeme novou navigační lištu */
+                #desktop-nav-grid-container {
+                    display: block;
+                    width: 90vw;
+                    max-width: 600px;
+                    border-radius: 12px;
+                    padding: 15px;
+                    margin-top: 20px;
+                    box-sizing: border-box;
+                    background-color: #F5F2EB;
+                    border: 2px solid #3b0f5d;
+                }
+
+                .desktop-nav-items-wrapper {
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    gap: 15px;
+                }
+
+                .desktop-nav-item {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    width: 18%;
+                    text-align: center;
+                }
+
+                .desktop-nav-icon-link {
+                    display: block;
+                    width: 100%;
+                    color: #741ea4; /* Požadovaná barva ikony */
+                    font-size: 38px;
+                    text-decoration: none;
+                    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+                }
+
+                .desktop-nav-icon-link:hover {
+                    transform: scale(1.1);
+                    color: #870e2c;
+                }
+
+                .desktop-nav-item .grid-item-label {
+                    display: none; /* Skrytí popisku */
+                }
+            }
+        </style>
+
         <div id="intro-wrapper">
             
             <?php if (!empty($nazev_dne) || !empty($datum_dne)): ?>
@@ -124,9 +187,21 @@ foreach ($grid_items as $item) {
                             <a href="<?php echo esc_url($link_url); ?>" class="icon-grid-item" <?php if ($has_content): ?>data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>" data-type="<?php echo esc_attr($item['type']); ?>" data-author-name="<?php echo esc_attr($item['name']); ?>"<?php endif; ?>>
                                 <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
                             </a>
-                            <?php // Popisek je nyní odstraněn ?>
                         </div>
                     <?php endfor; ?>
+                </div>
+            </div>
+
+            <div id="desktop-nav-grid-container">
+                <div class="desktop-nav-items-wrapper">
+                    <?php foreach ($desktop_nav_items as $item) : ?>
+                        <div class="desktop-nav-item">
+                            <a href="<?php echo esc_url(home_url($item['url'])); ?>" class="desktop-nav-icon-link" aria-label="<?php echo esc_attr($item['name']); ?>">
+                                <i class="fa <?php echo esc_attr($item['fa_icon']); ?>" aria-hidden="true"></i>
+                            </a>
+                            <span class="grid-item-label"><?php echo esc_html($item['name']); ?></span>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
 
@@ -139,6 +214,7 @@ foreach ($grid_items as $item) {
                     </div>
                 <?php endforeach; ?>
             </div>
+
         </div>
     </main>
 </div>
@@ -156,10 +232,9 @@ foreach ($grid_items as $item) {
                 if ($item['type'] === 'image') {
                     $modal_content = '<img src="' . esc_url($content_html) . '" alt="' . esc_attr($item['name']) . '">';
                 } elseif ($item['type'] === 'video') {
-                     $modal_content = $content_html; // Iframe je již v obsahu
+                     $modal_content = $content_html;
                 } else {
                     $modal_content = wpautop($content_html);
-                    // Speciální případ pro modlitbu s audio přehrávačem
                     if (isset($item['audio_key'])) {
                         $audio_url = get_post_meta($daily_post_id ?? $page_id_for_defaults, $item['audio_key'], true);
                         if (!empty($audio_url)) {
@@ -179,12 +254,6 @@ foreach ($grid_items as $item) {
 </div>
 
 <div id="quote-modal-overlay" class="quote-modal-overlay"></div>
-<div id="quote-modal-container" class="quote-modal-container">
-    <button id="quote-modal-favorite-btn" class="quote-modal-favorite-btn"><i class="fa fa-star-o"></i></button>
-    <button id="quote-modal-close-btn" class="quote-modal-close-btn">×</button>
-    <div id="quote-modal-content" class="quote-modal-content"></div>
-</div>
-
 <div id="quote-modal-container" class="quote-modal-container">
     <button id="quote-modal-favorite-btn" class="quote-modal-favorite-btn"><i class="fa fa-star-o"></i></button>
     <button id="quote-modal-close-btn" class="quote-modal-close-btn">×</button>

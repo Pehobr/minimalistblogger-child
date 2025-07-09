@@ -97,7 +97,7 @@ nav#primary-site-navigation {
     padding: 2px !important;
     margin-bottom: 7px !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05) !important;
-    box-sizing
+    box-sizing: border-box !important;
 }
 
 /* === STYLY PRO ROZBALOVACÍ POD-MENU V SIDEBARU (FINÁLNÍ VERZE 2.0) === */
@@ -160,4 +160,55 @@ nav#primary-site-navigation {
 /* Skrytí oddělovacích čar v pod-menu */
 #secondary .widget_nav_menu ul.sub-menu li:not(:last-child)::after {
     display: none;
+}
+
+/* === STYLY PRO NOVOU NAVIGAČNÍ MŘÍŽKU NA DESKTOPU === */
+#desktop-nav-grid-container {
+    display: block;
+    width: 90vw;
+    max-width: 600px;
+    border-radius: 12px;
+    padding: 15px;
+    margin-top: 20px;
+    box-sizing: border-box;
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
+}
+
+.desktop-nav-items-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center; /* Změna na center pro lepší zarovnání ikon */
+    gap: 15px;
+}
+
+.desktop-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 18%;
+    text-align: center;
+}
+
+.desktop-nav-icon-link {
+    display: block;
+    width: 100%;
+    color: #3b0f5d;
+    font-size: 38px; /* Velikost ikony */
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.desktop-nav-icon-link:hover {
+    transform: scale(1.1);
+    color: #870e2c;
+}
+
+/* Styl pro popisek pod ikonou */
+.desktop-nav-item .grid-item-label {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #3b0f5d;
+    font-family: 'Superclarendon', serif;
 }
