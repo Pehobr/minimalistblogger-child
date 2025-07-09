@@ -36,7 +36,7 @@
 
 
 #donation-popup-container span {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: bold;
     color: #3b0f5d;
     font-family: 'Superclarendon', serif;
@@ -47,7 +47,7 @@
     position: absolute;
     bottom: 3px;
     right: 10px;
-    font-size: 11px;
+    font-size: 9px;
     font-weight: normal;
     color: #4b2a64;
     font-family: sans-serif;
