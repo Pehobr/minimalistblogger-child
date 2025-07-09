@@ -1,6 +1,7 @@
 <?php
 /**
  * Načítání všech CSS stylů a JavaScriptových skriptů.
+ * VERZE s přidáním skriptů a stylů pro vyskakovací okno.
  */
 
 // Zabráníme přímému přístupu
@@ -33,9 +34,24 @@ function minimalistblogger_child_enqueue_assets() {
 
     if ( is_page_template('page-home.php') ) {
         wp_enqueue_style( 'postni-kapky-home-styles', get_stylesheet_directory_uri() . '/css/page-home.css', array(), filemtime( get_stylesheet_directory() . '/css/page-home.css' ) );
+        
+        // Načtení stylů pro vyskakovací okno s prosbou o dar
+        if (file_exists(get_stylesheet_directory() . '/css/donation-popup.css')) {
+            wp_enqueue_style( 'donation-popup-style', get_stylesheet_directory_uri() . '/css/donation-popup.css', array(), filemtime( get_stylesheet_directory() . '/css/donation-popup.css' ) );
+        }
+
         if (file_exists(get_stylesheet_directory() . '/js/page-home.js')) {
             wp_enqueue_script( 'postni-kapky-home-js', get_stylesheet_directory_uri() . '/js/page-home.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/page-home.js' ), true );
         }
+
+        // Předání PHP nastavení do JavaScriptu pro vyskakovací okno
+        wp_localize_script(
+            'postni-kapky-home-js',
+            'donation_popup_settings',
+            array(
+                'show_popup' => get_option('pehobr_show_donation_popup') === 'on'
+            )
+        );
     }
 
     if ( is_page_template('page-oblibene.php') ) {
@@ -101,15 +117,13 @@ function minimalistblogger_child_enqueue_assets() {
 }
 add_action( 'wp_enqueue_scripts', 'minimalistblogger_child_enqueue_assets', 20 );
 
-// === PŘIDANÁ FUNKCE PRO NAČTENÍ SKRIPTU V ADMINISTRACI ===
 function pehobr_enqueue_admin_scripts($hook) {
-    // Načte skript pouze na stránce s nastavením rádií
-if ( 'nastaveni-pk_page_pehobr-radio-settings' !== $hook ) {        return;
+    if ( 'postni-kapky_page_pehobr-radio-settings' !== $hook && 'postni-kapky_page_nastaveni-poradi-navodu' !== $hook) {
+        return;
     }
     wp_enqueue_script('jquery-ui-sortable');
 }
 add_action( 'admin_enqueue_scripts', 'pehobr_enqueue_admin_scripts' );
-// === KONEC PŘIDANÉ FUNKCE ===
 
 function moje_aplikace_assets() {
     $theme_version = wp_get_theme()->get('Version');
@@ -136,20 +150,12 @@ function moje_aplikace_assets() {
 }
 add_action( 'wp_enqueue_scripts', 'moje_aplikace_assets' );
 
-/**
- * Načte styly a skripty pro aplikaci Pobožnosti.
- */
 function poboznosti_app_assets() {
-    // Podmínka pro zobrazení na stránce s šablonou nebo v příspěvku z dané rubriky
     $is_poboznosti_stranka = is_page_template('page-poboznosti.php') || (is_singular('post') && has_category('poboznosti'));
 
     if ( $is_poboznosti_stranka ) {
         $theme_version = wp_get_theme()->get('Version');
-        
-        // Načtení CSS
         wp_enqueue_style( 'poboznosti-style', get_stylesheet_directory_uri() . '/css/poboznosti.css', array(), $theme_version );
-        
-        // Načtení JavaScriptu
         wp_enqueue_script( 'poboznosti-script', get_stylesheet_directory_uri() . '/js/poboznosti.js', array('jquery'), $theme_version, true );
     }
 }

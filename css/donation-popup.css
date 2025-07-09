@@ -1,0 +1,42 @@
+/* Styly pro vyskakovací okno s prosbou o dar */
+
+#donation-popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.65);
+    z-index: 20000;
+}
+
+#donation-popup-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 450px;
+    padding: 25px 20px;
+    background-color: #e6e0f3;
+    border: 2px solid #3b0f5d;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    z-index: 20001;
+}
+
+#donation-popup-container a {
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #3b0f5d;
+    font-family: 'Superclarendon', serif;
+    transition: color 0.2s ease;
+}
+
+#donation-popup-container a:hover {
+    color: #870e2c;
+}

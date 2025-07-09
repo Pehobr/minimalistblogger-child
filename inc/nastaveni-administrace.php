@@ -1,7 +1,7 @@
 <?php
 /**
  * Funkce pro administraci WordPressu.
- * VERZE 4: Hlavní menu "Postní kapky" odkazuje přímo na nastavení data.
+ * VERZE 5: Přidáno nastavení pro zobrazení vyskakovacího okna s prosbou o dar.
  */
 
 // Zabráníme přímému přístupu
@@ -11,58 +11,76 @@ if ( !defined( 'ABSPATH' ) ) exit;
  * Registruje stránky s nastavením.
  */
 function pehobr_register_settings_page() {
-    // Vytvoření hlavní položky menu "Postní kapky",
-    // která přímo odkazuje na stránku "Nastavení data".
     add_menu_page(
-        'Nastavení začátku doby postní', // Titulek stránky v prohlížeči
-        'Nastavení PK', // Název v menu
-        'manage_options', // Oprávnění
-        'pehobr-app-settings', // Slug, který je stejný jako u první podpoložky
-        'pehobr_render_settings_page_content', // Funkce pro vykreslení obsahu
-        'dashicons-admin-generic', // Ikona
-        20 // Pozice
+        'Nastavení aplikace',
+        'Postní kapky',
+        'manage_options',
+        'pehobr-app-settings',
+        'pehobr_render_settings_page_content',
+        'dashicons-admin-generic',
+        20
     );
-
-    // Přidání podstránky pro nastavení YouTube playlistů
     add_submenu_page(
-        'pehobr-app-settings', // Slug rodičovského menu (stejný jako u add_menu_page)
-        'Nastavení Youtube playlistů', // Titulek stránky
-        'Youtube playlisty', // Název v podmenu
-        'manage_options', // Oprávnění
-        'pehobr-youtube-settings', // Slug této podstránky
-        'pehobr_render_youtube_settings_page' // Funkce pro vykreslení obsahu
+        'pehobr-app-settings',
+        'Nastavení Youtube playlistů',
+        'Youtube playlisty',
+        'manage_options',
+        'pehobr-youtube-settings',
+        'pehobr_render_youtube_settings_page'
     );
-
-    // === PŘIDANÁ SEKCE PRO INTERNETOVÁ RÁDIA ===
     add_submenu_page(
-        'pehobr-app-settings', // Slug rodičovského menu
-        'Nastavení internetových rádií', // Titulek stránky
-        'Internetová rádia', // Název v podmenu
-        'manage_options', // Oprávnění
-        'pehobr-radio-settings', // Slug této podstránky
-        'pehobr_render_radio_settings_page' // Funkce pro vykreslení obsahu
+        'pehobr-app-settings',
+        'Nastavení internetových rádií',
+        'Internetová rádia',
+        'manage_options',
+        'pehobr-radio-settings',
+        'pehobr_render_radio_settings_page'
     );
-    // === KONEC PŘIDANÉ SEKCE ===
+     add_submenu_page(
+        'pehobr-app-settings',
+        'Pořadí návodů',
+        'Pořadí návodů',
+        'manage_options',
+        'nastaveni-poradi-navodu',
+        'pehobr_render_sort_navody_page'
+    );
 }
 add_action( 'admin_menu', 'pehobr_register_settings_page' );
 
 
 function pehobr_register_settings() {
+    // Stávající nastavení pro datum
     register_setting( 'pehobr_app_options_group', 'start_date_setting', array( 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => '2026-02-18', ) );
+    
+    // === NOVÉ NASTAVENÍ PRO VYSKAKOVACÍ OKNO ===
+    register_setting( 'pehobr_app_options_group', 'pehobr_show_donation_popup', array( 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', ) );
 }
 add_action( 'admin_init', 'pehobr_register_settings' );
 
 function pehobr_render_settings_page_content() {
     ?>
     <div class="wrap">
-        <h1>Nastavení začátku doby postní</h1>
-        <p>Toto nastavení určuje, od jakého data se začne den po dni zobrazovat obsah v aplikaci (Liturgické čtení, Pobožnosti, Denní kapky na úvodní stránce).</p>
+        <h1>Nastavení aplikace Postní kapky</h1>
         <form action="options.php" method="post">
             <?php settings_fields( 'pehobr_app_options_group' ); do_settings_sections( 'pehobr-app-settings' ); ?>
             <table class="form-table">
                 <tr valign="top">
                     <th scope="row"> <label for="start_date_setting">Datum začátku (Popeleční středa):</label> </th>
-                    <td> <input type="date" id="start_date_setting" name="start_date_setting" value="<?php echo esc_attr( get_option( 'start_date_setting', '2026-02-18' ) ); ?>" /> <p class="description"> Zadejte datum ve formátu RRRR-MM-DD. </p> </td>
+                    <td> 
+                        <input type="date" id="start_date_setting" name="start_date_setting" value="<?php echo esc_attr( get_option( 'start_date_setting', '2026-02-18' ) ); ?>" /> 
+                        <p class="description">Určuje, od jakého data se začne den po dni zobrazovat obsah.</p>
+                    </td>
+                </tr>
+
+                <tr valign="top">
+                    <th scope="row">Prosba o dar</th>
+                    <td>
+                        <label for="pehobr_show_donation_popup">
+                            <input type="checkbox" id="pehobr_show_donation_popup" name="pehobr_show_donation_popup" <?php checked( get_option('pehobr_show_donation_popup'), 'on' ); ?> />
+                            Zobrazit na úvodní stránce vyskakovací okno s prosbou o dar.
+                        </label>
+                        <p class="description">Pokud je zaškrtnuto, okno se zobrazí každému uživateli jednou při prvním spuštění aplikace.</p>
+                    </td>
                 </tr>
             </table>
             <?php submit_button( 'Uložit změny' ); ?>

@@ -149,3 +149,44 @@ jQuery(document).ready(function($) {
         $('#quote-modal-close-btn, #quote-modal-overlay').one('click.audioPlayer', () => { if (audio) { audio.pause(); audio.src = ''; } });
     }
 });
+
+jQuery(document).ready(function($) {
+    "use strict";
+
+    // ... (stávající kód souboru)
+
+    // === NOVÁ LOGIKA PRO VYSKAKOVACÍ OKNO S PROSBOU O DAR ===
+
+    // Zkontrolujeme, zda existuje objekt s nastavením a zda je povoleno zobrazení
+    if (typeof donation_popup_settings !== 'undefined' && donation_popup_settings.show_popup) {
+        
+        // Zkontrolujeme, zda okno již nebylo v této session zobrazeno
+        if (!sessionStorage.getItem('pehobr_donation_popup_shown')) {
+            
+            const donationOverlay = $('#donation-popup-overlay');
+            const donationContainer = $('#donation-popup-container');
+
+            // Funkce pro zavření okna
+            function closeDonationPopup() {
+                donationOverlay.fadeOut(300);
+                donationContainer.fadeOut(300);
+            }
+
+            // Zobrazíme okno a překrytí
+            donationOverlay.fadeIn(300);
+            donationContainer.fadeIn(300);
+
+            // Označíme, že v této session již bylo okno zobrazeno
+            sessionStorage.setItem('pehobr_donation_popup_shown', 'true');
+
+            // Nastavíme automatické zavření po 5 sekundách
+            const autoCloseTimer = setTimeout(closeDonationPopup, 5000);
+
+            // Zavření po kliknutí na překryvnou vrstvu (mimo okno)
+            donationOverlay.on('click', function() {
+                clearTimeout(autoCloseTimer); // Zrušíme časovač, pokud uživatel zavře okno dříve
+                closeDonationPopup();
+            });
+        }
+    }
+});

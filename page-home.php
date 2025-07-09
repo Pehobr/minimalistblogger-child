@@ -185,4 +185,16 @@ foreach ($grid_items as $item) {
     <div id="quote-modal-content" class="quote-modal-content"></div>
 </div>
 
+<div id="quote-modal-container" class="quote-modal-container">
+    <button id="quote-modal-favorite-btn" class="quote-modal-favorite-btn"><i class="fa fa-star-o"></i></button>
+    <button id="quote-modal-close-btn" class="quote-modal-close-btn">×</button>
+    <div id="quote-modal-content" class="quote-modal-content"></div>
+</div>
+
+<div id="donation-popup-overlay"></div>
+<div id="donation-popup-container">
+    <a href="<?php echo esc_url( home_url('/prosba/') ); ?>">
+        Prosba o dar
+    </a>
+</div>
 <?php get_footer(); ?>
