@@ -19,7 +19,7 @@
     transform: translateX(-50%);
     width: 90%;
     max-width: 450px;
-    padding: 15px 20px;
+    padding: 12px 12px;
     background-color: #e6e0f3;
     border: 2px solid #3b0f5d;
     border-radius: 8px;
@@ -36,26 +36,24 @@
 
 
 #donation-popup-container span {
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: bold;
     color: #3b0f5d;
     font-family: 'Superclarendon', serif;
 }
 
-/* === NOVÉ STYLY PRO ODPOČET (BEZ KOLEČKA) === */
+/* === FINÁLNÍ STYLY PRO ODPOČET (BEZ KOLEČKA) === */
 #donation-timer {
     position: absolute;
-    bottom: 3px; /* Upravena pozice */
-    right: 10px; /* Upravena pozice */
-    
-    /* Vlastnosti pro vzhled textu */
-    font-size: 10px;
+    bottom: 3px;
+    right: 10px;
+    font-size: 11px;
     font-weight: normal;
-    color: #3b0f5d;
+    color: #4b2a64;
     font-family: sans-serif;
     opacity: 0.8;
-
-    /* Odstranění vlastností pro kolečko */
+    
+    /* Vlastnosti pro kolečko jsou odstraněny */
     background-color: transparent;
     width: auto;
     height: auto;

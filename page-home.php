@@ -194,6 +194,6 @@ foreach ($grid_items as $item) {
 <div id="donation-popup-overlay"></div>
 <a href="<?php echo esc_url( home_url('/prosba/') ); ?>" id="donation-popup-container">
     <span>Děkujeme<br>za Vaši podporu</span>
-    <span id="donation-timer">7 s</span> 
+    <span id="donation-timer">7s</span> 
 </a>
 <?php get_footer(); ?>
