@@ -64,7 +64,7 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
         <div class="settings-content">
             <?php // Zde se přidává obecné nastavení, které může být na více stránkách ?>
             <div class="setting-item">
-                <label for="toggle-player">Zobrazit hlavní přehrávač</label>
+                <label for="toggle-player">Skrýt hlavní přehrávač</label>
                 <label class="switch">
                     <input type="checkbox" id="toggle-player">
                     <span class="slider round"></span>
