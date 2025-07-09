@@ -20,7 +20,7 @@
     transform: translateX(-50%);
     width: 90%;
     max-width: 450px;
-    padding: 12px;
+    padding: 12px 7px;
     background-color: #e6e0f3;
     border: 2px solid #3b0f5d;
     border-radius: 8px;
@@ -38,7 +38,7 @@
 
 
 #donation-popup-container span {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: bold;
     color: #3b0f5d;
     font-family: 'Superclarendon', serif;
