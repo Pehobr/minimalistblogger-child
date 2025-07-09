@@ -148,14 +148,8 @@ jQuery(document).ready(function($) {
         slider.on('input', () => audio.currentTime = slider.val());
         $('#quote-modal-close-btn, #quote-modal-overlay').one('click.audioPlayer', () => { if (audio) { audio.pause(); audio.src = ''; } });
     }
-});
 
-jQuery(document).ready(function($) {
-    "use strict";
-
-    // ... (stávající kód souboru)
-
-    // === NOVÁ LOGIKA PRO VYSKAKOVACÍ OKNO S PROSBOU O DAR ===
+    // === OPRAVENÁ A UPRAVENÁ LOGIKA PRO VYSKAKOVACÍ OKNO ===
 
     // Zkontrolujeme, zda existuje objekt s nastavením a zda je povoleno zobrazení
     if (typeof donation_popup_settings !== 'undefined' && donation_popup_settings.show_popup) {
@@ -165,27 +159,46 @@ jQuery(document).ready(function($) {
             
             const donationOverlay = $('#donation-popup-overlay');
             const donationContainer = $('#donation-popup-container');
+            const timerElement = $('#donation-timer'); 
+
+            let countdown = 7; // Nová startovní hodnota odpočtu
+            let countdownInterval;
 
             // Funkce pro zavření okna
             function closeDonationPopup() {
+                clearInterval(countdownInterval); // Důležité: zastavíme odpočet, aby neběžel na pozadí
                 donationOverlay.fadeOut(300);
                 donationContainer.fadeOut(300);
             }
 
+            // Funkce pro spuštění a aktualizaci odpočtu
+            function startCountdown() {
+                timerElement.text(countdown + ' s'); // Nastavíme počáteční text
+
+                countdownInterval = setInterval(function() {
+                    countdown--; // Snížíme hodnotu o 1
+                    if (countdown > 0) {
+                        timerElement.text(countdown + ' s'); // Aktualizujeme text, dokud je odpočet > 0
+                    } else {
+                        // Když odpočet dojde na nulu, zavřeme okno a vyčistíme interval
+                        closeDonationPopup();
+                    }
+                }, 1000); // Opakovat každou vteřinu
+            }
+
             // Zobrazíme okno a překrytí
             donationOverlay.fadeIn(300);
-            donationContainer.fadeIn(300);
+            donationContainer.fadeIn(300, function() {
+                // Spustíme odpočet až po dokončení animace zobrazení
+                startCountdown();
+            });
 
             // Označíme, že v této session již bylo okno zobrazeno
             sessionStorage.setItem('pehobr_donation_popup_shown', 'true');
 
-            // Nastavíme automatické zavření po 5 sekundách
-            const autoCloseTimer = setTimeout(closeDonationPopup, 5000);
-
             // Zavření po kliknutí na překryvnou vrstvu (mimo okno)
             donationOverlay.on('click', function() {
-                clearTimeout(autoCloseTimer); // Zrušíme časovač, pokud uživatel zavře okno dříve
-                closeDonationPopup();
+                closeDonationPopup(); 
             });
         }
     }

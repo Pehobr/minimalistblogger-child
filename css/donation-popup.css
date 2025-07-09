@@ -11,7 +11,6 @@
     z-index: 20000;
 }
 
-/* === UPRAVENO: Styly jsou nyní aplikovány přímo na <a> tag === */
 #donation-popup-container {
     display: none;
     position: fixed;
@@ -20,18 +19,17 @@
     transform: translateX(-50%);
     width: 90%;
     max-width: 450px;
-    padding: 12px 7px;
+    padding: 15px 20px;
     background-color: #e6e0f3;
     border: 2px solid #3b0f5d;
     border-radius: 8px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
     text-align: center;
     z-index: 20001;
-    text-decoration: none; /* Důležité: odstraní podtržení odkazu */
+    text-decoration: none;
     transition: background-color 0.2s;
 }
 
-/* Změna barvy pozadí při najetí myší na celý box */
 #donation-popup-container:hover {
     background-color: #dcd7e9; 
 }
@@ -42,4 +40,25 @@
     font-weight: bold;
     color: #3b0f5d;
     font-family: 'Superclarendon', serif;
+}
+
+/* === NOVÉ STYLY PRO ODPOČET (BEZ KOLEČKA) === */
+#donation-timer {
+    position: absolute;
+    bottom: 3px; /* Upravena pozice */
+    right: 10px; /* Upravena pozice */
+    
+    /* Vlastnosti pro vzhled textu */
+    font-size: 10px;
+    font-weight: normal;
+    color: #3b0f5d;
+    font-family: sans-serif;
+    opacity: 0.8;
+
+    /* Odstranění vlastností pro kolečko */
+    background-color: transparent;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    line-height: 1;
 }
