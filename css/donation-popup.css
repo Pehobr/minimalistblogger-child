@@ -11,32 +11,35 @@
     z-index: 20000;
 }
 
+/* === UPRAVENO: Styly jsou nyní aplikovány přímo na <a> tag === */
 #donation-popup-container {
     display: none;
     position: fixed;
-    top: 50%;
+    bottom: 80px;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     width: 90%;
     max-width: 450px;
-    padding: 25px 20px;
+    padding: 12px;
     background-color: #e6e0f3;
     border: 2px solid #3b0f5d;
     border-radius: 8px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
     text-align: center;
     z-index: 20001;
+    text-decoration: none; /* Důležité: odstraní podtržení odkazu */
+    transition: background-color 0.2s;
 }
 
-#donation-popup-container a {
-    text-decoration: none;
+/* Změna barvy pozadí při najetí myší na celý box */
+#donation-popup-container:hover {
+    background-color: #dcd7e9; 
+}
+
+
+#donation-popup-container span {
     font-size: 1.2rem;
     font-weight: bold;
     color: #3b0f5d;
     font-family: 'Superclarendon', serif;
-    transition: color 0.2s ease;
-}
-
-#donation-popup-container a:hover {
-    color: #870e2c;
 }
