@@ -1,6 +1,6 @@
 /**
  * JavaScript pro stránku "Aplikace Pobožnosti".
- * VERZE 6: Přidána funkce pro změnu velikosti písma.
+ * VERZE 7: Oprava funkce pro změnu velikosti písma na mobilních zařízeních.
  */
 jQuery(document).ready(function($) {
 
@@ -213,7 +213,7 @@ jQuery(document).ready(function($) {
         }
     }
 
-    // --- 2. NOVÁ SEKCE: NASTAVENÍ VELIKOSTI PÍSMA ---
+    // --- 2. SEKCE NASTAVENÍ VELIKOSTI PÍSMA (S OPRAVOU) ---
     if ($('.poboznosti-app').length) {
         
         const fontControlsHTML = `
@@ -231,27 +231,39 @@ jQuery(document).ready(function($) {
         const decreaseBtn = $('#poboznosti-font-decrease');
         const increaseBtn = $('#poboznosti-font-increase');
         const sizeIndicator = $('#poboznosti-font-indicator');
-        const contentArea = $('.poboznosti-app .entry-content');
-        const fontSizeStorageKey = 'poboznosti_font_size';
         
-        let currentSize = parseInt(localStorage.getItem(fontSizeStorageKey)) || 100;
+        // *** KLÍČOVÁ ZMĚNA ZDE ***
+        // Cílíme přímo na odstavce uvnitř obsahu, což je spolehlivější.
+        const textElements = $('.poboznosti-app .entry-content p');
+        
+        const fontSizeStorageKey = 'poboznosti_font_size_rem'; // Použijeme novou jednotku pro lepší škálování
+        const baseFontSize = 1; // Základní velikost v 'rem'
+        
+        let currentSizeRem = parseFloat(localStorage.getItem(fontSizeStorageKey)) || baseFontSize;
 
-        function applyFontSize(size) {
-            const newSize = Math.max(50, Math.min(200, size));
-            contentArea.css('font-size', newSize + '%');
-            sizeIndicator.text(newSize + '%');
-            localStorage.setItem(fontSizeStorageKey, newSize);
-            currentSize = newSize;
+        function applyFontSize(sizeInRem) {
+            // Omezení minimální a maximální velikosti
+            const newSizeRem = Math.max(0.7, Math.min(2.0, sizeInRem));
+            
+            textElements.css('font-size', newSizeRem + 'rem');
+            
+            // Přepočet na procenta pro zobrazení uživateli
+            const percentage = Math.round((newSizeRem / baseFontSize) * 100);
+            sizeIndicator.text(percentage + '%');
+            
+            localStorage.setItem(fontSizeStorageKey, newSizeRem);
+            currentSizeRem = newSizeRem;
         }
 
         increaseBtn.on('click', function() {
-            applyFontSize(currentSize + 10);
+            applyFontSize(currentSizeRem + 0.1);
         });
 
         decreaseBtn.on('click', function() {
-            applyFontSize(currentSize - 10);
+            applyFontSize(currentSizeRem - 0.1);
         });
 
-        applyFontSize(currentSize);
+        // Aplikujeme uloženou velikost při načtení stránky
+        applyFontSize(currentSizeRem);
     }
 });
