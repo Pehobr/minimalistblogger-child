@@ -117,9 +117,9 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
         </li>
         
         <li>
-            <a href="<?php echo esc_url( home_url('/modlitba/') ); ?>" aria-label="Prezentace">
-                <i class="fa fa-fire" aria-hidden="true"></i>
-                <span>Prezentace</span>
+            <a href="<?php echo esc_url( home_url('/archiv-citatu/') ); ?>" aria-label="Archiv">
+                <i class="fa fa-folder-open" aria-hidden="true"></i>
+                <span>Archiv</span>
             </a>
         </li>
         <li>
