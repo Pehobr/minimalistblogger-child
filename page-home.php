@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah a řadí sekce podle nastavení.
- * VERZE 32: Kompletní oprava s definicí všech datových polí.
+ * VERZE 33: Přidána logika pro skrývání/zobrazování sekcí.
  * @package minimalistblogger-child
  */
 
@@ -81,13 +81,10 @@ foreach ($grid_items as $item) {
     }
 }
 
-// Načtení pořadí a definice HTML pro sekce
-$layout_order = get_option('pehobr_home_layout_order');
-$default_order = ['pope_section', 'saints_section', 'actions_section', 'desktop_nav_section', 'library_section'];
-
-if ( empty($layout_order) || !is_array($layout_order) ) {
-    $layout_order = $default_order;
-}
+// Načtení pořadí, viditelnosti a definice HTML pro sekce
+$all_section_keys = ['pope_section', 'saints_section', 'actions_section', 'desktop_nav_section', 'library_section'];
+$layout_order = get_option('pehobr_home_layout_order', $all_section_keys);
+$visibility = get_option('pehobr_home_section_visibility', array_fill_keys($all_section_keys, 'on'));
 
 $sections_html = [];
 
@@ -198,9 +195,9 @@ $sections_html['library_section'] = ob_get_clean();
             <?php endif; ?>
 
             <?php
-            // Hlavní smyčka pro vykreslení podle pořadí
+            // Hlavní smyčka pro vykreslení podle pořadí a viditelnosti
             foreach ($layout_order as $section_slug) {
-                if (isset($sections_html[$section_slug])) {
+                if (isset($sections_html[$section_slug]) && isset($visibility[$section_slug]) && $visibility[$section_slug] === 'on') {
                     echo $sections_html[$section_slug];
                 }
             }
