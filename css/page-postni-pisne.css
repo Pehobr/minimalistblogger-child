@@ -1,3 +1,4 @@
+/* === STYL PRO SEZNAM PÍSNÍ === */
 .songs-list-container {
     display: flex;
     flex-direction: column;
@@ -23,40 +24,42 @@
     transform: translateY(-2px);
 }
 
-/* Modální okno */
+
+/* === STYLY PRO MODÁLNÍ OKNO === */
 #song-modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.75); z-index: 10001;
-    overscroll-behavior: contain; /* <-- PŘIDAT TENTO ŘÁDEK */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.75);
+    z-index: 10001;
 }
 
 #song-modal-container {
-    position: fixed; top: 50%; left: 50%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    width: 90%; max-width: 600px;
+    width: 90%;
+    max-width: 600px;
     max-height: 90vh;
     background: #F5F2EB;
     border-radius: 12px;
     z-index: 10002;
     box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-    display: flex; flex-direction: column;
-    overscroll-behavior: contain; /* <-- PŘIDAT TENTO ŘÁDEK */
+    display: flex;
+    flex-direction: column;
 }
 
-#song-modal-content {
-    padding: 20px;
-    overflow-y: auto;
-    overscroll-behavior: contain; /* <-- PŘIDAT TENTO ŘÁDEK */
-}
-
-/* === UPRAVENÝ STYL ZAVÍRACÍHO TLAČÍTKA (FINÁLNÍ VERZE) === */
+/* === FINÁLNÍ STYL ZAVÍRACÍHO TLAČÍTKA === */
 #song-modal-close-btn {
     position: absolute;
     top: -15px;
     right: -15px;
     width: 35px;
     height: 35px;
-    background: #870e2c; /* ZMĚNA: Barva pozadí změněna na červenou */
+    background: #870e2c; /* Červené pozadí */
     color: white;
     border: 2px solid white;
     border-radius: 8px;
@@ -64,18 +67,21 @@
     font-weight: normal;
     cursor: pointer;
     display: flex;
-    align-items: center;     /* Zajišťuje svislé centrování */
-    justify-content: center; /* Zajišťuje vodorovné centrování */
-    padding: 0;              /* ZMĚNA: Odstraněn původní padding pro přesné centrování */
+    align-items: center;     /* Svislé centrování */
+    justify-content: center; /* Vodorovné centrování */
+    padding: 0;              /* Odstraněn padding pro přesné centrování */
 }
 #song-modal-close-btn:hover {
-    background: #6d0b23; /* ZMĚNA: Tmavší červená pro efekt při najetí myší */
+    background: #6d0b23; /* Tmavší červená při najetí myší */
 }
 
 
+/* === OBSAH MODÁLNÍHO OKNA === */
 #song-modal-content {
     padding: 20px;
     overflow-y: auto;
+    flex-grow: 1; /* Důležité pro správné rozložení */
+    -webkit-overflow-scrolling: touch; /* Plynulé rolování na iOS */
 }
 
 #song-modal-title {

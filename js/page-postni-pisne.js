@@ -6,6 +6,24 @@ jQuery(document).ready(function($) {
     const modalImage = $('#song-modal-image');
     const modalText = $('#song-modal-text');
     const closeBtn = $('#song-modal-close-btn');
+    const modalContent = $('#song-modal-content');
+
+    let touchStartY = 0;
+
+    const handleTouchStart = (e) => {
+        if (e.touches.length === 1) {
+            touchStartY = e.touches[0].clientY;
+        }
+    };
+
+    const handleTouchMove = (e) => {
+        const isScrollingDown = e.touches[0].clientY > touchStartY;
+        const isContentAtTop = modalContent.scrollTop() === 0;
+
+        if (isContentAtTop && isScrollingDown) {
+            e.preventDefault();
+        }
+    };
 
     function openModal(data) {
         modalTitle.text(data.title);
@@ -15,14 +33,20 @@ jQuery(document).ready(function($) {
         
         overlay.fadeIn(200);
         modalContainer.fadeIn(300);
+
+        modalContent[0].addEventListener('touchstart', handleTouchStart, { passive: false });
+        modalContent[0].addEventListener('touchmove', handleTouchMove, { passive: false });
     }
 
     function closeModal() {
         overlay.fadeOut(200);
         modalContainer.fadeOut(300, function() {
-            modalAudio[0].pause(); // Zastaví přehrávání
-            modalAudio.attr('src', ''); // Vymaže zdroj audia
+            modalAudio[0].pause();
+            modalAudio.attr('src', '');
         });
+
+        modalContent[0].removeEventListener('touchstart', handleTouchStart, { passive: false });
+        modalContent[0].removeEventListener('touchmove', handleTouchMove, { passive: false });
     }
 
     $('.song-item-button').on('click', function() {
