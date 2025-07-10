@@ -137,7 +137,7 @@ header#masthead.sheader { z-index: 999; }
 
 .grid-item-label {
     margin-top: 4px;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     font-weight: bold;
     color: #3b0f5d;
     text-shadow: none;
@@ -167,7 +167,7 @@ header#masthead.sheader { z-index: 999; }
     background-color: transparent;
     border: none;
     box-shadow: none;
-    height: 95px;
+    height: 70px;
 }
 .third-row-section-container .icon-grid-item:hover {
     transform: translateY(-3px);
