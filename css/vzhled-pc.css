@@ -174,7 +174,7 @@ nav#primary-site-navigation {
     width: 90vw;
     max-width: 600px;
     border-radius: 12px;
-    padding: 15px;
+    padding: 0px;
     margin-top: 0;
     margin-bottom: 12px;
     box-sizing: border-box;
@@ -213,11 +213,7 @@ nav#primary-site-navigation {
 
 /* Styl pro popisek pod ikonou */
 .desktop-nav-item .grid-item-label {
-    margin-top: 8px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #3b0f5d;
-    font-family: 'Superclarendon', serif;
+    display: none;
 }
 
 /* === SKRYTÍ SIDEBARU POUZE NA HOME STRÁNCE (PC) === */
