@@ -1,7 +1,7 @@
 <?php
 /**
  * Funkce pro administraci WordPressu.
- * VERZE 5: Přidáno nastavení pro zobrazení vyskakovacího okna s prosbou o dar.
+ * VERZE 6: Přidáno nastavení pro vzhled úvodní stránky.
  */
 
 // Zabráníme přímému přístupu
@@ -20,6 +20,16 @@ function pehobr_register_settings_page() {
         'dashicons-admin-generic',
         20
     );
+    // === PŘIDANÝ BLOK ZDE ===
+    add_submenu_page(
+        'pehobr-app-settings',
+        'Vzhled úvodní stránky',
+        'Vzhled úvodní stránky',
+        'manage_options',
+        'pehobr-home-layout-settings',
+        'pehobr_render_home_layout_page'
+    );
+    // === KONEC PŘIDANÉHO BLOKU ===
     add_submenu_page(
         'pehobr-app-settings',
         'Nastavení Youtube playlistů',
@@ -49,10 +59,7 @@ add_action( 'admin_menu', 'pehobr_register_settings_page' );
 
 
 function pehobr_register_settings() {
-    // Stávající nastavení pro datum
     register_setting( 'pehobr_app_options_group', 'start_date_setting', array( 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => '2026-02-18', ) );
-    
-    // === NOVÉ NASTAVENÍ PRO VYSKAKOVACÍ OKNO ===
     register_setting( 'pehobr_app_options_group', 'pehobr_show_donation_popup', array( 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', ) );
 }
 add_action( 'admin_init', 'pehobr_register_settings' );
@@ -71,7 +78,6 @@ function pehobr_render_settings_page_content() {
                         <p class="description">Určuje, od jakého data se začne den po dni zobrazovat obsah.</p>
                     </td>
                 </tr>
-
                 <tr valign="top">
                     <th scope="row">Prosba o dar</th>
                     <td>

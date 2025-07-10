@@ -1,8 +1,8 @@
 <?php
 /**
  * Template Name: Úvodní stránka aplikace Home
- * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah.
- * VERZE 30: Finální seřazení ikon na desktopu (navigace, pak knihovna).
+ * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah a řadí sekce podle nastavení.
+ * VERZE 32: Kompletní oprava s definicí všech datových polí.
  * @package minimalistblogger-child
  */
 
@@ -46,6 +46,7 @@ if ( empty($daily_post_id) ) {
     }
 }
 
+// === KOMPLETNÍ DEFINICE SEKCÍ ===
 $grid_items = [
     ['name' => 'Sv. Jan Pavel II.', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel', 'label' => 'Jan Pavel', 'type' => 'text'],
     ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt', 'label' => 'Benedikt', 'type' => 'text'],
@@ -71,6 +72,7 @@ $desktop_nav_items = [
     ['name' => 'Pobožnosti', 'fa_icon' => 'fa-book', 'url' => '/poboznosti/'],
     ['name' => 'Zápisník', 'fa_icon' => 'fa-pencil', 'url' => '/zapisnik/'],
 ];
+// === KONEC DEFINIC ===
 
 foreach ($grid_items as $item) {
     if (isset($item['citat_key'])) {
@@ -78,65 +80,114 @@ foreach ($grid_items as $item) {
         $quotes[$item['citat_key']] = get_post_meta($source_post_id, $item['citat_key'], true);
     }
 }
+
+// Načtení pořadí a definice HTML pro sekce
+$layout_order = get_option('pehobr_home_layout_order');
+$default_order = ['pope_section', 'saints_section', 'actions_section', 'desktop_nav_section', 'library_section'];
+
+if ( empty($layout_order) || !is_array($layout_order) ) {
+    $layout_order = $default_order;
+}
+
+$sections_html = [];
+
+// Sekce 1: Papežové
+ob_start();
+?>
+<div class="pope-section-container">
+    <div class="pope-items-wrapper">
+        <?php for ($i = 0; $i < 3; $i++): $item = $grid_items[$i]; $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : ''; $has_content = !empty($content_html); $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/'); ?>
+            <div class="pope-item">
+                <a href="<?php echo esc_url($link_url); ?>" class="pope-icon-link" <?php if ($has_content): ?>data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>" data-type="<?php echo esc_attr($item['type']); ?>" data-author-name="<?php echo esc_attr($item['name']); ?>"<?php endif; ?>>
+                    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
+                </a>
+                <span class="grid-item-label"><?php echo esc_html($item['label']); ?></span>
+            </div>
+        <?php endfor; ?>
+    </div>
+</div>
+<?php
+$sections_html['pope_section'] = ob_get_clean();
+
+// Sekce 2: Svatí
+ob_start();
+?>
+<div class="saints-section-container">
+    <div class="saints-items-wrapper">
+        <div class="saints-item-boxed">
+            <?php $augustin_item = $grid_items[3]; $augustin_content = isset($quotes[$augustin_item['citat_key']]) ? $quotes[$augustin_item['citat_key']] : ''; $augustin_has_content = !empty($augustin_content); $augustin_link_url = $augustin_has_content ? '#' : home_url('/' . $augustin_item['slug'] . '/'); ?>
+            <a href="<?php echo esc_url($augustin_link_url); ?>" class="pope-icon-link" <?php if ($augustin_has_content): ?>data-target-id="quote-content-<?php echo esc_attr($augustin_item['citat_key']); ?>" data-type="<?php echo esc_attr($augustin_item['type']); ?>" data-author-name="<?php echo esc_attr($augustin_item['name']); ?>"<?php endif; ?>>
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-augustin.png'); ?>" alt="Augustin">
+            </a>
+            <span class="grid-item-label">Augustin</span>
+        </div>
+        <div class="saints-item-center">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Vatikán">
+        </div>
+        <div class="saints-item-boxed">
+             <a href="<?php echo esc_url(home_url('/papez-lev/')); ?>">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-lev.png'); ?>" alt="Lev XIV.">
+            </a>
+            <span class="grid-item-label">Lev XIV.</span>
+        </div>
+    </div>
+</div>
+<?php
+$sections_html['saints_section'] = ob_get_clean();
+
+// Sekce 3: Akce
+ob_start();
+?>
+<div class="third-row-section-container">
+    <div class="third-row-items-wrapper">
+        <?php for ($i = 5; $i < count($grid_items); $i++): $item = $grid_items[$i]; $content_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : ''; $has_content = !empty($content_html); $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/'); ?>
+            <div class="grid-item-wrapper">
+                <a href="<?php echo esc_url($link_url); ?>" class="icon-grid-item" <?php if ($has_content): ?>data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>" data-type="<?php echo esc_attr($item['type']); ?>" data-author-name="<?php echo esc_attr($item['name']); ?>"<?php endif; ?>>
+                    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
+                </a>
+            </div>
+        <?php endfor; ?>
+    </div>
+</div>
+<?php
+$sections_html['actions_section'] = ob_get_clean();
+
+// Sekce 4: Desktop Navigace
+ob_start();
+?>
+<div id="desktop-nav-grid-container">
+    <div class="desktop-nav-items-wrapper">
+        <?php foreach ($desktop_nav_items as $item) : ?>
+            <div class="desktop-nav-item">
+                <a href="<?php echo esc_url(home_url($item['url'])); ?>" class="desktop-nav-icon-link" aria-label="<?php echo esc_attr($item['name']); ?>">
+                    <i class="fa <?php echo esc_attr($item['fa_icon']); ?>" aria-hidden="true"></i>
+                </a>
+                <span class="grid-item-label"><?php echo esc_html($item['name']); ?></span>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>
+<?php
+$sections_html['desktop_nav_section'] = ob_get_clean();
+
+// Sekce 5: Knihovny
+ob_start();
+?>
+<div id="library-grid-container">
+    <?php foreach ($library_items as $item) : ?>
+        <div class="library-item-wrapper">
+            <a href="<?php echo esc_url(home_url($item['url'])); ?>" class="library-grid-item">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
+            </a>
+        </div>
+    <?php endforeach; ?>
+</div>
+<?php
+$sections_html['library_section'] = ob_get_clean();
 ?>
 
 <div id="primary" class="featured-content content-area intro-app">
     <main id="main" class="site-main">
-    
-        <style type="text/css">
-            #desktop-nav-grid-container {
-                display: none;
-            }
-
-            @media screen and (min-width: 992px) {
-                /* Zobrazíme a nastyulujeme novou navigační lištu */
-                #desktop-nav-grid-container {
-                    display: block;
-                    width: 90vw;
-                    max-width: 600px;
-                    border-radius: 12px;
-                    padding: 0px;
-                    margin-top: 0px;
-                    box-sizing: border-box;
-                    background-color: #F5F2EB;
-                    border: 2px solid #3b0f5d;
-                }
-
-                .desktop-nav-items-wrapper {
-                    display: flex;
-                    justify-content: space-around;
-                    align-items: center;
-                    gap: 15px;
-                }
-
-                .desktop-nav-item {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    width: 18%;
-                    text-align: center;
-                }
-
-                .desktop-nav-icon-link {
-                    display: block;
-                    width: 100%;
-                    color: #741ea4; /* Požadovaná barva ikony */
-                    font-size: 38px;
-                    text-decoration: none;
-                    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
-                }
-
-                .desktop-nav-icon-link:hover {
-                    transform: scale(1.1);
-                    color: #870e2c;
-                }
-
-                .desktop-nav-item .grid-item-label {
-                    display: none; /* Skrytí popisku */
-                }
-            }
-        </style>
-
         <div id="intro-wrapper">
             
             <?php if (!empty($nazev_dne) || !empty($datum_dne)): ?>
@@ -145,75 +196,15 @@ foreach ($grid_items as $item) {
                     <?php if (!empty($datum_dne)): ?><p id="daily-info-date" class="daily-info-item"><?php echo esc_html($datum_dne); ?></p><?php endif; ?>
                 </div>
             <?php endif; ?>
-            
-            <div class="pope-section-container">
-                <div class="pope-items-wrapper">
-                    <?php for ($i = 0; $i < 3; $i++): $item = $grid_items[$i]; $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : ''; $has_content = !empty($content_html); $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/'); ?>
-                        <div class="pope-item">
-                            <a href="<?php echo esc_url($link_url); ?>" class="pope-icon-link" <?php if ($has_content): ?>data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>" data-type="<?php echo esc_attr($item['type']); ?>" data-author-name="<?php echo esc_attr($item['name']); ?>"<?php endif; ?>>
-                                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
-                            </a>
-                            <span class="grid-item-label"><?php echo esc_html($item['label']); ?></span>
-                        </div>
-                    <?php endfor; ?>
-                </div>
-            </div>
 
-            <div class="saints-section-container">
-                <div class="saints-items-wrapper">
-                    <div class="saints-item-boxed">
-                        <?php $augustin_item = $grid_items[3]; $augustin_content = isset($quotes[$augustin_item['citat_key']]) ? $quotes[$augustin_item['citat_key']] : ''; $augustin_has_content = !empty($augustin_content); $augustin_link_url = $augustin_has_content ? '#' : home_url('/' . $augustin_item['slug'] . '/'); ?>
-                        <a href="<?php echo esc_url($augustin_link_url); ?>" class="pope-icon-link" <?php if ($augustin_has_content): ?>data-target-id="quote-content-<?php echo esc_attr($augustin_item['citat_key']); ?>" data-type="<?php echo esc_attr($augustin_item['type']); ?>" data-author-name="<?php echo esc_attr($augustin_item['name']); ?>"<?php endif; ?>>
-                            <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-augustin.png'); ?>" alt="Augustin">
-                        </a>
-                        <span class="grid-item-label">Augustin</span>
-                    </div>
-                    <div class="saints-item-center">
-                            <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Vatikán">
-                    </div>
-                    <div class="saints-item-boxed">
-                         <a href="<?php echo esc_url(home_url('/papez-lev/')); ?>">
-                            <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-lev.png'); ?>" alt="Lev XIV.">
-                        </a>
-                        <span class="grid-item-label">Lev XIV.</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="third-row-section-container">
-                <div class="third-row-items-wrapper">
-                    <?php for ($i = 5; $i < count($grid_items); $i++): $item = $grid_items[$i]; $content_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : ''; $has_content = !empty($content_html); $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/'); ?>
-                        <div class="grid-item-wrapper">
-                            <a href="<?php echo esc_url($link_url); ?>" class="icon-grid-item" <?php if ($has_content): ?>data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>" data-type="<?php echo esc_attr($item['type']); ?>" data-author-name="<?php echo esc_attr($item['name']); ?>"<?php endif; ?>>
-                                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
-                            </a>
-                        </div>
-                    <?php endfor; ?>
-                </div>
-            </div>
-
-            <div id="desktop-nav-grid-container">
-                <div class="desktop-nav-items-wrapper">
-                    <?php foreach ($desktop_nav_items as $item) : ?>
-                        <div class="desktop-nav-item">
-                            <a href="<?php echo esc_url(home_url($item['url'])); ?>" class="desktop-nav-icon-link" aria-label="<?php echo esc_attr($item['name']); ?>">
-                                <i class="fa <?php echo esc_attr($item['fa_icon']); ?>" aria-hidden="true"></i>
-                            </a>
-                            <span class="grid-item-label"><?php echo esc_html($item['name']); ?></span>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-
-            <div id="library-grid-container">
-                <?php foreach ($library_items as $item) : ?>
-                    <div class="library-item-wrapper">
-                        <a href="<?php echo esc_url(home_url($item['url'])); ?>" class="library-grid-item">
-                            <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
-                        </a>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+            <?php
+            // Hlavní smyčka pro vykreslení podle pořadí
+            foreach ($layout_order as $section_slug) {
+                if (isset($sections_html[$section_slug])) {
+                    echo $sections_html[$section_slug];
+                }
+            }
+            ?>
 
         </div>
     </main>
