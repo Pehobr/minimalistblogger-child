@@ -14,11 +14,11 @@ add_action('admin_init', function() {
 // Funkce, která definuje všechny dostupné sekce
 function pehobr_get_home_sections() {
     return [
-        'pope_section' => 'Řádek s papeži (Jan Pavel, Benedikt, František)',
-        'saints_section' => 'Řádek se svatými (Augustin, Erb, Lev XIV)',
-        'actions_section' => 'Řádek s akcemi (Modlitba, Bible, Inspirace)',
-        'desktop_nav_section' => 'Řádek s navigačními ikonami (Oblíbené, Archiv, atd.)',
-        'library_section' => 'Řádek s knihovnami (Video, Audio, Rádio, Podcast)'
+        'pope_section' => 'Řádek - Jan Pavel, Benedikt, František',
+        'saints_section' => 'Řádek - sv. Augustin, erb, Lev XIV',
+        'actions_section' => 'Řádek - Modlitba, Bible, Inspirace',
+        'desktop_nav_section' => 'Řádek - Oblíbené, Archiv, atd.',
+        'library_section' => 'Řádek - knihovny (Video, Audio, Rádio, Podcast)'
     ];
 }
 
