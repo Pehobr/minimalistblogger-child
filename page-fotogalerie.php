@@ -30,7 +30,9 @@ try {
             'order'          => 'ASC',
             'meta_query'     => [
                 [
-                    'key'     => 'citat_augustin', // Klíč pole s URL obrázku
+                    // --- ZMĚNA ZDE ---
+                    // Hledáme obrázky v novém poli 'foto_url'
+                    'key'     => 'foto_url',
                     'value'   => '',
                     'compare' => '!=',
                 ],
@@ -41,7 +43,9 @@ try {
         if ($daily_query->have_posts()) {
             while ($daily_query->have_posts()) {
                 $daily_query->the_post();
-                $image_url = get_post_meta(get_the_ID(), 'citat_augustin', true);
+                // --- ZMĚNA ZDE ---
+                // Načítáme hodnotu z nového pole 'foto_url'
+                $image_url = get_post_meta(get_the_ID(), 'foto_url', true);
                 if (filter_var($image_url, FILTER_VALIDATE_URL)) {
                     $image_urls[] = $image_url;
                 }

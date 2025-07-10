@@ -51,7 +51,8 @@ $grid_items = [
     ['name' => 'Sv. Jan Pavel II.', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel', 'label' => 'Jan Pavel', 'type' => 'text'],
     ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt', 'label' => 'Benedikt', 'type' => 'text'],
     ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_frantisek', 'label' => 'František', 'type' => 'text'],
-    ['name' => 'Sv. Augustin', 'slug' => '#', 'icon' => 'ikona-augustin.png', 'citat_key' => 'citat_augustin', 'label' => 'Augustin', 'type' => 'image'],
+    // --- ZMĚNA ZDE --- Klíč 'citat_key' byl změněn na 'foto_key' a hodnota na 'foto_url'
+    ['name' => 'Sv. Augustin', 'slug' => '#', 'icon' => 'ikona-augustin.png', 'foto_key' => 'foto_url', 'label' => 'Augustin', 'type' => 'image'],
     ['name' => 'Papež Lev XIV.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev', 'label' => 'Lev XIV.', 'type' => 'text'],
     ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'modlitba_text', 'audio_key' => 'modlitba_url', 'label' => 'Modlitba', 'type' => 'text'],
     ['name' => 'Bible', 'slug' => 'poboznosti', 'icon' => 'ikona-bible.png', 'label' => 'Bible', 'type' => 'text'],
@@ -74,9 +75,10 @@ $desktop_nav_items = [
 ];
 // === KONEC DEFINIC ===
 
+$source_post_id = $daily_post_id ?? $page_id_for_defaults;
 foreach ($grid_items as $item) {
+    // Tato smyčka načítá data pro textové a video citáty. Obrázek pro Augustina se řeší níže.
     if (isset($item['citat_key'])) {
-        $source_post_id = $daily_post_id ?? $page_id_for_defaults;
         $quotes[$item['citat_key']] = get_post_meta($source_post_id, $item['citat_key'], true);
     }
 }
@@ -112,14 +114,20 @@ ob_start();
 <div class="saints-section-container">
     <div class="saints-items-wrapper">
         <div class="saints-item-boxed">
-            <?php $augustin_item = $grid_items[3]; $augustin_content = isset($quotes[$augustin_item['citat_key']]) ? $quotes[$augustin_item['citat_key']] : ''; $augustin_has_content = !empty($augustin_content); $augustin_link_url = $augustin_has_content ? '#' : home_url('/' . $augustin_item['slug'] . '/'); ?>
-            <a href="<?php echo esc_url($augustin_link_url); ?>" class="pope-icon-link" <?php if ($augustin_has_content): ?>data-target-id="quote-content-<?php echo esc_attr($augustin_item['citat_key']); ?>" data-type="<?php echo esc_attr($augustin_item['type']); ?>" data-author-name="<?php echo esc_attr($augustin_item['name']); ?>"<?php endif; ?>>
+            <?php
+            // Zde se používá 'foto_key' místo 'citat_key'
+            $augustin_item = $grid_items[3];
+            $augustin_photo_url = get_post_meta($source_post_id, $augustin_item['foto_key'], true);
+            $augustin_has_content = !empty($augustin_photo_url);
+            $augustin_link_url = $augustin_has_content ? '#' : home_url('/' . $augustin_item['slug'] . '/');
+            ?>
+            <a href="<?php echo esc_url($augustin_link_url); ?>" class="pope-icon-link" <?php if ($augustin_has_content): ?>data-target-id="quote-content-<?php echo esc_attr($augustin_item['foto_key']); ?>" data-type="<?php echo esc_attr($augustin_item['type']); ?>" data-author-name="<?php echo esc_attr($augustin_item['name']); ?>"<?php endif; ?>>
                 <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-augustin.png'); ?>" alt="Augustin">
             </a>
             <span class="grid-item-label">Augustin</span>
         </div>
         <div class="saints-item-center">
-                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Vatikán">
+            <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Vatikán">
         </div>
         <div class="saints-item-boxed">
              <a href="<?php echo esc_url(home_url('/papez-lev/')); ?>">
@@ -131,6 +139,7 @@ ob_start();
 </div>
 <?php
 $sections_html['saints_section'] = ob_get_clean();
+
 
 // Sekce 3: Akce
 ob_start();
@@ -212,19 +221,17 @@ $sections_html['library_section'] = ob_get_clean();
 <div id="hidden-quotes-container" style="display: none; visibility: hidden;">
     <?php
     foreach ($grid_items as $item) :
+        // Zpracování pro textové, video a audio typy
         if (isset($item['citat_key'])) {
             $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
             if (!empty($content_html)) :
                 $modal_content = '';
-
-                if ($item['type'] === 'image') {
-                    $modal_content = '<img src="' . esc_url($content_html) . '" alt="' . esc_attr($item['name']) . '">';
-                } elseif ($item['type'] === 'video') {
+                if ($item['type'] === 'video') {
                      $modal_content = $content_html;
                 } else {
                     $modal_content = wpautop($content_html);
                     if (isset($item['audio_key'])) {
-                        $audio_url = get_post_meta($daily_post_id ?? $page_id_for_defaults, $item['audio_key'], true);
+                        $audio_url = get_post_meta($source_post_id, $item['audio_key'], true);
                         if (!empty($audio_url)) {
                              $modal_content .= '<div class="modal-audio-player" data-audio-src="' . esc_url($audio_url) . '"><div class="map-top-row"><button class="map-play-pause-btn" aria-label="Přehrát / Pauza"><i class="fa fa-play" aria-hidden="true"></i></button><div class="map-time-display"><span class="map-current-time">0:00</span><span class="map-time-divider">/</span><span class="map-duration">0:00</span></div></div><div class="map-slider-wrapper"><input type="range" class="map-seek-slider" value="0" min="0" max="100" step="0.1"></div></div>';
                         }
@@ -237,9 +244,23 @@ $sections_html['library_section'] = ob_get_clean();
                 <?php
             endif;
         }
+        
+        // --- ZMĚNA ZDE ---
+        // Speciální zpracování pro obrázek sv. Augustina
+        if (isset($item['foto_key'])) {
+            $photo_url = get_post_meta($source_post_id, $item['foto_key'], true);
+            if (!empty($photo_url)) :
+                ?>
+                <div id="quote-content-<?php echo esc_attr($item['foto_key']); ?>">
+                    <?php echo '<img src="' . esc_url($photo_url) . '" alt="' . esc_attr($item['name']) . '" style="max-width:100%; height:auto;">'; ?>
+                </div>
+                <?php
+            endif;
+        }
     endforeach;
     ?>
 </div>
+
 
 <div id="quote-modal-overlay" class="quote-modal-overlay"></div>
 <div id="quote-modal-container" class="quote-modal-container">
