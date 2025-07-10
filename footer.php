@@ -129,8 +129,8 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
             </a>
         </li>
         <li>
-            <a href="<?php echo esc_url( home_url('/poboznosti/') ); ?>" aria-label="Podcast">
-                <i class="fa fa-book" aria-hidden="true"></i>
+            <a href="<?php echo esc_url( home_url('/fotogalerie/') ); ?>" aria-label="Podcast">
+                <i class="fa fa-picture-o" aria-hidden="true"></i>
                 <span>Podcast</span>
             </a>
         </li>
