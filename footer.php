@@ -118,7 +118,7 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
         
         <li>
             <a href="<?php echo esc_url( home_url('/archiv-citatu/') ); ?>" aria-label="Archiv">
-                <i class="fa fa-folder-open" aria-hidden="true"></i>
+                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
                 <span>Archiv</span>
             </a>
         </li>

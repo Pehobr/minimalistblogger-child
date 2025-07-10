@@ -67,7 +67,7 @@ $library_items = [
 
 $desktop_nav_items = [
     ['name' => 'Oblíbené', 'fa_icon' => 'fa-star', 'url' => '/oblibene-texty/'],
-    ['name' => 'Archiv', 'fa_icon' => 'fa-folder-open', 'url' => '/archiv-citatu/'],
+    ['name' => 'Archiv', 'fa_icon' => 'fa-folder-open-o', 'url' => '/archiv-citatu/'],
     ['name' => 'Návody', 'fa_icon' => 'fa-cubes', 'url' => '/navody/'],
     ['name' => 'Fotogalerie', 'fa_icon' => 'fa-picture-o', 'url' => '/fotogalerie/'],
     ['name' => 'Zápisník', 'fa_icon' => 'fa-pencil', 'url' => '/zapisnik/'],
