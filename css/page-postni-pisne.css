@@ -49,27 +49,27 @@
     overscroll-behavior: contain; /* <-- PŘIDAT TENTO ŘÁDEK */
 }
 
-/* === UPRAVENÝ STYL ZAVÍRACÍHO TLAČÍTKA === */
+/* === UPRAVENÝ STYL ZAVÍRACÍHO TLAČÍTKA (FINÁLNÍ VERZE) === */
 #song-modal-close-btn {
     position: absolute;
     top: -15px;
     right: -15px;
     width: 35px;
     height: 35px;
-    background: #3b0f5d;
+    background: #870e2c; /* ZMĚNA: Barva pozadí změněna na červenou */
     color: white;
     border: 2px solid white;
-    border-radius: 8px; /* Změněno z 50% na 8px pro zaoblený čtverec */
-    font-size: 22px; /* Mírně upravená velikost křížku */
+    border-radius: 8px;
+    font-size: 22px;
     font-weight: normal;
     cursor: pointer;
-    display: flex; /* Nové vlastnosti pro dokonalé centrování křížku */
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 2px; /* Drobná korekce vertikálního zarovnání */
+    display: flex;
+    align-items: center;     /* Zajišťuje svislé centrování */
+    justify-content: center; /* Zajišťuje vodorovné centrování */
+    padding: 0;              /* ZMĚNA: Odstraněn původní padding pro přesné centrování */
 }
 #song-modal-close-btn:hover {
-    background: #870e2c; /* Změna barvy při najetí myší */
+    background: #6d0b23; /* ZMĚNA: Tmavší červená pro efekt při najetí myší */
 }
 
 
