@@ -43,3 +43,48 @@ if ( !function_exists( 'chld_thm_cfg_parent_css' ) ):
     }
 endif;
 add_action( 'wp_enqueue_scripts', 'chld_thm_cfg_parent_css', 10 );
+
+/**
+ * Načtení stylů a skriptů pro šablonu stránky "Fotogalerie".
+ */
+function enqueue_fotogalerie_assets() {
+    // Načteme styly a skripty, pouze pokud je zobrazena stránka s naší novou šablonou
+    if ( is_page_template( 'page-fotogalerie.php' ) ) {
+        $theme_version = wp_get_theme()->get('Version');
+
+        // Načtení CSS pro Lightbox2 z CDN
+        wp_enqueue_style(
+            'lightbox-css',
+            'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css',
+            array(),
+            '2.11.3'
+        );
+
+        // Načtení vlastních stylů pro galerii
+        wp_enqueue_style(
+            'page-fotogalerie-style',
+            get_stylesheet_directory_uri() . '/css/page-fotogalerie.css',
+            array('lightbox-css'), // Načte se až po stylech lightboxu
+            $theme_version
+        );
+
+        // Načtení JS pro Lightbox2 z CDN (závisí na jQuery)
+        wp_enqueue_script(
+            'lightbox-js',
+            'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js',
+            array('jquery'),
+            '2.11.3',
+            true // Načíst v patičce
+        );
+
+        // Načtení našeho (zatím prázdného) JS souboru
+        wp_enqueue_script(
+            'page-fotogalerie-script',
+            get_stylesheet_directory_uri() . '/js/page-fotogalerie.js',
+            array('lightbox-js'), // Načte se až po lightboxu
+            $theme_version,
+            true
+        );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_fotogalerie_assets' );
