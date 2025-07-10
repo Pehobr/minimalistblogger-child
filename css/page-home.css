@@ -210,6 +210,7 @@ header#masthead.sheader { z-index: 999; }
 .quote-modal-overlay {
     display: none; position: fixed; top: 0; left: 0;
     width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.75); z-index: 10001;
+    overscroll-behavior: contain; /* <-- PŘIDAT TENTO ŘÁDEK */
 }
 .quote-modal-container {
     display: none;
@@ -220,6 +221,7 @@ header#masthead.sheader { z-index: 999; }
     background-color: #e6e0f3; border: 2px solid #3b0f5d; border-radius: 12px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
     padding: 50px 15px 15px 15px; z-index: 10002; box-sizing: border-box;
+    overscroll-behavior: contain; /* <-- PŘIDAT TENTO ŘÁDEK */
 }
 .quote-modal-content {
     font-family: 'Superclarendon', serif; font-size: 1rem;
@@ -227,6 +229,7 @@ header#masthead.sheader { z-index: 999; }
     flex-grow: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain; /* <-- PŘIDAT TENTO ŘÁDEK */
 }
 .quote-modal-content p { margin: 0 0 0.75em 0; padding: 0; }
 .quote-modal-content p:last-child { margin-bottom: 0; }
