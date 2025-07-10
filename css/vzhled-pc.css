@@ -100,7 +100,8 @@ nav#primary-site-navigation {
     background-color: #e6e0f3 !important;
     border: 2px solid #3b0f5d !important;
     padding: 2px !important;
-    margin-bottom: 7px !important;
+    margin-top: 0 !important;
+    margin-bottom: 12px !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05) !important;
     box-sizing: border-box !important;
 }
@@ -174,7 +175,8 @@ nav#primary-site-navigation {
     max-width: 600px;
     border-radius: 12px;
     padding: 15px;
-    margin-top: 20px;
+    margin-top: 0;
+    margin-bottom: 12px;
     box-sizing: border-box;
     background-color: #F5F2EB;
     border: 2px solid #3b0f5d;

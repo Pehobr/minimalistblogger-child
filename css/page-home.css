@@ -23,7 +23,8 @@ header#masthead.sheader { z-index: 999; }
     align-items: baseline;
     width: 90vw;
     max-width: 600px;
-    margin-bottom: 25px;
+    margin-top: 0;
+    margin-bottom: 12px;
     gap: 20px;
 }
 
@@ -54,7 +55,8 @@ header#masthead.sheader { z-index: 999; }
     max-width: 600px;
     border-radius: 12px;
     padding: 7px;
-    margin-bottom: 14px;
+    margin-top: 0;
+    margin-bottom: 12px;
     box-sizing: border-box;
 }
 
@@ -146,7 +148,8 @@ header#masthead.sheader { z-index: 999; }
     gap: 15px;
     width: 90vw;
     max-width: 600px;
-    margin-top: 20px;
+    margin-top: 0;
+    margin-bottom: 12px;
     grid-template-columns: repeat(4, 1fr);
 }
 
