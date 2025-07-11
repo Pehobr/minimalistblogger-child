@@ -21,11 +21,11 @@ add_action('admin_menu', 'pehobr_add_admin_menu');
 // --- Definice dostupných sekcí ---
 function pehobr_get_home_sections() {
     return [
-        'pope_section' => '1. Papežové',
-        'saints_section' => '2. sv. Augustin, Lev XIV.',
-        'actions_section' => '3. Modlitba, pobožnosti...',
-        'desktop_nav_section' => '4. Navigace pro PC',
-        'library_section' => '5. Knihovny audio, video',
+        'pope_section' => 'Papežové',
+        'saints_section' => 'sv.Augustin, Lev XIV.',
+        'actions_section' => 'Modlitba, pobožnosti...',
+        'desktop_nav_section' => 'Navigace pro PC',
+        'library_section' => 'Knihovny (audio, video...)',
     ];
 }
 
