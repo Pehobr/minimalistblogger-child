@@ -1,6 +1,60 @@
 document.addEventListener('DOMContentLoaded', function() {
     const settings = JSON.parse(localStorage.getItem('pehobr_user_settings')) || {};
 
+    // --- Nastavení a správa oblíbených citátů ---
+    const favoritesStorageKey = 'pehobr_favorite_quotes';
+
+    function getFavorites() {
+        const favoritesJSON = localStorage.getItem(favoritesStorageKey);
+        return favoritesJSON ? JSON.parse(favoritesJSON) : [];
+    }
+
+    function saveFavorites(favorites) {
+        localStorage.setItem(favoritesStorageKey, JSON.stringify(favorites));
+    }
+
+    function isFavorite(id) {
+        return getFavorites().some(fav => fav.id === id);
+    }
+
+    let currentQuoteId = null;
+    let currentAuthorName = '';
+
+    const favoriteBtn = document.getElementById('quote-modal-favorite-btn');
+    const favoriteIcon = favoriteBtn ? favoriteBtn.querySelector('i') : null;
+
+    function updateFavoriteButton() {
+        if (!favoriteBtn || !favoriteIcon || !currentQuoteId) return;
+        if (isFavorite(currentQuoteId)) {
+            favoriteBtn.classList.add('is-favorite');
+            favoriteIcon.classList.remove('fa-star-o');
+            favoriteIcon.classList.add('fa-star');
+        } else {
+            favoriteBtn.classList.remove('is-favorite');
+            favoriteIcon.classList.remove('fa-star');
+            favoriteIcon.classList.add('fa-star-o');
+        }
+    }
+
+    function toggleFavorite() {
+        if (!currentQuoteId) return;
+        let favorites = getFavorites();
+        const index = favorites.findIndex(f => f.id === currentQuoteId);
+
+        if (index !== -1) {
+            favorites.splice(index, 1);
+        } else {
+            const contentElement = document.getElementById(currentQuoteId);
+            if (!contentElement) return;
+            const quoteHtml = contentElement.innerHTML;
+            const finalContent = `\n                <blockquote class="citat-text">${quoteHtml}</blockquote>\n                <footer class="citat-meta"><span class="citat-author">${currentAuthorName}</span></footer>\n            `;
+            favorites.push({ id: currentQuoteId, content: finalContent });
+        }
+
+        saveFavorites(favorites);
+        updateFavoriteButton();
+    }
+
     /**
      * Funkce pro aplikaci režimu zobrazení (grafické/textové) pro danou sekci.
      * @param {string} containerSelector - Selektor hlavního kontejneru sekce (např. '.pope-section-container').
@@ -84,6 +138,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     modalContent.innerHTML = contentElement.innerHTML;
                     modalOverlay.style.display = 'block';
                     modalContainer.style.display = 'block';
+                    currentQuoteId = link.dataset.targetId;
+                    currentAuthorName = link.dataset.authorName || '';
+                    updateFavoriteButton();
+
                     // Případná inicializace audio přehrávače v modálním okně
                     const audioPlayerDiv = modalContent.querySelector('.modal-audio-player');
                     if(audioPlayerDiv && audioPlayerDiv.dataset.audioSrc) {
@@ -104,6 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
     if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
+    if (favoriteBtn) favoriteBtn.addEventListener('click', toggleFavorite);
 
     // Inicializace Lightboxu pro obrázky, pokud je knihovna dostupná
     if (typeof lightbox !== 'undefined') {
