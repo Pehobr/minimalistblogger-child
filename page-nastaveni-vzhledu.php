@@ -28,7 +28,7 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
                             <div class="setting-item setting-item-pope-display">
                                 <label for="toggle-pope_section_display" class="setting-label">Citáty papežů</label>
                                 <div class="toggle-container">
-                                    <span class="toggle-label">Grafika</span>
+                                    <span class="toggle-label"></span>
                                     <label class="switch">
                                         <input type="checkbox" class="display-toggle" id="toggle-pope_section_display" data-section-slug="pope_section_display">
                                         <span class="slider round"></span>
@@ -40,7 +40,7 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
                             <div class="setting-item setting-item-saints-display">
                                 <label for="toggle-saints_section_display" class="setting-label">sv.Augustin, Lev XIV.</label>
                                 <div class="toggle-container">
-                                    <span class="toggle-label">Grafika</span>
+                                    <span class="toggle-label"></span>
                                     <label class="switch">
                                         <input type="checkbox" class="display-toggle" id="toggle-saints_section_display" data-section-slug="saints_section_display">
                                         <span class="slider round"></span>
