@@ -2,7 +2,7 @@
 /**
  * Template Name: Nastavení vzhledu pro uživatele
  * Description: Umožňuje uživatelům nastavit si, které sekce chtějí vidět a jak se mají zobrazovat.
- * VERZE 3: Přidána volba pro zobrazení sekce svatých.
+ * VERZE 4: Sjednoceny rozestupy mezi boxy.
  * @package minimalistblogger-child
  */
 
@@ -20,12 +20,10 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
                 <h1 class="entry-title">Nastavení vzhledu úvodní stránky</h1>
             </header>
             <div class="entry-content">
-<p style="font-weight: bold; text-align: center;">
-PODOBA OBSAHU ÚVODNÍ STRÁNKY
-</p>
-
                 <?php if (!empty($all_sections)) : ?>
                     <div id="user-layout-settings">
+
+                        <div class="settings-group-title">PODOBA OBSAHU ÚVODNÍ STRÁNKY</div>
                         
                         <div class="setting-item setting-item-pope-display">
                             <label for="toggle-pope_section_display" class="setting-label">Citáty papežů</label>
@@ -51,12 +49,7 @@ PODOBA OBSAHU ÚVODNÍ STRÁNKY
                             </div>
                         </div>
                         
-                        <hr class="settings-divider">
-
-                        <div class="entry-content">
-<p style="font-weight: bold; text-align: center;">
-VÝBĚR BLOKŮ ÚVODNÍ STRÁNKY
-</p>
+                        <div class="settings-group-title">VÝBĚR BLOKŮ ÚVODNÍ STRÁNKY</div>
 
                         <?php foreach ($all_sections as $slug => $name) : ?>
                             <div class="setting-item setting-item-<?php echo esc_attr($slug); ?>">
@@ -81,10 +74,16 @@ VÝBĚR BLOKŮ ÚVODNÍ STRÁNKY
     /* Styly specifické pro tuto stránku */
     #user-layout-settings {
         max-width: 600px;
-        margin: 20px auto;
+        margin: 0px auto;
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        gap: 10px; /* Sjednocená mezera mezi všemi prvky */
+    }
+    .settings-group-title {
+        font-weight: bold;
+        text-align: center;
+        color: #3b0f5d;
+        padding-top: 15px;
     }
     .setting-item {
         display: flex;
@@ -99,11 +98,6 @@ VÝBĚR BLOKŮ ÚVODNÍ STRÁNKY
         color: #3b0f5d;
         font-weight: bold;
         font-family: sans-serif;
-    }
-    .settings-divider {
-        border: none;
-        border-top: 1px solid #dcd7e9;
-        margin: 10px 0;
     }
     /* Kontejner pro přepínač s textovými popisky */
     .toggle-container {

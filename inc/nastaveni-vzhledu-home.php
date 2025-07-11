@@ -1,8 +1,8 @@
 <?php
 /**
  * Správa nastavení pro úvodní stránku v administraci WordPressu.
- * Umožňuje řadit a skrývat sekce na úvodní stránce.
- * VERZE 3: Přidána volba pro zobrazení sekce svatých.
+ * Umožňuje skrývat sekce na úvodní stránce a měnit jejich režim zobrazení.
+ * VERZE 4: Odstraněna funkce pro změnu pořadí sekcí.
  */
 
 // --- Registrace menu v administraci ---
@@ -33,11 +33,6 @@ function pehobr_get_home_sections() {
 function pehobr_home_layout_page_callback() {
     // Uložení dat, pokud byl formulář odeslán
     if (isset($_POST['pehobr_save_layout_settings']) && check_admin_referer('pehobr_save_layout_settings_nonce')) {
-        // Uložení pořadí
-        if (isset($_POST['pehobr_home_layout_order'])) {
-            $sanitized_order = array_map('sanitize_text_field', $_POST['pehobr_home_layout_order']);
-            update_option('pehobr_home_layout_order', $sanitized_order);
-        }
         // Uložení viditelnosti
         $all_sections = pehobr_get_home_sections();
         $visibility = [];
@@ -54,20 +49,18 @@ function pehobr_home_layout_page_callback() {
         $saints_display = isset($_POST['pehobr_saints_section_display']) ? sanitize_text_field($_POST['pehobr_saints_section_display']) : 'graficke';
         update_option('pehobr_saints_section_display', $saints_display);
 
-
         echo '<div class="notice notice-success is-dismissible"><p>Nastavení uloženo.</p></div>';
     }
 
     // Načtení uložených hodnot
     $all_sections = pehobr_get_home_sections();
-    $layout_order = get_option('pehobr_home_layout_order', array_keys($all_sections));
     $visibility = get_option('pehobr_home_section_visibility', array_fill_keys(array_keys($all_sections), 'on'));
     $pope_display_option = get_option('pehobr_pope_section_display', 'graficke');
     $saints_display_option = get_option('pehobr_saints_section_display', 'graficke');
     ?>
     <div class="wrap">
         <h1>Nastavení vzhledu úvodní stránky</h1>
-        <p>Zde můžete přizpůsobit pořadí a viditelnost jednotlivých sekcí na úvodní stránce.</p>
+        <p>Zde můžete přizpůsobit viditelnost a výchozí režim zobrazení jednotlivých sekcí na úvodní stránce.</p>
 
         <form method="post" action="">
             <?php wp_nonce_field('pehobr_save_layout_settings_nonce'); ?>
@@ -108,40 +101,20 @@ function pehobr_home_layout_page_callback() {
                 </div>
 
                 <div class="settings-section">
-                    <h2>Pořadí a viditelnost sekcí</h2>
-                    <p>Přetáhněte sekce pro změnu jejich pořadí. Pomocí zaškrtávacího políčka můžete sekci skrýt nebo zobrazit.</p>
-                    <ul id="sortable-layout">
+                    <h2>Viditelnost sekcí</h2>
+                    <p>Pomocí zaškrtávacího políčka můžete sekci skrýt nebo zobrazit.</p>
+                    <ul id="visibility-layout">
                         <?php
-                        foreach ($layout_order as $slug) {
-                            if (isset($all_sections[$slug])) {
-                                $is_visible = isset($visibility[$slug]) && $visibility[$slug] === 'on';
-                                ?>
-                                <li class="ui-state-default">
-                                    <span class="dashicons dashicons-move"></span>
-                                    <label>
-                                        <input type="checkbox" name="pehobr_home_section_visibility[<?php echo esc_attr($slug); ?>]" <?php checked($is_visible); ?>>
-                                        <?php echo esc_html($all_sections[$slug]); ?>
-                                    </label>
-                                    <input type="hidden" name="pehobr_home_layout_order[]" value="<?php echo esc_attr($slug); ?>">
-                                </li>
-                                <?php
-                            }
-                        }
-                        // Přidání sekcí, které ještě nejsou v pořadí (pro případ aktualizace)
                         foreach ($all_sections as $slug => $name) {
-                            if (!in_array($slug, $layout_order)) {
-                                $is_visible = isset($visibility[$slug]) && $visibility[$slug] === 'on';
-                                ?>
-                                 <li class="ui-state-default">
-                                    <span class="dashicons dashicons-move"></span>
-                                    <label>
-                                        <input type="checkbox" name="pehobr_home_section_visibility[<?php echo esc_attr($slug); ?>]" <?php checked($is_visible); ?>>
-                                        <?php echo esc_html($name); ?>
-                                    </label>
-                                    <input type="hidden" name="pehobr_home_layout_order[]" value="<?php echo esc_attr($slug); ?>">
-                                </li>
-                                <?php
-                            }
+                            $is_visible = isset($visibility[$slug]) && $visibility[$slug] === 'on';
+                            ?>
+                            <li>
+                                <label>
+                                    <input type="checkbox" name="pehobr_home_section_visibility[<?php echo esc_attr($slug); ?>]" <?php checked($is_visible); ?>>
+                                    <?php echo esc_html($name); ?>
+                                </label>
+                            </li>
+                            <?php
                         }
                         ?>
                     </ul>
@@ -154,21 +127,10 @@ function pehobr_home_layout_page_callback() {
     <style>
         #layout-settings-container { display: flex; gap: 30px; }
         .settings-section { flex: 1; }
-        #sortable-layout { list-style: none; margin: 0; padding: 0; width: 100%; }
-        #sortable-layout li { margin: 5px 0; padding: 10px; background: #fff; border: 1px solid #ccc; cursor: move; display: flex; align-items: center; gap: 10px; }
-        #sortable-layout li label { flex-grow: 1; }
+        #visibility-layout { list-style: none; margin: 0; padding: 0; width: 100%; }
+        #visibility-layout li { margin: 5px 0; padding: 10px; background: #fff; border: 1px solid #ccc; display: flex; align-items: center; gap: 10px; }
+        #visibility-layout li label { flex-grow: 1; }
     </style>
     <?php
 }
-
-// --- Načtení potřebných skriptů pro administraci ---
-function pehobr_load_admin_scripts($hook) {
-    if ($hook != 'denni_kapka_page_pehobr-home-layout') {
-        return;
-    }
-    wp_enqueue_script('jquery-ui-sortable');
-    wp_enqueue_script('admin-home-reorder', get_stylesheet_directory_uri() . '/js/admin-home-reorder.js', ['jquery', 'jquery-ui-sortable'], '1.1', true);
-}
-add_action('admin_enqueue_scripts', 'pehobr_load_admin_scripts');
-
 ?>
