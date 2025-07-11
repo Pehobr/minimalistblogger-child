@@ -1,16 +1,14 @@
 jQuery(document).ready(function($) {
     "use strict";
 
-     // --- BLOK PRO UŽIVATELSKÉ NASTAVENÍ VIDITELNOSTI ---
-    // Tento kód se aplikuje pouze na úvodní stránce
+    // --- BLOK PRO UŽIVATELSKÉ NASTAVENÍ ---
     if ($('body').hasClass('page-template-page-home')) {
+        
+        // 1. Nastavení viditelnosti sekcí
         const visibilityStorageKey = 'pehobr_user_home_visibility';
         const savedVisibility = localStorage.getItem(visibilityStorageKey);
-
         if (savedVisibility) {
             const visibilitySettings = JSON.parse(savedVisibility);
-            
-            // Mapování slugů na ID kontejnerů na stránce
             const sectionMap = {
                 'pope_section': '.pope-section-container',
                 'saints_section': '.saints-section-container',
@@ -18,15 +16,35 @@ jQuery(document).ready(function($) {
                 'desktop_nav_section': '#desktop-nav-grid-container',
                 'library_section': '#library-grid-container'
             };
-
             for (const [slug, isVisible] of Object.entries(visibilitySettings)) {
                 if (isVisible === 'off' && sectionMap[slug]) {
                     $(sectionMap[slug]).hide();
                 }
             }
         }
+
+        // 2. Nastavení zobrazení (display) pro sekci papežů
+        const displayStorageKey = 'pehobr_user_home_display';
+        const savedDisplay = localStorage.getItem(displayStorageKey);
+        const displaySettings = savedDisplay ? JSON.parse(savedDisplay) : {};
+        
+        const popeContainer = $('.pope-section-container');
+        const userPopeView = displaySettings['pope_section_display']; // Může být 'graficke', 'textove', nebo undefined
+        const defaultPopeView = popeContainer.data('default-view'); // Načteme z data atributu
+
+        const finalPopeView = userPopeView || defaultPopeView;
+
+        if (finalPopeView === 'textove') {
+            popeContainer.find('.view-graficke').hide();
+            popeContainer.find('.view-textove').show();
+            popeContainer.addClass('view-textove-active');
+        } else {
+            popeContainer.find('.view-textove').hide();
+            popeContainer.find('.view-graficke').show();
+            popeContainer.removeClass('view-textove-active');
+        }
     }
-    // --- KONEC BLOKU PRO NASTAVENÍ VIDITELNOSTI ---
+    // --- KONEC BLOKU PRO UŽIVATELSKÉ NASTAVENÍ ---
 
     const bodyElement = $('body');
     const modalContainer = $('#quote-modal-container');
@@ -66,8 +84,6 @@ jQuery(document).ready(function($) {
         const contentHtml = $('#' + targetId).html();
 
         bodyElement.addClass('modal-is-open');
-
-        // Reset all modal type classes first
         modalContainer.removeClass('video-modal audio-modal image-modal');
 
         if (type === 'image') {
@@ -78,7 +94,7 @@ jQuery(document).ready(function($) {
             favoriteBtn.hide();
             modalContent.html(`<div class="responsive-video-wrapper">${contentHtml}</div>`);
             modalContainer.addClass('video-modal');
-        } else { // This handles 'text' and 'audio' which is part of the text content
+        } else {
             favoriteBtn.show();
             modalContent.html(contentHtml);
             if (isFavorite(currentQuoteId)) {
@@ -88,7 +104,6 @@ jQuery(document).ready(function($) {
                 favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
                 favoriteBtn.removeClass('is-favorite');
             }
-             // Hide favorite button for prayer
             if (targetId === 'quote-content-modlitba_text') {
                 favoriteBtn.hide();
             }
@@ -176,54 +191,35 @@ jQuery(document).ready(function($) {
         $('#quote-modal-close-btn, #quote-modal-overlay').one('click.audioPlayer', () => { if (audio) { audio.pause(); audio.src = ''; } });
     }
 
-    // === OPRAVENÁ A UPRAVENÁ LOGIKA PRO VYSKAKOVACÍ OKNO ===
-
-    // Zkontrolujeme, zda existuje objekt s nastavením a zda je povoleno zobrazení
+    // Logika pro vyskakovací okno s poděkováním
     if (typeof donation_popup_settings !== 'undefined' && donation_popup_settings.show_popup) {
-        
-        // Zkontrolujeme, zda okno již nebylo v této session zobrazeno
         if (!sessionStorage.getItem('pehobr_donation_popup_shown')) {
-            
             const donationOverlay = $('#donation-popup-overlay');
             const donationContainer = $('#donation-popup-container');
             const timerElement = $('#donation-timer'); 
-
-            let countdown = 7; // Nová startovní hodnota odpočtu
+            let countdown = 7;
             let countdownInterval;
-
-            // Funkce pro zavření okna
             function closeDonationPopup() {
-                clearInterval(countdownInterval); // Důležité: zastavíme odpočet, aby neběžel na pozadí
+                clearInterval(countdownInterval);
                 donationOverlay.fadeOut(300);
                 donationContainer.fadeOut(300);
             }
-
-            // Funkce pro spuštění a aktualizaci odpočtu
             function startCountdown() {
-                timerElement.text(countdown + ' s'); // Nastavíme počáteční text
-
+                timerElement.text(countdown + ' s');
                 countdownInterval = setInterval(function() {
-                    countdown--; // Snížíme hodnotu o 1
+                    countdown--;
                     if (countdown > 0) {
-                        timerElement.text(countdown + ' s'); // Aktualizujeme text, dokud je odpočet > 0
+                        timerElement.text(countdown + ' s');
                     } else {
-                        // Když odpočet dojde na nulu, zavřeme okno a vyčistíme interval
                         closeDonationPopup();
                     }
-                }, 1000); // Opakovat každou vteřinu
+                }, 1000);
             }
-
-            // Zobrazíme okno a překrytí
             donationOverlay.fadeIn(300);
             donationContainer.fadeIn(300, function() {
-                // Spustíme odpočet až po dokončení animace zobrazení
                 startCountdown();
             });
-
-            // Označíme, že v této session již bylo okno zobrazeno
             sessionStorage.setItem('pehobr_donation_popup_shown', 'true');
-
-            // Zavření po kliknutí na překryvnou vrstvu (mimo okno)
             donationOverlay.on('click', function() {
                 closeDonationPopup(); 
             });

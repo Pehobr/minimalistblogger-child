@@ -2,19 +2,18 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah a řadí sekce podle nastavení.
- * VERZE 36: Oprava implementace Lightboxu pro zobrazení obrázku sv. Augustina.
+ * VERZE 37: Přidána textová varianta pro sekci papežů.
  * @package minimalistblogger-child
  */
 
 get_header();
 
-// --- Logika pro načítání denního obsahu (zůstává beze změny) ---
+// --- Logika pro načítání denního obsahu ---
 $page_id_for_defaults = get_the_ID();
 $quotes = [];
 $nazev_dne = '';
 $datum_dne = '';
 $daily_post_id = null;
-// ... (váš kód pro načítání denní kapky zde) ...
 $start_date_str = get_option('start_date_setting', '2026-02-18');
 try {
     $start_date = new DateTime($start_date_str, new DateTimeZone('Europe/Prague'));
@@ -47,7 +46,7 @@ if ( empty($daily_post_id) ) {
 }
 $source_post_id = $daily_post_id ?? $page_id_for_defaults;
 
-// === DEFINICE SEKCÍ (zůstává beze změny) ===
+// === DEFINICE SEKCÍ ===
 $grid_items = [
     ['name' => 'Sv. Jan Pavel II.', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel', 'label' => 'Jan Pavel', 'type' => 'text'],
     ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt', 'label' => 'Benedikt', 'type' => 'text'],
@@ -58,14 +57,12 @@ $grid_items = [
     ['name' => 'Bible', 'slug' => 'poboznosti', 'icon' => 'ikona-bible.png', 'label' => 'Bible', 'type' => 'text'],
     ['name' => 'Inspirace', 'slug' => 'svatost', 'icon' => 'ikona-inspirace.png', 'citat_key' => 'video_inspirace_embed', 'label' => 'Inspirace', 'type' => 'video'],
 ];
-// ... (váš kód pro $library_items a $desktop_nav_items) ...
 $library_items = [
     ['name' => 'Video', 'icon' => 'knihovna-video.png', 'url' => '/video-kapky/'],
     ['name' => 'Audio', 'icon' => 'knihovna-audio.png', 'url' => '/postni-pisne/'],
     ['name' => 'Rádio', 'icon' => 'knihovna-radio.png', 'url' => '/krestanska-radia'],
     ['name' => 'Podcast', 'icon' => 'knihovna-podcast.png', 'url' => '/podcast'],
 ];
-
 $desktop_nav_items = [
     ['name' => 'Oblíbené', 'fa_icon' => 'fa-star', 'url' => '/oblibene-texty/'],
     ['name' => 'Archiv', 'fa_icon' => 'fa-folder-open-o', 'url' => '/archiv-citatu/'],
@@ -73,7 +70,8 @@ $desktop_nav_items = [
     ['name' => 'Fotogalerie', 'fa_icon' => 'fa-picture-o', 'url' => '/fotogalerie/'],
     ['name' => 'Zápisník', 'fa_icon' => 'fa-pencil', 'url' => '/zapisnik/'],
 ];
-// Načtení dat (zůstává beze změny)
+
+// Načtení dat
 foreach ($grid_items as $item) {
     if (isset($item['citat_key'])) {
         $quotes[$item['citat_key']] = get_post_meta($source_post_id, $item['citat_key'], true);
@@ -81,19 +79,20 @@ foreach ($grid_items as $item) {
 }
 $augustin_photo_url = get_post_meta($source_post_id, 'foto_url', true);
 
-// Načtení layoutu (zůstává beze změny)
+// Načtení layoutu
 $all_section_keys = ['pope_section', 'saints_section', 'actions_section', 'desktop_nav_section', 'library_section'];
 $layout_order = get_option('pehobr_home_layout_order', $all_section_keys);
 $visibility = get_option('pehobr_home_section_visibility', array_fill_keys($all_section_keys, 'on'));
+$default_pope_display = get_option('pehobr_pope_section_display', 'graficke');
 
 $sections_html = [];
 
-// Sekce 1: Papežové (beze změny)
+// Sekce 1: Papežové
 ob_start();
-// ... (váš kód pro sekci Papežové) ...
 ?>
-<div class="pope-section-container">
-    <div class="pope-items-wrapper">
+<div class="pope-section-container" data-default-view="<?php echo esc_attr($default_pope_display); ?>">
+    <!-- Grafická varianta -->
+    <div class="pope-items-wrapper view-graficke">
         <?php for ($i = 0; $i < 3; $i++): $item = $grid_items[$i]; $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : ''; $has_content = !empty($content_html); $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/'); ?>
             <div class="pope-item">
                 <a href="<?php echo esc_url($link_url); ?>" class="pope-icon-link" <?php if ($has_content): ?>data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>" data-type="<?php echo esc_attr($item['type']); ?>" data-author-name="<?php echo esc_attr($item['name']); ?>"<?php endif; ?>>
@@ -103,11 +102,21 @@ ob_start();
             </div>
         <?php endfor; ?>
     </div>
+    <!-- Textová varianta -->
+    <div class="pope-text-wrapper view-textove" style="display: none;">
+        <?php for ($i = 0; $i < 3; $i++): $item = $grid_items[$i]; $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : ''; if (!empty($content_html)): ?>
+            <div class="pope-text-item">
+                <h3 class="pope-text-author"><?php echo esc_html($item['name']); ?></h3>
+                <div class="pope-text-quote"><?php echo wpautop(esc_html($content_html)); ?></div>
+            </div>
+        <?php endif; endfor; ?>
+    </div>
 </div>
 <?php
 $sections_html['pope_section'] = ob_get_clean();
 
-// Sekce 2: Svatí (s upraveným odkazem)
+
+// Sekce 2: Svatí
 ob_start();
 ?>
 <div class="saints-section-container">
@@ -116,7 +125,6 @@ ob_start();
             <?php
             $augustin_item = $grid_items[3];
             $augustin_has_content = !empty($augustin_photo_url);
-
             if ($augustin_has_content) :
                 ?>
                 <a href="<?php echo esc_url($augustin_photo_url); ?>" class="pope-icon-link" data-lightbox="augustin-image" data-title="<?php echo esc_attr($augustin_item['name']); ?>">
@@ -144,9 +152,8 @@ ob_start();
 $sections_html['saints_section'] = ob_get_clean();
 
 
-// Ostatní sekce (zůstávají beze změny)
+// Ostatní sekce
 ob_start();
-// ... (váš kód pro sekci Akce) ...
 ?>
 <div class="third-row-section-container">
     <div class="third-row-items-wrapper">
@@ -161,7 +168,7 @@ ob_start();
 </div>
 <?php
 $sections_html['actions_section'] = ob_get_clean();
-// ... (váš kód pro desktop-nav a library) ...
+
 ob_start();
 ?>
 <div id="desktop-nav-grid-container">
@@ -193,8 +200,6 @@ ob_start();
 <?php
 $sections_html['library_section'] = ob_get_clean();
 
-
-// Zobrazení všech sekcí (zůstává beze změny)
 ?>
 <div id="primary" class="featured-content content-area intro-app">
     <main id="main" class="site-main">
@@ -220,9 +225,6 @@ $sections_html['library_section'] = ob_get_clean();
 </div>
 <?php get_sidebar(); ?>
 
-<?php
-// Skrytý obsah pro původní modální okna (bez Augustina)
-?>
 <div id="hidden-quotes-container" style="display: none; visibility: hidden;">
     <?php
     foreach ($grid_items as $item) :
@@ -237,7 +239,7 @@ $sections_html['library_section'] = ob_get_clean();
                     if (isset($item['audio_key'])) {
                         $audio_url = get_post_meta($source_post_id, $item['audio_key'], true);
                         if (!empty($audio_url)) {
-                             $modal_content .= '<div class="modal-audio-player" data-audio-src="' . esc_url($audio_url) . '">...</div>'; // Zkráceno
+                             $modal_content .= '<div class="modal-audio-player" data-audio-src="' . esc_url($audio_url) . '">...</div>';
                         }
                     }
                 }
@@ -252,9 +254,6 @@ $sections_html['library_section'] = ob_get_clean();
     ?>
 </div>
 
-<?php
-// Ostatní modální okna a patička (zůstávají beze změny)
-?>
 <div id="quote-modal-overlay" class="quote-modal-overlay"></div>
 <div id="quote-modal-container" class="quote-modal-container">
     <button id="quote-modal-favorite-btn" class="quote-modal-favorite-btn"><i class="fa fa-star-o"></i></button>

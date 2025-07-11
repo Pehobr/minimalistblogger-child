@@ -1,41 +1,62 @@
 jQuery(document).ready(function($) {
+    "use strict";
+
     const settingsContainer = $('#user-layout-settings');
     if (!settingsContainer.length) {
         return; // Skript se nespustí, pokud na stránce není kontejner s nastavením
     }
 
-    const storageKey = 'pehobr_user_home_visibility';
+    const visibilityStorageKey = 'pehobr_user_home_visibility';
+    const displayStorageKey = 'pehobr_user_home_display';
 
-    // Funkce pro načtení uložených nastavení z localStorage
-    function loadVisibilitySettings() {
-        const savedSettings = localStorage.getItem(storageKey);
-        // Výchozí nastavení je, že vše je viditelné ('on')
-        const visibility = savedSettings ? JSON.parse(savedSettings) : {};
+    // --- Funkce pro načtení a uložení nastavení ---
 
+    function loadSettings() {
+        // Načtení viditelnosti sekcí
+        const savedVisibility = localStorage.getItem(visibilityStorageKey);
+        const visibility = savedVisibility ? JSON.parse(savedVisibility) : {};
         settingsContainer.find('.visibility-toggle').each(function() {
             const slug = $(this).data('section-slug');
-            // Pokud pro daný slug není žádné nastavení, považujeme ho za zapnuté
             const isVisible = (visibility[slug] === 'on' || typeof visibility[slug] === 'undefined');
             $(this).prop('checked', isVisible);
         });
+
+        // Načtení zobrazení (display) pro specifické sekce
+        const savedDisplay = localStorage.getItem(displayStorageKey);
+        const displaySettings = savedDisplay ? JSON.parse(savedDisplay) : {};
+        settingsContainer.find('.display-toggle').each(function() {
+            const slug = $(this).data('section-slug');
+            // 'textove' je true (zaškrtnuto), 'graficke' je false (odškrtnuto)
+            const isTextMode = (displaySettings[slug] === 'textove');
+            $(this).prop('checked', isTextMode);
+        });
     }
 
-    // Funkce pro uložení aktuálního nastavení do localStorage
-    function saveVisibilitySettings() {
+    function saveSettings() {
+        // Uložení viditelnosti
         const visibility = {};
         settingsContainer.find('.visibility-toggle').each(function() {
             const slug = $(this).data('section-slug');
-            const isChecked = $(this).is(':checked');
-            visibility[slug] = isChecked ? 'on' : 'off';
+            visibility[slug] = $(this).is(':checked') ? 'on' : 'off';
         });
-        localStorage.setItem(storageKey, JSON.stringify(visibility));
+        localStorage.setItem(visibilityStorageKey, JSON.stringify(visibility));
+
+        // Uložení zobrazení
+        const displaySettings = {};
+        settingsContainer.find('.display-toggle').each(function() {
+            const slug = $(this).data('section-slug');
+            displaySettings[slug] = $(this).is(':checked') ? 'textove' : 'graficke';
+        });
+        localStorage.setItem(displayStorageKey, JSON.stringify(displaySettings));
     }
 
+    // --- Event Listeners ---
+
     // Při změně jakéhokoli přepínače uložíme nové nastavení
-    settingsContainer.on('change', '.visibility-toggle', function() {
-        saveVisibilitySettings();
+    settingsContainer.on('change', '.visibility-toggle, .display-toggle', function() {
+        saveSettings();
     });
 
     // Při načtení stránky načteme a aplikujeme uložená nastavení
-    loadVisibilitySettings();
+    loadSettings();
 });

@@ -1,5 +1,6 @@
 /*
  * Styly pro úvodní obrazovku s mřížkou ikon (page-home.css)
+ * VERZE 2: Doplněny styly pro textovou variantu sekce papežů.
  */
 
 body {
@@ -65,6 +66,41 @@ header#masthead.sheader { z-index: 999; }
      background-color: #F5F2EB;
      border: 2px solid #3b0f5d;
 }
+
+/* NOVÉ STYLY PRO TEXTOVOU VERZI */
+.pope-section-container.view-textove-active {
+    padding: 15px; /* Větší vnitřní odsazení pro text */
+}
+
+.pope-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.pope-text-item {
+    text-align: left;
+}
+
+.pope-text-author {
+    font-family: 'Superclarendon', serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #3b0f5d;
+    margin: 0 0 5px 0;
+}
+
+.pope-text-quote {
+    font-family: 'Superclarendon', serif;
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.4;
+}
+.pope-text-quote p {
+    margin: 0;
+}
+/* KONEC NOVÝCH STYLŮ */
+
 
 .saints-section-container {
     border: none;
@@ -210,7 +246,7 @@ header#masthead.sheader { z-index: 999; }
 .quote-modal-overlay {
     display: none; position: fixed; top: 0; left: 0;
     width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.75); z-index: 10001;
-    overscroll-behavior: contain; /* <-- PŘIDAT TENTO ŘÁDEK */
+    overscroll-behavior: contain;
 }
 .quote-modal-container {
     display: none;
@@ -221,7 +257,7 @@ header#masthead.sheader { z-index: 999; }
     background-color: #e6e0f3; border: 2px solid #3b0f5d; border-radius: 12px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
     padding: 50px 15px 15px 15px; z-index: 10002; box-sizing: border-box;
-    overscroll-behavior: contain; /* <-- PŘIDAT TENTO ŘÁDEK */
+    overscroll-behavior: contain;
 }
 .quote-modal-content {
     font-family: 'Superclarendon', serif; font-size: 1rem;
@@ -229,7 +265,7 @@ header#masthead.sheader { z-index: 999; }
     flex-grow: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior: contain; /* <-- PŘIDAT TENTO ŘÁDEK */
+    overscroll-behavior: contain;
 }
 .quote-modal-content p { margin: 0 0 0.75em 0; padding: 0; }
 .quote-modal-content p:last-child { margin-bottom: 0; }

@@ -1,8 +1,8 @@
 <?php
 /**
  * Template Name: Nastavení vzhledu pro uživatele
- * Description: Umožňuje uživatelům nastavit si, které sekce chtějí vidět na úvodní stránce.
- *
+ * Description: Umožňuje uživatelům nastavit si, které sekce chtějí vidět a jak se mají zobrazovat.
+ * VERZE 2: Přidána volba pro zobrazení sekce papežů.
  * @package minimalistblogger-child
  */
 
@@ -20,10 +20,27 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
                 <h1 class="entry-title">Nastavení vzhledu úvodní stránky</h1>
             </header>
             <div class="entry-content">
-                <p>Zde si můžete vybrat, které sekce se mají zobrazovat na úvodní stránce. Vaše volba se uloží přímo ve vašem prohlížeči.</p>
+                <p>Zde si můžete vybrat, které sekce a jakým způsobem se mají zobrazovat na úvodní stránce. Vaše volba se uloží přímo ve vašem prohlížeči.</p>
 
                 <?php if (!empty($all_sections)) : ?>
                     <div id="user-layout-settings">
+                        
+                        <!-- Volba zobrazení papežů -->
+                        <div class="setting-item setting-item-pope-display">
+                            <label for="toggle-pope-display" class="setting-label">Zobrazení citátů papežů</label>
+                            <div class="toggle-container">
+                                <span class="toggle-label">Grafické</span>
+                                <label class="switch">
+                                    <input type="checkbox" class="display-toggle" id="toggle-pope-display" data-section-slug="pope_section_display">
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="toggle-label">Textové</span>
+                            </div>
+                        </div>
+                        
+                        <hr class="settings-divider">
+
+                        <!-- Přepínače viditelnosti -->
                         <?php foreach ($all_sections as $slug => $name) : ?>
                             <div class="setting-item setting-item-<?php echo esc_attr($slug); ?>">
                                 <label for="toggle-<?php echo esc_attr($slug); ?>" class="setting-label"><?php echo esc_html($name); ?></label>
@@ -44,7 +61,7 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
 </div>
 
 <style>
-    /* Styly specifické pro tuto stránku pro lepší vzhled */
+    /* Styly specifické pro tuto stránku */
     #user-layout-settings {
         max-width: 600px;
         margin: 20px auto;
@@ -52,7 +69,7 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
         flex-direction: column;
         gap: 15px;
     }
-    #user-layout-settings .setting-item {
+    .setting-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -61,10 +78,25 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
         border: 1px solid #dcd7e9;
         border-radius: 8px;
     }
-    #user-layout-settings .setting-label {
+    .setting-label {
         color: #3b0f5d;
         font-weight: bold;
         font-family: sans-serif;
+    }
+    .settings-divider {
+        border: none;
+        border-top: 1px solid #dcd7e9;
+        margin: 10px 0;
+    }
+    /* Kontejner pro přepínač s textovými popisky */
+    .toggle-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .toggle-label {
+        font-size: 0.9em;
+        color: #555;
     }
     /* Styly pro přepínač (toggle switch) */
     .switch { position: relative; display: inline-block; width: 50px; height: 28px; flex-shrink: 0; }
@@ -77,11 +109,6 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
     .slider.round:before { border-radius: 50%; }
 
     @media (max-width: 768px) {
-        /*
-         * Skryje volbu pro 'desktop_nav_section' (Oblíbené, Archiv, atd.),
-         * protože ta se na mobilu nezobrazuje.
-         * Používáme !important, abychom zaručili, že tento styl přebije všechny ostatní.
-        */
         .setting-item-desktop_nav_section {
             display: none !important;
         }
