@@ -1,6 +1,33 @@
 jQuery(document).ready(function($) {
     "use strict";
 
+     // --- BLOK PRO UŽIVATELSKÉ NASTAVENÍ VIDITELNOSTI ---
+    // Tento kód se aplikuje pouze na úvodní stránce
+    if ($('body').hasClass('page-template-page-home')) {
+        const visibilityStorageKey = 'pehobr_user_home_visibility';
+        const savedVisibility = localStorage.getItem(visibilityStorageKey);
+
+        if (savedVisibility) {
+            const visibilitySettings = JSON.parse(savedVisibility);
+            
+            // Mapování slugů na ID kontejnerů na stránce
+            const sectionMap = {
+                'pope_section': '.pope-section-container',
+                'saints_section': '.saints-section-container',
+                'actions_section': '.third-row-section-container',
+                'desktop_nav_section': '#desktop-nav-grid-container',
+                'library_section': '#library-grid-container'
+            };
+
+            for (const [slug, isVisible] of Object.entries(visibilitySettings)) {
+                if (isVisible === 'off' && sectionMap[slug]) {
+                    $(sectionMap[slug]).hide();
+                }
+            }
+        }
+    }
+    // --- KONEC BLOKU PRO NASTAVENÍ VIDITELNOSTI ---
+
     const bodyElement = $('body');
     const modalContainer = $('#quote-modal-container');
     const modalOverlay = $('#quote-modal-overlay');

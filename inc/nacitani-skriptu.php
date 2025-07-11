@@ -106,6 +106,12 @@ function minimalistblogger_child_enqueue_assets() {
         }
     }
 
+       if ( is_page_template('page-nastaveni-vzhledu.php') ) {
+        if (file_exists(get_stylesheet_directory() . '/js/user-settings.js')) {
+            wp_enqueue_script( 'pehobr-user-settings-js', get_stylesheet_directory_uri() . '/js/user-settings.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/user-settings.js' ), true );
+        }
+    }
+    
     wp_enqueue_script( 'sidebar-menu-js', get_stylesheet_directory_uri() . '/js/sidebar-menu.js', array('jquery'), wp_get_theme()->get('Version'), true );
 }
 add_action( 'wp_enqueue_scripts', 'minimalistblogger_child_enqueue_assets', 20 );
