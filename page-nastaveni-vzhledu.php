@@ -25,7 +25,7 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
                 <?php if (!empty($all_sections)) : ?>
                     <div id="user-layout-settings">
                         <?php foreach ($all_sections as $slug => $name) : ?>
-                            <div class="setting-item">
+                            <div class="setting-item setting-item-<?php echo esc_attr($slug); ?>">
                                 <label for="toggle-<?php echo esc_attr($slug); ?>" class="setting-label"><?php echo esc_html($name); ?></label>
                                 <label class="switch">
                                     <input type="checkbox" class="visibility-toggle" id="toggle-<?php echo esc_attr($slug); ?>" data-section-slug="<?php echo esc_attr($slug); ?>">
@@ -66,7 +66,7 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
         font-weight: bold;
         font-family: sans-serif;
     }
-    /* Styly pro přepínač (toggle switch) - stejné jako v administraci */
+    /* Styly pro přepínač (toggle switch) */
     .switch { position: relative; display: inline-block; width: 50px; height: 28px; flex-shrink: 0; }
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; }
@@ -75,6 +75,17 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
     input:checked + .slider:before { transform: translateX(22px); }
     .slider.round { border-radius: 28px; }
     .slider.round:before { border-radius: 50%; }
+
+    @media (max-width: 768px) {
+        /*
+         * Skryje volbu pro 'desktop_nav_section' (Oblíbené, Archiv, atd.),
+         * protože ta se na mobilu nezobrazuje.
+         * Používáme !important, abychom zaručili, že tento styl přebije všechny ostatní.
+        */
+        .setting-item-desktop_nav_section {
+            display: none !important;
+        }
+    }
 </style>
 
 <?php
