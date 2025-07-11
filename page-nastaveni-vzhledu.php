@@ -2,7 +2,7 @@
 /**
  * Template Name: Nastavení vzhledu pro uživatele
  * Description: Umožňuje uživatelům nastavit si, které sekce chtějí vidět a jak se mají zobrazovat.
- * VERZE 4: Sjednoceny rozestupy mezi boxy.
+ * VERZE 6: Odstraněno bílé pozadí z panelu akordeonu.
  * @package minimalistblogger-child
  */
 
@@ -22,70 +22,110 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
             <div class="entry-content">
                 <?php if (!empty($all_sections)) : ?>
                     <div id="user-layout-settings">
-                  
-                        <div class="settings-group-title">BLOKY ÚVODNÍ STRÁNKY</div>
 
-                        <?php foreach ($all_sections as $slug => $name) : ?>
-                            <div class="setting-item setting-item-<?php echo esc_attr($slug); ?>">
-                                <label for="toggle-<?php echo esc_attr($slug); ?>" class="setting-label"><?php echo esc_html($name); ?></label>
-                                <label class="switch">
-                                    <input type="checkbox" class="visibility-toggle" id="toggle-<?php echo esc_attr($slug); ?>" data-section-slug="<?php echo esc_attr($slug); ?>">
-                                    <span class="slider round"></span>
-                                </label>
+                        <button class="accordion">Vzhled bloků úvodní stránky</button>
+                        <div class="panel">
+                            <div class="setting-item setting-item-pope-display">
+                                <label for="toggle-pope_section_display" class="setting-label">Citáty papežů</label>
+                                <div class="toggle-container">
+                                    <span class="toggle-label">Grafika</span>
+                                    <label class="switch">
+                                        <input type="checkbox" class="display-toggle" id="toggle-pope_section_display" data-section-slug="pope_section_display">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="toggle-label">Text</span>
+                                </div>
                             </div>
-                        <?php endforeach; ?>
 
-                        <div class="settings-group-title">VZHLED BLOKŮ</div>
-                        
-                        <div class="setting-item setting-item-pope-display">
-                            <label for="toggle-pope_section_display" class="setting-label">Citáty papežů</label>
-                            <div class="toggle-container">
-                                <span class="toggle-label"></span>
-                                <label class="switch">
-                                    <input type="checkbox" class="display-toggle" id="toggle-pope_section_display" data-section-slug="pope_section_display">
-                                    <span class="slider round"></span>
-                                </label>
-                                <span class="toggle-label">Text</span>
+                            <div class="setting-item setting-item-saints-display">
+                                <label for="toggle-saints_section_display" class="setting-label">sv.Augustin, Lev XIV.</label>
+                                <div class="toggle-container">
+                                    <span class="toggle-label">Grafika</span>
+                                    <label class="switch">
+                                        <input type="checkbox" class="display-toggle" id="toggle-saints_section_display" data-section-slug="saints_section_display">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="toggle-label">Text</span>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="setting-item setting-item-saints-display">
-                            <label for="toggle-saints_section_display" class="setting-label">sv.Augustin, Lev XIV.</label>
-                            <div class="toggle-container">
-                                <span class="toggle-label"></span>
-                                <label class="switch">
-                                    <input type="checkbox" class="display-toggle" id="toggle-saints_section_display" data-section-slug="saints_section_display">
-                                    <span class="slider round"></span>
-                                </label>
-                                <span class="toggle-label">Text</span>
-                            </div>
+                        <button class="accordion">Skrytí bloků úvodní stránky</button>
+                        <div class="panel">
+                            <?php foreach ($all_sections as $slug => $name) : ?>
+                                <div class="setting-item setting-item-<?php echo esc_attr($slug); ?>">
+                                    <label for="toggle-<?php echo esc_attr($slug); ?>" class="setting-label"><?php echo esc_html($name); ?></label>
+                                    <label class="switch">
+                                        <input type="checkbox" class="visibility-toggle" id="toggle-<?php echo esc_attr($slug); ?>" data-section-slug="<?php echo esc_attr($slug); ?>">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
 
                     </div>
                 <?php else : ?>
                     <p>Chyba: Nepodařilo se načíst definice sekcí.</p>
                 <?php endif; ?>
-
             </div>
         </article>
     </main>
 </div>
 
 <style>
-    /* Styly specifické pro tuto stránku */
+    /* Styly pro kontejner nastavení */
     #user-layout-settings {
         max-width: 600px;
-        margin: 0px auto;
+        margin: 20px auto;
         display: flex;
         flex-direction: column;
-        gap: 10px; /* Sjednocená mezera mezi všemi prvky */
+        gap: 10px;
     }
-    .settings-group-title {
-        font-weight: bold;
+
+    /* === STYLY PRO AKORDEON === */
+    .accordion {
+        background-color: #3b0f5d;
+        color: white;
+        cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        border: none;
         text-align: center;
-        color: #3b0f5d;
-        padding-top: 15px;
+        outline: none;
+        font-size: 15px;
+        transition: 0.4s;
+        border-radius: 8px;
+        font-weight: bold;
     }
+
+    .accordion:hover, .accordion.active {
+        background-color: #5a1a8d;
+    }
+    
+    .accordion:after {
+        content: '\25BC'; /* Šipka dolů */
+        font-size: 13px;
+        color: white;
+        float: right;
+        margin-left: 5px;
+    }
+
+    .accordion.active:after {
+        content: "\25B2"; /* Šipka nahoru */
+    }
+
+    .panel {
+        padding: 10px 0 0 0; /* Přidá mezeru nad obsahem po rozbalení */
+        background-color: transparent; /* ODSTRANĚNO BÍLÉ POZADÍ */
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+        display: flex;
+        flex-direction: column;
+        gap: 10px; /* Mezera mezi položkami uvnitř panelu */
+    }
+    /* === KONEC STYLŮ PRO AKORDEON === */
+
     .setting-item {
         display: flex;
         justify-content: space-between;
@@ -100,7 +140,6 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
         font-weight: bold;
         font-family: sans-serif;
     }
-    /* Kontejner pro přepínač s textovými popisky */
     .toggle-container {
         display: flex;
         align-items: center;
@@ -110,7 +149,6 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
         font-size: 0.9em;
         color: #555;
     }
-    /* Styly pro přepínač (toggle switch) */
     .switch { position: relative; display: inline-block; width: 50px; height: 28px; flex-shrink: 0; }
     .switch input { opacity: 0; width: 0; height: 0; }
     .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; }
@@ -126,6 +164,28 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
         }
     }
 </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+            /* Přepne třídu 'active' pro vizuální zpětnou vazbu (změna barvy, šipky) */
+            this.classList.toggle("active");
+
+            /* Najde následující prvek (panel) a přepne jeho zobrazení */
+            var panel = this.nextElementSibling;
+            if (panel.style.maxHeight) {
+                panel.style.maxHeight = null;
+            } else {
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            } 
+        });
+    }
+});
+</script>
 
 <?php
 get_sidebar();
