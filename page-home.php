@@ -79,8 +79,8 @@ foreach ($grid_items as $item) {
             
             <?php if (!empty($nazev_dne) || !empty($datum_dne)): ?>
                 <div id="daily-info-container">
-                    <?php if (!empty($nazev_dne)): ?><h2 id="daily-info-title"><?php echo esc_html($nazev_dne); ?></h2><?php endif; ?>
-                    <?php if (!empty($datum_dne)): ?><p id="daily-info-date"><?php echo esc_html($datum_dne); ?></p><?php endif; ?>
+                    <?php if (!empty($nazev_dne)): ?><h2 id="daily-info-title" class="daily-info-item"><?php echo esc_html($nazev_dne); ?></h2><?php endif; ?>
+                    <?php if (!empty($datum_dne)): ?><p id="daily-info-date" class="daily-info-item"><?php echo esc_html($datum_dne); ?></p><?php endif; ?>
                 </div>
             <?php endif; ?>
             
