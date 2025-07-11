@@ -322,7 +322,7 @@ header#masthead.sheader { z-index: 999; }
 .saints-text-container {
     width: 100%;
     border-radius: 12px;
-    padding: 15px; /* Větší vnitřní odsazení pro text */
+    padding: 7px; /* Větší vnitřní odsazení pro text */
     box-sizing: border-box;
     background-color: #F5F2EB;
     border: 2px solid #3b0f5d;
@@ -375,11 +375,7 @@ header#masthead.sheader { z-index: 999; }
     padding: 0 !important;
 }
 
-/* Společný styl pro vnitřní box s texty (papežové i svatí) */
-.pope-section-container.view-textove-active,
-.saints-text-container {
-    padding: 15px; /* Sjednocené vnitřní odsazení */
-}
+
 
 /* Obalovač pro jednotlivé položky citátů */
 .pope-text-wrapper,
@@ -398,7 +394,7 @@ header#masthead.sheader { z-index: 999; }
 /* Oddělovací čára mezi položkami (nyní pro oba boxy) */
 .pope-text-wrapper .pope-text-item:not(:last-child),
 .saints-text-wrapper .saints-text-item:not(:last-child) {
-    padding-bottom: 15px;
+    padding-bottom: 7px;
     border-bottom: 1px solid #e0d9c5; /* Jemná oddělovací čára */
 }
 
