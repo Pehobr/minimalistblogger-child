@@ -2,7 +2,7 @@
 /**
  * Správa nastavení pro úvodní stránku v administraci WordPressu.
  * Umožňuje řadit a skrývat sekce na úvodní stránce.
- * VERZE 2: Přidána volba pro zobrazení sekce papežů.
+ * VERZE 3: Přidána volba pro zobrazení sekce svatých.
  */
 
 // --- Registrace menu v administraci ---
@@ -50,6 +50,11 @@ function pehobr_home_layout_page_callback() {
         $pope_display = isset($_POST['pehobr_pope_section_display']) ? sanitize_text_field($_POST['pehobr_pope_section_display']) : 'graficke';
         update_option('pehobr_pope_section_display', $pope_display);
 
+        // Uložení zobrazení sekce svatých
+        $saints_display = isset($_POST['pehobr_saints_section_display']) ? sanitize_text_field($_POST['pehobr_saints_section_display']) : 'graficke';
+        update_option('pehobr_saints_section_display', $saints_display);
+
+
         echo '<div class="notice notice-success is-dismissible"><p>Nastavení uloženo.</p></div>';
     }
 
@@ -58,6 +63,7 @@ function pehobr_home_layout_page_callback() {
     $layout_order = get_option('pehobr_home_layout_order', array_keys($all_sections));
     $visibility = get_option('pehobr_home_section_visibility', array_fill_keys(array_keys($all_sections), 'on'));
     $pope_display_option = get_option('pehobr_pope_section_display', 'graficke');
+    $saints_display_option = get_option('pehobr_saints_section_display', 'graficke');
     ?>
     <div class="wrap">
         <h1>Nastavení vzhledu úvodní stránky</h1>
@@ -68,28 +74,39 @@ function pehobr_home_layout_page_callback() {
 
             <div id="layout-settings-container">
                 
-                <!-- Nastavení zobrazení sekce papežů -->
                 <div class="settings-section">
-                    <h2>Zobrazení sekce papežů</h2>
-                    <p>Vyberte, jak se má ve výchozím stavu zobrazovat sekce s citáty papežů.</p>
+                    <h2>Zobrazení sekcí</h2>
+                    <p>Vyberte, jak se mají ve výchozím stavu zobrazovat jednotlivé sekce.</p>
                     <table class="form-table">
                         <tr valign="top">
-                            <th scope="row">Výchozí zobrazení</th>
+                            <th scope="row">Sekce Papežové</th>
                             <td>
                                 <label>
                                     <input type="radio" name="pehobr_pope_section_display" value="graficke" <?php checked($pope_display_option, 'graficke'); ?>>
-                                    Grafické (ikony s vyskakovacím oknem)
+                                    Grafické (ikony)
                                 </label><br>
                                 <label>
                                     <input type="radio" name="pehobr_pope_section_display" value="textove" <?php checked($pope_display_option, 'textove'); ?>>
-                                    Textové (nadpisy a citáty přímo na stránce)
+                                    Textové (přímo zobrazené citáty)
+                                </label>
+                            </td>
+                        </tr>
+                        <tr valign="top">
+                            <th scope="row">Sekce sv. Augustin a Lev XIV.</th>
+                            <td>
+                                <label>
+                                    <input type="radio" name="pehobr_saints_section_display" value="graficke" <?php checked($saints_display_option, 'graficke'); ?>>
+                                    Grafické (ikony)
+                                </label><br>
+                                <label>
+                                    <input type="radio" name="pehobr_saints_section_display" value="textove" <?php checked($saints_display_option, 'textove'); ?>>
+                                    Textové (přímo zobrazené citáty)
                                 </label>
                             </td>
                         </tr>
                     </table>
                 </div>
 
-                <!-- Nastavení pořadí a viditelnosti -->
                 <div class="settings-section">
                     <h2>Pořadí a viditelnost sekcí</h2>
                     <p>Přetáhněte sekce pro změnu jejich pořadí. Pomocí zaškrtávacího políčka můžete sekci skrýt nebo zobrazit.</p>

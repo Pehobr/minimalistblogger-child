@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah a řadí sekce podle nastavení.
- * VERZE 37: Přidána textová varianta pro sekci papežů.
+ * VERZE 38: Přidána textová varianta pro sekci svatých.
  * @package minimalistblogger-child
  */
 
@@ -51,7 +51,7 @@ $grid_items = [
     ['name' => 'Sv. Jan Pavel II.', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel', 'label' => 'Jan Pavel', 'type' => 'text'],
     ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt', 'label' => 'Benedikt', 'type' => 'text'],
     ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_frantisek', 'label' => 'František', 'type' => 'text'],
-    ['name' => 'Sv. Augustin', 'slug' => '#', 'icon' => 'ikona-augustin.png', 'foto_key' => 'foto_url', 'label' => 'Augustin', 'type' => 'image'],
+    ['name' => 'Sv. Augustin', 'slug' => '#', 'icon' => 'ikona-augustin.png', 'foto_key' => 'foto_url', 'citat_key' => 'citat_augustin', 'label' => 'Augustin', 'type' => 'image'],
     ['name' => 'Papež Lev XIV.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev', 'label' => 'Lev XIV.', 'type' => 'text'],
     ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'modlitba_text', 'audio_key' => 'modlitba_url', 'label' => 'Modlitba', 'type' => 'text'],
     ['name' => 'Bible', 'slug' => 'poboznosti', 'icon' => 'ikona-bible.png', 'label' => 'Bible', 'type' => 'text'],
@@ -84,6 +84,8 @@ $all_section_keys = ['pope_section', 'saints_section', 'actions_section', 'deskt
 $layout_order = get_option('pehobr_home_layout_order', $all_section_keys);
 $visibility = get_option('pehobr_home_section_visibility', array_fill_keys($all_section_keys, 'on'));
 $default_pope_display = get_option('pehobr_pope_section_display', 'graficke');
+$default_saints_display = get_option('pehobr_saints_section_display', 'graficke');
+
 
 $sections_html = [];
 
@@ -91,7 +93,6 @@ $sections_html = [];
 ob_start();
 ?>
 <div class="pope-section-container" data-default-view="<?php echo esc_attr($default_pope_display); ?>">
-    <!-- Grafická varianta -->
     <div class="pope-items-wrapper view-graficke">
         <?php for ($i = 0; $i < 3; $i++): $item = $grid_items[$i]; $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : ''; $has_content = !empty($content_html); $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/'); ?>
             <div class="pope-item">
@@ -102,7 +103,6 @@ ob_start();
             </div>
         <?php endfor; ?>
     </div>
-    <!-- Textová varianta -->
     <div class="pope-text-wrapper view-textove" style="display: none;">
         <?php for ($i = 0; $i < 3; $i++): $item = $grid_items[$i]; $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : ''; if (!empty($content_html)): ?>
             <div class="pope-text-item">
@@ -115,12 +115,11 @@ ob_start();
 <?php
 $sections_html['pope_section'] = ob_get_clean();
 
-
 // Sekce 2: Svatí
 ob_start();
 ?>
-<div class="saints-section-container">
-    <div class="saints-items-wrapper">
+<div class="saints-section-container" data-default-view="<?php echo esc_attr($default_saints_display); ?>">
+    <div class="saints-items-wrapper view-graficke">
         <div class="saints-item-boxed">
             <?php
             $augustin_item = $grid_items[3];
@@ -147,10 +146,34 @@ ob_start();
             <span class="grid-item-label">Lev XIV.</span>
         </div>
     </div>
+    <div class="saints-text-wrapper view-textove" style="display: none;">
+        
+        <div class="saints-text-container">
+            <?php
+            $augustin_quote_item = $grid_items[3];
+            $lev_quote_item = $grid_items[4];
+            $augustin_quote_html = isset($quotes[$augustin_quote_item['citat_key']]) ? $quotes[$augustin_quote_item['citat_key']] : '';
+            $lev_quote_html = isset($quotes[$lev_quote_item['citat_key']]) ? $quotes[$lev_quote_item['citat_key']] : '';
+
+            if (!empty($augustin_quote_html)): ?>
+                <div class="saints-text-item">
+                    <h3 class="saints-text-author"><?php echo esc_html($augustin_quote_item['name']); ?></h3>
+                    <div class="saints-text-quote"><?php echo wpautop(esc_html($augustin_quote_html)); ?></div>
+                </div>
+            <?php endif;
+
+            if (!empty($lev_quote_html)): ?>
+                <div class="saints-text-item">
+                    <h3 class="saints-text-author"><?php echo esc_html($lev_quote_item['name']); ?></h3>
+                    <div class="saints-text-quote"><?php echo wpautop(esc_html($lev_quote_html)); ?></div>
+                </div>
+            <?php endif;
+            ?>
+        </div>
+        </div>
 </div>
 <?php
 $sections_html['saints_section'] = ob_get_clean();
-
 
 // Ostatní sekce
 ob_start();

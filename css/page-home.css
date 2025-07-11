@@ -313,3 +313,115 @@ header#masthead.sheader { z-index: 999; }
         display: none !important;
     }
 }
+
+/*
+ * DOPLNĚNÉ STYLY PRO TEXTOVOU VERZI SEKCE SVATÝCH
+ */
+
+/* Kontejner pro textovou verzi citátů sv. Augustina a Lva XIV. */
+.saints-text-container {
+    width: 100%;
+    border-radius: 12px;
+    padding: 15px; /* Větší vnitřní odsazení pro text */
+    box-sizing: border-box;
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
+}
+
+/* Obalovač pro textové položky - zajišťuje mezeru mezi nimi */
+.saints-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Jedna položka citátu (autor + text) */
+.saints-text-item {
+    text-align: left;
+}
+.saints-text-wrapper .saints-text-item:not(:last-child) {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0d9c5; /* Jemná oddělovací čára */
+}
+
+
+/* Jméno autora */
+.saints-text-author {
+    font-family: 'Superclarendon', serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #3b0f5d;
+    margin: 0 0 5px 0;
+}
+
+/* Text citátu */
+.saints-text-quote {
+    font-family: 'Superclarendon', serif;
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.4;
+}
+.saints-text-quote p {
+    margin: 0;
+}
+
+/*
+ * OPRAVA A SJEDNOCENÍ STYLŮ PRO TEXTOVÉ VARIANTY NA ÚVODNÍ STRÁNCE
+ */
+
+/* NOVÉ: Odstranění vnitřního odsazení z hlavního kontejneru svatých.
+   Tím se zajistí, že vnitřní textový box bude mít plnou a správnou šířku. */
+.saints-section-container {
+    padding: 0 !important;
+}
+
+/* Společný styl pro vnitřní box s texty (papežové i svatí) */
+.pope-section-container.view-textove-active,
+.saints-text-container {
+    padding: 15px; /* Sjednocené vnitřní odsazení */
+}
+
+/* Obalovač pro jednotlivé položky citátů */
+.pope-text-wrapper,
+.saints-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Vertikální mezera mezi položkami */
+}
+
+/* Jednotlivá položka citátu (jméno + text) */
+.pope-text-item,
+.saints-text-item {
+    text-align: left;
+}
+
+/* Oddělovací čára mezi položkami (nyní pro oba boxy) */
+.pope-text-wrapper .pope-text-item:not(:last-child),
+.saints-text-wrapper .saints-text-item:not(:last-child) {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0d9c5; /* Jemná oddělovací čára */
+}
+
+/* Jméno autora (společný styl) */
+.pope-text-author,
+.saints-text-author {
+    font-family: 'Superclarendon', serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #3b0f5d;
+    margin: 0 0 5px 0;
+}
+
+/* Text citátu (společný styl) */
+.pope-text-quote,
+.saints-text-quote {
+    font-family: 'Superclarendon', serif;
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.4;
+}
+
+.pope-text-quote p,
+.saints-text-quote p {
+    margin: 0;
+}

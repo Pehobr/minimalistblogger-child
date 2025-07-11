@@ -2,7 +2,7 @@
 /**
  * Template Name: Nastavení vzhledu pro uživatele
  * Description: Umožňuje uživatelům nastavit si, které sekce chtějí vidět a jak se mají zobrazovat.
- * VERZE 2: Přidána volba pro zobrazení sekce papežů.
+ * VERZE 3: Přidána volba pro zobrazení sekce svatých.
  * @package minimalistblogger-child
  */
 
@@ -25,13 +25,24 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
                 <?php if (!empty($all_sections)) : ?>
                     <div id="user-layout-settings">
                         
-                        <!-- Volba zobrazení papežů -->
                         <div class="setting-item setting-item-pope-display">
-                            <label for="toggle-pope-display" class="setting-label">Zobrazení citátů papežů</label>
+                            <label for="toggle-pope_section_display" class="setting-label">Zobrazení citátů papežů</label>
                             <div class="toggle-container">
                                 <span class="toggle-label">Grafické</span>
                                 <label class="switch">
-                                    <input type="checkbox" class="display-toggle" id="toggle-pope-display" data-section-slug="pope_section_display">
+                                    <input type="checkbox" class="display-toggle" id="toggle-pope_section_display" data-section-slug="pope_section_display">
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="toggle-label">Textové</span>
+                            </div>
+                        </div>
+
+                        <div class="setting-item setting-item-saints-display">
+                            <label for="toggle-saints_section_display" class="setting-label">Zobrazení sv. Augustina a Lva XIV.</label>
+                            <div class="toggle-container">
+                                <span class="toggle-label">Grafické</span>
+                                <label class="switch">
+                                    <input type="checkbox" class="display-toggle" id="toggle-saints_section_display" data-section-slug="saints_section_display">
                                     <span class="slider round"></span>
                                 </label>
                                 <span class="toggle-label">Textové</span>
@@ -40,7 +51,6 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
                         
                         <hr class="settings-divider">
 
-                        <!-- Přepínače viditelnosti -->
                         <?php foreach ($all_sections as $slug => $name) : ?>
                             <div class="setting-item setting-item-<?php echo esc_attr($slug); ?>">
                                 <label for="toggle-<?php echo esc_attr($slug); ?>" class="setting-label"><?php echo esc_html($name); ?></label>
