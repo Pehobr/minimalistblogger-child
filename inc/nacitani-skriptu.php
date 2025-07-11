@@ -32,6 +32,20 @@ function minimalistblogger_child_enqueue_assets() {
         wp_enqueue_script( 'minimalistblogger-nastaveni-panel-js', get_stylesheet_directory_uri() . '/js/nastaveni-panel.js', array('jquery'), $theme_version, true );
     }
 
+     // Načtení stylů pro stránku nastavení vzhledu
+    if ( is_page_template('page-nastaveni-vzhledu.php') ) {
+        wp_enqueue_style( 'page-nastaveni-vzhledu-style', get_stylesheet_directory_uri() . '/css/page-nastaveni-vzhledu.css', array(), filemtime( get_stylesheet_directory() . '/css/page-nastaveni-vzhledu.css' ) );
+    }
+
+    // Načtení stylů a skriptů pro stránku nastavení vzhledu
+    if ( is_page_template('page-nastaveni-vzhledu.php') ) {
+        // Načtení CSS (předpokládáme, že už tam je z předchozího kroku)
+        wp_enqueue_style( 'page-nastaveni-vzhledu-style', get_stylesheet_directory_uri() . '/css/page-nastaveni-vzhledu.css', array(), filemtime( get_stylesheet_directory() . '/css/page-nastaveni-vzhledu.css' ) );
+
+        // Načtení nového JavaScript souboru
+        wp_enqueue_script( 'page-nastaveni-vzhledu-script', get_stylesheet_directory_uri() . '/js/page-nastaveni-vzhledu.js', array(), filemtime( get_stylesheet_directory() . '/js/page-nastaveni-vzhledu.js' ), true );
+    }
+
     if ( is_page_template('page-home.php') ) {
         wp_enqueue_style( 'postni-kapky-home-styles', get_stylesheet_directory_uri() . '/css/page-home.css', array(), filemtime( get_stylesheet_directory() . '/css/page-home.css' ) );
         if (file_exists(get_stylesheet_directory() . '/css/donation-popup.css')) {
