@@ -20,36 +20,43 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
                 <h1 class="entry-title">Nastavení vzhledu úvodní stránky</h1>
             </header>
             <div class="entry-content">
-                <p>Zde si můžete vybrat, které sekce a jakým způsobem se mají zobrazovat na úvodní stránce. Vaše volba se uloží přímo ve vašem prohlížeči.</p>
+<p style="font-weight: bold; text-align: center;">
+PODOBA OBSAHU ÚVODNÍ STRÁNKY
+</p>
 
                 <?php if (!empty($all_sections)) : ?>
                     <div id="user-layout-settings">
                         
                         <div class="setting-item setting-item-pope-display">
-                            <label for="toggle-pope_section_display" class="setting-label">Zobrazení citátů papežů</label>
+                            <label for="toggle-pope_section_display" class="setting-label">Citáty papežů</label>
                             <div class="toggle-container">
-                                <span class="toggle-label">Grafické</span>
+                                <span class="toggle-label"></span>
                                 <label class="switch">
                                     <input type="checkbox" class="display-toggle" id="toggle-pope_section_display" data-section-slug="pope_section_display">
                                     <span class="slider round"></span>
                                 </label>
-                                <span class="toggle-label">Textové</span>
+                                <span class="toggle-label">Text</span>
                             </div>
                         </div>
 
                         <div class="setting-item setting-item-saints-display">
-                            <label for="toggle-saints_section_display" class="setting-label">Zobrazení sv. Augustina a Lva XIV.</label>
+                            <label for="toggle-saints_section_display" class="setting-label">sv.Augustin, Lev XIV.</label>
                             <div class="toggle-container">
-                                <span class="toggle-label">Grafické</span>
+                                <span class="toggle-label"></span>
                                 <label class="switch">
                                     <input type="checkbox" class="display-toggle" id="toggle-saints_section_display" data-section-slug="saints_section_display">
                                     <span class="slider round"></span>
                                 </label>
-                                <span class="toggle-label">Textové</span>
+                                <span class="toggle-label">Text</span>
                             </div>
                         </div>
                         
                         <hr class="settings-divider">
+
+                        <div class="entry-content">
+<p style="font-weight: bold; text-align: center;">
+VÝBĚR BLOKŮ ÚVODNÍ STRÁNKY
+</p>
 
                         <?php foreach ($all_sections as $slug => $name) : ?>
                             <div class="setting-item setting-item-<?php echo esc_attr($slug); ?>">
