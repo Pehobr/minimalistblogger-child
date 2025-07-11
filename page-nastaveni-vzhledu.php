@@ -22,8 +22,20 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
             <div class="entry-content">
                 <?php if (!empty($all_sections)) : ?>
                     <div id="user-layout-settings">
+                  
+                        <div class="settings-group-title">BLOKY ÚVODNÍ STRÁNKY</div>
 
-                        <div class="settings-group-title">PODOBA OBSAHU ÚVODNÍ STRÁNKY</div>
+                        <?php foreach ($all_sections as $slug => $name) : ?>
+                            <div class="setting-item setting-item-<?php echo esc_attr($slug); ?>">
+                                <label for="toggle-<?php echo esc_attr($slug); ?>" class="setting-label"><?php echo esc_html($name); ?></label>
+                                <label class="switch">
+                                    <input type="checkbox" class="visibility-toggle" id="toggle-<?php echo esc_attr($slug); ?>" data-section-slug="<?php echo esc_attr($slug); ?>">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+
+                        <div class="settings-group-title">VZHLED BLOKŮ</div>
                         
                         <div class="setting-item setting-item-pope-display">
                             <label for="toggle-pope_section_display" class="setting-label">Citáty papežů</label>
@@ -48,18 +60,7 @@ $all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_se
                                 <span class="toggle-label">Text</span>
                             </div>
                         </div>
-                        
-                        <div class="settings-group-title">VÝBĚR BLOKŮ ÚVODNÍ STRÁNKY</div>
 
-                        <?php foreach ($all_sections as $slug => $name) : ?>
-                            <div class="setting-item setting-item-<?php echo esc_attr($slug); ?>">
-                                <label for="toggle-<?php echo esc_attr($slug); ?>" class="setting-label"><?php echo esc_html($name); ?></label>
-                                <label class="switch">
-                                    <input type="checkbox" class="visibility-toggle" id="toggle-<?php echo esc_attr($slug); ?>" data-section-slug="<?php echo esc_attr($slug); ?>">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        <?php endforeach; ?>
                     </div>
                 <?php else : ?>
                     <p>Chyba: Nepodařilo se načíst definice sekcí.</p>
