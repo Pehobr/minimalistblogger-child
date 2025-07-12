@@ -1,6 +1,6 @@
 /*
  * Styly pro úvodní obrazovku s mřížkou ikon (page-home.css)
- * VERZE 2: Doplněny styly pro textovou variantu sekce papežů.
+ * VERZE 3: Přidány styly pro barevné varianty (světlá/fialová) pro mobil i PC.
  */
 
 body {
@@ -59,47 +59,123 @@ header#masthead.sheader { z-index: 999; }
     margin-top: 0;
     margin-bottom: 12px;
     box-sizing: border-box;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
-.pope-section-container,
-.third-row-section-container {
-     background-color: #F5F2EB;
-     border: 2px solid #3b0f5d;
+/* --- NOVÉ STYLY PRO BAREVNÉ VARIANTY (PŘESUNUTO Z VZHLED-PC.CSS) --- */
+
+/* === Sekce Papežové === */
+.pope-section-container .pope-icon-link img {
+    transition: transform 0.2s ease-in-out;
+}
+.pope-section-container .pope-icon-link:hover img {
+    transform: scale(1.1);
+}
+.pope-section-container .grid-item-label {
+    transition: color 0.3s;
 }
 
-/* NOVÉ STYLY PRO TEXTOVOU VERZI */
-.pope-section-container.view-textove-active {
-    padding: 15px; /* Větší vnitřní odsazení pro text */
+/* Varianta Světlá */
+.pope-section-container.style-svetle {
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
 }
-
-.pope-text-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.pope-text-item {
-    text-align: left;
-}
-
-.pope-text-author {
-    font-family: 'Superclarendon', serif;
-    font-size: 1.1rem;
-    font-weight: bold;
+.pope-section-container.style-svetle .grid-item-label {
     color: #3b0f5d;
-    margin: 0 0 5px 0;
 }
 
-.pope-text-quote {
-    font-family: 'Superclarendon', serif;
-    font-size: 1rem;
-    color: #333;
-    line-height: 1.4;
+/* Varianta Fialová */
+.pope-section-container.style-fialove {
+    background-color: #741ea4;
+    border: 2px solid #e6e0f3;
 }
-.pope-text-quote p {
-    margin: 0;
+.pope-section-container.style-fialove .grid-item-label {
+    color: #ffffff;
 }
-/* KONEC NOVÝCH STYLŮ */
+
+
+/* === Sekce Svatí === */
+.saints-section-container .saints-item-boxed {
+    transition: background-color 0.3s, border-color 0.3s;
+}
+.saints-section-container .saints-item-boxed .grid-item-label {
+    transition: color 0.3s;
+}
+.saints-section-container .pope-icon-link img {
+    transition: transform 0.2s ease-in-out;
+}
+.saints-section-container .pope-icon-link:hover img {
+    transform: scale(1.1);
+}
+
+/* Varianta Světlá */
+.saints-section-container.style-svetle .saints-item-boxed {
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
+}
+.saints-section-container.style-svetle .saints-item-boxed .grid-item-label {
+    color: #3b0f5d;
+}
+
+/* Varianta Fialová */
+.saints-section-container.style-fialove .saints-item-boxed {
+    background-color: #741ea4;
+    border: 2px solid #e6e0f3;
+}
+.saints-section-container.style-fialove .saints-item-boxed .grid-item-label {
+    color: #ffffff;
+}
+
+
+/* === Sekce Akce (Modlitba, Bible, Inspirace) === */
+.third-row-section-container .icon-grid-item img {
+    transition: transform 0.2s ease-in-out;
+}
+.third-row-section-container .icon-grid-item:hover img {
+    transform: scale(1.1);
+}
+
+/* Varianta Světlá */
+.third-row-section-container.style-svetle {
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
+}
+
+/* Varianta Fialová */
+.third-row-section-container.style-fialove {
+    background-color: #741ea4;
+    border: 2px solid #e6e0f3;
+}
+
+
+/* === Navigace pro PC (Oblíbené, Archiv, atd.) === */
+#desktop-nav-grid-container {
+    transition: background-color 0.3s, border-color 0.3s;
+}
+/* Varianta Světlá */
+#desktop-nav-grid-container.style-svetle {
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
+}
+#desktop-nav-grid-container.style-svetle .desktop-nav-icon-link {
+    color: #741ea4;
+}
+#desktop-nav-grid-container.style-svetle .desktop-nav-icon-link:hover {
+    color: #870e2c;
+}
+/* Varianta Fialová */
+#desktop-nav-grid-container.style-fialove {
+    background-color: #741ea4;
+    border: 2px solid #e6e0f3;
+}
+#desktop-nav-grid-container.style-fialove .desktop-nav-icon-link {
+    color: #ffffff;
+}
+#desktop-nav-grid-container.style-fialove .desktop-nav-icon-link:hover {
+    color: #e6e0f3;
+}
+
+/* --- KONEC STYLŮ PRO BAREVNÉ VARIANTY --- */
 
 
 .saints-section-container {
@@ -132,8 +208,6 @@ header#masthead.sheader { z-index: 999; }
 
 .saints-item-boxed {
     width: 32%;
-    background-color: #F5F2EB;
-    border: 2px solid #3b0f5d;
     border-radius: 12px;
     padding: 5px;
     box-sizing: border-box;
@@ -156,10 +230,6 @@ header#masthead.sheader { z-index: 999; }
 .pope-icon-link {
     display: block;
     width: 100%;
-    transition: transform 0.2s ease-in-out;
-}
-.pope-icon-link:hover {
-    transform: scale(1.05);
 }
 .pope-icon-link img,
 .saints-item-boxed img,
@@ -175,7 +245,6 @@ header#masthead.sheader { z-index: 999; }
     margin-top: 4px;
     font-size: 0.7rem;
     font-weight: bold;
-    color: #3b0f5d;
     text-shadow: none;
 }
 
