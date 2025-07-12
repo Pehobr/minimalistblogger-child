@@ -130,14 +130,13 @@ function pehobr_render_main_settings_page_content() {
                                 <span>Fialové pozadí, fialové ikony a světlý text</span>
                             </label>
                         </fieldset>
-                        <p class="description">Vzhled řádku s ikonami papežů, který se zobrazuje na PC.</p>
                     </td>
                 </tr>
                  <tr valign="top">
                     <th scope="row">Styl řádku 'Svatí' na PC</th>
                     <td>
                         <fieldset>
-                            <legend class="screen-reader-text"><span>Styl řádku 'Svatí' na PC</span></legend>
+                            <legend class="screen-reader-text"><span>Styl řádku 'sv.Augustin, Lev XIV.' na PC</span></legend>
                             <?php $current_saints_style = get_option('pehobr_saints_nav_style', 'svetle'); ?>
                             <label>
                                 <input type="radio" name="pehobr_saints_nav_style" value="svetle" <?php checked($current_saints_style, 'svetle'); ?> />
@@ -148,7 +147,6 @@ function pehobr_render_main_settings_page_content() {
                                 <span>Fialové pozadí, světlý text</span>
                             </label>
                         </fieldset>
-                        <p class="description">Vzhled boxů se sv. Augustinem a Lvem XIV. (erb uprostřed se nemění).</p>
                     </td>
                 </tr>
                 <tr valign="top">
@@ -166,11 +164,11 @@ function pehobr_render_main_settings_page_content() {
                                 <span>Fialové pozadí, světlé ikony</span>
                             </label>
                         </fieldset>
-                        <p class="description">Vzhled řádku s ikonami (Oblíbené, Archiv, atd.), který se zobrazuje na PC.</p>
+                        <p class="description">Vzhled řádku s ikonami (Oblíbené, Archiv, atd.)</p>
                     </td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row">Styl řádku 'Akce' na PC</th>
+                    <th scope="row">Styl řádku 'Modlitba, bible, inspirace' na PC</th>
                     <td>
                         <fieldset>
                             <legend class="screen-reader-text"><span>Styl řádku 'Akce' na PC</span></legend>
@@ -184,7 +182,6 @@ function pehobr_render_main_settings_page_content() {
                                 <span>Fialové pozadí, světlé ikony</span>
                             </label>
                         </fieldset>
-                        <p class="description">Vzhled řádku s ikonami (Modlitba, Bible, Inspirace), který se zobrazuje na PC.</p>
                     </td>
                 </tr>
             </table>
