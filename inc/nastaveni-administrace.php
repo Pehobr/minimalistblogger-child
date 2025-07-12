@@ -79,6 +79,7 @@ add_action( 'admin_menu', 'pehobr_register_settings_pages' );
 function pehobr_register_main_settings() {
     register_setting( 'pehobr_app_options_group', 'start_date_setting', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => '2026-02-18' ] );
     register_setting( 'pehobr_app_options_group', 'pehobr_show_donation_popup', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field' ] );
+    register_setting( 'pehobr_app_options_group', 'pehobr_pope_nav_style', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => 'svetle' ] );
     register_setting( 'pehobr_app_options_group', 'pehobr_desktop_nav_style', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => 'svetle' ] );
     register_setting( 'pehobr_app_options_group', 'pehobr_actions_nav_style', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => 'svetle' ] );
 }
@@ -109,6 +110,24 @@ function pehobr_render_main_settings_page_content() {
                             Zobrazit na úvodní stránce vyskakovací okno s prosbou o dar.
                         </label>
                         <p class="description">Pokud je zaškrtnuto, okno se zobrazí každému uživateli jednou při prvním spuštění aplikace.</p>
+                    </td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Styl řádku 'Papežové' na PC</th>
+                    <td>
+                        <fieldset>
+                            <legend class="screen-reader-text"><span>Styl řádku 'Papežové' na PC</span></legend>
+                            <?php $current_pope_style = get_option('pehobr_pope_nav_style', 'svetle'); ?>
+                            <label>
+                                <input type="radio" name="pehobr_pope_nav_style" value="svetle" <?php checked($current_pope_style, 'svetle'); ?> />
+                                <span>Světlé pozadí, fialové ikony a text (výchozí)</span>
+                            </label><br />
+                            <label>
+                                <input type="radio" name="pehobr_pope_nav_style" value="fialove" <?php checked($current_pope_style, 'fialove'); ?> />
+                                <span>Fialové pozadí, fialové ikony a světlý text</span>
+                            </label>
+                        </fieldset>
+                        <p class="description">Vzhled řádku s ikonami papežů, který se zobrazuje na PC.</p>
                     </td>
                 </tr>
                 <tr valign="top">

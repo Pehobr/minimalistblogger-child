@@ -168,7 +168,49 @@ nav#primary-site-navigation {
     display: none;
 }
 
-/* === STYLY PRO NOVOU NAVIGAČNÍ MŘÍŽKU NA DESKTOPU === */
+
+/* === STYLY PRO SEKCI PAPEŽŮ === */
+.pope-section-container {
+    display: block;
+    width: 90vw;
+    max-width: 600px;
+    border-radius: 12px;
+    padding: 10px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+.pope-section-container .pope-icon-link img {
+    transition: transform 0.2s ease-in-out;
+}
+.pope-section-container .pope-icon-link:hover img {
+    transform: scale(1.1);
+}
+.pope-section-container .grid-item-label {
+    transition: color 0.3s;
+}
+
+/* Varianta 1: Světlé pozadí (Výchozí) */
+.pope-section-container.style-svetle {
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
+}
+.pope-section-container.style-svetle .grid-item-label {
+    color: #3b0f5d;
+}
+
+/* Varianta 2: Fialové pozadí */
+.pope-section-container.style-fialove {
+    background-color: #741ea4;
+    border: 2px solid #e6e0f3;
+}
+.pope-section-container.style-fialove .grid-item-label {
+    color: #ffffff; /* Světlá barva pro jména */
+}
+
+
+/* === STYLY PRO NAVIGAČNÍ MŘÍŽKU NA DESKTOPU (OBLÍBENÉ, ATD.) === */
 #desktop-nav-grid-container {
     display: block;
     width: 90vw;
@@ -199,7 +241,7 @@ nav#primary-site-navigation {
 .desktop-nav-icon-link {
     display: block;
     width: 100%;
-    font-size: 38px; /* Velikost ikony */
+    font-size: 38px;
     text-decoration: none;
     transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
 }
@@ -208,12 +250,9 @@ nav#primary-site-navigation {
     transform: scale(1.1);
 }
 
-/* Styl pro popisek pod ikonou */
 .desktop-nav-item .grid-item-label {
     display: none;
 }
-
-/* --- Styly pro varianty navigačního řádku (Oblíbené, atd.) --- */
 
 /* Varianta 1: Světlé pozadí (Výchozí) */
 #desktop-nav-grid-container.style-svetle {
@@ -239,7 +278,8 @@ nav#primary-site-navigation {
     color: #e6e0f3;
 }
 
-/* === STYLY PRO TŘETÍ ŘÁDEK IKON (Modlitba, Bible, Inspirace) === */
+
+/* === STYLY PRO TŘETÍ ŘÁDEK IKON (MODLITBA, BIBLE, INSPIRACE) === */
 .third-row-section-container {
     display: block;
     width: 90vw;
@@ -251,8 +291,12 @@ nav#primary-site-navigation {
     box-sizing: border-box;
     transition: background-color 0.3s, border-color 0.3s;
 }
-
-/* --- Styly pro varianty řádku 'Akce' --- */
+.third-row-section-container .icon-grid-item img {
+    transition: transform 0.2s ease-in-out;
+}
+.third-row-section-container .icon-grid-item:hover img {
+    transform: scale(1.1);
+}
 
 /* Varianta 1: Světlé pozadí (Výchozí) */
 .third-row-section-container.style-svetle {
@@ -264,14 +308,6 @@ nav#primary-site-navigation {
 .third-row-section-container.style-fialove {
     background-color: #741ea4;
     border: 2px solid #e6e0f3;
-}
-
-/* Hover efekt pro všechny ikony v tomto řádku */
-.third-row-section-container .icon-grid-item img {
-    transition: transform 0.2s ease-in-out;
-}
-.third-row-section-container .icon-grid-item:hover img {
-    transform: scale(1.1);
 }
 
 

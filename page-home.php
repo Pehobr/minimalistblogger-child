@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah a řadí sekce podle nastavení.
- * VERZE 39: Přidána možnost změny stylu pro sekci Akce.
+ * VERZE 41: Oprava a finalizace nastavení vzhledu pro všechny sekce.
  * @package minimalistblogger-child
  */
 
@@ -89,8 +89,9 @@ $sections_html = [];
 
 // Sekce 1: Papežové
 ob_start();
+$pope_nav_style = get_option('pehobr_pope_nav_style', 'svetle');
 ?>
-<div class="pope-section-container" data-default-view="<?php echo esc_attr($default_pope_display); ?>">
+<div class="pope-section-container style-<?php echo esc_attr($pope_nav_style); ?>" data-default-view="<?php echo esc_attr($default_pope_display); ?>">
     <div class="pope-items-wrapper view-graficke">
         <?php for ($i = 0; $i < 3; $i++): $item = $grid_items[$i]; $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : ''; $has_content = !empty($content_html); $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/'); ?>
             <div class="pope-item">
