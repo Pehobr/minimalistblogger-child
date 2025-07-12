@@ -20,16 +20,8 @@ function pehobr_register_settings_page() {
         'dashicons-admin-generic',
         20
     );
-    // === PŘIDANÝ BLOK ZDE ===
-    add_submenu_page(
-        'pehobr-app-settings',
-        'Vzhled úvodní stránky',
-        'Vzhled úvodní stránky',
-        'manage_options',
-        'pehobr-home-layout-settings',
-        'pehobr_render_home_layout_page'
-    );
-    // === KONEC PŘIDANÉHO BLOKU ===
+    // === BLOK PRO "VZHLED ÚVODNÍ STRÁNKY" BYL ODSTRANĚN ===
+
     add_submenu_page(
         'pehobr-app-settings',
         'Nastavení Youtube playlistů',
