@@ -184,7 +184,7 @@ nav#primary-site-navigation {
 .desktop-nav-items-wrapper {
     display: flex;
     justify-content: space-around;
-    align-items: center; /* Změna na center pro lepší zarovnání ikon */
+    align-items: center;
     gap: 15px;
 }
 
@@ -213,7 +213,7 @@ nav#primary-site-navigation {
     display: none;
 }
 
-/* <<< ZAČÁTEK ZMĚN: Styly pro varianty navigačního řádku */
+/* --- Styly pro varianty navigačního řádku (Oblíbené, atd.) --- */
 
 /* Varianta 1: Světlé pozadí (Výchozí) */
 #desktop-nav-grid-container.style-svetle {
@@ -239,7 +239,40 @@ nav#primary-site-navigation {
     color: #e6e0f3;
 }
 
-/* <<< KONEC ZMĚN */
+/* === STYLY PRO TŘETÍ ŘÁDEK IKON (Modlitba, Bible, Inspirace) === */
+.third-row-section-container {
+    display: block;
+    width: 90vw;
+    max-width: 600px;
+    border-radius: 12px;
+    padding: 10px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+/* --- Styly pro varianty řádku 'Akce' --- */
+
+/* Varianta 1: Světlé pozadí (Výchozí) */
+.third-row-section-container.style-svetle {
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
+}
+
+/* Varianta 2: Fialové pozadí */
+.third-row-section-container.style-fialove {
+    background-color: #741ea4;
+    border: 2px solid #e6e0f3;
+}
+
+/* Hover efekt pro všechny ikony v tomto řádku */
+.third-row-section-container .icon-grid-item img {
+    transition: transform 0.2s ease-in-out;
+}
+.third-row-section-container .icon-grid-item:hover img {
+    transform: scale(1.1);
+}
 
 
 /* === SKRYTÍ SIDEBARU POUZE NA HOME STRÁNCE (PC) === */

@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah a řadí sekce podle nastavení.
- * VERZE 38: Aplikuje řazení a viditelnost sekcí z administrace.
+ * VERZE 39: Přidána možnost změny stylu pro sekci Akce.
  * @package minimalistblogger-child
  */
 
@@ -53,9 +53,9 @@ $grid_items = [
     ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_frantisek', 'label' => 'František', 'type' => 'text'],
     ['name' => 'Sv. Augustin', 'slug' => '#', 'icon' => 'ikona-augustin.png', 'foto_key' => 'foto_url', 'label' => 'Augustin', 'type' => 'image'],
     ['name' => 'Papež Lev XIV.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev', 'label' => 'Lev XIV.', 'type' => 'text'],
-    ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'citat_key' => 'modlitba_text', 'audio_key' => 'modlitba_url', 'label' => 'Modlitba', 'type' => 'text'],
-    ['name' => 'Bible', 'slug' => 'poboznosti', 'icon' => 'ikona-bible.png', 'label' => 'Bible', 'type' => 'text'],
-    ['name' => 'Inspirace', 'slug' => 'svatost', 'icon' => 'ikona-inspirace.png', 'citat_key' => 'video_inspirace_embed', 'label' => 'Inspirace', 'type' => 'video'],
+    ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'light_icon' => 'ikona-modlitba-svetla.png', 'citat_key' => 'modlitba_text', 'audio_key' => 'modlitba_url', 'label' => 'Modlitba', 'type' => 'text'],
+    ['name' => 'Bible', 'slug' => 'poboznosti', 'icon' => 'ikona-bible.png', 'light_icon' => 'ikona-bible-svetla.png', 'label' => 'Bible', 'type' => 'text'],
+    ['name' => 'Inspirace', 'slug' => 'svatost', 'icon' => 'ikona-inspirace.png', 'light_icon' => 'ikona-inspirace-svetla.png', 'citat_key' => 'video_inspirace_embed', 'label' => 'Inspirace', 'type' => 'video'],
 ];
 $library_items = [
     ['name' => 'Video', 'icon' => 'knihovna-video.png', 'url' => '/video-kapky/'],
@@ -79,7 +79,6 @@ foreach ($grid_items as $item) {
 }
 $augustin_photo_url = get_post_meta($source_post_id, 'foto_url', true);
 
-// <<< ZAČÁTEK ZMĚN
 // Načtení layoutu z nastavení
 $all_section_keys = function_exists('pehobr_get_home_layout_sections') ? array_keys(pehobr_get_home_layout_sections()) : [];
 $layout_order = get_option('pehobr_home_layout_order', $all_section_keys);
@@ -153,13 +152,23 @@ $sections_html['saints_section'] = ob_get_clean();
 
 // Sekce 3: Akce
 ob_start();
+$actions_nav_style = get_option('pehobr_actions_nav_style', 'svetle');
 ?>
-<div class="third-row-section-container">
+<div class="third-row-section-container style-<?php echo esc_attr($actions_nav_style); ?>">
     <div class="third-row-items-wrapper">
-        <?php for ($i = 5; $i < count($grid_items); $i++): $item = $grid_items[$i]; $content_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : ''; $has_content = !empty($content_html); $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/'); ?>
+        <?php
+        for ($i = 5; $i < count($grid_items); $i++):
+            $item = $grid_items[$i];
+            $content_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
+            $has_content = !empty($content_html);
+            $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/');
+            
+            // Výběr ikony podle stylu
+            $icon_to_use = ($actions_nav_style === 'fialove' && isset($item['light_icon'])) ? $item['light_icon'] : $item['icon'];
+        ?>
             <div class="grid-item-wrapper">
                 <a href="<?php echo esc_url($link_url); ?>" class="icon-grid-item" <?php if ($has_content): ?>data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>" data-type="<?php echo esc_attr($item['type']); ?>" data-author-name="<?php echo esc_attr($item['name']); ?>"<?php endif; ?>>
-                    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
+                    <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $icon_to_use); ?>" alt="<?php echo esc_attr($item['name']); ?>">
                 </a>
             </div>
         <?php endfor; ?>
@@ -170,11 +179,10 @@ $sections_html['actions_section'] = ob_get_clean();
 
 // Sekce 4: Navigace pro PC
 ob_start();
-// <<< ZAČÁTEK ZMĚN
 $desktop_nav_style = get_option('pehobr_desktop_nav_style', 'svetle');
 ?>
 <div id="desktop-nav-grid-container" class="style-<?php echo esc_attr($desktop_nav_style); ?>">
-<div class="desktop-nav-items-wrapper">
+    <div class="desktop-nav-items-wrapper">
         <?php foreach ($desktop_nav_items as $item) : ?>
             <div class="desktop-nav-item">
                 <a href="<?php echo esc_url(home_url($item['url'])); ?>" class="desktop-nav-icon-link" aria-label="<?php echo esc_attr($item['name']); ?>">
@@ -202,7 +210,6 @@ ob_start();
 </div>
 <?php
 $sections_html['library_section'] = ob_get_clean();
-// <<< KONEC ZMĚN
 ?>
 <div id="primary" class="featured-content content-area intro-app">
     <main id="main" class="site-main">
@@ -216,13 +223,12 @@ $sections_html['library_section'] = ob_get_clean();
             <?php endif; ?>
 
             <?php
-            // <<< ZAČÁTEK ZMĚN: Vykreslení sekcí podle uloženého pořadí a viditelnosti
+            // Vykreslení sekcí podle uloženého pořadí a viditelnosti
             foreach ($layout_order as $section_slug) {
                 if (isset($sections_html[$section_slug]) && isset($visibility[$section_slug]) && $visibility[$section_slug] === 'on') {
                     echo $sections_html[$section_slug];
                 }
             }
-            // <<< KONEC ZMĚN
             ?>
 
         </div>
