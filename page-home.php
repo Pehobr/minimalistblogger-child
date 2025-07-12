@@ -170,9 +170,11 @@ $sections_html['actions_section'] = ob_get_clean();
 
 // Sekce 4: Navigace pro PC
 ob_start();
+// <<< ZAČÁTEK ZMĚN
+$desktop_nav_style = get_option('pehobr_desktop_nav_style', 'svetle');
 ?>
-<div id="desktop-nav-grid-container">
-    <div class="desktop-nav-items-wrapper">
+<div id="desktop-nav-grid-container" class="style-<?php echo esc_attr($desktop_nav_style); ?>">
+<div class="desktop-nav-items-wrapper">
         <?php foreach ($desktop_nav_items as $item) : ?>
             <div class="desktop-nav-item">
                 <a href="<?php echo esc_url(home_url($item['url'])); ?>" class="desktop-nav-icon-link" aria-label="<?php echo esc_attr($item['name']); ?>">

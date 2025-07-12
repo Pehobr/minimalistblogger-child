@@ -79,6 +79,9 @@ add_action( 'admin_menu', 'pehobr_register_settings_pages' );
 function pehobr_register_main_settings() {
     register_setting( 'pehobr_app_options_group', 'start_date_setting', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => '2026-02-18' ] );
     register_setting( 'pehobr_app_options_group', 'pehobr_show_donation_popup', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field' ] );
+    // <<< ZAČÁTEK ZMĚN
+    register_setting( 'pehobr_app_options_group', 'pehobr_desktop_nav_style', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => 'svetle' ] );
+    // <<< KONEC ZMĚN
 }
 add_action( 'admin_init', 'pehobr_register_main_settings' );
 
@@ -109,7 +112,25 @@ function pehobr_render_main_settings_page_content() {
                         <p class="description">Pokud je zaškrtnuto, okno se zobrazí každému uživateli jednou při prvním spuštění aplikace.</p>
                     </td>
                 </tr>
-            </table>
+                <tr valign="top">
+                    <th scope="row">Styl navigačního řádku na PC</th>
+                    <td>
+                        <fieldset>
+                            <legend class="screen-reader-text"><span>Styl navigačního řádku na PC</span></legend>
+                            <?php $current_style = get_option('pehobr_desktop_nav_style', 'svetle'); ?>
+                            <label>
+                                <input type="radio" name="pehobr_desktop_nav_style" value="svetle" <?php checked($current_style, 'svetle'); ?> />
+                                <span>Světlé pozadí, fialové ikony (výchozí)</span>
+                            </label><br />
+                            <label>
+                                <input type="radio" name="pehobr_desktop_nav_style" value="fialove" <?php checked($current_style, 'fialove'); ?> />
+                                <span>Fialové pozadí, světlé ikony</span>
+                            </label>
+                        </fieldset>
+                        <p class="description">Vyberte vzhled pro řádek s ikonami (Oblíbené, Archiv, atd.), který se zobrazuje na PC.</p>
+                    </td>
+                </tr>
+                </table>
             <?php submit_button( 'Uložit změny' ); ?>
         </form>
     </div>

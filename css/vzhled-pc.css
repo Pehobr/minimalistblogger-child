@@ -174,12 +174,11 @@ nav#primary-site-navigation {
     width: 90vw;
     max-width: 600px;
     border-radius: 12px;
-    padding: 0px;
+    padding: 5px;
     margin-top: 0;
     margin-bottom: 12px;
     box-sizing: border-box;
-    background-color: #F5F2EB;
-    border: 2px solid #3b0f5d;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
 .desktop-nav-items-wrapper {
@@ -200,7 +199,6 @@ nav#primary-site-navigation {
 .desktop-nav-icon-link {
     display: block;
     width: 100%;
-    color: #741ea4;
     font-size: 38px; /* Velikost ikony */
     text-decoration: none;
     transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
@@ -208,13 +206,41 @@ nav#primary-site-navigation {
 
 .desktop-nav-icon-link:hover {
     transform: scale(1.1);
-    color: #870e2c;
 }
 
 /* Styl pro popisek pod ikonou */
 .desktop-nav-item .grid-item-label {
     display: none;
 }
+
+/* <<< ZAČÁTEK ZMĚN: Styly pro varianty navigačního řádku */
+
+/* Varianta 1: Světlé pozadí (Výchozí) */
+#desktop-nav-grid-container.style-svetle {
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
+}
+#desktop-nav-grid-container.style-svetle .desktop-nav-icon-link {
+    color: #741ea4;
+}
+#desktop-nav-grid-container.style-svetle .desktop-nav-icon-link:hover {
+    color: #870e2c;
+}
+
+/* Varianta 2: Fialové pozadí */
+#desktop-nav-grid-container.style-fialove {
+    background-color: #741ea4;
+    border: 2px solid #e6e0f3;
+}
+#desktop-nav-grid-container.style-fialove .desktop-nav-icon-link {
+    color: #ffffff;
+}
+#desktop-nav-grid-container.style-fialove .desktop-nav-icon-link:hover {
+    color: #e6e0f3;
+}
+
+/* <<< KONEC ZMĚN */
+
 
 /* === SKRYTÍ SIDEBARU POUZE NA HOME STRÁNCE (PC) === */
 body.page-template-page-home #secondary.featured-sidebar {
