@@ -9,7 +9,7 @@
 get_header();
 
 // Načteme si definice sekcí, které máme v administraci
-$all_sections = function_exists('pehobr_get_home_sections') ? pehobr_get_home_sections() : [];
+$all_sections = function_exists('pehobr_get_home_layout_sections') ? pehobr_get_home_layout_sections() : [];
 
 ?>
 
