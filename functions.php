@@ -105,3 +105,28 @@ function enqueue_nastaveni_vzhledu_assets() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_nastaveni_vzhledu_assets' );
+
+/**
+ * Vloží do hlavičky stránky inline CSS pro přepsání barev dolní lišty.
+ */
+function pehobr_output_bottom_nav_colors_css() {
+    // Načtení uložených hodnot s výchozími barvami
+    $bg_color = get_option('pehobr_bottom_nav_bg_color', '#7e7383');
+    $icon_color = get_option('pehobr_bottom_nav_icon_color', '#ffffff');
+    $convex_bg_color = get_option('pehobr_bottom_nav_convex_bg_color', '#ffffff');
+    $active_icon_color = get_option('pehobr_bottom_nav_active_icon_color', '#7e7383');
+
+    // Sestavení CSS pouze pokud se hodnoty liší od výchozích
+    if ($bg_color !== '#7e7383' || $icon_color !== '#ffffff' || $convex_bg_color !== '#ffffff' || $active_icon_color !== '#7e7383') {
+        $custom_css = "
+            :root {
+                --nav-bg-color: " . esc_attr($bg_color) . ";
+                --nav-border-color: " . esc_attr($icon_color) . ";
+                --nav-convex-bg: " . esc_attr($convex_bg_color) . ";
+                --nav-active-color: " . esc_attr($active_icon_color) . ";
+            }
+        ";
+        echo '<style type="text/css" id="custom-bottom-nav-colors">' . preg_replace( '/\s+/', ' ', $custom_css ) . '</style>';
+    }
+}
+add_action('wp_head', 'pehobr_output_bottom_nav_colors_css');

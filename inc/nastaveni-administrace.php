@@ -80,11 +80,16 @@ function pehobr_register_main_settings() {
     register_setting( 'pehobr_app_options_group', 'start_date_setting', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => '2026-02-18' ] );
     register_setting( 'pehobr_app_options_group', 'pehobr_show_donation_popup', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field' ] );
     register_setting( 'pehobr_app_options_group', 'pehobr_pope_nav_style', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => 'svetle' ] );
-    // <<< ZAČÁTEK ZMĚN
     register_setting( 'pehobr_app_options_group', 'pehobr_saints_nav_style', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => 'svetle' ] );
-    // <<< KONEC ZMĚN
     register_setting( 'pehobr_app_options_group', 'pehobr_desktop_nav_style', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => 'svetle' ] );
     register_setting( 'pehobr_app_options_group', 'pehobr_actions_nav_style', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => 'svetle' ] );
+    
+    // === NOVÝ KÓD PRO BARVY LIŠTY ZAČÍNÁ ZDE ===
+    register_setting( 'pehobr_app_options_group', 'pehobr_bottom_nav_bg_color', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_hex_color', 'default' => '#7e7383' ] );
+    register_setting( 'pehobr_app_options_group', 'pehobr_bottom_nav_icon_color', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_hex_color', 'default' => '#ffffff' ] );
+    register_setting( 'pehobr_app_options_group', 'pehobr_bottom_nav_convex_bg_color', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_hex_color', 'default' => '#ffffff' ] );
+    register_setting( 'pehobr_app_options_group', 'pehobr_bottom_nav_active_icon_color', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_hex_color', 'default' => '#7e7383' ] );
+    // === NOVÝ KÓD PRO BARVY LIŠTY KONČÍ ZDE ===
 }
 add_action( 'admin_init', 'pehobr_register_main_settings' );
 
@@ -109,7 +114,7 @@ function pehobr_render_main_settings_page_content() {
                     <th scope="row">Prosba o dar</th>
                     <td>
                         <label for="pehobr_show_donation_popup">
-                            <input type="checkbox" id="pehobr_show_donation_popup" name="pehobr_show_donation_popup" <?php checked( get_option('pehobr_show_donation_popup'), 'on' ); ?> />
+                            <input type="checkbox" id="pehobr_show_donation_popup" name="pehobr_show_donation_popup" value="on" <?php checked( get_option('pehobr_show_donation_popup'), 'on' ); ?> />
                             Zobrazit na úvodní stránce vyskakovací okno s prosbou o dar.
                         </label>
                         <p class="description">Pokud je zaškrtnuto, okno se zobrazí každému uživateli jednou při prvním spuštění aplikace.</p>
@@ -184,7 +189,32 @@ function pehobr_render_main_settings_page_content() {
                         </fieldset>
                     </td>
                 </tr>
-            </table>
+
+                <tr valign="top">
+                    <th scope="row">Barvy dolní lišty na mobilu</th>
+                    <td>
+                        <fieldset>
+                            <legend class="screen-reader-text"><span>Barvy dolní lišty na mobilu</span></legend>
+                            
+                            <label for="pehobr_bottom_nav_bg_color" style="display:block; margin-bottom: 5px;">Barva pozadí lišty:</label>
+                            <input type="color" id="pehobr_bottom_nav_bg_color" name="pehobr_bottom_nav_bg_color" value="<?php echo esc_attr( get_option( 'pehobr_bottom_nav_bg_color', '#7e7383' ) ); ?>" />
+                            <br><br>
+
+                            <label for="pehobr_bottom_nav_icon_color" style="display:block; margin-bottom: 5px;">Barva ikon a horního ohraničení:</label>
+                            <input type="color" id="pehobr_bottom_nav_icon_color" name="pehobr_bottom_nav_icon_color" value="<?php echo esc_attr( get_option( 'pehobr_bottom_nav_icon_color', '#ffffff' ) ); ?>" />
+                            <br><br>
+                            
+                            <label for="pehobr_bottom_nav_convex_bg_color" style="display:block; margin-bottom: 5px;">Barva pozadí prostředního tlačítka (Domů):</label>
+                            <input type="color" id="pehobr_bottom_nav_convex_bg_color" name="pehobr_bottom_nav_convex_bg_color" value="<?php echo esc_attr( get_option( 'pehobr_bottom_nav_convex_bg_color', '#ffffff' ) ); ?>" />
+                            <br><br>
+
+                            <label for="pehobr_bottom_nav_active_icon_color" style="display:block; margin-bottom: 5px;">Barva aktivní ikony v prostředním tlačítku:</label>
+                            <input type="color" id="pehobr_bottom_nav_active_icon_color" name="pehobr_bottom_nav_active_icon_color" value="<?php echo esc_attr( get_option( 'pehobr_bottom_nav_active_icon_color', '#7e7383' ) ); ?>" />
+                        </fieldset>
+                        <p class="description">Vyberte barvy pro jednotlivé prvky dolní navigační lišty na mobilních zařízeních.</p>
+                    </td>
+                </tr>
+                </table>
             <?php submit_button( 'Uložit změny' ); ?>
         </form>
     </div>
@@ -270,6 +300,7 @@ function pehobr_render_home_layout_settings_page() {
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; }
         .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; }
         input:checked + .slider { background-color: #2271b1; }
+        input:checked + .slider:before { transform: translateX(22px); }
         .slider.round { border-radius: 28px; }
         .slider.round:before { border-radius: 50%; }
     </style>
