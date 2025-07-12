@@ -46,7 +46,6 @@ add_action( 'wp_enqueue_scripts', 'chld_thm_cfg_parent_css', 10 );
  * Načtení stylů a skriptů pro Lightbox2
  */
 function enqueue_fotogalerie_assets() {
-    // --- ZMĚNA ZDE ---
     // Načteme styly a skripty, pokud je zobrazena stránka FOTOGALERIE nebo HOME.
     if ( is_page_template( 'page-fotogalerie.php' ) || is_page_template( 'page-home.php' ) ) {
         $theme_version = wp_get_theme()->get('Version');
@@ -91,3 +90,19 @@ function enqueue_fotogalerie_assets() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_fotogalerie_assets' );
+
+/**
+ * Načtení stylů pro stránku Nastavení vzhledu.
+ */
+function enqueue_nastaveni_vzhledu_assets() {
+    // Načteme styly pouze, pokud je zobrazena stránka s šablonou "page-nastaveni-vzhledu.php".
+    if ( is_page_template( 'page-nastaveni-vzhledu.php' ) ) {
+        wp_enqueue_style(
+            'page-nastaveni-vzhledu-style',
+            get_stylesheet_directory_uri() . '/css/page-nastaveni-vzhledu.css',
+            array(),
+            wp_get_theme()->get('Version')
+        );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_nastaveni_vzhledu_assets' );
