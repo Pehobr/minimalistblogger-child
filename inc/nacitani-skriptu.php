@@ -1,7 +1,7 @@
 <?php
 /**
  * Načítání všech CSS stylů a JavaScriptových skriptů.
- * VERZE 7: Přidáno načítání skriptů pro řazení sekcí na úvodní stránce.
+ * VERZE 8: Přidáno načítání skriptů pro řazení sekcí na úvodní stránce.
  */
 
 // Zabráníme přímému přístupu
@@ -137,6 +137,7 @@ function pehobr_enqueue_admin_scripts($hook) {
         }
     }
     
+    // <<< ZAČÁTEK ZMĚN
     // Načtení skriptů pro řazení sekcí na úvodní stránce
     if ( 'postni-kapky_page_pehobr-home-layout-settings' === $hook ) {
         wp_enqueue_script('jquery-ui-sortable');
@@ -150,6 +151,7 @@ function pehobr_enqueue_admin_scripts($hook) {
             ]);
         }
     }
+    // <<< KONEC ZMĚN
 }
 add_action( 'admin_enqueue_scripts', 'pehobr_enqueue_admin_scripts' );
 

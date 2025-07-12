@@ -14,11 +14,13 @@ $inc_dir = get_stylesheet_directory() . '/inc';
 require_once( $inc_dir . '/nacitani-skriptu.php' );
 require_once( $inc_dir . '/nastaveni-sablony.php' );
 require_once( $inc_dir . '/vlastni-prispevky.php' );
+// <<< ZAČÁTEK ZMĚNY: Prohození pořadí načítání
+require_once( $inc_dir . '/nastaveni-vzhledu-home.php' );
 require_once( $inc_dir . '/nastaveni-administrace.php' );
+// <<< KONEC ZMĚNY
 require_once( $inc_dir . '/nastaveni-youtube.php' );
 require_once( $inc_dir . '/nastaveni-radia.php' );
 require_once( $inc_dir . '/nastaveni-navodu.php' );
-require_once( $inc_dir . '/nastaveni-vzhledu-home.php' );
 
 // Načtení logiky pro odesílání e-mailů (pokud existuje)
 if ( file_exists( get_stylesheet_directory() . '/ecomail-sender.php' ) ) {

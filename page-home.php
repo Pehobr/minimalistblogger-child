@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah a řadí sekce podle nastavení.
- * VERZE 37: Přidána textová varianta pro sekci papežů.
+ * VERZE 38: Aplikuje řazení a viditelnost sekcí z administrace.
  * @package minimalistblogger-child
  */
 
@@ -79,8 +79,9 @@ foreach ($grid_items as $item) {
 }
 $augustin_photo_url = get_post_meta($source_post_id, 'foto_url', true);
 
-// Načtení layoutu
-$all_section_keys = ['pope_section', 'saints_section', 'actions_section', 'desktop_nav_section', 'library_section'];
+// <<< ZAČÁTEK ZMĚN
+// Načtení layoutu z nastavení
+$all_section_keys = function_exists('pehobr_get_home_layout_sections') ? array_keys(pehobr_get_home_layout_sections()) : [];
 $layout_order = get_option('pehobr_home_layout_order', $all_section_keys);
 $visibility = get_option('pehobr_home_section_visibility', array_fill_keys($all_section_keys, 'on'));
 $default_pope_display = get_option('pehobr_pope_section_display', 'graficke');
@@ -91,7 +92,6 @@ $sections_html = [];
 ob_start();
 ?>
 <div class="pope-section-container" data-default-view="<?php echo esc_attr($default_pope_display); ?>">
-    <!-- Grafická varianta -->
     <div class="pope-items-wrapper view-graficke">
         <?php for ($i = 0; $i < 3; $i++): $item = $grid_items[$i]; $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : ''; $has_content = !empty($content_html); $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/'); ?>
             <div class="pope-item">
@@ -102,7 +102,6 @@ ob_start();
             </div>
         <?php endfor; ?>
     </div>
-    <!-- Textová varianta -->
     <div class="pope-text-wrapper view-textove" style="display: none;">
         <?php for ($i = 0; $i < 3; $i++): $item = $grid_items[$i]; $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : ''; if (!empty($content_html)): ?>
             <div class="pope-text-item">
@@ -152,7 +151,7 @@ ob_start();
 $sections_html['saints_section'] = ob_get_clean();
 
 
-// Ostatní sekce
+// Sekce 3: Akce
 ob_start();
 ?>
 <div class="third-row-section-container">
@@ -169,6 +168,7 @@ ob_start();
 <?php
 $sections_html['actions_section'] = ob_get_clean();
 
+// Sekce 4: Navigace pro PC
 ob_start();
 ?>
 <div id="desktop-nav-grid-container">
@@ -186,6 +186,7 @@ ob_start();
 <?php
 $sections_html['desktop_nav_section'] = ob_get_clean();
 
+// Sekce 5: Knihovny
 ob_start();
 ?>
 <div id="library-grid-container">
@@ -199,7 +200,7 @@ ob_start();
 </div>
 <?php
 $sections_html['library_section'] = ob_get_clean();
-
+// <<< KONEC ZMĚN
 ?>
 <div id="primary" class="featured-content content-area intro-app">
     <main id="main" class="site-main">
@@ -213,11 +214,13 @@ $sections_html['library_section'] = ob_get_clean();
             <?php endif; ?>
 
             <?php
+            // <<< ZAČÁTEK ZMĚN: Vykreslení sekcí podle uloženého pořadí a viditelnosti
             foreach ($layout_order as $section_slug) {
                 if (isset($sections_html[$section_slug]) && isset($visibility[$section_slug]) && $visibility[$section_slug] === 'on') {
                     echo $sections_html[$section_slug];
                 }
             }
+            // <<< KONEC ZMĚN
             ?>
 
         </div>

@@ -2,156 +2,133 @@
 /**
  * Správa nastavení pro úvodní stránku v administraci WordPressu.
  * Umožňuje řadit a skrývat sekce na úvodní stránce.
- * VERZE 2: Přidána volba pro zobrazení sekce papežů.
+ * VERZE 2: Přidána vlastní registrace do admin menu pro zajištění načtení.
  */
 
-// --- Registrace menu v administraci ---
-function pehobr_add_admin_menu() {
+// Zabráníme přímému přístupu
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+ * Přidá stránku s nastavením vzhledu do admin menu.
+ * Používá prioritu 30, aby se zajistilo, že hlavní menu již existuje.
+ */
+function pehobr_add_home_layout_submenu_page() {
     add_submenu_page(
-        'edit.php?post_type=denni_kapka',
-        'Vzhled úvodní stránky',
-        'Vzhled úvodní stránky',
-        'manage_options',
-        'pehobr-home-layout',
-        'pehobr_home_layout_page_callback'
+        'pehobr-app-settings',           // Slug rodičovského menu
+        'Vzhled úvodní stránky',         // Titulek stránky
+        'Vzhled úvodní stránky',         // Název v menu
+        'manage_options',                // Oprávnění
+        'pehobr-home-layout-settings',   // Slug této stránky
+        'pehobr_render_home_layout_settings_page' // Funkce pro vykreslení obsahu
     );
 }
-add_action('admin_menu', 'pehobr_add_admin_menu');
+add_action( 'admin_menu', 'pehobr_add_home_layout_submenu_page', 30 );
 
-// --- Definice dostupných sekcí ---
-function pehobr_get_home_sections() {
+
+/**
+ * Definice dostupných sekcí, které lze spravovat.
+ *
+ * @return array Asociativní pole, kde klíč je slug a hodnota je název sekce.
+ */
+function pehobr_get_home_layout_sections() {
     return [
-        'pope_section' => 'Papežové',
-        'saints_section' => 'sv.Augustin, Lev XIV.',
-        'actions_section' => 'Modlitba, pobožnosti...',
-        'desktop_nav_section' => 'Navigace pro PC',
-        'library_section' => 'Knihovny (audio, video...)',
+        'pope_section'        => 'Řádek: Papežové (Papež, Benedikt, František)',
+        'saints_section'      => 'Řádek: sv.Augustin, erb, Lev XIV.)',
+        'actions_section'     => 'Řádek: Modlitba, Bible, Inspirace',
+        'desktop_nav_section' => 'Řádek: Navigace pro PC (Oblíbené, Archiv, Fotogalerie, Zápisník)',
+        'library_section'     => 'Řádek: Knihovny (Video, Audio, Rádio, Podcast)',
     ];
 }
 
-// --- Callback pro zobrazení stránky nastavení ---
-function pehobr_home_layout_page_callback() {
-    // Uložení dat, pokud byl formulář odeslán
-    if (isset($_POST['pehobr_save_layout_settings']) && check_admin_referer('pehobr_save_layout_settings_nonce')) {
-        // Uložení pořadí
-        if (isset($_POST['pehobr_home_layout_order'])) {
-            $sanitized_order = array_map('sanitize_text_field', $_POST['pehobr_home_layout_order']);
-            update_option('pehobr_home_layout_order', $sanitized_order);
-        }
-        // Uložení viditelnosti
-        $all_sections = pehobr_get_home_sections();
-        $visibility = [];
-        foreach (array_keys($all_sections) as $slug) {
-            $visibility[$slug] = isset($_POST['pehobr_home_section_visibility'][$slug]) ? 'on' : 'off';
-        }
-        update_option('pehobr_home_section_visibility', $visibility);
-
-        // Uložení zobrazení sekce papežů
-        $pope_display = isset($_POST['pehobr_pope_section_display']) ? sanitize_text_field($_POST['pehobr_pope_section_display']) : 'graficke';
-        update_option('pehobr_pope_section_display', $pope_display);
-
-        echo '<div class="notice notice-success is-dismissible"><p>Nastavení uloženo.</p></div>';
-    }
-
-    // Načtení uložených hodnot
-    $all_sections = pehobr_get_home_sections();
+/**
+ * Vykreslí obsah stránky pro nastavení vzhledu úvodní stránky.
+ */
+function pehobr_render_home_layout_settings_page() {
+    $all_sections = pehobr_get_home_layout_sections();
     $layout_order = get_option('pehobr_home_layout_order', array_keys($all_sections));
     $visibility = get_option('pehobr_home_section_visibility', array_fill_keys(array_keys($all_sections), 'on'));
-    $pope_display_option = get_option('pehobr_pope_section_display', 'graficke');
     ?>
     <div class="wrap">
-        <h1>Nastavení vzhledu úvodní stránky</h1>
-        <p>Zde můžete přizpůsobit pořadí a viditelnost jednotlivých sekcí na úvodní stránce.</p>
+        <h1>Vzhled úvodní stránky</h1>
+        <p>Přetáhněte řádky myší pro změnu jejich pořadí. Změny se ukládají automaticky.</p>
+        <p>Pomocí přepínače vpravo můžete daný řádek dočasně skrýt z úvodní stránky.</p>
 
-        <form method="post" action="">
-            <?php wp_nonce_field('pehobr_save_layout_settings_nonce'); ?>
-
-            <div id="layout-settings-container">
-                
-                <!-- Nastavení zobrazení sekce papežů -->
-                <div class="settings-section">
-                    <h2>Zobrazení sekce papežů</h2>
-                    <p>Vyberte, jak se má ve výchozím stavu zobrazovat sekce s citáty papežů.</p>
-                    <table class="form-table">
-                        <tr valign="top">
-                            <th scope="row">Výchozí zobrazení</th>
-                            <td>
-                                <label>
-                                    <input type="radio" name="pehobr_pope_section_display" value="graficke" <?php checked($pope_display_option, 'graficke'); ?>>
-                                    Grafické (ikony s vyskakovacím oknem)
-                                </label><br>
-                                <label>
-                                    <input type="radio" name="pehobr_pope_section_display" value="textove" <?php checked($pope_display_option, 'textove'); ?>>
-                                    Textové (nadpisy a citáty přímo na stránce)
-                                </label>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-                <!-- Nastavení pořadí a viditelnosti -->
-                <div class="settings-section">
-                    <h2>Pořadí a viditelnost sekcí</h2>
-                    <p>Přetáhněte sekce pro změnu jejich pořadí. Pomocí zaškrtávacího políčka můžete sekci skrýt nebo zobrazit.</p>
-                    <ul id="sortable-layout">
-                        <?php
-                        foreach ($layout_order as $slug) {
-                            if (isset($all_sections[$slug])) {
-                                $is_visible = isset($visibility[$slug]) && $visibility[$slug] === 'on';
-                                ?>
-                                <li class="ui-state-default">
-                                    <span class="dashicons dashicons-move"></span>
-                                    <label>
-                                        <input type="checkbox" name="pehobr_home_section_visibility[<?php echo esc_attr($slug); ?>]" <?php checked($is_visible); ?>>
-                                        <?php echo esc_html($all_sections[$slug]); ?>
-                                    </label>
-                                    <input type="hidden" name="pehobr_home_layout_order[]" value="<?php echo esc_attr($slug); ?>">
-                                </li>
-                                <?php
-                            }
-                        }
-                        // Přidání sekcí, které ještě nejsou v pořadí (pro případ aktualizace)
-                        foreach ($all_sections as $slug => $name) {
-                            if (!in_array($slug, $layout_order)) {
-                                $is_visible = isset($visibility[$slug]) && $visibility[$slug] === 'on';
-                                ?>
-                                 <li class="ui-state-default">
-                                    <span class="dashicons dashicons-move"></span>
-                                    <label>
-                                        <input type="checkbox" name="pehobr_home_section_visibility[<?php echo esc_attr($slug); ?>]" <?php checked($is_visible); ?>>
-                                        <?php echo esc_html($name); ?>
-                                    </label>
-                                    <input type="hidden" name="pehobr_home_layout_order[]" value="<?php echo esc_attr($slug); ?>">
-                                </li>
-                                <?php
-                            }
-                        }
-                        ?>
-                    </ul>
-                </div>
-            </div>
-
-            <?php submit_button('Uložit nastavení', 'primary', 'pehobr_save_layout_settings'); ?>
-        </form>
+        <ul id="sortable-home-sections">
+            <?php
+            // Zobrazíme sekce ve uloženém pořadí
+            foreach ($layout_order as $slug) {
+                if (isset($all_sections[$slug])) {
+                    $is_visible = isset($visibility[$slug]) && $visibility[$slug] === 'on';
+                    ?>
+                    <li id="<?php echo esc_attr($slug); ?>" class="sortable-item">
+                        <span class="dashicons dashicons-move handle"></span>
+                        <span class="section-name"><?php echo esc_html($all_sections[$slug]); ?></span>
+                        <label class="switch">
+                            <input type="checkbox" class="visibility-toggle" <?php checked($is_visible); ?>>
+                            <span class="slider round"></span>
+                        </label>
+                    </li>
+                    <?php
+                }
+            }
+            // Zobrazíme nové sekce, které ještě nejsou v pořadí
+            foreach ($all_sections as $slug => $name) {
+                if (!in_array($slug, $layout_order)) {
+                     $is_visible = isset($visibility[$slug]) && $visibility[$slug] === 'on';
+                    ?>
+                    <li id="<?php echo esc_attr($slug); ?>" class="sortable-item">
+                        <span class="dashicons dashicons-move handle"></span>
+                        <span class="section-name"><?php echo esc_html($name); ?></span>
+                         <label class="switch">
+                            <input type="checkbox" class="visibility-toggle" <?php checked($is_visible); ?>>
+                            <span class="slider round"></span>
+                        </label>
+                    </li>
+                    <?php
+                }
+            }
+            ?>
+        </ul>
+        <div id="reorder-feedback" style="display:none; margin-top: 15px;"></div>
     </div>
     <style>
-        #layout-settings-container { display: flex; gap: 30px; }
-        .settings-section { flex: 1; }
-        #sortable-layout { list-style: none; margin: 0; padding: 0; width: 100%; }
-        #sortable-layout li { margin: 5px 0; padding: 10px; background: #fff; border: 1px solid #ccc; cursor: move; display: flex; align-items: center; gap: 10px; }
-        #sortable-layout li label { flex-grow: 1; }
+        #sortable-home-sections { list-style-type: none; margin: 20px 0; padding: 0; max-width: 800px; }
+        .sortable-item { margin: 0 0 8px 0; padding: 12px 18px; font-size: 16px; background-color: #fff; border: 1px solid #ccc; cursor: move; display: flex; align-items: center; border-radius: 4px; }
+        .sortable-item .handle { margin-right: 15px; color: #888; }
+        .sortable-item .section-name { flex-grow: 1; }
+        .ui-state-highlight { height: 50px; background-color: #f0f0f0; border: 1px dashed #ccc; margin-bottom: 8px; }
+        .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; }
+        input:checked + .slider { background-color: #2271b1; }
+        .slider.round { border-radius: 28px; }
+        .slider.round:before { border-radius: 50%; }
     </style>
     <?php
 }
 
-// --- Načtení potřebných skriptů pro administraci ---
-function pehobr_load_admin_scripts($hook) {
-    if ($hook != 'denni_kapka_page_pehobr-home-layout') {
-        return;
-    }
-    wp_enqueue_script('jquery-ui-sortable');
-    wp_enqueue_script('admin-home-reorder', get_stylesheet_directory_uri() . '/js/admin-home-reorder.js', ['jquery', 'jquery-ui-sortable'], '1.1', true);
-}
-add_action('admin_enqueue_scripts', 'pehobr_load_admin_scripts');
 
-?>
+/**
+ * AJAX handler pro uložení pořadí a viditelnosti sekcí.
+ */
+add_action('wp_ajax_pehobr_save_home_layout_settings', function() {
+    if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'pehobr_home_reorder_nonce' ) ) {
+        wp_send_json_error( 'Chyba zabezpečení.', 403 );
+    }
+    if ( ! current_user_can('manage_options') ) {
+        wp_send_json_error( 'Nedostatečná oprávnění.', 403 );
+    }
+
+    if (isset($_POST['order']) && is_array($_POST['order'])) {
+        $sanitized_order = array_map('sanitize_text_field', $_POST['order']);
+        update_option('pehobr_home_layout_order', $sanitized_order);
+    }
+    
+    if (isset($_POST['visibility']) && is_array($_POST['visibility'])) {
+        $sanitized_visibility = array_map('sanitize_text_field', $_POST['visibility']);
+        update_option('pehobr_home_section_visibility', $sanitized_visibility);
+    }
+
+    wp_send_json_success('Nastavení uloženo.');
+});

@@ -1,27 +1,28 @@
 <?php
 /**
  * Funkce pro administraci WordPressu.
- * VERZE 6: Přidáno nastavení pro vzhled úvodní stránky.
+ * VERZE 8: Registruje pouze hlavní menu, podpoložky se registrují ve vlastních souborech.
  */
 
 // Zabráníme přímému přístupu
 if ( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Registruje stránky s nastavením.
+ * Registruje hlavní stránku s nastavením a ostatní podstránky.
  */
-function pehobr_register_settings_page() {
+function pehobr_register_settings_pages() {
+    // Hlavní menu
     add_menu_page(
         'Nastavení aplikace',
         'Postní kapky',
         'manage_options',
         'pehobr-app-settings',
-        'pehobr_render_settings_page_content',
+        'pehobr_render_main_settings_page_content', // Změna na novou funkci
         'dashicons-admin-generic',
         20
     );
-    // === BLOK PRO "VZHLED ÚVODNÍ STRÁNKY" BYL ODSTRANĚN ===
 
+    // Ostatní podmenu (kromě vzhledu úvodní stránky)
     add_submenu_page(
         'pehobr-app-settings',
         'Nastavení Youtube playlistů',
@@ -47,16 +48,19 @@ function pehobr_register_settings_page() {
         'pehobr_render_sort_navody_page'
     );
 }
-add_action( 'admin_menu', 'pehobr_register_settings_page' );
+add_action( 'admin_menu', 'pehobr_register_settings_pages' );
 
 
-function pehobr_register_settings() {
+function pehobr_register_main_settings() {
     register_setting( 'pehobr_app_options_group', 'start_date_setting', array( 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => '2026-02-18', ) );
     register_setting( 'pehobr_app_options_group', 'pehobr_show_donation_popup', array( 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', ) );
 }
-add_action( 'admin_init', 'pehobr_register_settings' );
+add_action( 'admin_init', 'pehobr_register_main_settings' );
 
-function pehobr_render_settings_page_content() {
+/**
+ * Vykreslí obsah hlavní stránky nastavení.
+ */
+function pehobr_render_main_settings_page_content() {
     ?>
     <div class="wrap">
         <h1>Nastavení aplikace Postní kapky</h1>
@@ -65,8 +69,8 @@ function pehobr_render_settings_page_content() {
             <table class="form-table">
                 <tr valign="top">
                     <th scope="row"> <label for="start_date_setting">Datum začátku (Popeleční středa):</label> </th>
-                    <td> 
-                        <input type="date" id="start_date_setting" name="start_date_setting" value="<?php echo esc_attr( get_option( 'start_date_setting', '2026-02-18' ) ); ?>" /> 
+                    <td>
+                        <input type="date" id="start_date_setting" name="start_date_setting" value="<?php echo esc_attr( get_option( 'start_date_setting', '2026-02-18' ) ); ?>" />
                         <p class="description">Určuje, od jakého data se začne den po dni zobrazovat obsah.</p>
                     </td>
                 </tr>
