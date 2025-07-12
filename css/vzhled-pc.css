@@ -210,6 +210,39 @@ nav#primary-site-navigation {
 }
 
 
+/* === STYLY PRO SEKCI SVATÝCH === */
+.saints-section-container .saints-item-boxed {
+    transition: background-color 0.3s, border-color 0.3s;
+}
+.saints-section-container .saints-item-boxed .grid-item-label {
+    transition: color 0.3s;
+}
+.saints-section-container .pope-icon-link img {
+    transition: transform 0.2s ease-in-out;
+}
+.saints-section-container .pope-icon-link:hover img {
+    transform: scale(1.1);
+}
+
+/* Varianta 1: Světlé pozadí (Výchozí) */
+.saints-section-container.style-svetle .saints-item-boxed {
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
+}
+.saints-section-container.style-svetle .saints-item-boxed .grid-item-label {
+    color: #3b0f5d;
+}
+
+/* Varianta 2: Fialové pozadí */
+.saints-section-container.style-fialove .saints-item-boxed {
+    background-color: #741ea4;
+    border: 2px solid #e6e0f3;
+}
+.saints-section-container.style-fialove .saints-item-boxed .grid-item-label {
+    color: #ffffff;
+}
+
+
 /* === STYLY PRO NAVIGAČNÍ MŘÍŽKU NA DESKTOPU (OBLÍBENÉ, ATD.) === */
 #desktop-nav-grid-container {
     display: block;

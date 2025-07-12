@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah a řadí sekce podle nastavení.
- * VERZE 41: Oprava a finalizace nastavení vzhledu pro všechny sekce.
+ * VERZE 42: Přidána možnost změny stylu pro sekci Svatí.
  * @package minimalistblogger-child
  */
 
@@ -117,9 +117,11 @@ $sections_html['pope_section'] = ob_get_clean();
 
 // Sekce 2: Svatí
 ob_start();
+// <<< ZAČÁTEK ZMĚN
+$saints_nav_style = get_option('pehobr_saints_nav_style', 'svetle');
 ?>
-<div class="saints-section-container">
-    <div class="saints-items-wrapper">
+<div class="saints-section-container style-<?php echo esc_attr($saints_nav_style); ?>">
+<div class="saints-items-wrapper">
         <div class="saints-item-boxed">
             <?php
             $augustin_item = $grid_items[3];

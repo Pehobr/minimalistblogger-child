@@ -80,6 +80,9 @@ function pehobr_register_main_settings() {
     register_setting( 'pehobr_app_options_group', 'start_date_setting', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => '2026-02-18' ] );
     register_setting( 'pehobr_app_options_group', 'pehobr_show_donation_popup', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field' ] );
     register_setting( 'pehobr_app_options_group', 'pehobr_pope_nav_style', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => 'svetle' ] );
+    // <<< ZAČÁTEK ZMĚN
+    register_setting( 'pehobr_app_options_group', 'pehobr_saints_nav_style', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => 'svetle' ] );
+    // <<< KONEC ZMĚN
     register_setting( 'pehobr_app_options_group', 'pehobr_desktop_nav_style', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => 'svetle' ] );
     register_setting( 'pehobr_app_options_group', 'pehobr_actions_nav_style', [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field', 'default' => 'svetle' ] );
 }
@@ -128,6 +131,24 @@ function pehobr_render_main_settings_page_content() {
                             </label>
                         </fieldset>
                         <p class="description">Vzhled řádku s ikonami papežů, který se zobrazuje na PC.</p>
+                    </td>
+                </tr>
+                 <tr valign="top">
+                    <th scope="row">Styl řádku 'Svatí' na PC</th>
+                    <td>
+                        <fieldset>
+                            <legend class="screen-reader-text"><span>Styl řádku 'Svatí' na PC</span></legend>
+                            <?php $current_saints_style = get_option('pehobr_saints_nav_style', 'svetle'); ?>
+                            <label>
+                                <input type="radio" name="pehobr_saints_nav_style" value="svetle" <?php checked($current_saints_style, 'svetle'); ?> />
+                                <span>Světlé pozadí, fialový text (výchozí)</span>
+                            </label><br />
+                            <label>
+                                <input type="radio" name="pehobr_saints_nav_style" value="fialove" <?php checked($current_saints_style, 'fialove'); ?> />
+                                <span>Fialové pozadí, světlý text</span>
+                            </label>
+                        </fieldset>
+                        <p class="description">Vzhled boxů se sv. Augustinem a Lvem XIV. (erb uprostřed se nemění).</p>
                     </td>
                 </tr>
                 <tr valign="top">
