@@ -32,11 +32,11 @@ add_action( 'admin_menu', 'pehobr_add_home_layout_submenu_page', 30 );
  */
 function pehobr_get_home_layout_sections() {
     return [
-        'pope_section'        => 'Řádek: Papežové (Papež, Benedikt, František)',
-        'saints_section'      => 'Řádek: sv.Augustin, erb, Lev XIV.)',
-        'actions_section'     => 'Řádek: Modlitba, Bible, Inspirace',
-        'desktop_nav_section' => 'Řádek: Navigace pro PC (Oblíbené, Archiv, Fotogalerie, Zápisník)',
-        'library_section'     => 'Řádek: Knihovny (Video, Audio, Rádio, Podcast)',
+        'pope_section'        => 'Papežové (Jan Pavel, Benedikt, František)',
+        'saints_section'      => 'sv.Augustin, erb, Lev XIV.',
+        'actions_section'     => 'Modlitba, Bible, Inspirace',
+        'desktop_nav_section' => 'Navigace pro PC (Oblíbené, Archiv, Fotogalerie, Zápisník)',
+        'library_section'     => 'Knihovny (Video, Audio,..)',    
     ];
 }
 

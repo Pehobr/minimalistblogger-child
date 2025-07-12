@@ -23,7 +23,7 @@ function pehobr_register_settings_pages() {
     );
 
     // Ostatní podmenu (kromě vzhledu úvodní stránky)
-    add_submenu_page(
+        add_submenu_page(
         'pehobr-app-settings',
         'Nastavení Youtube playlistů',
         'Youtube playlisty',
@@ -39,7 +39,7 @@ function pehobr_register_settings_pages() {
         'pehobr-radio-settings',
         'pehobr_render_radio_settings_page'
     );
-     add_submenu_page(
+    add_submenu_page(
         'pehobr-app-settings',
         'Pořadí návodů',
         'Pořadí návodů',
