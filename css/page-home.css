@@ -383,7 +383,7 @@ header#masthead.sheader { z-index: 999; }
     }
 }
 
-/* === OPRAVA: PŘIDANÉ STYLY PRO TEXTOVOU VERZI CITÁTŮ PAPEŽŮ === */
+/* === STYLY PRO TEXTOVOU VERZI CITÁTŮ PAPEŽŮ === */
 
 .pope-text-wrapper {
     display: flex;
@@ -397,7 +397,7 @@ header#masthead.sheader { z-index: 999; }
     font-family: 'Superclarendon', serif; /* Požadované patkové písmo */
     font-size: 1.1rem;
     font-weight: bold;
-    color: #741ea4; /* Výrazná červená barva pro jméno */
+    color: #ffffff; /* Výrazná červená barva pro jméno */
     margin-top: 0;
     margin-bottom: 5px;
 }
@@ -408,7 +408,13 @@ header#masthead.sheader { z-index: 999; }
     font-size: 1rem;
     line-height: 1.4;
     font-weight: normal; /* Obyčejná tučnost */
-    color: #000000; /* Tmavě fialová pro text */
+    color: #3b0f5d; /* Tmavě fialová pro text */
     margin: 0;
     padding: 0;
+}
+
+/* === OPRAVA: Světlé písmo pro textovou verzi na fialovém pozadí === */
+.pope-section-container.style-fialove.view-textove-active .pope-text-author,
+.pope-section-container.style-fialove.view-textove-active .pope-text-quote p {
+    color: #ffffff; /* Bílá barva pro lepší čitelnost */
 }
