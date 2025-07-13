@@ -136,6 +136,17 @@ function minimalistblogger_child_enqueue_assets() {
             );
         }
     }
+
+    // Načtení stylů a skriptů pro nastavení pravého menu
+    if ( is_page_template('page-nastaveni-praveho-menu.php') ) {
+        if (file_exists(get_stylesheet_directory() . '/css/page-nastaveni-praveho-menu.css')) {
+            wp_enqueue_style( 'page-nastaveni-praveho-menu-style', get_stylesheet_directory_uri() . '/css/page-nastaveni-praveho-menu.css', array(), time() );
+        }
+    }
+    // Skript se musí načíst na všech stránkách, aby mohl skrývat menu
+    if (file_exists(get_stylesheet_directory() . '/js/nastaveni-praveho-menu.js')) {
+        wp_enqueue_script( 'nastaveni-praveho-menu-js', get_stylesheet_directory_uri() . '/js/nastaveni-praveho-menu.js', array('jquery'), time(), true );
+    }
     
     wp_enqueue_script( 'sidebar-menu-js', get_stylesheet_directory_uri() . '/js/sidebar-menu.js', array('jquery'), wp_get_theme()->get('Version'), true );
 }
