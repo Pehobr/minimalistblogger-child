@@ -6,22 +6,18 @@ jQuery(document).ready(function($) {
         return; // Skript se nespustí, pokud na stránce není kontejner s nastavením
     }
 
-    // === NOVÁ LOGIKA PRO AKORDEON ===
+    // --- LOGIKA PRO AKORDEON ---
     $('.accordion-btn').on('click', function() {
-        // Najde následující prvek, což je .accordion-content
         const content = $(this).next('.accordion-content');
-        
-        // Plynule zobrazí nebo skryje obsah
         content.slideToggle(300);
-
-        // Skryje ostatní otevřené obsahy, aby byl vždy otevřený jen jeden
         $('.accordion-content').not(content).slideUp(300);
     });
-    // === KONEC LOGIKY PRO AKORDEON ===
-
 
     const visibilityStorageKey = 'pehobr_user_home_visibility';
     const displayStorageKey = 'pehobr_user_home_display';
+    // --- NOVÝ KÓD START ---
+    const themeStorageKey = 'pehobr_user_global_theme';
+    // --- NOVÝ KÓD KONEC ---
 
     // --- Funkce pro načtení a uložení nastavení ---
 
@@ -40,10 +36,17 @@ jQuery(document).ready(function($) {
         const displaySettings = savedDisplay ? JSON.parse(savedDisplay) : {};
         settingsContainer.find('.display-toggle').each(function() {
             const slug = $(this).data('section-slug');
-            // 'textove' je true (zaškrtnuto), 'graficke' je false (odškrtnuto)
             const isTextMode = (displaySettings[slug] === 'textove');
             $(this).prop('checked', isTextMode);
         });
+
+        // --- NOVÝ KÓD START ---
+        // Načtení globálního motivu
+        const savedTheme = localStorage.getItem(themeStorageKey);
+        // 'fialove' je true (zaškrtnuto), 'svetle' je false (odškrtnuto)
+        const isFialove = (savedTheme === 'fialove');
+        settingsContainer.find('.theme-toggle').prop('checked', isFialove);
+        // --- NOVÝ KÓD KONEC ---
     }
 
     function saveSettings() {
@@ -62,14 +65,22 @@ jQuery(document).ready(function($) {
             displaySettings[slug] = $(this).is(':checked') ? 'textove' : 'graficke';
         });
         localStorage.setItem(displayStorageKey, JSON.stringify(displaySettings));
+        
+        // --- NOVÝ KÓD START ---
+        // Uložení globálního motivu
+        const theme = settingsContainer.find('.theme-toggle').is(':checked') ? 'fialove' : 'svetle';
+        localStorage.setItem(themeStorageKey, theme);
+        // --- NOVÝ KÓD KONEC ---
     }
 
     // --- Event Listeners ---
 
     // Při změně jakéhokoli přepínače uložíme nové nastavení
-    settingsContainer.on('change', '.visibility-toggle, .display-toggle', function() {
+    // --- UPRAVENÝ KÓD START ---
+    settingsContainer.on('change', '.visibility-toggle, .display-toggle, .theme-toggle', function() {
         saveSettings();
     });
+    // --- UPRAVENÝ KÓD KONEC ---
 
     // Při načtení stránky načteme a aplikujeme uložená nastavení
     loadSettings();

@@ -3,7 +3,23 @@ jQuery(document).ready(function($) {
 
     // --- BLOK PRO UŽIVATELSKÉ NASTAVENÍ ---
     if ($('body').hasClass('page-template-page-home')) {
-        
+
+        // --- NOVÝ KÓD START ---
+        // 3. Globální nastavení barevnosti boxů (má nejvyšší prioritu)
+        const themeStorageKey = 'pehobr_user_global_theme';
+        const globalTheme = localStorage.getItem(themeStorageKey); // Může být 'svetle', 'fialove', nebo null
+
+        if (globalTheme) {
+            const styledContainers = $('.pope-section-container, .saints-section-container, .third-row-section-container, #desktop-nav-grid-container');
+            
+            // Nejdříve odstraníme obě třídy, abychom měli čistý stav
+            styledContainers.removeClass('style-svetle style-fialove');
+            
+            // Přidáme třídu podle uživatelského nastavení
+            styledContainers.addClass('style-' + globalTheme);
+        }
+        // --- NOVÝ KÓD KONEC ---
+
         // 1. Nastavení viditelnosti sekcí
         const visibilityStorageKey = 'pehobr_user_home_visibility';
         const savedVisibility = localStorage.getItem(visibilityStorageKey);
