@@ -10,7 +10,7 @@ get_header();
 
 // Definuje všechny kategorie a jejich položky podle vašeho zadání
 $categories = [
-    '👤 Osobní stav' => [
+    'Osobní stav' => [
         'rodinny_stav' => [
             'title' => 'Rodinný stav',
             'options' => [
@@ -34,17 +34,17 @@ $categories = [
             ]
         ]
     ],
-    '⏳ Věková kategorie / Životní etapa' => [
+    'Věková kategorie / Životní etapa' => [
         'zivotni_etapa' => [
             'options' => [
                 'etapa_student' => 'Jsem student/ka',
                 'etapa_produktivni' => 'Jsem v produktivním věku',
-                'etapa_senior' => 'Jsem v důchodu / senior/ka',
+                'etapa_senior' => 'Jsem v důchodu',
                 'etapa_zlom' => 'Procházím životním zlomem',
             ]
         ]
     ],
-    '❤️ Vztahy' => [
+    'Vztahy' => [
         'vztahy' => [
             'options' => [
                 'vztahy_problemy' => 'Prožívám problémy v manželství/partnerství',
@@ -56,13 +56,13 @@ $categories = [
             ]
         ]
     ],
-    '💪 Výzvy a potíže' => [
+    'Výzvy a potíže' => [
         'zdravi' => [
             'title' => 'Zdraví',
             'options' => [
                 'vyzvy_zdrav_problemy' => 'Mám zdravotní problémy',
                 'vyzvy_zdrav_pece' => 'Pečuji o nemocnou osobu',
-                'vyzvy_zdrav_zavislost' => 'Bojuji se závislostí (nebo někdo blízký)',
+                'vyzvy_zdrav_zavislost' => 'Bojuji se závislostí',
                 'vyzvy_zdrav_psychika' => 'Prožívám psychickou nepohodu (úzkosti, deprese)',
             ]
         ],

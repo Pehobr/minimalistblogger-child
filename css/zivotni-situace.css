@@ -2,7 +2,6 @@
 
 /* Přidá odsazení pod úvodní text */
 .settings-intro {
-    margin-bottom: 2em;
     font-size: 0.9em;
     color: #666;
 }
