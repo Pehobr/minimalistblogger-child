@@ -147,6 +147,19 @@ function minimalistblogger_child_enqueue_assets() {
     if (file_exists(get_stylesheet_directory() . '/js/nastaveni-praveho-menu.js')) {
         wp_enqueue_script( 'nastaveni-praveho-menu-js', get_stylesheet_directory_uri() . '/js/nastaveni-praveho-menu.js', array('jquery'), time(), true );
     }
+
+// Načtení skriptů a stylů pro stránku "Moje životní situace"
+if ( is_page_template('page-zivotni-situace.php') ) {
+    // Načtení CSS
+    wp_enqueue_style( 'zivotni-situace-style', get_stylesheet_directory_uri() . '/css/zivotni-situace.css', array(), filemtime( get_stylesheet_directory() . '/css/zivotni-situace.css' ) );
+
+    // Načtení JavaScriptu
+    wp_enqueue_script( 'zivotni-situace-js', get_stylesheet_directory_uri() . '/js/zivotni-situace.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/zivotni-situace.js' ), true );
+}
+
+if ( is_page_template('page-inspirace-ai.php') ) {
+    wp_enqueue_script( 'inspirace-ai-js', get_stylesheet_directory_uri() . '/js/inspirace-ai.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/inspirace-ai.js' ), true );
+}
     
     wp_enqueue_script( 'sidebar-menu-js', get_stylesheet_directory_uri() . '/js/sidebar-menu.js', array('jquery'), wp_get_theme()->get('Version'), true );
 }

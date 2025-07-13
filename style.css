@@ -190,3 +190,45 @@ body.theme-ruzova header#masthead.sheader {
     margin-right: auto !important;
     float: none !important; /* Zruší případné obtékání z původní šablony */
 }
+
+/* Styly pro stránku Inspirace AI */
+#generate-inspiration-btn {
+    display: block;
+    margin: 2em auto;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+#daily-scripture-display {
+    background: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 1em 1.5em;
+    border-radius: 5px;
+    margin-bottom: 2em;
+}
+#inspiration-result {
+    margin-top: 2em;
+    padding: 1.5em;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    min-height: 100px;
+}
+.inspiration-text {
+    line-height: 1.6;
+    font-size: 1.1em;
+}
+.loader {
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #3498db;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+#inspiration-result .error { color: #c00; }
