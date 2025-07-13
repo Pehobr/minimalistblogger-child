@@ -1,7 +1,7 @@
 <?php
 /**
  * The template for displaying the footer
- * Zkouška oddělení 
+ * Zkouška oddělení
  * Contains the closing of the #content div and all content after.
  *
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
@@ -13,34 +13,34 @@
 </div>
 </div><footer id="colophon" class="site-footer clearfix">
 
-	<div class="content-wrap">
-		<?php if ( is_active_sidebar( 'footerwidget-1' ) ) : ?>
-		<div class="footer-column-wrapper">
-			<div class="footer-column-three footer-column-left">
-				<?php dynamic_sidebar( 'footerwidget-1' ); ?>
-			</div>
-		<?php endif; ?>
+    <div class="content-wrap">
+        <?php if ( is_active_sidebar( 'footerwidget-1' ) ) : ?>
+        <div class="footer-column-wrapper">
+            <div class="footer-column-three footer-column-left">
+                <?php dynamic_sidebar( 'footerwidget-1' ); ?>
+            </div>
+        <?php endif; ?>
 
-		<?php if ( is_active_sidebar( 'footerwidget-2' ) ) : ?>
-		<div class="footer-column-three footer-column-middle">
-			<?php dynamic_sidebar( 'footerwidget-2' ); ?>
-		</div>
-	<?php endif; ?>
+        <?php if ( is_active_sidebar( 'footerwidget-2' ) ) : ?>
+        <div class="footer-column-three footer-column-middle">
+            <?php dynamic_sidebar( 'footerwidget-2' ); ?>
+        </div>
+    <?php endif; ?>
 
-	<?php if ( is_active_sidebar( 'footerwidget-3' ) ) : ?>
-	<div class="footer-column-three footer-column-right">
-		<?php dynamic_sidebar( 'footerwidget-3' ); ?>				
-	</div>
+    <?php if ( is_active_sidebar( 'footerwidget-3' ) ) : ?>
+    <div class="footer-column-three footer-column-right">
+        <?php dynamic_sidebar( 'footerwidget-3' ); ?>
+    </div>
 <?php endif; ?>
 
 </div>
 
 <div class="site-info">
-	<?php echo esc_html('&copy;', 'minimalistblogger') ?> <?php echo esc_html(date('Y')); ?> <?php bloginfo( 'name' ); ?>
-	<span class="footer-info-right">
-		<?php echo esc_html_e(' | Powered by', 'minimalistblogger') ?> <a href="<?php echo esc_url('https://superbthemes.com/minimalistblogger/'); ?>" rel="nofollow noopener"><?php echo esc_html_e('Minimalist Blog', 'minimalistblogger') ?></a> <?php echo esc_html_e('WordPress Theme', 'minimalistblogger') ?>
-	</span>
-	</div></div>
+    <?php echo esc_html('&copy;', 'minimalistblogger') ?> <?php echo esc_html(date('Y')); ?> <?php bloginfo( 'name' ); ?>
+    <span class="footer-info-right">
+        <?php echo esc_html_e(' | Powered by', 'minimalistblogger') ?> <a href="<?php echo esc_url('https://superbthemes.com/minimalistblogger/'); ?>" rel="nofollow noopener"><?php echo esc_html_e('Minimalist Blog', 'minimalistblogger') ?></a> <?php echo esc_html_e('WordPress Theme', 'minimalistblogger') ?>
+    </span>
+    </div></div>
 
 
 
@@ -51,9 +51,9 @@
 
 <?php wp_footer(); ?>
 
-<?php 
+<?php
 // Zobrazení panelů pouze tam, kde jsou potřeba
-if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 'page-home.php', 'page-radio.php')) ) : 
+if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 'page-home.php', 'page-radio.php')) ) :
 ?>
     <div id="settings-overlay" class="settings-overlay"></div>
     <div id="settings-panel" class="settings-panel">
@@ -70,7 +70,7 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
                     <span class="slider round"></span>
                 </label>
             </div>
-            
+
             <?php // Specifická nastavení pro Pobožnosti se vloží dynamicky pomocí JS ?>
         </div>
     </div>
@@ -95,10 +95,10 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
                     <button id="save-custom-radio-btn" class="save-btn">Uložit rádio</button>
                 </div>
                 <div id="custom-radio-list-container">
-                     <h3>Moje rádia</h3>
-                     <ul id="custom-radio-list">
-                        <?php /* Seznam uživatelských rádií se sem vloží pomocí JavaScriptu */ ?>
-                     </ul>
+                        <h3>Moje rádia</h3>
+                        <ul id="custom-radio-list">
+                            <?php /* Seznam uživatelských rádií se sem vloží pomocí JavaScriptu */ ?>
+                        </ul>
                 </div>
             </div>
         </div>
@@ -115,7 +115,7 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
                 <span>Oblíbené</span>
             </a>
         </li>
-        
+
         <li>
             <a href="<?php echo esc_url( home_url('/archiv-citatu/') ); ?>" aria-label="Archiv">
                 <i class="fa fa-folder-open-o" aria-hidden="true"></i>
@@ -188,6 +188,32 @@ if ( is_page_template(array('page-liturgicke-cteni.php', 'page-poboznosti.php', 
         ?>
     </div>
 </div>
+
+<script type="text/javascript" id="apply-mobile-nav-settings">
+document.addEventListener('DOMContentLoaded', function() {
+    const navSettingsKey = 'pehobr_mobile_nav_settings';
+    const navBar = document.querySelector('.bottom-nav-bar');
+
+    if (navBar) {
+        try {
+            const savedSettings = JSON.parse(localStorage.getItem(navSettingsKey)) || {};
+            for (const [position, settings] of Object.entries(savedSettings)) {
+                // Najdeme odkaz a ikonu podle pozice (začínáme od 1)
+                const linkElement = navBar.querySelector(`li:nth-child(${position}) a`);
+                const iconElement = linkElement ? linkElement.querySelector('i') : null;
+
+                if (linkElement && iconElement) {
+                    // Nastavíme novou URL adresu a třídu ikony
+                    linkElement.setAttribute('href', settings.url);
+                    iconElement.className = 'fa ' + settings.icon;
+                }
+            }
+        } catch (e) {
+            console.error('Chyba při parsování nastavení navigace:', e);
+        }
+    }
+});
+</script>
 
 </body>
 </html>

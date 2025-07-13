@@ -111,6 +111,16 @@ function minimalistblogger_child_enqueue_assets() {
             wp_enqueue_script( 'pehobr-user-settings-js', get_stylesheet_directory_uri() . '/js/user-settings.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/user-settings.js' ), true );
         }
     }
+
+    // Načtení stylů a skriptů pro nastavení ikon mobilní lišty
+    if ( is_page_template('page-ikony-mobilni-listy.php') ) {
+        if (file_exists(get_stylesheet_directory() . '/css/page-ikony-mobilni-listy.css')) {
+            wp_enqueue_style( 'page-ikony-mobilni-listy-style', get_stylesheet_directory_uri() . '/css/page-ikony-mobilni-listy.css', array(), filemtime( get_stylesheet_directory() . '/css/page-ikony-mobilni-listy.css' ) );
+        }
+        if (file_exists(get_stylesheet_directory() . '/js/page-ikony-mobilni-listy.js')) {
+            wp_enqueue_script( 'page-ikony-mobilni-listy-js', get_stylesheet_directory_uri() . '/js/page-ikony-mobilni-listy.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/page-ikony-mobilni-listy.js' ), true );
+        }
+    }
     
     wp_enqueue_script( 'sidebar-menu-js', get_stylesheet_directory_uri() . '/js/sidebar-menu.js', array('jquery'), wp_get_theme()->get('Version'), true );
 }
