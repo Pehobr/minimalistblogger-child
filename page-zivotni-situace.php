@@ -95,7 +95,7 @@ $categories = [
                 <h1 class="entry-title">Moje životní situace</h1>
             </header>
             <div class="entry-content">
-                <p class="settings-intro">Vyberte oblasti, které nejlépe vystihují vaši aktuální situaci. Tato volba je anonymní, ukládá se jen ve vašem zařízení a pomůže nám vám v budoucnu nabídnout relevantnější obsah.</p>
+                <p class="settings-intro">Chcete-li, můžete si nastavit oblasti, které nejlépe vystihují vaši životní situaci, hodnoty nebo to, co právě prožíváte. Jak vidíte, tento výběr je zcela anonymní a ukládá se pouze ve vašem zařízení. Pomůže však lépe přizpůsobit denní inspiraci na úvodní stránce, aby více odpovídala tomu, co právě potřebujete.</p>
                 
                 <div id="life-situation-settings">
                     <?php foreach ($categories as $category_title => $subcategories) : ?>
