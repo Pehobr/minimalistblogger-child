@@ -17,6 +17,31 @@ jQuery(document).ready(function($) {
             
             // Přidáme třídu podle uživatelského nastavení
             styledContainers.addClass('style-' + globalTheme);
+
+            // --- DOPLNĚNÝ KÓD PRO ZMĚNU IKON ---
+            // Cílíme specificky na kontejner s ikonami Modlitba, Bible, Inspirace
+            const actionsContainer = $('.third-row-section-container');
+            const iconsToChange = actionsContainer.find('.icon-grid-item img');
+
+            iconsToChange.each(function() {
+                const icon = $(this);
+                let currentSrc = icon.attr('src');
+                // Zkontrolujeme, zda v cestě již není "-svetla.png", abychom předešli duplikaci
+                const isLightIcon = currentSrc.includes('-svetla.png');
+
+                if (globalTheme === 'fialove') {
+                    // Chceme světlé ikony na fialovém pozadí
+                    if (!isLightIcon) {
+                        icon.attr('src', currentSrc.replace('.png', '-svetla.png'));
+                    }
+                } else { // Předpokládáme 'svetle'
+                    // Chceme tmavé ikony na světlém pozadí
+                    if (isLightIcon) {
+                        icon.attr('src', currentSrc.replace('-svetla.png', '.png'));
+                    }
+                }
+            });
+            // --- KONEC DOPLNĚNÉHO KÓDU ---
         }
         // --- NOVÝ KÓD KONEC ---
 

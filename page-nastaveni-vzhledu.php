@@ -24,32 +24,7 @@ $all_sections = function_exists('pehobr_get_home_layout_sections') ? pehobr_get_
                 <?php if (!empty($all_sections)) : ?>
                     <div id="user-layout-settings">
 
-                        <button class="accordion-btn">Vzhled boxů</button>
-                        <div class="accordion-content">
-                            <div class="setting-item setting-item-pope-display">
-                                <label for="toggle-pope-display" class="setting-label">Citáty papežů</label>
-                                <div class="toggle-container">
-                                    <span class="toggle-label">Obrázky</span>
-                                    <label class="switch">
-                                        <input type="checkbox" class="display-toggle" id="toggle-pope-display" data-section-slug="pope_section_display">
-                                        <span class="slider round"></span>
-                                    </label>
-                                    <span class="toggle-label">Text</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <button class="accordion-btn">Barevnost boxů</button>
-                        <div class="accordion-content">
-                            <div class="setting-item setting-item-global-theme">
-                                <label for="toggle-global-theme" class="setting-label">Zobrazit fialové pozadí boxů</label>
-                                <label class="switch">
-                                    <input type="checkbox" class="theme-toggle" id="toggle-global-theme" data-setting-type="global-theme">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
-                        </div>
-                        <button class="accordion-btn">Skrytí boxů</button>
+                    <button class="accordion-btn">Skrytí boxů</button>
                         <div class="accordion-content">
                             <?php foreach ($all_sections as $slug => $name) : ?>
                                 <div class="setting-item setting-item-<?php echo esc_attr($slug); ?>">
@@ -59,8 +34,35 @@ $all_sections = function_exists('pehobr_get_home_layout_sections') ? pehobr_get_
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
-                            <?php endforeach; ?>
+                          <?php endforeach; ?>
                         </div>
+
+                        <button class="accordion-btn">Vzhled boxů</button>
+                        <div class="accordion-content">
+                            <div class="setting-item setting-item-pope-display">
+                                <label for="toggle-pope-display" class="setting-label">Citáty papežů</label>
+                                <div class="toggle-container">
+                                    <span class="toggle-label">Grafika</span>
+                                    <label class="switch">
+                                        <input type="checkbox" class="display-toggle" id="toggle-pope-display" data-section-slug="pope_section_display">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="toggle-label">Text</span>
+                                </div>
+                            </div>
+                        </div>                    
+
+                        <button class="accordion-btn">Barevnost boxů</button>
+                        <div class="accordion-content">
+                            <div class="setting-item setting-item-global-theme">
+                                <label for="toggle-global-theme" class="setting-label">Fialové pozadí, světlé ikony</label>
+                                <label class="switch">
+                                    <input type="checkbox" class="theme-toggle" id="toggle-global-theme" data-setting-type="global-theme">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                        
 
                     </div>
                 <?php else : ?>

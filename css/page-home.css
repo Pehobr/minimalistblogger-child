@@ -1,6 +1,6 @@
 /*
  * Styly pro úvodní obrazovku s mřížkou ikon (page-home.css)
- * VERZE 3: Přidány styly pro barevné varianty (světlá/fialová) pro mobil i PC.
+ * VERZE 4: Opravena čitelnost barev pro textovou verzi citátů papežů.
  */
 
 body {
@@ -187,7 +187,7 @@ header#masthead.sheader { z-index: 999; }
 .third-row-items-wrapper {
     display: flex;
     justify-content: space-around;
-    align-items: center; 
+    align-items: center;
     gap: 15px;
 }
 
@@ -279,7 +279,7 @@ header#masthead.sheader { z-index: 999; }
     box-shadow: none;
 }
 .third-row-section-container .grid-item-label {
-    display: none; 
+    display: none;
 }
 
 .library-grid-item {
@@ -383,38 +383,48 @@ header#masthead.sheader { z-index: 999; }
     }
 }
 
-/* === STYLY PRO TEXTOVOU VERZI CITÁTŮ PAPEŽŮ === */
 
+/* === STYLY PRO TEXTOVOU VERZI CITÁTŮ PAPEŽŮ (UPRAVENO PRO LEPŠÍ ČITELNOST) === */
 .pope-text-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 5px; /* Mezera mezi jednotlivými citáty */
-    padding: 0px;
+    gap: 15px; /* Zvětšená mezera pro lepší oddělení */
+    padding: 5px;
 }
 
-/* Nadpis - Jméno papeže */
+.pope-text-item {
+    padding: 0;
+}
+
 .pope-text-author {
-    font-family: 'Superclarendon', serif; /* Požadované patkové písmo */
+    font-family: 'Superclarendon', serif;
     font-size: 1.1rem;
     font-weight: bold;
-    color: #ffffff; /* Výrazná červená barva pro jméno */
     margin-top: 0;
     margin-bottom: 5px;
 }
 
-/* Samotný text citátu */
 .pope-text-quote p {
-    font-family: 'Superclarendon', serif; /* Požadované patkové písmo */
+    font-family: 'Superclarendon', serif;
     font-size: 1rem;
     line-height: 1.4;
-    font-weight: normal; /* Obyčejná tučnost */
-    color: #3b0f5d; /* Tmavě fialová pro text */
+    font-weight: normal;
     margin: 0;
     padding: 0;
 }
 
-/* === OPRAVA: Světlé písmo pro textovou verzi na fialovém pozadí === */
-.pope-section-container.style-fialove.view-textove-active .pope-text-author,
+/* --- Barvy pro SVĚTLÉ pozadí --- */
+.pope-section-container.style-svetle.view-textove-active .pope-text-author {
+    color: rgb(116, 30, 164); /* Požadovaná fialová */
+}
+.pope-section-container.style-svetle.view-textove-active .pope-text-quote p {
+    color: #000000; /* Požadovaná černá */
+}
+
+/* --- Barvy pro FIALOVÉ pozadí --- */
+.pope-section-container.style-fialove.view-textove-active .pope-text-author {
+    color: #ffffff; /* Bílá pro dobrou čitelnost */
+}
 .pope-section-container.style-fialove.view-textove-active .pope-text-quote p {
-    color: #ffffff; /* Bílá barva pro lepší čitelnost */
+    color: #ffffff; /* Bílá pro dobrou čitelnost */
 }
