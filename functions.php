@@ -113,6 +113,9 @@ add_action( 'wp_enqueue_scripts', 'pehobr_enqueue_home_assets', 20 ); // Priorit
 
 /**
  * AJAX endpoint pro generování inspirace v modálním okně na úvodní stránce.
+ *
+ * AKTUALIZOVÁNO: Nyní používá stejný detailní prompt jako stránka /inspirace-ai/,
+ * aby byl výstup konzistentní a strukturovaný (včetně modliteb).
  */
 add_action('wp_ajax_pehobr_generate_home_inspiration', 'pehobr_generate_home_inspiration_callback');
 add_action('wp_ajax_nopriv_pehobr_generate_home_inspiration', 'pehobr_generate_home_inspiration_callback');
@@ -126,11 +129,25 @@ function pehobr_generate_home_inspiration_callback() {
         return;
     }
 
-    $daily_title = isset($_POST['daily_title']) ? sanitize_text_field($_POST['daily_title']) : 'dnešní den';
-    $daily_date = isset($_POST['daily_date']) ? sanitize_text_field($_POST['daily_date']) : '';
-    $user_profile = isset($_POST['user_profile']) ? sanitize_textarea_field($_POST['user_profile']) : 'Uživatel hledá povzbuzení.';
+    // Načtení dat z AJAX requestu (posílá je page-home.js)
+    $situations_text = isset($_POST['situations']) ? sanitize_textarea_field($_POST['situations']) : 'Uživatel hledá povzbuzení.';
+    $scripture_text = isset($_POST['scripture']) ? sanitize_textarea_field($_POST['scripture']) : 'Pro dnešní den není k dispozici žádné čtení.';
 
-    $prompt = "Jsi moudrý a laskavý kněz. Poskytni krátkou duchovní inspiraci (cca 4-6 vět) pro křesťana. Tvá odpověď musí být povzbudivá a srozumitelná. Mluv přímo k uživateli. Nezačínej oslovením, ale rovnou myšlenkou. Neformátuj text (žádné nadpisy, tučné písmo ani odrážky). Odpověz v českém jazyce. Inspiruj se těmito informacemi: Liturgický den: '{$daily_title} ({$daily_date})'. Situace uživatele: '{$user_profile}'.";
+    // Sestavení detailního promptu (stejný jako v handle_ai_inspiration_request)
+    $prompt = "TÓN A STYL ODPOVĚDI:\n";
+    $prompt .= "- **Přívětivý a povzbudivý:** Text má působit jako tiché duchovní povzbuzení, jako myšlenka, která zahřeje a nese naději.\n";
+    $prompt .= "- **Jednoduchý a srozumitelný:** Vyhnout se složité teologii, psát jazykem blízkým běžnému člověku.\n";
+    $prompt .= "- **Klidný a citlivý:** Měl by být jako duchovní zastavení - laskavé, tiché, hluboké.\n";
+    $prompt .= "- **Všeobecné duchovní zamyšlení:** Není to přímé oslovování konkrétní osoby, ale krátká inspirace pro každého, kdo prochází těžším obdobím.\n";
+    $prompt .= "- **Nezmiňuj konkrétní životní situace:** Nepopisuj nebo neopakuj situaci uživatele, pouze se jí nech inspirovat v tónu nebo podtextu.\n\n";
+    $prompt .= "ŽIVOTNÍ SITUACE UŽIVATELE (POUZE PRO INSPIRACI, NEZMIŇUJ PŘÍMO):\n" . $situations_text . "\n\n";
+    $prompt .= "DNEŠNÍ BOŽÍ SLOVO (EVANGELIUM A ČTENÍ):\n" . $scripture_text . "\n\n";
+    $prompt .= "ÚKOL:\n";
+    $prompt .= "1. Najdi hlavní myšlenku nebo téma v dnešním Božím slově.\n";
+    $prompt .= "2. Napiš krátké (cca 5-7 vět) duchovní zamyšlení inspirované touto myšlenkou.\n";
+    $prompt .= "3. Připoj krátkou modlitbu nebo povzbudivé zvolání (v jednotném čísle) k Bohu Otci, pak k Ježíši Kristu a k Duchu svatému, vždy v jedné větě.\n";
+    $prompt .= "4. A na závěr krátkou modlitbu k Panně Marii.\n";
+    $prompt .= "Odpověz v českém jazyce.";
 
     $api_url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=' . $api_key;
     $request_body = ['contents' => [['parts' => [['text' => $prompt]]]]];
@@ -151,7 +168,13 @@ function pehobr_generate_home_inspiration_callback() {
 
     if (isset($response_body['candidates'][0]['content']['parts'][0]['text'])) {
         $generated_text = $response_body['candidates'][0]['content']['parts'][0]['text'];
-        wp_send_json_success(['content' => $generated_text]);
+        
+        // Základní formátování pro zobrazení v HTML
+        $formatted_text = preg_replace('/^\s*[\*]\s*/m', '', $generated_text); // Odstraní odrážky na začátku řádků
+        $formatted_text = str_replace('**', '', $formatted_text); // Odstraní tučné značky
+        $formatted_text = nl2br($formatted_text); // Převede nové řádky na <br>
+
+        wp_send_json_success(['content' => $formatted_text]);
     } else {
         wp_send_json_error(['content' => 'Omlouváme se, AI se nepodařilo vygenerovat text. Zkuste to prosím znovu.', 'details' => $response_body]);
     }
@@ -160,6 +183,7 @@ function pehobr_generate_home_inspiration_callback() {
 
 /**
  * PŮVODNÍ FUNKCE: AJAX endpoint pro stránku /inspirace-ai/
+ * Tato funkce zůstává pro obsluhu stránky /inspirace-ai/
  */
 add_action('wp_ajax_generate_ai_inspiration', 'handle_ai_inspiration_request');
 add_action('wp_ajax_nopriv_generate_ai_inspiration', 'handle_ai_inspiration_request');

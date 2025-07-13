@@ -74,7 +74,7 @@ jQuery(document).ready(function($) {
     let favorites = JSON.parse(localStorage.getItem(favoritesStorageKey)) || [];
     let currentQuoteId = null;
     let currentAuthorName = null;
-    let currentRawContent = null; 
+    let currentRawContent = null;
 
     function isFavorite(quoteId) {
         return favorites.some(fav => fav.id === quoteId);
@@ -95,67 +95,72 @@ jQuery(document).ready(function($) {
         favorites = favorites.filter(fav => fav.id !== quoteId);
         saveFavorites();
     }
-    
+
+    /**
+     * Otevře modální okno a vygeneruje AI inspiraci.
+     * AKTUALIZOVÁNO: Načítá denní čtení a situace uživatele pro detailní prompt.
+     */
     function openAiInspirationModal() {
         currentAuthorName = 'Inspirace';
         bodyElement.addClass('modal-is-open');
         modalContainer.removeClass('video-modal audio-modal image-modal');
-        
-        modalContent.html('<div class="modal-loader"></div>');
+
+        modalContent.html('<div class="modal-loader"></div><p style="text-align:center; font-size: 0.9em; color: #666;">Načítám denní čtení a generuji inspiraci...</p>');
         favoriteBtn.hide();
 
         modalOverlay.fadeIn(200);
         modalContainer.css('display', 'flex').hide().fadeIn(300);
         modalContainer.addClass('is-visible');
 
-        const dailyTitle = $('#daily-info-title').text() || 'Dnešní den';
-        const dailyDate = $('#daily-info-date').text() || '';
-        const userProfile = localStorage.getItem('pehobr_user_profile') || 'Uživatel hledá povzbuzení a duchovní myšlenku pro dnešní den.';
-
-        $.ajax({
-            url: pehobr_ajax.ajax_url,
-            type: 'POST',
-            data: {
-                action: 'pehobr_generate_home_inspiration', // Správná akce pro Home page
-                nonce: pehobr_ajax.nonce,
-                daily_title: dailyTitle,
-                daily_date: dailyDate,
-                user_profile: userProfile,
-            },
-            success: function(response) {
-                if (response.success && response.data.content) {
-                    const generatedContent = response.data.content;
-                    currentRawContent = generatedContent;
-                    currentQuoteId = 'ai_inspiration_' + new Date().getTime();
-                    
-                    modalContent.html(wpautop(generatedContent));
-                    
-                    favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
-                    favoriteBtn.removeClass('is-favorite');
-                    favoriteBtn.show();
-                } else {
-                    // Zobrazí chybu, pokud ji server poslal ve formátu JSON
-                    const errorMessage = response.data.content || 'Omlouváme se, inspiraci se nepodařilo vygenerovat.';
-                    modalContent.html('<p>' + errorMessage + '</p>');
-                }
-            },
-            // *** VYLEPŠENÝ BLOK PRO ZPRACOVÁNÍ CHYBY ***
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error("AJAX Chyba:", textStatus, errorThrown);
-                console.error("Odpověď serveru:", jqXHR.responseText);
-                
-                let errorMessage = '<p>Došlo k chybě při komunikaci se serverem.</p>';
-                if (jqXHR.status === 500) {
-                    errorMessage = '<p>Na serveru došlo k interní chybě (Error 500). Zkontrolujte prosím, zda máte správně nastavený API klíč v souboru `wp-config.php`.</p>';
-                } else if (jqXHR.status === 403) {
-                    errorMessage = '<p>Přístup byl odepřen (Error 403). Může se jednat o problém s bezpečnostním klíčem (nonce).</p>';
-                }
-
-                // Přidáme debugovací info pro nás
-                errorMessage += '<div style="font-size: 0.7em; text-align: left; background: #f0f0f0; padding: 5px; margin-top: 10px; max-height: 50px; overflow: auto; word-break: break-all;"><strong>Debug info:</strong> ' + $('<div>').text(jqXHR.responseText).html().substring(0, 300) + '...</div>';
-
-                modalContent.html(errorMessage);
+        // 1. Načteme denní čtení z příslušné stránky
+        $('<div>').load('/poboznosti/ .entry-content', function(response, status, xhr) {
+            let scriptureText = 'Pro dnešní den není k dispozici žádné čtení.';
+            if (status !== "error") {
+                // Vyčistíme HTML od nepotřebných prvků, abychom poslali jen čistý text
+                const tempDiv = $('<div>').html(response);
+                tempDiv.find('h1, h2, h3, .audio-player-button, .posts-entry > .entry-header').remove();
+                scriptureText = tempDiv.text().trim();
             }
+
+            // 2. Získáme životní situaci uživatele z localStorage
+            const lifeSituationsKey = 'pehobr_life_situations';
+            const savedSituationsData = localStorage.getItem(lifeSituationsKey);
+            const savedSituations = savedSituationsData ? JSON.parse(savedSituationsData) : {};
+            const activeSituations = Object.keys(savedSituations).filter(key => savedSituations[key]);
+            const situationsString = activeSituations.join(', ').replace(/_/g, ' ') || 'Uživatel hledá povzbuzení.';
+
+            // 3. Spustíme AJAX volání s novými daty (scripture a situations)
+            $.ajax({
+                url: pehobr_ajax.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'pehobr_generate_home_inspiration',
+                    nonce: pehobr_ajax.nonce,
+                    scripture: scriptureText,
+                    situations: situationsString
+                },
+                success: function(response) {
+                    if (response.success && response.data.content) {
+                        const generatedContent = response.data.content;
+                        currentRawContent = generatedContent;
+                        currentQuoteId = 'ai_inspiration_' + new Date().getTime();
+
+                        // Vložíme HTML (formátované už na serveru)
+                        modalContent.html(generatedContent).css('text-align', 'left');
+
+                        favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
+                        favoriteBtn.removeClass('is-favorite');
+                        favoriteBtn.show();
+                    } else {
+                        const errorMessage = response.data.content || 'Omlouváme se, inspiraci se nepodařilo vygenerovat.';
+                        modalContent.html('<p>' + errorMessage + '</p>');
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("AJAX Chyba:", textStatus, errorThrown);
+                    modalContent.html('<p>Došlo k chybě při komunikaci se serverem.</p>');
+                }
+            });
         });
     }
 
@@ -261,11 +266,6 @@ jQuery(document).ready(function($) {
         }
     });
     
-    function wpautop(text) {
-        if (!text) return '';
-        return '<p>' + text.replace(/\n\n+/g, '</p><p>').replace(/\n/g, '<br />') + '</p>';
-    }
-
     function formatTime(seconds) {
         const minutes = Math.floor(seconds / 60);
         const secs = Math.floor(seconds % 60);

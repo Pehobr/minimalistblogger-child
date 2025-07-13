@@ -12,7 +12,7 @@ jQuery(document).ready(function($) {
 
     // --- 1. Načtení denního čtení ---
     // Načteme celý obsah ze stránky s liturgickým čtením
-    scriptureDisplay.load('/liturgicke-cteni/ .entry-content', function(response, status, xhr) {
+    scriptureDisplay.load('/poboznosti/ .entry-content', function(response, status, xhr) {
         if (status === "error") {
             scriptureDisplay.html("<p>Chyba při načítání denního čtení. Zkuste to prosím později.</p>");
             btn.prop('disabled', true).text('Chyba při načítání dat');
