@@ -6,6 +6,20 @@ jQuery(document).ready(function($) {
         return; // Skript se nespustí, pokud na stránce není kontejner s nastavením
     }
 
+    // === NOVÁ LOGIKA PRO AKORDEON ===
+    $('.accordion-btn').on('click', function() {
+        // Najde následující prvek, což je .accordion-content
+        const content = $(this).next('.accordion-content');
+        
+        // Plynule zobrazí nebo skryje obsah
+        content.slideToggle(300);
+
+        // Skryje ostatní otevřené obsahy, aby byl vždy otevřený jen jeden
+        $('.accordion-content').not(content).slideUp(300);
+    });
+    // === KONEC LOGIKY PRO AKORDEON ===
+
+
     const visibilityStorageKey = 'pehobr_user_home_visibility';
     const displayStorageKey = 'pehobr_user_home_display';
 
