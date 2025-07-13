@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah a řadí sekce podle nastavení.
- * VERZE 42: Přidána možnost změny stylu pro sekci Svatí.
+ * VERZE 43: Implementace AI inspirace do modálního okna.
  * @package minimalistblogger-child
  */
 
@@ -46,7 +46,7 @@ if ( empty($daily_post_id) ) {
 }
 $source_post_id = $daily_post_id ?? $page_id_for_defaults;
 
-// === DEFINICE SEKCÍ ===
+// === DEFINICE SEKCÍ (s úpravou pro Inspiraci) ===
 $grid_items = [
     ['name' => 'Sv. Jan Pavel II.', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel', 'label' => 'Jan Pavel', 'type' => 'text'],
     ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt', 'label' => 'Benedikt', 'type' => 'text'],
@@ -55,7 +55,8 @@ $grid_items = [
     ['name' => 'Papež Lev XIV.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev', 'label' => 'Lev XIV.', 'type' => 'text'],
     ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'light_icon' => 'ikona-modlitba-svetla.png', 'citat_key' => 'modlitba_text', 'audio_key' => 'modlitba_url', 'label' => 'Modlitba', 'type' => 'text'],
     ['name' => 'Bible', 'slug' => 'poboznosti', 'icon' => 'ikona-bible.png', 'light_icon' => 'ikona-bible-svetla.png', 'label' => 'Bible', 'type' => 'text'],
-    ['name' => 'Inspirace', 'slug' => 'svatost', 'icon' => 'ikona-inspirace.png', 'light_icon' => 'ikona-inspirace-svetla.png', 'citat_key' => 'video_inspirace_embed', 'label' => 'Inspirace', 'type' => 'video'],
+    // *** ZMĚNA ZDE: Definice pro AI Inspiraci ***
+    ['name' => 'Inspirace', 'slug' => '#', 'icon' => 'ikona-inspirace.png', 'light_icon' => 'ikona-inspirace-svetla.png', 'citat_key' => 'ai_inspiration_placeholder', 'label' => 'Inspirace', 'type' => 'ai_inspiration'],
 ];
 $library_items = [
     ['name' => 'Video', 'icon' => 'knihovna-video.png', 'url' => '/video-kapky/'],
@@ -117,7 +118,6 @@ $sections_html['pope_section'] = ob_get_clean();
 
 // Sekce 2: Svatí
 ob_start();
-// <<< ZAČÁTEK ZMĚN
 $saints_nav_style = get_option('pehobr_saints_nav_style', 'svetle');
 ?>
 <div class="saints-section-container style-<?php echo esc_attr($saints_nav_style); ?>">
@@ -163,7 +163,8 @@ $actions_nav_style = get_option('pehobr_actions_nav_style', 'svetle');
         for ($i = 5; $i < count($grid_items); $i++):
             $item = $grid_items[$i];
             $content_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
-            $has_content = !empty($content_html);
+            // *** ZMĚNA ZDE: Zajistí, že AI inspirace bude vždy interaktivní ***
+            $has_content = !empty($content_html) || $item['type'] === 'ai_inspiration';
             $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/');
             
             // Výběr ikony podle stylu
@@ -243,9 +244,14 @@ $sections_html['library_section'] = ob_get_clean();
     <?php
     foreach ($grid_items as $item) :
         if (isset($item['citat_key'])) {
+            // *** ZMĚNA ZDE: Přeskočíme AI inspiraci, ta se generuje dynamicky ***
+            if ($item['type'] === 'ai_inspiration') {
+                continue;
+            }
             $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
             if (!empty($content_html)) :
                 $modal_content = '';
+                // Původní kód pro video a text, ponecháno pro ostatní položky
                 if ($item['type'] === 'video') {
                      $modal_content = $content_html;
                 } else {
