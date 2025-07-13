@@ -1,6 +1,9 @@
 jQuery(document).ready(function($) {
     "use strict";
 
+    // Kontrolní výpis pro ověření správné verze souboru
+    console.log('Načten skript pro nastavení ikon v.1.1');
+
     const settingsContainer = $('#mobile-nav-settings');
     if (!settingsContainer.length) {
         return;

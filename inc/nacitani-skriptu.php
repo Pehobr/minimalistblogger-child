@@ -114,11 +114,26 @@ function minimalistblogger_child_enqueue_assets() {
 
     // Načtení stylů a skriptů pro nastavení ikon mobilní lišty
     if ( is_page_template('page-ikony-mobilni-listy.php') ) {
+        // Získáme data o child šabloně, hlavně její verzi
+        $child_theme = wp_get_theme();
+        $version = $child_theme->get('Version');
+
         if (file_exists(get_stylesheet_directory() . '/css/page-ikony-mobilni-listy.css')) {
-            wp_enqueue_style( 'page-ikony-mobilni-listy-style', get_stylesheet_directory_uri() . '/css/page-ikony-mobilni-listy.css', array(), filemtime( get_stylesheet_directory() . '/css/page-ikony-mobilni-listy.css' ) );
+            wp_enqueue_style( 
+                'page-ikony-mobilni-listy-style', 
+                get_stylesheet_directory_uri() . '/css/page-ikony-mobilni-listy.css', 
+                array(), 
+                $version // Použijeme verzi šablony
+            );
         }
         if (file_exists(get_stylesheet_directory() . '/js/page-ikony-mobilni-listy.js')) {
-            wp_enqueue_script( 'page-ikony-mobilni-listy-js', get_stylesheet_directory_uri() . '/js/page-ikony-mobilni-listy.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/page-ikony-mobilni-listy.js' ), true );
+            wp_enqueue_script( 
+                'page-ikony-mobilni-listy-js', 
+                get_stylesheet_directory_uri() . '/js/page-ikony-mobilni-listy.js', 
+                array('jquery'), 
+                $version, // Použijeme verzi šablony
+                true 
+            );
         }
     }
     
