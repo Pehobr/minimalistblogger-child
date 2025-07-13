@@ -7,7 +7,7 @@
     gap: 15px;
 }
 
-/* Styly pro akordeon (převzato a upraveno z page-nastaveni-vzhledu.css) */
+/* Styly pro akordeon */
 .accordion-btn {
     display: flex;
     justify-content: space-between;
@@ -31,8 +31,9 @@
     transform: translateY(-1px);
 }
 
+/* === ZMĚNA ZDE: Použití bezpečného kódu pro šipku === */
 .accordion-btn::after {
-    content: '▼';
+    content: '\25BC'; /* Kód pro šipku dolů (místo přímého znaku ▼) */
     font-size: 0.8rem;
     color: #ffffff;
     transition: transform 0.3s ease;
@@ -126,4 +127,30 @@
     font-size: 1.2rem;
     color: #3b0f5d;
     transition: color 0.2s;
+}
+
+/* Styly pro informační box o prostřední ikoně */
+.middle-icon-info {
+    padding: 15px 20px;
+    background-color: #f0ebf8;
+    border-radius: 8px;
+    text-align: center;
+    color: #3b0f5d;
+    margin: 10px 0;
+    border: 1px dashed #bdafe2;
+}
+.middle-icon-info p {
+    margin: 0;
+    font-family: sans-serif;
+    line-height: 1.5;
+}
+.middle-icon-info strong {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+.middle-icon-info i {
+    margin-right: 8px;
+    color: #5a2b82;
 }

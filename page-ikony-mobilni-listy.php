@@ -61,7 +61,16 @@ get_header();
 
                             </div>
                         </div>
-                    <?php endforeach; ?>
+                    <?php 
+                    endforeach; 
+                    ?>
+
+                    <div class="middle-icon-info">
+                        <p>
+                            <strong><i class="fa fa-home"></i> 3. Ikona (Domů)</strong>
+                            Prostřední ikona je pevně nastavena a vždy směřuje na úvodní stránku, abyste se nikdy neztratili.
+                        </p>
+                    </div>
 
                 </div>
             </div>
