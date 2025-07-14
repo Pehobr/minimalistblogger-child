@@ -59,10 +59,10 @@ $grid_items = [
     ['name' => 'Inspirace', 'slug' => '#', 'icon' => 'ikona-inspirace.png', 'light_icon' => 'ikona-inspirace-svetla.png', 'citat_key' => 'ai_inspiration_placeholder', 'label' => 'Inspirace', 'type' => 'ai_inspiration'],
 ];
 $library_items = [
-    ['name' => 'Video', 'icon' => 'knihovna-video.png', 'url' => '/video-kapky/'],
-    ['name' => 'Audio', 'icon' => 'knihovna-audio.png', 'url' => '/postni-pisne/'],
-    ['name' => 'Rádio', 'icon' => 'knihovna-radio.png', 'url' => '/krestanska-radia'],
-    ['name' => 'Podcast', 'icon' => 'knihovna-podcast.png', 'url' => '/podcast'],
+    ['name' => 'Video', 'icon' => 'knihovna-video.png', 'light_icon' => 'knihovna-video2.png', 'url' => '/video-kapky/'],
+    ['name' => 'Audio', 'icon' => 'knihovna-audio.png', 'light_icon' => 'knihovna-audio2.png', 'url' => '/postni-pisne/'],
+    ['name' => 'Rádio', 'icon' => 'knihovna-radio.png', 'light_icon' => 'knihovna-radio2.png', 'url' => '/krestanska-radia'],
+    ['name' => 'Podcast', 'icon' => 'knihovna-podcast.png', 'light_icon' => 'knihovna-podcast2.png', 'url' => '/podcast'],
 ];
 $desktop_nav_items = [
     ['name' => 'Oblíbené', 'fa_icon' => 'fa-star', 'url' => '/oblibene-texty/'],
@@ -202,12 +202,16 @@ $sections_html['desktop_nav_section'] = ob_get_clean();
 
 // Sekce 5: Knihovny
 ob_start();
+$library_nav_style = get_option('pehobr_library_nav_style', 'fialove');
 ?>
-<div id="library-grid-container">
+<div id="library-grid-container" class="style-<?php echo esc_attr($library_nav_style); ?>">
     <?php foreach ($library_items as $item) : ?>
         <div class="library-item-wrapper">
             <a href="<?php echo esc_url(home_url($item['url'])); ?>" class="library-grid-item">
-                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" alt="<?php echo esc_attr($item['name']); ?>">
+                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" 
+                     alt="<?php echo esc_attr($item['name']); ?>"
+                     data-dark-icon="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>"
+                     data-light-icon="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['light_icon']); ?>">
             </a>
         </div>
     <?php endforeach; ?>

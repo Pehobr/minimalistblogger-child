@@ -2,7 +2,7 @@
 /**
  * Template Name: Nastavení vzhledu pro uživatele
  * Description: Umožňuje uživatelům nastavit si, které sekce chtějí vidět a jak se mají zobrazovat.
- * VERZE 4: Přidán globální přepínač barevnosti.
+ * VERZE 5: Rozdělení nastavení barevnosti pro každý řádek zvlášť.
  * @package minimalistblogger-child
  */
 
@@ -24,7 +24,7 @@ $all_sections = function_exists('pehobr_get_home_layout_sections') ? pehobr_get_
                 <?php if (!empty($all_sections)) : ?>
                     <div id="user-layout-settings">
 
-                    <button class="accordion-btn">Skrytí boxů</button>
+                        <button class="accordion-btn">Skrytí boxů</button>
                         <div class="accordion-content">
                             <?php foreach ($all_sections as $slug => $name) : ?>
                                 <div class="setting-item setting-item-<?php echo esc_attr($slug); ?>">
@@ -54,16 +54,29 @@ $all_sections = function_exists('pehobr_get_home_layout_sections') ? pehobr_get_
 
                         <button class="accordion-btn">Barevnost boxů</button>
                         <div class="accordion-content">
-                            <div class="setting-item setting-item-global-theme">
-                                <label for="toggle-global-theme" class="setting-label">Fialové pozadí, světlé ikony</label>
-                                <label class="switch">
-                                    <input type="checkbox" class="theme-toggle" id="toggle-global-theme" data-setting-type="global-theme">
-                                    <span class="slider round"></span>
-                                </label>
-                            </div>
+                            <?php
+                            // Pole s popisky pro jednotlivé řádky/sekce
+                            $themeable_sections = [
+                                'pope_section'        => 'Papežové (fialové pozadí)',
+                                'saints_section'      => 'Svatí a erb (fialové pozadí)',
+                                'actions_section'     => 'Akce - Modlitba, Bible... (fialové pozadí)',
+                                'desktop_nav_section' => 'Navigace pro PC (fialová)',
+                                'library_section'     => 'Knihovny (fialové pozadí)',
+                            ];
+
+                            // Dynamické generování přepínačů
+                            foreach ($themeable_sections as $slug => $label) :
+                            ?>
+                                <div class="setting-item setting-item-<?php echo esc_attr($slug); ?>-theme">
+                                    <label for="toggle-<?php echo esc_attr($slug); ?>-theme" class="setting-label"><?php echo esc_html($label); ?></label>
+                                    <label class="switch">
+                                        <input type="checkbox" class="theme-toggle" id="toggle-<?php echo esc_attr($slug); ?>-theme" data-section-slug="<?php echo esc_attr($slug); ?>">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                         
-
                     </div>
                 <?php else : ?>
                     <p>Chyba: Nepodařilo se načíst definice sekcí.</p>

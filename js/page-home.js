@@ -3,47 +3,75 @@ jQuery(document).ready(function($) {
 
     // --- BLOK PRO UŽIVATELSKÉ NASTAVENÍ ---
     if ($('body').hasClass('page-template-page-home')) {
-        // Globální nastavení barevnosti boxů
-        const themeStorageKey = 'pehobr_user_global_theme';
-        const globalTheme = localStorage.getItem(themeStorageKey);
-        if (globalTheme) {
-            const styledContainers = $('.pope-section-container, .saints-section-container, .third-row-section-container, #desktop-nav-grid-container');
-            styledContainers.removeClass('style-svetle style-fialove').addClass('style-' + globalTheme);
+        const themeStorageKey = 'pehobr_user_home_themes';
+        const savedThemes = localStorage.getItem(themeStorageKey);
+        const themeSettings = savedThemes ? JSON.parse(savedThemes) : {};
 
-            const actionsContainer = $('.third-row-section-container');
-            const iconsToChange = actionsContainer.find('.icon-grid-item img');
-            iconsToChange.each(function() {
-                const icon = $(this);
-                let currentSrc = icon.attr('src');
-                const isLightIcon = currentSrc.includes('-svetla.png');
-                if (globalTheme === 'fialove') {
-                    if (!isLightIcon) icon.attr('src', currentSrc.replace('.png', '-svetla.png'));
-                } else {
-                    if (isLightIcon) icon.attr('src', currentSrc.replace('-svetla.png', '.png'));
+        // Mapa slugů sekcí na jejich selektory v HTML
+        const sectionSelectors = {
+            'pope_section': '.pope-section-container',
+            'saints_section': '.saints-section-container',
+            'actions_section': '.third-row-section-container',
+            'desktop_nav_section': '#desktop-nav-grid-container',
+            'library_section': '#library-grid-container',
+        };
+
+        // Aplikace barevnosti pro každou sekci individuálně
+        for (const [slug, selector] of Object.entries(sectionSelectors)) {
+            const theme = themeSettings[slug] || 'fialove'; // Výchozí je fialová
+            const container = $(selector);
+            if(container.length) {
+                container.removeClass('style-svetle style-fialove').addClass('style-' + theme);
+
+                // Speciální logika pro výměnu ikon v sekci "Akce"
+                if (slug === 'actions_section') {
+                    container.find('.icon-grid-item img').each(function() {
+                        const icon = $(this);
+                        let currentSrc = icon.attr('src');
+                        if (!currentSrc) return;
+                        const isLightIcon = currentSrc.includes('-svetla.png');
+
+                        if (theme === 'fialove') {
+                            if (!isLightIcon && currentSrc.includes('.png')) {
+                                icon.attr('src', currentSrc.replace('.png', '-svetla.png'));
+                            }
+                        } else { // theme je 'svetle'
+                            if (isLightIcon) {
+                                icon.attr('src', currentSrc.replace('-svetla.png', '.png'));
+                            }
+                        }
+                    });
                 }
-            });
-        }
 
-        // Nastavení viditelnosti sekcí
-        const visibilityStorageKey = 'pehobr_user_home_visibility';
-        const savedVisibility = localStorage.getItem(visibilityStorageKey);
-        if (savedVisibility) {
-            const visibilitySettings = JSON.parse(savedVisibility);
-            const sectionMap = {
-                'pope_section': '.pope-section-container',
-                'saints_section': '.saints-section-container',
-                'actions_section': '.third-row-section-container',
-                'desktop_nav_section': '#desktop-nav-grid-container',
-                'library_section': '#library-grid-container'
-            };
-            for (const [slug, isVisible] of Object.entries(visibilitySettings)) {
-                if (isVisible === 'off' && sectionMap[slug]) {
-                    $(sectionMap[slug]).hide();
+                // Speciální logika pro výměnu ikon v sekci "Knihovny"
+                if (slug === 'library_section') {
+                    container.find('img').each(function() {
+                        const img = $(this);
+                        const darkIcon = img.data('dark-icon');
+                        const lightIcon = img.data('light-icon');
+                        if (theme === 'svetle' && lightIcon) {
+                            img.attr('src', lightIcon);
+                        } else if (darkIcon) {
+                            img.attr('src', darkIcon);
+                        }
+                    });
                 }
             }
         }
 
-        // Nastavení zobrazení pro sekci papežů
+        // Nastavení viditelnosti sekcí (zůstává beze změny)
+        const visibilityStorageKey = 'pehobr_user_home_visibility';
+        const savedVisibility = localStorage.getItem(visibilityStorageKey);
+        if (savedVisibility) {
+            const visibilitySettings = JSON.parse(savedVisibility);
+            for (const [slug, isVisible] of Object.entries(visibilitySettings)) {
+                if (isVisible === 'off' && sectionSelectors[slug]) {
+                    $(sectionSelectors[slug]).hide();
+                }
+            }
+        }
+
+        // Nastavení zobrazení pro sekci papežů (zůstává beze změny)
         const displayStorageKey = 'pehobr_user_home_display';
         const savedDisplay = localStorage.getItem(displayStorageKey);
         const displaySettings = savedDisplay ? JSON.parse(savedDisplay) : {};
@@ -95,11 +123,7 @@ jQuery(document).ready(function($) {
         favorites = favorites.filter(fav => fav.id !== quoteId);
         saveFavorites();
     }
-
-    /**
-     * Otevře modální okno a vygeneruje AI inspiraci.
-     * AKTUALIZOVÁNO: Načítá denní čtení a situace uživatele pro detailní prompt.
-     */
+    
     function openAiInspirationModal() {
         currentAuthorName = 'Inspirace';
         bodyElement.addClass('modal-is-open');
@@ -111,25 +135,21 @@ jQuery(document).ready(function($) {
         modalOverlay.fadeIn(200);
         modalContainer.css('display', 'flex').hide().fadeIn(300);
         modalContainer.addClass('is-visible');
-
-        // 1. Načteme denní čtení z příslušné stránky
+        
         $('<div>').load('/poboznosti/ .entry-content', function(response, status, xhr) {
             let scriptureText = 'Pro dnešní den není k dispozici žádné čtení.';
             if (status !== "error") {
-                // Vyčistíme HTML od nepotřebných prvků, abychom poslali jen čistý text
                 const tempDiv = $('<div>').html(response);
                 tempDiv.find('h1, h2, h3, .audio-player-button, .posts-entry > .entry-header').remove();
                 scriptureText = tempDiv.text().trim();
             }
 
-            // 2. Získáme životní situaci uživatele z localStorage
             const lifeSituationsKey = 'pehobr_life_situations';
             const savedSituationsData = localStorage.getItem(lifeSituationsKey);
             const savedSituations = savedSituationsData ? JSON.parse(savedSituationsData) : {};
             const activeSituations = Object.keys(savedSituations).filter(key => savedSituations[key]);
             const situationsString = activeSituations.join(', ').replace(/_/g, ' ') || 'Uživatel hledá povzbuzení.';
 
-            // 3. Spustíme AJAX volání s novými daty (scripture a situations)
             $.ajax({
                 url: pehobr_ajax.ajax_url,
                 type: 'POST',
@@ -145,7 +165,6 @@ jQuery(document).ready(function($) {
                         currentRawContent = generatedContent;
                         currentQuoteId = 'ai_inspiration_' + new Date().getTime();
 
-                        // Vložíme HTML (formátované už na serveru)
                         modalContent.html(generatedContent).css('text-align', 'left');
 
                         favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
@@ -197,11 +216,6 @@ jQuery(document).ready(function($) {
             }
         }
 
-        const customPlayer = modalContent.find('.modal-audio-player');
-        if (customPlayer.length > 0) {
-            initializeCustomPlayer(customPlayer);
-        }
-
         modalOverlay.fadeIn(200);
         modalContainer.css('display', 'flex').hide().fadeIn(300);
         modalContainer.addClass('is-visible');
@@ -223,9 +237,7 @@ jQuery(document).ready(function($) {
         const link = $(this);
         const type = link.data('type');
         
-        if (link.attr('href') !== '#') {
-            return;
-        }
+        if (link.attr('href') !== '#') return;
         
         e.preventDefault();
 
@@ -234,9 +246,7 @@ jQuery(document).ready(function($) {
         } else {
             const targetId = link.data('target-id');
             const authorName = link.data('author-name');
-            if (targetId) {
-                openModal(targetId, type, authorName);
-            }
+            if (targetId) openModal(targetId, type, authorName);
         }
     });
 
@@ -253,47 +263,44 @@ jQuery(document).ready(function($) {
 
     favoriteBtn.on('click', function() {
         if (!currentQuoteId || !currentAuthorName || !currentRawContent) return;
-
         if (isFavorite(currentQuoteId)) {
             removeFavorite(currentQuoteId);
             favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
             $(this).removeClass('is-favorite');
         } else {
-            const finalContent = `<blockquote class="citat-text">${currentRawContent}</blockquote><footer class="citat-meta"><span class="citat-author">${currentAuthorName}</span></footer>`;
+            const finalContent = `<div class="citat-text">${currentRawContent}</div><footer class="citat-meta"><span class="citat-author">${currentAuthorName}</span></footer>`;
             addFavorite(currentQuoteId, currentAuthorName, finalContent);
             favoriteIcon.removeClass('fa-star-o').addClass('fa-star');
             $(this).addClass('is-favorite');
         }
     });
     
-    function formatTime(seconds) {
-        const minutes = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-    }
-
-    function initializeCustomPlayer(playerElement) {
-        const audioSrc = playerElement.data('audio-src');
-        if (!audioSrc) return;
-        const audio = new Audio(audioSrc);
-        const playBtn = playerElement.find('.map-play-pause-btn');
-        const playIcon = playBtn.find('i');
-        const slider = playerElement.find('.map-seek-slider');
-        const currentTimeEl = playerElement.find('.map-current-time');
-        const durationEl = playerElement.find('.map-duration');
-        playBtn.on('click', () => audio.paused ? audio.play() : audio.pause());
-        audio.addEventListener('play', () => playIcon.removeClass('fa-play').addClass('fa-pause'));
-        audio.addEventListener('pause', () => playIcon.removeClass('fa-pause').addClass('fa-play'));
-        audio.addEventListener('ended', () => { playIcon.removeClass('fa-pause').addClass('fa-play'); audio.currentTime = 0; slider.val(0); });
-        audio.addEventListener('loadedmetadata', () => { durationEl.text(formatTime(audio.duration)); slider.attr('max', audio.duration); });
-        audio.addEventListener('timeupdate', () => { currentTimeEl.text(formatTime(audio.currentTime)); slider.val(audio.currentTime); });
-        slider.on('input', () => audio.currentTime = slider.val());
-        $('#quote-modal-close-btn, #quote-modal-overlay').one('click.audioPlayer', () => { if (audio) { audio.pause(); audio.src = ''; } });
-    }
-
     if (typeof donation_popup_settings !== 'undefined' && donation_popup_settings.show_popup) {
         if (!sessionStorage.getItem('pehobr_donation_popup_shown')) {
-            // ... (zbytek kódu pro donation popup zůstává stejný)
+            const popup = $('#donation-popup-container');
+            const overlay = $('#donation-popup-overlay');
+            const timerSpan = $('#donation-timer');
+            let countdown = 7;
+            const showPopup = () => {
+                timerSpan.text(countdown + 's');
+                popup.css('display', 'block');
+                overlay.css('display', 'block');
+                const interval = setInterval(() => {
+                    countdown--;
+                    timerSpan.text(countdown + 's');
+                    if (countdown <= 0) {
+                        clearInterval(interval);
+                        timerSpan.text(' Zavřít ');
+                        overlay.on('click', hidePopup);
+                    }
+                }, 1000);
+            };
+            const hidePopup = () => {
+                popup.fadeOut();
+                overlay.fadeOut();
+                sessionStorage.setItem('pehobr_donation_popup_shown', 'true');
+            };
+            setTimeout(showPopup, 2000);
         }
     }
 });

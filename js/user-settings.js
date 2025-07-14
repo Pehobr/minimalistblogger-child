@@ -3,26 +3,25 @@ jQuery(document).ready(function($) {
 
     const settingsContainer = $('#user-layout-settings');
     if (!settingsContainer.length) {
-        return; // Skript se nespustí, pokud na stránce není kontejner s nastavením
+        return; 
     }
 
-    // --- LOGIKA PRO AKORDEON ---
     $('.accordion-btn').on('click', function() {
         const content = $(this).next('.accordion-content');
-        content.slideToggle(300);
+        
+        // Zavřít ostatní, otevřít aktuální
         $('.accordion-content').not(content).slideUp(300);
+        $('.accordion-btn').not(this).removeClass('active');
+        
+        content.slideToggle(300);
+        $(this).toggleClass('active');
     });
 
     const visibilityStorageKey = 'pehobr_user_home_visibility';
     const displayStorageKey = 'pehobr_user_home_display';
-    // --- NOVÝ KÓD START ---
-    const themeStorageKey = 'pehobr_user_global_theme';
-    // --- NOVÝ KÓD KONEC ---
-
-    // --- Funkce pro načtení a uložení nastavení ---
+    const themeStorageKey = 'pehobr_user_home_themes'; // Změněno pro podporu více sekcí
 
     function loadSettings() {
-        // Načtení viditelnosti sekcí
         const savedVisibility = localStorage.getItem(visibilityStorageKey);
         const visibility = savedVisibility ? JSON.parse(savedVisibility) : {};
         settingsContainer.find('.visibility-toggle').each(function() {
@@ -31,7 +30,6 @@ jQuery(document).ready(function($) {
             $(this).prop('checked', isVisible);
         });
 
-        // Načtení zobrazení (display) pro specifické sekce
         const savedDisplay = localStorage.getItem(displayStorageKey);
         const displaySettings = savedDisplay ? JSON.parse(savedDisplay) : {};
         settingsContainer.find('.display-toggle').each(function() {
@@ -40,17 +38,18 @@ jQuery(document).ready(function($) {
             $(this).prop('checked', isTextMode);
         });
 
-        // --- NOVÝ KÓD START ---
-        // Načtení globálního motivu
-        const savedTheme = localStorage.getItem(themeStorageKey);
-        // 'fialove' je true (zaškrtnuto), 'svetle' je false (odškrtnuto)
-        const isFialove = (savedTheme === 'fialove');
-        settingsContainer.find('.theme-toggle').prop('checked', isFialove);
-        // --- NOVÝ KÓD KONEC ---
+        const savedThemes = localStorage.getItem(themeStorageKey);
+        const themeSettings = savedThemes ? JSON.parse(savedThemes) : {};
+        settingsContainer.find('.theme-toggle').each(function() {
+            const slug = $(this).data('section-slug');
+            if (slug) {
+                const isFialove = (themeSettings[slug] === 'fialove' || typeof themeSettings[slug] === 'undefined');
+                $(this).prop('checked', isFialove);
+            }
+        });
     }
 
     function saveSettings() {
-        // Uložení viditelnosti
         const visibility = {};
         settingsContainer.find('.visibility-toggle').each(function() {
             const slug = $(this).data('section-slug');
@@ -58,7 +57,6 @@ jQuery(document).ready(function($) {
         });
         localStorage.setItem(visibilityStorageKey, JSON.stringify(visibility));
 
-        // Uložení zobrazení
         const displaySettings = {};
         settingsContainer.find('.display-toggle').each(function() {
             const slug = $(this).data('section-slug');
@@ -66,22 +64,17 @@ jQuery(document).ready(function($) {
         });
         localStorage.setItem(displayStorageKey, JSON.stringify(displaySettings));
         
-        // --- NOVÝ KÓD START ---
-        // Uložení globálního motivu
-        const theme = settingsContainer.find('.theme-toggle').is(':checked') ? 'fialove' : 'svetle';
-        localStorage.setItem(themeStorageKey, theme);
-        // --- NOVÝ KÓD KONEC ---
+        const themeSettings = {};
+        settingsContainer.find('.theme-toggle').each(function() {
+            const slug = $(this).data('section-slug');
+            if (slug) {
+                themeSettings[slug] = $(this).is(':checked') ? 'fialove' : 'svetle';
+            }
+        });
+        localStorage.setItem(themeStorageKey, JSON.stringify(themeSettings));
     }
 
-    // --- Event Listeners ---
+    settingsContainer.on('change', '.visibility-toggle, .display-toggle, .theme-toggle', saveSettings);
 
-    // Při změně jakéhokoli přepínače uložíme nové nastavení
-    // --- UPRAVENÝ KÓD START ---
-    settingsContainer.on('change', '.visibility-toggle, .display-toggle, .theme-toggle', function() {
-        saveSettings();
-    });
-    // --- UPRAVENÝ KÓD KONEC ---
-
-    // Při načtení stránky načteme a aplikujeme uložená nastavení
     loadSettings();
 });
