@@ -262,7 +262,7 @@ header#masthead.sheader { z-index: 999; }
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 95px; /* Sjednocená výška */
+    height: 70px; /* Sjednocená výška */
     border-radius: 12px;
     box-sizing: border-box;
     transition: transform 0.2s ease-in-out, border-color 0.3s, background-color 0.3s;
@@ -297,7 +297,7 @@ header#masthead.sheader { z-index: 999; }
     background-color: transparent;
     text-decoration: none;
     transition: transform 0.2s ease-in-out;
-    height: 95px; /* Sjednocená výška */
+    height: 70px; /* Sjednocená výška */
     width: 100%;
     border: 2px solid #e6e0f3;
     border-radius: 12px;
@@ -311,9 +311,9 @@ header#masthead.sheader { z-index: 999; }
 
 .icon-grid-item img,
 .library-grid-item img {
-    height: 98%;
+    height: 80%;
     width: auto;
-    max-width: 98%;
+    max-width: 80%;
     object-fit: contain;
 }
 
