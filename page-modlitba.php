@@ -2,7 +2,7 @@
 /**
  * Template Name: Stránka pro denní modlitbu
  * Popis: Zobrazuje text zamyšlení a audio přehrávač pro denní modlitbu z denních kapek.
- * VERZE 3: Oprava názvu volby pro datum začátku.
+ * VERZE 5: Implementace vlastního audio přehrávače.
  */
 
 get_header(); 
@@ -12,16 +12,12 @@ get_header();
     <main id="main" class="site-main modlitba-container" role="main">
 
         <?php
-        // 1. Získání data začátku postní doby z nastavení v administraci
-        // OPRAVA: Používáme správný název volby 'start_date_setting'
         $start_date_str = get_option('start_date_setting');
-        
         $post_to_display = null;
-        $admin_info = ''; // Proměnná pro diagnostické zprávy
+        $admin_info = '';
 
         if ($start_date_str) {
             try {
-                // 2. Výpočet, kolikátý den od začátku dnes je
                 $start_date = new DateTime($start_date_str);
                 $today = new DateTime(date('Y-m-d', current_time('timestamp')));
                 
@@ -29,7 +25,6 @@ get_header();
                     $interval = $start_date->diff($today);
                     $day_index = $interval->days; 
 
-                    // 3. Načtení správného příspěvku v pořadí
                     $args = array(
                         'post_type'      => 'denni_kapka',
                         'post_status'    => 'publish',
@@ -44,24 +39,12 @@ get_header();
                     if ($denni_kapka_query->have_posts()) {
                         $post_to_display = $denni_kapka_query->posts[0];
                     }
-
-                    // Sestavení diagnostické zprávy pro admina
-                    $admin_info = "Datum začátku: " . htmlspecialchars($start_date_str) . "<br>";
-                    $admin_info .= "Dnes je " . ($day_index + 1) . ". den v pořadí. Hledám příspěvek s indexem {$day_index}.<br>";
-                    $admin_info .= $post_to_display ? "Příspěvek nalezen: ID " . $post_to_display->ID : "Pro tento den nebyl v databázi nalezen žádný příspěvek.";
-
-                } else {
-                    $admin_info = "Postní doba ještě nezačala (nastavený začátek: " . htmlspecialchars($start_date_str) . ").";
                 }
-
             } catch (Exception $e) {
-                $admin_info = "Chyba při zpracování data: " . $e->getMessage();
+                // Zde můžeme v budoucnu logovat chybu
             }
-        } else {
-            $admin_info = "Datum začátku postní doby není v administraci nastaveno. (Hledaná volba: 'start_date_setting')";
         }
-
-        // 4. Zobrazení obsahu nebo chybové hlášky
+        
         if ($post_to_display) {
             setup_postdata($post_to_display);
 
@@ -81,10 +64,21 @@ get_header();
                     <?php endif; ?>
 
                     <?php if ($modlitba_url) : ?>
-                        <div class="modlitba-audio-player">
-                            <audio id="modlitba-player" controls src="<?php echo esc_url($modlitba_url); ?>">
-                                Váš prohlížeč nepodporuje přehrávání audia.
-                            </audio>
+                        <div id="modlitba-player-container">
+                            <audio id="modlitba-audio-element" src="<?php echo esc_url($modlitba_url); ?>" preload="metadata"></audio>
+                            <div class="player-controls">
+                                <button id="modlitba-play-pause-btn" class="player-control-btn main-play-btn" aria-label="Přehrát / Pauza">
+                                    <i class="fa fa-play" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="progress-wrapper">
+                                <div id="modlitba-progress-bar" class="progress-bar-container">
+                                    <div id="modlitba-progress" class="progress-bar-progress"></div>
+                                </div>
+                                <div class="time-display">
+                                    <span id="modlitba-current-time">0:00</span> / <span id="modlitba-duration">0:00</span>
+                                </div>
+                            </div>
                         </div>
                     <?php else: ?>
                         <p>Pro dnešní den není k dispozici žádná audio nahrávka.</p>
@@ -99,16 +93,6 @@ get_header();
             <div class="no-content-found">
                 <h2>Obsah nenalezen</h2>
                 <p>Omlouváme se, ale pro dnešní den se nepodařilo nalézt žádné zamyšlení. Zkuste to prosím později.</p>
-            </div>
-            <?php
-        }
-        
-        // Zobrazení diagnostického bloku pouze pro přihlášeného administrátora
-        if (current_user_can('manage_options') && !empty($admin_info)) {
-            ?>
-            <div style="background-color: #e3f2fd; border: 1px solid #b3e5fc; padding: 15px; margin-top: 20px; border-radius: 5px; color: #01579b; font-family: monospace;">
-                <strong>Info pro administrátora:</strong><br>
-                <?php echo $admin_info; ?>
             </div>
             <?php
         }

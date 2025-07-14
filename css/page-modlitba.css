@@ -1,70 +1,108 @@
 /* Styly pro stránku s denní modlitbou (/css/page-modlitba.css) */
 
-/* Hlavní kontejner stránky */
-.modlitba-container {
-    max-width: 800px; /* Maximální šířka obsahu */
-    margin: 2em auto; /* Centrování na stránce s mezerou nahoře a dole */
-    padding: 20px;
-    background-color: #ffffff; /* Bílé pozadí pro čistý vzhled */
-    border-radius: 8px; /* Zaoblené rohy */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Jemný stín pro oddělení od pozadí stránky */
+.modlitba-container article {
+    background-color: #e6e0f3 !important;
+    border: 2px solid #3b0f5d !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05) !important;
 }
 
-/* Nadpis stránky */
 .modlitba-container .entry-title {
-    text-align: center; /* Centrování nadpisu */
-    font-size: 2.5em; /* Větší velikost písma */
-    margin-bottom: 30px;
-    color: #333;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #870e2c;
+    margin-bottom: 15px;
 }
 
-/* Obsah se zamyšlením */
 .modlitba-text-content {
-    font-size: 1.1em; /* Příjemná velikost pro čtení */
-    line-height: 1.7; /* Větší řádkování pro lepší čitelnost */
-    color: #444; /* Tmavě šedá barva textu */
-    margin-bottom: 40px; /* Větší mezera pod textem */
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    text-align: center; /* <<< TOTO JE PŘIDANÝ ŘÁDEK PRO VYCENTROVÁNÍ */
 }
 
-.modlitba-text-content p {
-    margin-bottom: 1.5em; /* Mezera mezi odstavci */
+/* Skryjeme původní audio element */
+#modlitba-audio-element {
+    display: none;
 }
 
-/* Kontejner pro audio přehrávač */
-.modlitba-audio-player {
+/* === STYLY PRO VLASTNÍ PŘEHRÁVAČ (inspirováno poboznosti.css) === */
+#modlitba-player-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box;
     margin-top: 20px;
 }
 
-/* Vlastní stylování HTML5 audio přehrávače */
-#modlitba-player {
-    width: 100%; /* Přehrávač bude přes celou šířku kontejneru */
-    border-radius: 5px;
-    outline: none; /* Odstranění ohraničení při fokusu */
+#modlitba-player-container .player-controls {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
 }
 
-/* Vzhled pro případ, že obsah není nalezen */
+#modlitba-player-container .player-control-btn {
+    background: none;
+    border: none;
+    color: #3b0f5d;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 5px;
+    margin: 0 10px;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+#modlitba-player-container .player-control-btn:hover:not(:disabled) {
+    color: #870e2c;
+    transform: scale(1.1);
+}
+
+#modlitba-player-container .main-play-btn {
+    font-size: 32px;
+    color: #870e2c;
+    margin: 0 15px;
+}
+#modlitba-player-container .main-play-btn:hover:not(:disabled) {
+    color: #6d0b23;
+}
+
+#modlitba-player-container .progress-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px; /* Mezera mezi lištou a časem */
+}
+
+#modlitba-player-container .progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background-color: rgba(59, 15, 93, 0.2);
+    border-radius: 4px;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+#modlitba-player-container .progress-bar-progress {
+    width: 0%;
+    height: 100%;
+    background-color: #870e2c;
+    border-radius: 4px;
+    transition: width 0.1s linear;
+}
+
+#modlitba-player-container .time-display {
+    font-size: 14px;
+    color: #3b0f5d;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
 .no-content-found {
     text-align: center;
     padding: 40px 20px;
-}
-
-.no-content-found h2 {
-    font-size: 1.8em;
-    color: #d9534f; /* Červená barva pro upozornění */
-}
-
-/* --- Responzivní design pro mobilní zařízení --- */
-@media (max-width: 768px) {
-    .modlitba-container {
-        margin: 1em;
-        padding: 15px;
-    }
-
-    .modlitba-container .entry-title {
-        font-size: 2em;
-    }
-
-    .modlitba-text-content {
-        font-size: 1em;
-    }
 }
