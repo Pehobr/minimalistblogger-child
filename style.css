@@ -362,3 +362,33 @@ Template: minimalistblogger
     width: 100%;
     height: 100%;
 }
+
+/* --- Různé názvy pro PC a mobil --- */
+
+/* Selektor .site-title a nahraďte tím vaším, pokud se liší */
+.site-title a {
+    /* Skryjeme původní text v odkazu titulku */
+    font-size: 0;
+    line-height: 0;
+    color: transparent;
+}
+
+/* --- Titulek pro PC --- */
+@media screen and (min-width: 992px) {
+    .site-title a::before {
+        content: "Postní kapky 2026 s papežem Lvem XIV."; /* <-- Vložte sem název pro PC */
+        font-size: 28px; /* <-- Upravte velikost písma pro PC */
+        line-height: 1.2;
+        color: #741ea4; /* <-- Nastavte barvu písma */
+    }
+}
+
+/* --- Titulek pro mobil --- */
+@media screen and (max-width: 991px) {
+    .site-title a::before {
+        content: "Postní kapky"; /* <-- Vložte sem název pro mobil */
+        font-size: 24px; /* <-- Upravte velikost písma pro mobil */
+        line-height: 1.2;
+        color: #741ea4; /* <-- Nastavte barvu písma */
+    }
+}
