@@ -1,50 +1,70 @@
-/* Styly pro stránku s denní modlitbou (/css/page-modlitba.css) */
+/**
+ * Styly pro stránku s denní modlitbou (/css/page-modlitba.css)
+ * VERZE 4: Minimalizace odsazení v boxech.
+ */
 
+/* --- Základní styly pro kontejner a text --- */
+
+/* Styl pro vnější kontejner každé modlitby (aktuální i archivní) */
 .modlitba-container article {
     background-color: #e6e0f3 !important;
     border: 2px solid #3b0f5d !important;
-    padding: 12px !important;
+    padding: 7px !important; /* ZMENŠENÉ ODSADZENÍ */
     border-radius: 8px !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05) !important;
+    margin-top: 20px;
 }
 
+/* Nadpis modlitby */
 .modlitba-container .entry-title {
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1.1rem; /* Zmenšený nadpis */
     color: #870e2c;
-    margin-bottom: 15px;
+    margin-bottom: 7px; /* Zmenšená mezera */
+    padding-bottom: 5px; /* Zmenšené odsazení pod nadpisem */
+    border-bottom: 1px solid rgba(59, 15, 93, 0.2); /* Jemnější oddělovač */
 }
 
+/* Text modlitby */
 .modlitba-text-content {
     font-size: 1rem;
-    line-height: 1.6;
-    margin-bottom: 25px;
-    text-align: center; /* <<< TOTO JE PŘIDANÝ ŘÁDEK PRO VYCENTROVÁNÍ */
+    line-height: 1.5; /* Mírně zhuštěnější řádkování */
+    margin-bottom: 15px; /* Zmenšená mezera */
+    text-align: center;
+    color: #333;
+}
+/* Odstranění defaultních mezer u odstavců */
+.modlitba-text-content p {
+    margin-bottom: 0.5em;
+}
+.modlitba-text-content p:last-child {
+    margin-bottom: 0;
 }
 
-/* Skryjeme původní audio element */
-#modlitba-audio-element {
+
+/* Skrytí původního audio tagu */
+.modlitba-audio-element {
     display: none;
 }
 
-/* === STYLY PRO VLASTNÍ PŘEHRÁVAČ (inspirováno poboznosti.css) === */
-#modlitba-player-container {
+/* --- Styly pro VŠECHNY audio přehrávače --- */
+.modlitba-player-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding: 12px;
+    padding: 0; /* Odstraněn padding */
     box-sizing: border-box;
-    margin-top: 20px;
+    margin-top: 10px; /* Zmenšená mezera */
 }
 
-#modlitba-player-container .player-controls {
+.modlitba-player-container .player-controls {
     display: flex;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 7px; /* Zmenšená mezera */
 }
 
-#modlitba-player-container .player-control-btn {
+.modlitba-player-container .player-control-btn {
     background: none;
     border: none;
     color: #3b0f5d;
@@ -55,29 +75,29 @@
     transition: color 0.2s ease, transform 0.2s ease;
 }
 
-#modlitba-player-container .player-control-btn:hover:not(:disabled) {
+.modlitba-player-container .player-control-btn:hover:not(:disabled) {
     color: #870e2c;
     transform: scale(1.1);
 }
 
-#modlitba-player-container .main-play-btn {
+.modlitba-player-container .main-play-btn {
     font-size: 32px;
     color: #870e2c;
     margin: 0 15px;
 }
-#modlitba-player-container .main-play-btn:hover:not(:disabled) {
+.modlitba-player-container .main-play-btn:hover:not(:disabled) {
     color: #6d0b23;
 }
 
-#modlitba-player-container .progress-wrapper {
+.modlitba-player-container .progress-wrapper {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px; /* Mezera mezi lištou a časem */
+    gap: 5px; /* Zmenšená mezera */
 }
 
-#modlitba-player-container .progress-bar-container {
+.modlitba-player-container .progress-bar-container {
     width: 100%;
     height: 8px;
     background-color: rgba(59, 15, 93, 0.2);
@@ -87,7 +107,7 @@
     position: relative;
 }
 
-#modlitba-player-container .progress-bar-progress {
+.modlitba-player-container .progress-bar-progress {
     width: 0%;
     height: 100%;
     background-color: #870e2c;
@@ -95,14 +115,64 @@
     transition: width 0.1s linear;
 }
 
-#modlitba-player-container .time-display {
+.modlitba-player-container .time-display {
     font-size: 14px;
     color: #3b0f5d;
     font-family: sans-serif;
     font-weight: bold;
 }
 
+/* === STYLY PRO ARCHIV A TLAČÍTKO === */
+.modlitba-accordion-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #3b0f5d;
+    color: #ffffff !important;
+    border: none;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s ease;
+    font-size: 1.2rem;
+    margin-top: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modlitba-accordion-btn:hover {
+    background-color: #512079;
+    transform: translateY(-2px);
+}
+
+.modlitba-accordion-btn::after {
+    content: '▼';
+    font-size: 1rem;
+    color: #ffffff;
+    transition: transform 0.3s ease-out;
+}
+
+.modlitba-accordion-btn.active::after {
+    transform: rotate(180deg);
+}
+
+#past-modlitby-container {
+    padding-top: 10px;
+}
+
+.modlitba-divider {
+    border: none;
+    height: 2px;
+    background-color: rgba(59, 15, 93, 0.2);
+    margin: 0 auto 20px auto;
+    width: 80%;
+}
+
+/* --- OSTATNÍ --- */
 .no-content-found {
     text-align: center;
     padding: 40px 20px;
+    color: #333;
 }
