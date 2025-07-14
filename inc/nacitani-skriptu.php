@@ -281,3 +281,35 @@ function enqueue_prezentace_assets() {
     }
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_prezentace_assets' );
+
+/**
+ * Načtení skriptů a stylů pro stránku s modlitbou.
+ */
+function modlitba_app_assets() {
+    // Načítáme pouze na stránce s šablonou 'page-modlitba.php'
+    if ( is_page_template('page-modlitba.php') ) {
+        $theme_version = wp_get_theme()->get('Version');
+        
+        // Načtení CSS souboru, pokud existuje
+        if ( file_exists( get_stylesheet_directory() . '/css/page-modlitba.css' ) ) {
+            wp_enqueue_style( 
+                'modlitba-style', 
+                get_stylesheet_directory_uri() . '/css/page-modlitba.css', 
+                array(), 
+                filemtime( get_stylesheet_directory() . '/css/page-modlitba.css' ) 
+            );
+        }
+        
+        // Načtení JavaScriptového souboru, pokud existuje
+        if ( file_exists( get_stylesheet_directory() . '/js/page-modlitba.js' ) ) {
+            wp_enqueue_script( 
+                'modlitba-script', 
+                get_stylesheet_directory_uri() . '/js/page-modlitba.js', 
+                array('jquery'), 
+                filemtime( get_stylesheet_directory() . '/js/page-modlitba.js' ), 
+                true 
+            );
+        }
+    }
+}
+add_action( 'wp_enqueue_scripts', 'modlitba_app_assets' );

@@ -1,0 +1,70 @@
+/* Styly pro stránku s denní modlitbou (/css/page-modlitba.css) */
+
+/* Hlavní kontejner stránky */
+.modlitba-container {
+    max-width: 800px; /* Maximální šířka obsahu */
+    margin: 2em auto; /* Centrování na stránce s mezerou nahoře a dole */
+    padding: 20px;
+    background-color: #ffffff; /* Bílé pozadí pro čistý vzhled */
+    border-radius: 8px; /* Zaoblené rohy */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); /* Jemný stín pro oddělení od pozadí stránky */
+}
+
+/* Nadpis stránky */
+.modlitba-container .entry-title {
+    text-align: center; /* Centrování nadpisu */
+    font-size: 2.5em; /* Větší velikost písma */
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* Obsah se zamyšlením */
+.modlitba-text-content {
+    font-size: 1.1em; /* Příjemná velikost pro čtení */
+    line-height: 1.7; /* Větší řádkování pro lepší čitelnost */
+    color: #444; /* Tmavě šedá barva textu */
+    margin-bottom: 40px; /* Větší mezera pod textem */
+}
+
+.modlitba-text-content p {
+    margin-bottom: 1.5em; /* Mezera mezi odstavci */
+}
+
+/* Kontejner pro audio přehrávač */
+.modlitba-audio-player {
+    margin-top: 20px;
+}
+
+/* Vlastní stylování HTML5 audio přehrávače */
+#modlitba-player {
+    width: 100%; /* Přehrávač bude přes celou šířku kontejneru */
+    border-radius: 5px;
+    outline: none; /* Odstranění ohraničení při fokusu */
+}
+
+/* Vzhled pro případ, že obsah není nalezen */
+.no-content-found {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.no-content-found h2 {
+    font-size: 1.8em;
+    color: #d9534f; /* Červená barva pro upozornění */
+}
+
+/* --- Responzivní design pro mobilní zařízení --- */
+@media (max-width: 768px) {
+    .modlitba-container {
+        margin: 1em;
+        padding: 15px;
+    }
+
+    .modlitba-container .entry-title {
+        font-size: 2em;
+    }
+
+    .modlitba-text-content {
+        font-size: 1em;
+    }
+}
