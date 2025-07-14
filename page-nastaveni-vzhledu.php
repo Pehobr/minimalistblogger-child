@@ -2,7 +2,7 @@
 /**
  * Template Name: Nastavení vzhledu pro uživatele
  * Description: Umožňuje uživatelům nastavit si, které sekce chtějí vidět a jak se mají zobrazovat.
- * VERZE 5: Rozdělení nastavení barevnosti pro každý řádek zvlášť.
+ * VERZE 7: Přidány návrhy barev pro světlé téma.
  * @package minimalistblogger-child
  */
 
@@ -34,11 +34,12 @@ $all_sections = function_exists('pehobr_get_home_layout_sections') ? pehobr_get_
                                         <span class="slider round"></span>
                                     </label>
                                 </div>
-                          <?php endforeach; ?>
+                            <?php endforeach; ?>
                         </div>
 
                         <button class="accordion-btn">Vzhled boxů</button>
                         <div class="accordion-content">
+                            
                             <div class="setting-item setting-item-pope-display">
                                 <label for="toggle-pope-display" class="setting-label">Citáty papežů</label>
                                 <div class="toggle-container">
@@ -50,12 +51,28 @@ $all_sections = function_exists('pehobr_get_home_layout_sections') ? pehobr_get_
                                     <span class="toggle-label">Text</span>
                                 </div>
                             </div>
-                        </div>                    
+                            
+                            <div class="setting-item">
+                                <label for="light-theme-color-picker" class="setting-label">Barva světlého pozadí</label>
+                                <div class="color-picker-wrapper">
+                                    <input type="color" id="light-theme-color-picker" value="#f5f2eb">
+                                    <div class="color-suggestions">
+                                        <?php
+                                        // Pole s navrhovanými barvami
+                                        $suggested_colors = ['#FFE8FF', '#E8D5B5', '#FFFADE', '#E3EFFD', '#FEF7FF','#f5f2eb'];
+                                        foreach ($suggested_colors as $color) {
+                                            echo '<button class="color-suggestion-btn" data-color="' . $color . '" style="background-color:' . $color . ';" title="' . $color . '"></button>';
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
 
-                        <button class="accordion-btn">Průhlednost boxů</button>
-                        <div class="accordion-content">
+                            <hr class="setting-divider">
+
+                            <h3 class="setting-subtitle">Barevnost boxů</h3>
+                            
                             <?php
-                            // Pole s popisky pro jednotlivé řádky/sekce
                             $themeable_sections = [
                                 'pope_section'        => 'Papežové',
                                 'saints_section'      => 'Augustin, erb, Lev',
@@ -64,19 +81,22 @@ $all_sections = function_exists('pehobr_get_home_layout_sections') ? pehobr_get_
                                 'library_section'     => 'Knihovny (video,audio,..)',
                             ];
 
-                            // Dynamické generování přepínačů
                             foreach ($themeable_sections as $slug => $label) :
                             ?>
                                 <div class="setting-item setting-item-<?php echo esc_attr($slug); ?>-theme">
                                     <label for="toggle-<?php echo esc_attr($slug); ?>-theme" class="setting-label"><?php echo esc_html($label); ?></label>
-                                    <label class="switch">
-                                        <input type="checkbox" class="theme-toggle" id="toggle-<?php echo esc_attr($slug); ?>-theme" data-section-slug="<?php echo esc_attr($slug); ?>">
-                                        <span class="slider round"></span>
-                                    </label>
+                                    <div class="toggle-container">
+                                        <span class="toggle-label">Světlé</span>
+                                        <label class="switch">
+                                            <input type="checkbox" class="theme-toggle" id="toggle-<?php echo esc_attr($slug); ?>-theme" data-section-slug="<?php echo esc_attr($slug); ?>">
+                                            <span class="slider round"></span>
+                                        </label>
+                                        <span class="toggle-label">Fialové</span>
+                                    </div>
                                 </div>
                             <?php endforeach; ?>
                         </div>
-                        
+
                     </div>
                 <?php else : ?>
                     <p>Chyba: Nepodařilo se načíst definice sekcí.</p>

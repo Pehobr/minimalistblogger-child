@@ -105,3 +105,12 @@ input:checked + .slider:before { transform: translateX(22px); }
         display: none !important;
     }
 }
+
+#light-theme-color-picker {
+    padding: 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 50px; /* Nebo jiná šířka podle potřeby */
+    height: 30px; /* Nebo jiná výška */
+    cursor: pointer;
+}

@@ -3,39 +3,82 @@ jQuery(document).ready(function($) {
 
     // --- BLOK PRO UŽIVATELSKÉ NASTAVENÍ ---
     if ($('body').hasClass('page-template-page-home')) {
+        
+        /**
+         * Načte vlastní barvu světlého tématu a aplikuje ji pomocí dynamického <style> tagu.
+         * Tento kód je finální a cílí na správné elementy.
+         */
+        function applyCustomLightThemeColor() {
+            const colorStorageKey = 'pehobr_user_light_theme_color';
+            const customColor = localStorage.getItem(colorStorageKey);
+
+            // Pokud uživatel žádnou barvu nevybral, nic neděláme.
+            if (!customColor) {
+                return;
+            }
+
+            const styleId = 'custom-light-theme-style';
+            let styleElement = $('#' + styleId);
+
+            // Pokud <style> tag ještě neexistuje, vytvoříme ho.
+            if (!styleElement.length) {
+                styleElement = $('<style>').attr('id', styleId).appendTo('head');
+            }
+            
+            // Definitivní CSS pravidla, která přepíší výchozí barvy.
+            // Použití !important je zde klíčové pro přebití původních stylů.
+            const newRules = `
+                /* CÍL PRO ŠIROKÉ BLOKY (PAPEŽOVÉ) */
+                .pope-section-container.style-svetle {
+                    background-color: ${customColor} !important;
+                }
+
+                /* CÍL PRO OSTATNÍ VNITŘNÍ BOXY */
+                .saints-section-container.style-svetle .saints-item-boxed,
+                .third-row-section-container.style-svetle .icon-grid-item,
+                #desktop-nav-grid-container.style-svetle,
+                #library-section-wrapper.style-svetle .library-item-box {
+                    background-color: ${customColor} !important;
+                }
+            `;
+            
+            // Vložíme pravidla do <style> tagu.
+            styleElement.html(newRules);
+        }
+        
+        // Zavoláme funkci pro aplikaci barvy ihned po načtení stránky.
+        applyCustomLightThemeColor();
+
+
         const themeStorageKey = 'pehobr_user_home_themes';
         const savedThemes = localStorage.getItem(themeStorageKey);
         const themeSettings = savedThemes ? JSON.parse(savedThemes) : {};
 
-        // Mapa slugů sekcí na jejich selektory v HTML
         const sectionSelectors = {
             'pope_section': '.pope-section-container',
             'saints_section': '.saints-section-container',
             'actions_section': '.third-row-section-container',
             'desktop_nav_section': '#desktop-nav-grid-container',
-            'library_section': '#library-section-wrapper', // ZMĚNA ZDE
+            'library_section': '#library-section-wrapper',
         };
 
-        // Aplikace barevnosti pro každou sekci individuálně
         for (const [slug, selector] of Object.entries(sectionSelectors)) {
-            const theme = themeSettings[slug] || 'fialove'; // Výchozí je fialová
+            const theme = themeSettings[slug] || 'fialove';
             const container = $(selector);
             if(container.length) {
                 container.removeClass('style-svetle style-fialove').addClass('style-' + theme);
 
-                // Speciální logika pro výměnu ikon v sekci "Akce"
                 if (slug === 'actions_section') {
                     container.find('.icon-grid-item img').each(function() {
                         const icon = $(this);
                         let currentSrc = icon.attr('src');
                         if (!currentSrc) return;
                         const isLightIcon = currentSrc.includes('-svetla.png');
-
                         if (theme === 'fialove') {
                             if (!isLightIcon && currentSrc.includes('.png')) {
                                 icon.attr('src', currentSrc.replace('.png', '-svetla.png'));
                             }
-                        } else { // theme je 'svetle'
+                        } else {
                             if (isLightIcon) {
                                 icon.attr('src', currentSrc.replace('-svetla.png', '.png'));
                             }
@@ -43,7 +86,6 @@ jQuery(document).ready(function($) {
                     });
                 }
 
-                // Speciální logika pro výměnu ikon v sekci "Knihovny"
                 if (slug === 'library_section') {
                     container.find('img').each(function() {
                         const img = $(this);
@@ -59,7 +101,6 @@ jQuery(document).ready(function($) {
             }
         }
 
-        // Nastavení viditelnosti sekcí
         const visibilityStorageKey = 'pehobr_user_home_visibility';
         const savedVisibility = localStorage.getItem(visibilityStorageKey);
         if (savedVisibility) {
@@ -71,7 +112,6 @@ jQuery(document).ready(function($) {
             }
         }
 
-        // Nastavení zobrazení pro sekci papežů
         const displayStorageKey = 'pehobr_user_home_display';
         const savedDisplay = localStorage.getItem(displayStorageKey);
         const displaySettings = savedDisplay ? JSON.parse(savedDisplay) : {};
@@ -91,6 +131,7 @@ jQuery(document).ready(function($) {
     }
     // --- KONEC BLOKU PRO UŽIVATELSKÉ NASTAVENÍ ---
 
+    // ... (zbytek vašeho kódu pro modální okna atd. zůstává stejný)
     const bodyElement = $('body');
     const modalContainer = $('#quote-modal-container');
     const modalOverlay = $('#quote-modal-overlay');
@@ -128,10 +169,8 @@ jQuery(document).ready(function($) {
         currentAuthorName = 'Inspirace';
         bodyElement.addClass('modal-is-open');
         modalContainer.removeClass('video-modal audio-modal image-modal');
-
         modalContent.html('<div class="modal-loader"></div><p style="text-align:center; font-size: 0.9em; color: #666;">Načítám denní čtení a generuji inspiraci...</p>');
         favoriteBtn.hide();
-
         modalOverlay.fadeIn(200);
         modalContainer.css('display', 'flex').hide().fadeIn(300);
         modalContainer.addClass('is-visible');
@@ -164,9 +203,7 @@ jQuery(document).ready(function($) {
                         const generatedContent = response.data.content;
                         currentRawContent = generatedContent;
                         currentQuoteId = 'ai_inspiration_' + new Date().getTime();
-
                         modalContent.html(generatedContent).css('text-align', 'left');
-
                         favoriteIcon.removeClass('fa-star').addClass('fa-star-o');
                         favoriteBtn.removeClass('is-favorite');
                         favoriteBtn.show();
@@ -189,7 +226,6 @@ jQuery(document).ready(function($) {
         const contentSource = $('#' + targetId);
         const contentHtml = contentSource.html();
         currentRawContent = contentHtml;
-
         bodyElement.addClass('modal-is-open');
         modalContainer.removeClass('video-modal audio-modal image-modal');
 
@@ -236,9 +272,7 @@ jQuery(document).ready(function($) {
     $('.icon-grid-item, .pope-icon-link').on('click', function(e) {
         const link = $(this);
         const type = link.data('type');
-        
         if (link.attr('href') !== '#') return;
-        
         e.preventDefault();
 
         if (type === 'ai_inspiration') {
