@@ -6,29 +6,20 @@ jQuery(document).ready(function($) {
         return; 
     }
 
-    // Akordeon pro rozbalování sekcí
     $('.accordion-btn').on('click', function() {
         const content = $(this).next('.accordion-content');
-        
-        // Zavřít ostatní, otevřít aktuální
         $('.accordion-content').not(content).slideUp(300);
         $('.accordion-btn').not(this).removeClass('active');
-        
         content.slideToggle(300);
         $(this).toggleClass('active');
     });
 
-    // Klíče pro ukládání dat do localStorage
     const visibilityStorageKey = 'pehobr_user_home_visibility';
     const displayStorageKey = 'pehobr_user_home_display';
     const themeStorageKey = 'pehobr_user_home_themes';
-    const colorStorageKey = 'pehobr_user_light_theme_color'; // <-- NOVÝ KLÍČ pro barvu
+    const colorStorageKey = 'pehobr_user_light_theme_color';
 
-    /**
-     * Načte všechna uložená nastavení z localStorage a aplikuje je na stránce.
-     */
     function loadSettings() {
-        // Načtení viditelnosti sekcí
         const savedVisibility = localStorage.getItem(visibilityStorageKey);
         const visibility = savedVisibility ? JSON.parse(savedVisibility) : {};
         settingsContainer.find('.visibility-toggle').each(function() {
@@ -37,7 +28,6 @@ jQuery(document).ready(function($) {
             $(this).prop('checked', isVisible);
         });
 
-        // Načtení zobrazení (Grafika/Text)
         const savedDisplay = localStorage.getItem(displayStorageKey);
         const displaySettings = savedDisplay ? JSON.parse(savedDisplay) : {};
         settingsContainer.find('.display-toggle').each(function() {
@@ -46,7 +36,6 @@ jQuery(document).ready(function($) {
             $(this).prop('checked', isTextMode);
         });
 
-        // Načtení barevného tématu (Světlé/Fialové)
         const savedThemes = localStorage.getItem(themeStorageKey);
         const themeSettings = savedThemes ? JSON.parse(savedThemes) : {};
         settingsContainer.find('.theme-toggle').each(function() {
@@ -57,21 +46,14 @@ jQuery(document).ready(function($) {
             }
         });
         
-        // --- NOVÁ ČÁST ---
-        // Načtení vlastní barvy světlého pozadí
         const savedColor = localStorage.getItem(colorStorageKey);
         const colorPicker = $('#light-theme-color-picker');
         if (colorPicker.length && savedColor) {
             colorPicker.val(savedColor);
         }
-        // --- KONEC NOVÉ ČÁSTI ---
     }
 
-    /**
-     * Uloží aktuální stav všech nastavení do localStorage.
-     */
     function saveSettings() {
-        // Uložení viditelnosti
         const visibility = {};
         settingsContainer.find('.visibility-toggle').each(function() {
             const slug = $(this).data('section-slug');
@@ -79,7 +61,6 @@ jQuery(document).ready(function($) {
         });
         localStorage.setItem(visibilityStorageKey, JSON.stringify(visibility));
 
-        // Uložení zobrazení (Grafika/Text)
         const displaySettings = {};
         settingsContainer.find('.display-toggle').each(function() {
             const slug = $(this).data('section-slug');
@@ -87,7 +68,6 @@ jQuery(document).ready(function($) {
         });
         localStorage.setItem(displayStorageKey, JSON.stringify(displaySettings));
         
-        // Uložení barevného tématu (Světlé/Fialové)
         const themeSettings = {};
         settingsContainer.find('.theme-toggle').each(function() {
             const slug = $(this).data('section-slug');
@@ -97,21 +77,29 @@ jQuery(document).ready(function($) {
         });
         localStorage.setItem(themeStorageKey, JSON.stringify(themeSettings));
 
-        // --- NOVÁ ČÁST ---
-        // Uložení vlastní barvy světlého pozadí
         const colorPicker = $('#light-theme-color-picker');
         if (colorPicker.length) {
             localStorage.setItem(colorStorageKey, colorPicker.val());
         }
-        // --- KONEC NOVÉ ČÁSTI ---
     }
 
     // Při změně jakéhokoli přepínače zavoláme funkci pro uložení
     settingsContainer.on('change', '.visibility-toggle, .display-toggle, .theme-toggle', saveSettings);
 
-    // Při změně barvy v color pickeru také uložíme (používáme 'input' pro okamžitou reakci)
+    // Při změně barvy v hlavním color pickeru také uložíme
     settingsContainer.on('input', '#light-theme-color-picker', saveSettings);
 
-    // Načteme nastavení ihned po načtení stránky
+    // OPRAVENO: Kliknutí na tlačítko s návrhem barvy
+    settingsContainer.on('click', '.color-suggestion-btn', function() {
+        const newColor = $(this).data('color');
+        const colorPicker = $('#light-theme-color-picker');
+        
+        // 1. Nastavíme hodnotu do hlavního color pickeru
+        colorPicker.val(newColor);
+        
+        // 2. Přímo zavoláme funkci pro uložení nastavení, což je spolehlivější
+        saveSettings(); 
+    });
+
     loadSettings();
 });
