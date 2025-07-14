@@ -75,10 +75,10 @@ $all_sections = function_exists('pehobr_get_home_layout_sections') ? pehobr_get_
                             <?php
                             $themeable_sections = [
                                 'pope_section'        => 'Papežové',
-                                'saints_section'      => 'Augustin, erb, Lev',
-                                'actions_section'     => 'Modlitba, Bible, Inspirace',
+                                'saints_section'      => 'Augustin, Lev',
+                                'actions_section'     => 'Modlitba, Bible..',
                                 'desktop_nav_section' => 'Navigace pro PC',
-                                'library_section'     => 'Knihovny (video,audio,..)',
+                                'library_section'     => 'Knihovny (video..)',
                             ];
 
                             foreach ($themeable_sections as $slug => $label) :
