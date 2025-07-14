@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah a řadí sekce podle nastavení.
- * VERZE 43: Implementace AI inspirace do modálního okna.
+ * VERZE 44: Rozdělení knihoven do samostatných boxů.
  * @package minimalistblogger-child
  */
 
@@ -55,7 +55,6 @@ $grid_items = [
     ['name' => 'Papež Lev XIV.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev', 'label' => 'Lev XIV.', 'type' => 'text'],
     ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'light_icon' => 'ikona-modlitba-svetla.png', 'citat_key' => 'modlitba_text', 'audio_key' => 'modlitba_url', 'label' => 'Modlitba', 'type' => 'text'],
     ['name' => 'Bible', 'slug' => 'poboznosti', 'icon' => 'ikona-bible.png', 'light_icon' => 'ikona-bible-svetla.png', 'label' => 'Bible', 'type' => 'text'],
-    // *** ZMĚNA ZDE: Definice pro AI Inspiraci ***
     ['name' => 'Inspirace', 'slug' => '#', 'icon' => 'ikona-inspirace.png', 'light_icon' => 'ikona-inspirace-svetla.png', 'citat_key' => 'ai_inspiration_placeholder', 'label' => 'Inspirace', 'type' => 'ai_inspiration'],
 ];
 $library_items = [
@@ -163,11 +162,8 @@ $actions_nav_style = get_option('pehobr_actions_nav_style', 'svetle');
         for ($i = 5; $i < count($grid_items); $i++):
             $item = $grid_items[$i];
             $content_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
-            // *** ZMĚNA ZDE: Zajistí, že AI inspirace bude vždy interaktivní ***
             $has_content = !empty($content_html) || $item['type'] === 'ai_inspiration';
             $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/');
-            
-            // Výběr ikony podle stylu
             $icon_to_use = ($actions_nav_style === 'fialove' && isset($item['light_icon'])) ? $item['light_icon'] : $item['icon'];
         ?>
             <div class="grid-item-wrapper">
@@ -200,20 +196,18 @@ $desktop_nav_style = get_option('pehobr_desktop_nav_style', 'svetle');
 <?php
 $sections_html['desktop_nav_section'] = ob_get_clean();
 
-// Sekce 5: Knihovny
+// Sekce 5: Knihovny - ZMĚNA ZDE
 ob_start();
-$library_nav_style = get_option('pehobr_library_nav_style', 'fialove');
+$library_nav_style = get_option('pehobr_home_theme_library_section', 'fialove'); // Výchozí hodnota
 ?>
-<div id="library-grid-container" class="style-<?php echo esc_attr($library_nav_style); ?>">
+<div id="library-section-wrapper" class="style-<?php echo esc_attr($library_nav_style); ?>">
     <?php foreach ($library_items as $item) : ?>
-        <div class="library-item-wrapper">
-            <a href="<?php echo esc_url(home_url($item['url'])); ?>" class="library-grid-item">
-                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>" 
-                     alt="<?php echo esc_attr($item['name']); ?>"
-                     data-dark-icon="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>"
-                     data-light-icon="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['light_icon']); ?>">
-            </a>
-        </div>
+        <a href="<?php echo esc_url(home_url($item['url'])); ?>" class="library-item-box">
+             <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>"
+                 alt="<?php echo esc_attr($item['name']); ?>"
+                 data-dark-icon="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['icon']); ?>"
+                 data-light-icon="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $item['light_icon']); ?>">
+        </a>
     <?php endforeach; ?>
 </div>
 <?php
@@ -248,14 +242,12 @@ $sections_html['library_section'] = ob_get_clean();
     <?php
     foreach ($grid_items as $item) :
         if (isset($item['citat_key'])) {
-            // *** ZMĚNA ZDE: Přeskočíme AI inspiraci, ta se generuje dynamicky ***
             if ($item['type'] === 'ai_inspiration') {
                 continue;
             }
             $content_html = isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
             if (!empty($content_html)) :
                 $modal_content = '';
-                // Původní kód pro video a text, ponecháno pro ostatní položky
                 if ($item['type'] === 'video') {
                      $modal_content = $content_html;
                 } else {

@@ -13,7 +13,7 @@ jQuery(document).ready(function($) {
             'saints_section': '.saints-section-container',
             'actions_section': '.third-row-section-container',
             'desktop_nav_section': '#desktop-nav-grid-container',
-            'library_section': '#library-grid-container',
+            'library_section': '#library-section-wrapper', // ZMĚNA ZDE
         };
 
         // Aplikace barevnosti pro každou sekci individuálně
@@ -59,7 +59,7 @@ jQuery(document).ready(function($) {
             }
         }
 
-        // Nastavení viditelnosti sekcí (zůstává beze změny)
+        // Nastavení viditelnosti sekcí
         const visibilityStorageKey = 'pehobr_user_home_visibility';
         const savedVisibility = localStorage.getItem(visibilityStorageKey);
         if (savedVisibility) {
@@ -71,7 +71,7 @@ jQuery(document).ready(function($) {
             }
         }
 
-        // Nastavení zobrazení pro sekci papežů (zůstává beze změny)
+        // Nastavení zobrazení pro sekci papežů
         const displayStorageKey = 'pehobr_user_home_display';
         const savedDisplay = localStorage.getItem(displayStorageKey);
         const displaySettings = savedDisplay ? JSON.parse(savedDisplay) : {};

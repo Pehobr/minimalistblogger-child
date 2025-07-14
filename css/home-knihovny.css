@@ -1,6 +1,7 @@
-/* Styly pro sekci knihoven (Video, Audio, Rádio, Podcast) */
+/* Styly pro sekci knihoven (Video, Audio, Rádio, Podcast) - VERZE SE SAMOSTATNÝMI BOXY */
 
-#library-grid-container {
+/* Kontejner, který drží jednotlivé boxy knihoven a určuje jejich rozložení */
+#library-section-wrapper {
     display: grid;
     gap: 15px;
     width: 90vw;
@@ -8,55 +9,44 @@
     margin-top: 0;
     margin-bottom: 12px;
     grid-template-columns: repeat(4, 1fr);
-    border-radius: 12px;
-    padding: 7px;
     box-sizing: border-box;
-    transition: background-color 0.3s, border-color 0.3s;
 }
 
-/* Varianta Světlá */
-#library-grid-container.style-svetle {
-    background-color: #F5F2EB;
-    border: 2px solid #3b0f5d;
-}
-
-/* Varianta Fialová */
-#library-grid-container.style-fialove {
-    background-color: #741ea4;
-    border: 2px solid #e6e0f3;
-}
-
-.library-item-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.library-grid-item {
+/* Styl pro každý jednotlivý box knihovny */
+.library-item-box {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5px;
-    background-color: transparent;
     text-decoration: none;
-    transition: transform 0.2s ease-in-out;
-    height: 70px;
-    width: 100%;
-    box-shadow: none;
+    height: 70px; /* Výška boxu */
+    border-radius: 12px;
     box-sizing: border-box;
+    padding: 7px;
+    transition: transform 0.2s ease-in-out, background-color 0.3s, border-color 0.3s;
 }
 
-.library-grid-item:hover {
-    transform: translateY(-3px);
+.library-item-box:hover {
+    transform: translateY(-3px); /* Efekt při najetí myší */
 }
 
-.library-grid-item img {
-    height: 80%;
+/* Ikona uvnitř boxu */
+.library-item-box img {
+    height: 70%;
     width: auto;
     max-width: 80%;
     object-fit: contain;
 }
 
-#library-grid-container .grid-item-label {
-   display: none;
+/* --- BAREVNÉ VARIANTY APLIKOVANÉ PŘES WRAPPER --- */
+
+/* Varianta Světlá */
+#library-section-wrapper.style-svetle .library-item-box {
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
+}
+
+/* Varianta Fialová */
+#library-section-wrapper.style-fialove .library-item-box {
+    background-color: #741ea4;
+    border: 2px solid #e6e0f3;
 }
