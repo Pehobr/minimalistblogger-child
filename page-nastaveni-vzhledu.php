@@ -52,16 +52,16 @@ $all_sections = function_exists('pehobr_get_home_layout_sections') ? pehobr_get_
                             </div>
                         </div>                    
 
-                        <button class="accordion-btn">Barevnost boxů</button>
+                        <button class="accordion-btn">Průhlednost boxů</button>
                         <div class="accordion-content">
                             <?php
                             // Pole s popisky pro jednotlivé řádky/sekce
                             $themeable_sections = [
-                                'pope_section'        => 'Papežové (fialové pozadí)',
-                                'saints_section'      => 'Svatí a erb (fialové pozadí)',
-                                'actions_section'     => 'Akce - Modlitba, Bible... (fialové pozadí)',
-                                'desktop_nav_section' => 'Navigace pro PC (fialová)',
-                                'library_section'     => 'Knihovny (fialové pozadí)',
+                                'pope_section'        => 'Papežové',
+                                'saints_section'      => 'Augustin, erb, Lev',
+                                'actions_section'     => 'Modlitba, Bible, Inspirace',
+                                'desktop_nav_section' => 'Navigace pro PC',
+                                'library_section'     => 'Knihovny (video,audio,..)',
                             ];
 
                             // Dynamické generování přepínačů
