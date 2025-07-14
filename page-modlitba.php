@@ -102,5 +102,6 @@ get_header();
 </div>
 
 <?php
+get_sidebar(); // <-- PŘIDANÝ ŘÁDEK
 get_footer();
 ?>
