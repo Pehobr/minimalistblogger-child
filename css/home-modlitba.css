@@ -1,0 +1,63 @@
+/* Styly pro sekci s ikonami Modlitba, Bible, Inspirace */
+
+.third-row-section-container {
+    width: 90vw;
+    max-width: 600px;
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.third-row-items-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 15px;
+}
+
+.third-row-section-container .grid-item-wrapper {
+    width: 32%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.third-row-section-container .icon-grid-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 70px;
+    border-radius: 12px;
+    box-sizing: border-box;
+    transition: transform 0.2s ease-in-out, border-color 0.3s, background-color 0.3s;
+}
+
+.third-row-section-container .icon-grid-item:hover {
+    transform: translateY(-3px);
+}
+
+.third-row-section-container .icon-grid-item img {
+    height: 80%;
+    width: auto;
+    max-width: 80%;
+    object-fit: contain;
+    transition: transform 0.2s ease-in-out;
+}
+
+.third-row-section-container .icon-grid-item:hover img {
+    transform: scale(1.1);
+}
+
+/* Barevné varianty */
+.third-row-section-container.style-svetle .icon-grid-item {
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
+}
+.third-row-section-container.style-fialove .icon-grid-item {
+    background-color: #741ea4;
+    border: 2px solid #e6e0f3;
+}
+
+.third-row-section-container .grid-item-label {
+    display: none;
+}

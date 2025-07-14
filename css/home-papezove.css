@@ -1,0 +1,108 @@
+/* Styly pro sekci s papeži na úvodní stránce */
+
+.pope-section-container {
+    width: 90vw;
+    max-width: 600px;
+    border-radius: 12px;
+    padding: 7px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.pope-items-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 15px;
+}
+
+.pope-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+    text-align: center;
+}
+
+.pope-icon-link {
+    display: block;
+    width: 100%;
+}
+
+.pope-icon-link img {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 95px;
+    object-fit: contain;
+    transition: transform 0.2s ease-in-out;
+}
+
+.pope-icon-link:hover img {
+    transform: scale(1.1);
+}
+
+.pope-section-container .grid-item-label {
+    transition: color 0.3s;
+}
+
+/* Varianta Světlá */
+.pope-section-container.style-svetle {
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
+}
+.pope-section-container.style-svetle .grid-item-label {
+    color: #3b0f5d;
+}
+
+/* Varianta Fialová */
+.pope-section-container.style-fialove {
+    background-color: #741ea4;
+    border: 2px solid #e6e0f3;
+}
+.pope-section-container.style-fialove .grid-item-label {
+    color: #ffffff;
+}
+
+/* Styly pro textovou verzi citátů */
+.pope-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 5px;
+}
+
+.pope-text-item {
+    padding: 0;
+}
+
+.pope-text-author {
+    font-family: 'Superclarendon', serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.pope-text-quote p {
+    font-family: 'Superclarendon', serif;
+    font-size: 1rem;
+    line-height: 1.4;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+
+.pope-section-container.style-svetle.view-textove-active .pope-text-author {
+    color: rgb(116, 30, 164);
+}
+.pope-section-container.style-svetle.view-textove-active .pope-text-quote p {
+    color: #000000;
+}
+
+.pope-section-container.style-fialove.view-textove-active .pope-text-author,
+.pope-section-container.style-fialove.view-textove-active .pope-text-quote p {
+    color: #ffffff;
+}

@@ -1,0 +1,73 @@
+/* Styly pro navigační lištu na PC */
+
+#desktop-nav-grid-container {
+    transition: background-color 0.3s, border-color 0.3s;
+    width: 90vw;
+    max-width: 600px;
+    border-radius: 12px;
+    padding: 5px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+}
+
+.desktop-nav-items-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 15px;
+}
+
+.desktop-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 18%;
+    text-align: center;
+}
+
+.desktop-nav-icon-link {
+    display: block;
+    width: 100%;
+    font-size: 38px;
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.desktop-nav-icon-link:hover {
+    transform: scale(1.1);
+}
+
+.desktop-nav-item .grid-item-label {
+    display: none;
+}
+
+/* Varianta Světlá */
+#desktop-nav-grid-container.style-svetle {
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
+}
+#desktop-nav-grid-container.style-svetle .desktop-nav-icon-link {
+    color: #741ea4;
+}
+#desktop-nav-grid-container.style-svetle .desktop-nav-icon-link:hover {
+    color: #870e2c;
+}
+
+/* Varianta Fialová */
+#desktop-nav-grid-container.style-fialove {
+    background-color: #741ea4;
+    border: 2px solid #e6e0f3;
+}
+#desktop-nav-grid-container.style-fialove .desktop-nav-icon-link {
+    color: #ffffff;
+}
+#desktop-nav-grid-container.style-fialove .desktop-nav-icon-link:hover {
+    color: #e6e0f3;
+}
+
+@media screen and (max-width: 991px) {
+    #desktop-nav-grid-container {
+        display: none !important;
+    }
+}

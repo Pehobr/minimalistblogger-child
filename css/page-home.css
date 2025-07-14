@@ -1,14 +1,22 @@
 /*
- * Styly pro úvodní obrazovku s mřížkou ikon (page-home.css)
- * VERZE 6: Ikony "Modlitba, Bible, Inspirace" mají vlastní boxy.
+ * Základní styly pro úvodní obrazovku (page-home.css)
+ * Tento soubor obsahuje obecné styly pro layout, horní info,
+ * modální okna a další sdílené prvky.
+ * Specifické styly pro jednotlivé sekce jsou v samostatných souborech.
  */
 
 body {
     padding-top: 67px;
     padding-bottom: calc(var(--nav-height) + 15px);
 }
-header#masthead.sheader { z-index: 999; }
-.bottom-nav-bar { z-index: 1000; }
+
+header#masthead.sheader { 
+    z-index: 999; 
+}
+
+.bottom-nav-bar { 
+    z-index: 1000; 
+}
 
 #intro-wrapper {
     display: flex;
@@ -49,186 +57,7 @@ header#masthead.sheader { z-index: 999; }
     flex-shrink: 0;
 }
 
-.pope-section-container,
-.saints-section-container {
-    width: 90vw;
-    max-width: 600px;
-    border-radius: 12px;
-    padding: 7px;
-    margin-top: 0;
-    margin-bottom: 12px;
-    box-sizing: border-box;
-    transition: background-color 0.3s, border-color 0.3s;
-}
-
-/* === ÚPRAVA: Kontejner pro třetí řádek slouží jen jako neviditelný obal === */
-.third-row-section-container {
-    width: 90vw;
-    max-width: 600px;
-    margin-top: 0;
-    margin-bottom: 12px;
-    /* Odstraněny vlastnosti pro vnější box */
-}
-
-
-/* --- NOVÉ STYLY PRO BAREVNÉ VARIANTy --- */
-
-/* === Sekce Papežové === */
-.pope-section-container .pope-icon-link img {
-    transition: transform 0.2s ease-in-out;
-}
-.pope-section-container .pope-icon-link:hover img {
-    transform: scale(1.1);
-}
-.pope-section-container .grid-item-label {
-    transition: color 0.3s;
-}
-
-/* Varianta Světlá */
-.pope-section-container.style-svetle {
-    background-color: #F5F2EB;
-    border: 2px solid #3b0f5d;
-}
-.pope-section-container.style-svetle .grid-item-label {
-    color: #3b0f5d;
-}
-
-/* Varianta Fialová */
-.pope-section-container.style-fialove {
-    background-color: #741ea4;
-    border: 2px solid #e6e0f3;
-}
-.pope-section-container.style-fialove .grid-item-label {
-    color: #ffffff;
-}
-
-
-/* === Sekce Svatí === */
-.saints-section-container .saints-item-boxed {
-    transition: background-color 0.3s, border-color 0.3s;
-}
-.saints-section-container .saints-item-boxed .grid-item-label {
-    transition: color 0.3s;
-}
-.saints-section-container .pope-icon-link img {
-    transition: transform 0.2s ease-in-out;
-}
-.saints-section-container .pope-icon-link:hover img {
-    transform: scale(1.1);
-}
-
-/* Varianta Světlá */
-.saints-section-container.style-svetle .saints-item-boxed {
-    background-color: #F5F2EB;
-    border: 2px solid #3b0f5d;
-}
-.saints-section-container.style-svetle .saints-item-boxed .grid-item-label {
-    color: #3b0f5d;
-}
-
-/* Varianta Fialová */
-.saints-section-container.style-fialove .saints-item-boxed {
-    background-color: #741ea4;
-    border: 2px solid #e6e0f3;
-}
-.saints-section-container.style-fialove .saints-item-boxed .grid-item-label {
-    color: #ffffff;
-}
-
-
-/* === Navigace pro PC (Oblíbené, Archiv, atd.) === */
-#desktop-nav-grid-container {
-    transition: background-color 0.3s, border-color 0.3s;
-}
-/* Varianta Světlá */
-#desktop-nav-grid-container.style-svetle {
-    background-color: #F5F2EB;
-    border: 2px solid #3b0f5d;
-}
-#desktop-nav-grid-container.style-svetle .desktop-nav-icon-link {
-    color: #741ea4;
-}
-#desktop-nav-grid-container.style-svetle .desktop-nav-icon-link:hover {
-    color: #870e2c;
-}
-/* Varianta Fialová */
-#desktop-nav-grid-container.style-fialove {
-    background-color: #741ea4;
-    border: 2px solid #e6e0f3;
-}
-#desktop-nav-grid-container.style-fialove .desktop-nav-icon-link {
-    color: #ffffff;
-}
-#desktop-nav-grid-container.style-fialove .desktop-nav-icon-link:hover {
-    color: #e6e0f3;
-}
-
-/* --- KONEC STYLŮ PRO BAREVNÉ VARIANTY --- */
-
-
-.saints-section-container {
-    border: none;
-    background-color: transparent;
-}
-
-.pope-items-wrapper,
-.third-row-items-wrapper {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    gap: 15px;
-}
-
-.saints-items-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 7px;
-}
-
-.saints-item-boxed,
-.saints-item-center {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-.saints-item-boxed {
-    width: 32%;
-    border-radius: 12px;
-    padding: 5px;
-    box-sizing: border-box;
-}
-
-.saints-item-center {
-    width: 28%;
-}
-.saints-item-center img {
-    max-height: 105px !important;
-}
-
-.pope-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 30%;
-    text-align: center;
-}
-.pope-icon-link {
-    display: block;
-    width: 100%;
-}
-.pope-icon-link img,
-.saints-item-boxed img,
-.saints-item-center img {
-    width: 100%;
-    height: auto;
-    display: block;
-    max-height: 95px;
-    object-fit: contain;
-}
-
+/* Obecný popisek pod ikonou (používá se ve více sekcích) */
 .grid-item-label {
     margin-top: 4px;
     font-size: 0.7rem;
@@ -236,204 +65,254 @@ header#masthead.sheader { z-index: 999; }
     text-shadow: none;
 }
 
-#library-grid-container {
-    display: grid;
-    gap: 15px;
-    width: 90vw;
-    max-width: 600px;
-    margin-top: 0;
-    margin-bottom: 12px;
-    grid-template-columns: repeat(4, 1fr);
-}
-
-.grid-item-wrapper,
-.library-item-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* === NOVÉ STYLY pro ikony "Modlitba, Bible, Inspirace" === */
-.third-row-section-container .grid-item-wrapper {
-    width: 32%;
-}
-.third-row-section-container .icon-grid-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 70px; /* Sjednocená výška */
-    border-radius: 12px;
-    box-sizing: border-box;
-    transition: transform 0.2s ease-in-out, border-color 0.3s, background-color 0.3s;
-}
-.third-row-section-container .icon-grid-item:hover {
-    transform: translateY(-3px);
-}
-.third-row-section-container .icon-grid-item img {
-    transition: transform 0.2s ease-in-out;
-}
-.third-row-section-container .icon-grid-item:hover img {
-    transform: scale(1.1);
-}
-/* Barevné varianty pro jednotlivé boxy */
-.third-row-section-container.style-svetle .icon-grid-item {
-    background-color: #F5F2EB;
-    border: 2px solid #3b0f5d;
-}
-.third-row-section-container.style-fialove .icon-grid-item {
-    background-color: #741ea4;
-    border: 2px solid #e6e0f3;
-}
-.third-row-section-container .grid-item-label {
-    display: none;
-}
-
-.library-grid-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 5px;
-    background-color: transparent;
-    text-decoration: none;
-    transition: transform 0.2s ease-in-out;
-    height: 70px; /* Sjednocená výška */
-    width: 100%;
-    border: 2px solid #e6e0f3;
-    border-radius: 12px;
-    box-shadow: none;
-    box-sizing: border-box;
-}
-
-.library-grid-item:hover {
-    transform: translateY(-3px);
-}
-
-.icon-grid-item img,
-.library-grid-item img {
-    height: 80%;
-    width: auto;
-    max-width: 80%;
-    object-fit: contain;
-}
-
-#library-grid-container .grid-item-label {
-   display: none;
-}
+/* --- Styly pro modální okna (citáty, video, obrázky) --- */
 
 .quote-modal-overlay {
-    display: none; position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.75); z-index: 10001;
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0, 0, 0, 0.75); 
+    z-index: 10001;
     overscroll-behavior: contain;
 }
+
 .quote-modal-container {
     display: none;
     flex-direction: column;
-    position: fixed; top: 50%; left: 50%;
+    position: fixed; 
+    top: 50%; 
+    left: 50%;
     transform: translate(-50%, -50%);
-    width: 90%; max-width: 500px; max-height: 85vh;
-    background-color: #e6e0f3; border: 2px solid #3b0f5d; border-radius: 12px;
+    width: 90%; 
+    max-width: 500px; 
+    max-height: 85vh;
+    background-color: #e6e0f3; 
+    border: 2px solid #3b0f5d; 
+    border-radius: 12px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-    padding: 50px 15px 15px 15px; z-index: 10002; box-sizing: border-box;
+    padding: 50px 15px 15px 15px; 
+    z-index: 10002; 
+    box-sizing: border-box;
     overscroll-behavior: contain;
 }
+
 .quote-modal-content {
-    font-family: 'Superclarendon', serif; font-size: 1rem;
-    color: #3b0f5d; line-height: 1.4; text-align: left;
+    font-family: 'Superclarendon', serif; 
+    font-size: 1rem;
+    color: #3b0f5d; 
+    line-height: 1.4; 
+    text-align: left;
     flex-grow: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
 }
-.quote-modal-content p { margin: 0 0 0.75em 0; padding: 0; }
-.quote-modal-content p:last-child { margin-bottom: 0; }
 
-.quote-modal-close-btn, .quote-modal-favorite-btn {
-    position: absolute; background: none; border: none;
-    line-height: 1; color: #3b0f5d; cursor: pointer; padding: 0; z-index: 10;
+.quote-modal-content p { 
+    margin: 0 0 0.75em 0; 
+    padding: 0; 
 }
-.quote-modal-close-btn { top: 10px; right: 15px; font-size: 32px; }
-.quote-modal-favorite-btn { top: 12px; left: 15px; font-size: 23px; transition: color 0.2s ease, transform 0.2s ease; }
-.quote-modal-favorite-btn:hover { transform: scale(1.1); }
-.quote-modal-favorite-btn.is-favorite .fa { font-family: "FontAwesome"; font-weight: 900; color: #ffc107; }
 
-.quote-modal-container.video-modal { padding: 40px 10px 10px 10px; background-color: #000; border: 2px solid #fff; }
-.quote-modal-container.video-modal .quote-modal-content { padding: 0; overflow: hidden; }
-.quote-modal-container.video-modal .quote-modal-close-btn { color: #fff; }
-.responsive-video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
-.responsive-video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+.quote-modal-content p:last-child { 
+    margin-bottom: 0; 
+}
 
-.quote-modal-container.image-modal { background-color: transparent; border: none; box-shadow: none; padding: 0; width: 100%; height: 100%; max-width: none; max-height: none; border-radius: 0; }
-.quote-modal-container.image-modal .quote-modal-content { display: flex; align-items: center; justify-content: center; padding: 0; height: 100%; }
-.quote-modal-container.image-modal .quote-modal-content img { width: 100%; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; box-shadow: 0 5px 25px rgba(0,0,0,0.5); }
-.quote-modal-container.image-modal .quote-modal-close-btn { color: #ffffff; top: 15px; right: 15px; font-size: 35px; text-shadow: 0 0 5px rgba(0,0,0,0.7); }
+.quote-modal-close-btn, 
+.quote-modal-favorite-btn {
+    position: absolute; 
+    background: none; 
+    border: none;
+    line-height: 1; 
+    color: #3b0f5d; 
+    cursor: pointer; 
+    padding: 0; 
+    z-index: 10;
+}
+
+.quote-modal-close-btn { 
+    top: 10px; 
+    right: 15px; 
+    font-size: 32px; 
+}
+
+.quote-modal-favorite-btn { 
+    top: 12px; 
+    left: 15px; 
+    font-size: 23px; 
+    transition: color 0.2s ease, transform 0.2s ease; 
+}
+
+.quote-modal-favorite-btn:hover { 
+    transform: scale(1.1); 
+}
+
+.quote-modal-favorite-btn.is-favorite .fa { 
+    font-family: "FontAwesome"; 
+    font-weight: 900; 
+    color: #ffc107; 
+}
+
+/* Modální okno pro video */
+.quote-modal-container.video-modal { 
+    padding: 40px 10px 10px 10px; 
+    background-color: #000; 
+    border: 2px solid #fff; 
+}
+.quote-modal-container.video-modal .quote-modal-content { 
+    padding: 0; 
+    overflow: hidden; 
+}
+.quote-modal-container.video-modal .quote-modal-close-btn { 
+    color: #fff; 
+}
+.responsive-video-wrapper { 
+    position: relative; 
+    padding-bottom: 56.25%; 
+    height: 0; 
+}
+.responsive-video-wrapper iframe { 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    border: 0; 
+}
+
+/* Modální okno pro obrázky */
+.quote-modal-container.image-modal { 
+    background-color: transparent; 
+    border: none; 
+    box-shadow: none; 
+    padding: 0; 
+    width: 100%; 
+    height: 100%; 
+    max-width: none; 
+    max-height: none; 
+    border-radius: 0; 
+}
+.quote-modal-container.image-modal .quote-modal-content { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 0; 
+    height: 100%; 
+}
+.quote-modal-container.image-modal .quote-modal-content img { 
+    width: 100%; 
+    height: auto; 
+    max-width: 100%; 
+    max-height: 100%; 
+    object-fit: contain; 
+    box-shadow: 0 5px 25px rgba(0,0,0,0.5); 
+}
+.quote-modal-container.image-modal .quote-modal-close-btn { 
+    color: #ffffff; 
+    top: 15px; 
+    right: 15px; 
+    font-size: 35px; 
+    text-shadow: 0 0 5px rgba(0,0,0,0.7); 
+}
+
+/* --- Styly pro audio přehrávač v modálním okně --- */
+
+.modal-audio-player { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px; 
+    padding: 0; 
+    margin-top: 15px; 
+}
+.map-top-row { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    width: 100%; 
+    gap: 15px; 
+}
+.map-play-pause-btn { 
+    flex-shrink: 0; 
+    width: 27px; 
+    height: 27px; 
+    background-color: transparent; 
+    border: none; 
+    color: #3b0f5d; 
+    border-radius: 50%; 
+    font-size: 20px; 
+    cursor: pointer; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    transition: transform 0.2s ease, color 0.2s ease; 
+    padding: 0; 
+    padding-left: 3px; 
+}
+.map-play-pause-btn:hover { 
+    color: #870e2c; 
+    transform: scale(1.1); 
+}
+.map-play-pause-btn .fa-pause { 
+    padding-left: 0; 
+}
+.map-time-display { 
+    display: flex; 
+    align-items: center; 
+    font-family: 'Superclarendon', serif; 
+    font-weight: bold; 
+    font-size: 14px; 
+    color: #555; 
+    gap: 4px; 
+}
+.map-slider-wrapper { 
+    width: 100%; 
+    height: 15px; 
+    display: flex; 
+    align-items: center; 
+}
+.map-seek-slider { 
+    -webkit-appearance: none; 
+    appearance: none; 
+    width: 100%; 
+    height: 7px; 
+    background: #9d87ae; 
+    outline: none; 
+    border-radius: 4px; 
+    cursor: pointer; 
+}
+.map-seek-slider::-webkit-slider-thumb { 
+    -webkit-appearance: none; 
+    appearance: none; 
+    width: 15px; 
+    height: 15px; 
+    background: #3b0f5d; 
+    border-radius: 50%; 
+    cursor: pointer; 
+    border: none; 
+    margin-top: -4px; 
+}
+.map-seek-slider::-moz-range-thumb { 
+    width: 15px; 
+    height: 15px; 
+    background: #3b0f5d; 
+    border-radius: 50%; 
+    cursor: pointer; 
+    border: none; 
+}
+
+/* --- Media Queries pro menší obrazovky --- */
 
 @media (max-width: 480px) {
-    .pope-section-container, .saints-section-container, .third-row-section-container, #library-grid-container { gap: 10px; row-gap: 20px; }
-    .saints-item-boxed img, .icon-grid-item, .library-grid-item { height: 80px; }
-    #daily-info-title, #daily-info-date { font-size: 1rem; }
-}
-
-.modal-audio-player { display: flex; flex-direction: column; gap: 8px; padding: 0; margin-top: 15px; }
-.map-top-row { display: flex; justify-content: center; align-items: center; width: 100%; gap: 15px; }
-.map-play-pause-btn { flex-shrink: 0; width: 27px; height: 27px; background-color: transparent; border: none; color: #3b0f5d; border-radius: 50%; font-size: 20px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: transform 0.2s ease, color 0.2s ease; padding: 0; padding-left: 3px; }
-.map-play-pause-btn:hover { color: #870e2c; transform: scale(1.1); }
-.map-play-pause-btn .fa-pause { padding-left: 0; }
-.map-time-display { display: flex; align-items: center; font-family: 'Superclarendon', serif; font-weight: bold; font-size: 14px; color: #555; gap: 4px; }
-.map-slider-wrapper { width: 100%; height: 15px; display: flex; align-items: center; }
-.map-seek-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 7px; background: #9d87ae; outline: none; border-radius: 4px; cursor: pointer; }
-.map-seek-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 15px; height: 15px; background: #3b0f5d; border-radius: 50%; cursor: pointer; border: none; margin-top: -4px; }
-.map-seek-slider::-moz-range-thumb { width: 15px; height: 15px; background: #3b0f5d; border-radius: 50%; cursor: pointer; border: none; }
-
-
-@media screen and (max-width: 991px) {
-    #desktop-nav-grid-container {
-        display: none !important;
+    .pope-section-container, .saints-section-container, .third-row-section-container, #library-grid-container { 
+        gap: 10px; 
+        row-gap: 20px; 
     }
-}
-
-
-/* === STYLY PRO TEXTOVOU VERZI CITÁTŮ PAPEŽŮ (UPRAVENO PRO LEPŠÍ ČITELNOST) === */
-.pope-text-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Zvětšená mezera pro lepší oddělení */
-    padding: 5px;
-}
-
-.pope-text-item {
-    padding: 0;
-}
-
-.pope-text-author {
-    font-family: 'Superclarendon', serif;
-    font-size: 1.1rem;
-    font-weight: bold;
-    margin-top: 0;
-    margin-bottom: 5px;
-}
-
-.pope-text-quote p {
-    font-family: 'Superclarendon', serif;
-    font-size: 1rem;
-    line-height: 1.4;
-    font-weight: normal;
-    margin: 0;
-    padding: 0;
-}
-
-/* --- Barvy pro SVĚTLÉ pozadí --- */
-.pope-section-container.style-svetle.view-textove-active .pope-text-author {
-    color: rgb(116, 30, 164); /* Požadovaná fialová */
-}
-.pope-section-container.style-svetle.view-textove-active .pope-text-quote p {
-    color: #000000; /* Požadovaná černá */
-}
-
-/* --- Barvy pro FIALOVÉ pozadí --- */
-.pope-section-container.style-fialove.view-textove-active .pope-text-author {
-    color: #ffffff; /* Bílá pro dobrou čitelnost */
-}
-.pope-section-container.style-fialove.view-textove-active .pope-text-quote p {
-    color: #ffffff; /* Bílá pro dobrou čitelnost */
+    .saints-item-boxed img, .icon-grid-item, .library-grid-item { 
+        height: 80px; 
+    }
+    #daily-info-title, #daily-info-date { 
+        font-size: 1rem; 
+    }
 }

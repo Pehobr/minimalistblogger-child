@@ -1,0 +1,48 @@
+/* Styly pro sekci knihoven (Video, Audio, Rádio, Podcast) */
+
+#library-grid-container {
+    display: grid;
+    gap: 15px;
+    width: 90vw;
+    max-width: 600px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.library-item-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.library-grid-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    background-color: transparent;
+    text-decoration: none;
+    transition: transform 0.2s ease-in-out;
+    height: 70px;
+    width: 100%;
+    border: 2px solid #e6e0f3;
+    border-radius: 12px;
+    box-shadow: none;
+    box-sizing: border-box;
+}
+
+.library-grid-item:hover {
+    transform: translateY(-3px);
+}
+
+.library-grid-item img {
+    height: 80%;
+    width: auto;
+    max-width: 80%;
+    object-fit: contain;
+}
+
+#library-grid-container .grid-item-label {
+   display: none;
+}

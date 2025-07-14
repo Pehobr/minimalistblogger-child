@@ -1,7 +1,7 @@
 <?php
 /**
  * Načítání všech CSS stylů a JavaScriptových skriptů.
- * VERZE 8: Přidáno načítání skriptů pro řazení sekcí na úvodní stránce.
+ * VERZE 9: Rozdělení stylů pro úvodní stránku do samostatných souborů.
  */
 
 // Zabráníme přímému přístupu
@@ -32,8 +32,20 @@ function minimalistblogger_child_enqueue_assets() {
         wp_enqueue_script( 'minimalistblogger-nastaveni-panel-js', get_stylesheet_directory_uri() . '/js/nastaveni-panel.js', array('jquery'), $theme_version, true );
     }
 
+    // --- ZAČÁTEK ÚPRAV PRO ÚVODNÍ STRÁNKU ---
     if ( is_page_template('page-home.php') ) {
+        // 1. Načtení hlavního (obecného) CSS souboru pro homepage
         wp_enqueue_style( 'postni-kapky-home-styles', get_stylesheet_directory_uri() . '/css/page-home.css', array(), filemtime( get_stylesheet_directory() . '/css/page-home.css' ) );
+
+        // 2. Načtení nových specifických stylů pro jednotlivé sekce
+        $home_styles_dependency = array('postni-kapky-home-styles');
+        wp_enqueue_style( 'home-papezove-style', get_stylesheet_directory_uri() . '/css/home-papezove.css', $home_styles_dependency, filemtime(get_stylesheet_directory() . '/css/home-papezove.css'));
+        wp_enqueue_style( 'home-augustin-style', get_stylesheet_directory_uri() . '/css/home-augustin.css', $home_styles_dependency, filemtime(get_stylesheet_directory() . '/css/home-augustin.css'));
+        wp_enqueue_style( 'home-modlitba-style', get_stylesheet_directory_uri() . '/css/home-modlitba.css', $home_styles_dependency, filemtime(get_stylesheet_directory() . '/css/home-modlitba.css'));
+        wp_enqueue_style( 'home-knihovny-style', get_stylesheet_directory_uri() . '/css/home-knihovny.css', $home_styles_dependency, filemtime(get_stylesheet_directory() . '/css/home-knihovny.css'));
+        wp_enqueue_style( 'home-lista-pc-style', get_stylesheet_directory_uri() . '/css/home-lista-pc.css', $home_styles_dependency, filemtime(get_stylesheet_directory() . '/css/home-lista-pc.css'));
+
+        // 3. Načtení dalších stylů a skriptů pro homepage (např. donation popup)
         if (file_exists(get_stylesheet_directory() . '/css/donation-popup.css')) {
             wp_enqueue_style( 'donation-popup-style', get_stylesheet_directory_uri() . '/css/donation-popup.css', array(), filemtime( get_stylesheet_directory() . '/css/donation-popup.css' ) );
         }
@@ -46,6 +58,7 @@ function minimalistblogger_child_enqueue_assets() {
             array( 'show_popup' => get_option('pehobr_show_donation_popup') === 'on' )
         );
     }
+    // --- KONEC ÚPRAV PRO ÚVODNÍ STRÁNKU ---
 
     if ( is_page_template('page-oblibene.php') ) {
         wp_enqueue_style( 'minimalistblogger-oblibene-style', get_stylesheet_directory_uri() . '/css/oblibene.css', array('chld_thm_cfg_parent'), filemtime( get_stylesheet_directory() . '/css/oblibene.css' ) );
@@ -106,7 +119,7 @@ function minimalistblogger_child_enqueue_assets() {
         }
     }
 
-       if ( is_page_template('page-nastaveni-vzhledu.php') ) {
+    if ( is_page_template('page-nastaveni-vzhledu.php') ) {
         if (file_exists(get_stylesheet_directory() . '/js/user-settings.js')) {
             wp_enqueue_script( 'pehobr-user-settings-js', get_stylesheet_directory_uri() . '/js/user-settings.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/user-settings.js' ), true );
         }
@@ -114,7 +127,6 @@ function minimalistblogger_child_enqueue_assets() {
 
     // Načtení stylů a skriptů pro nastavení ikon mobilní lišty
     if ( is_page_template('page-ikony-mobilni-listy.php') ) {
-        // Získáme data o child šabloně, hlavně její verzi
         $child_theme = wp_get_theme();
         $version = $child_theme->get('Version');
 
@@ -123,7 +135,7 @@ function minimalistblogger_child_enqueue_assets() {
                 'page-ikony-mobilni-listy-style', 
                 get_stylesheet_directory_uri() . '/css/page-ikony-mobilni-listy.css', 
                 array(), 
-                $version // Použijeme verzi šablony
+                $version
             );
         }
         if (file_exists(get_stylesheet_directory() . '/js/page-ikony-mobilni-listy.js')) {
@@ -131,7 +143,7 @@ function minimalistblogger_child_enqueue_assets() {
                 'page-ikony-mobilni-listy-js', 
                 get_stylesheet_directory_uri() . '/js/page-ikony-mobilni-listy.js', 
                 array('jquery'), 
-                $version, // Použijeme verzi šablony
+                $version, 
                 true 
             );
         }
@@ -148,18 +160,15 @@ function minimalistblogger_child_enqueue_assets() {
         wp_enqueue_script( 'nastaveni-praveho-menu-js', get_stylesheet_directory_uri() . '/js/nastaveni-praveho-menu.js', array('jquery'), time(), true );
     }
 
-// Načtení skriptů a stylů pro stránku "Moje životní situace"
-if ( is_page_template('page-zivotni-situace.php') ) {
-    // Načtení CSS
-    wp_enqueue_style( 'zivotni-situace-style', get_stylesheet_directory_uri() . '/css/zivotni-situace.css', array(), filemtime( get_stylesheet_directory() . '/css/zivotni-situace.css' ) );
+    // Načtení skriptů a stylů pro stránku "Moje životní situace"
+    if ( is_page_template('page-zivotni-situace.php') ) {
+        wp_enqueue_style( 'zivotni-situace-style', get_stylesheet_directory_uri() . '/css/zivotni-situace.css', array(), filemtime( get_stylesheet_directory() . '/css/zivotni-situace.css' ) );
+        wp_enqueue_script( 'zivotni-situace-js', get_stylesheet_directory_uri() . '/js/zivotni-situace.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/zivotni-situace.js' ), true );
+    }
 
-    // Načtení JavaScriptu
-    wp_enqueue_script( 'zivotni-situace-js', get_stylesheet_directory_uri() . '/js/zivotni-situace.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/zivotni-situace.js' ), true );
-}
-
-if ( is_page_template('page-inspirace-ai.php') ) {
-    wp_enqueue_script( 'inspirace-ai-js', get_stylesheet_directory_uri() . '/js/inspirace-ai.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/inspirace-ai.js' ), true );
-}
+    if ( is_page_template('page-inspirace-ai.php') ) {
+        wp_enqueue_script( 'inspirace-ai-js', get_stylesheet_directory_uri() . '/js/inspirace-ai.js', array('jquery'), filemtime( get_stylesheet_directory() . '/js/inspirace-ai.js' ), true );
+    }
     
     wp_enqueue_script( 'sidebar-menu-js', get_stylesheet_directory_uri() . '/js/sidebar-menu.js', array('jquery'), wp_get_theme()->get('Version'), true );
 }
@@ -186,7 +195,6 @@ function pehobr_enqueue_admin_scripts($hook) {
         }
     }
     
-    // <<< ZAČÁTEK ZMĚN
     // Načtení skriptů pro řazení sekcí na úvodní stránce
     if ( 'postni-kapky_page_pehobr-home-layout-settings' === $hook ) {
         wp_enqueue_script('jquery-ui-sortable');
@@ -200,10 +208,8 @@ function pehobr_enqueue_admin_scripts($hook) {
             ]);
         }
     }
-    // <<< KONEC ZMĚN
 }
 add_action( 'admin_enqueue_scripts', 'pehobr_enqueue_admin_scripts' );
-
 
 function moje_aplikace_assets() {
     $theme_version = wp_get_theme()->get('Version');

@@ -1,0 +1,81 @@
+/* Styly pro sekci se sv. Augustinem, erbem a Lvem XIV. */
+
+.saints-section-container {
+    width: 90vw;
+    max-width: 600px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+    transition: background-color 0.3s, border-color 0.3s;
+    border: none;
+    background-color: transparent;
+}
+
+.saints-items-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 7px;
+}
+
+.saints-item-boxed,
+.saints-item-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.saints-item-boxed {
+    width: 32%;
+    border-radius: 12px;
+    padding: 5px;
+    box-sizing: border-box;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.saints-item-center {
+    width: 28%;
+}
+
+.saints-item-center img {
+    max-height: 105px !important;
+}
+
+.saints-item-boxed img {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 95px;
+    object-fit: contain;
+}
+
+.saints-item-boxed .pope-icon-link img {
+    transition: transform 0.2s ease-in-out;
+}
+
+.saints-item-boxed .pope-icon-link:hover img {
+    transform: scale(1.1);
+}
+
+.saints-section-container .saints-item-boxed .grid-item-label {
+    transition: color 0.3s;
+}
+
+/* Varianta Světlá */
+.saints-section-container.style-svetle .saints-item-boxed {
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
+}
+.saints-section-container.style-svetle .saints-item-boxed .grid-item-label {
+    color: #3b0f5d;
+}
+
+/* Varianta Fialová */
+.saints-section-container.style-fialove .saints-item-boxed {
+    background-color: #741ea4;
+    border: 2px solid #e6e0f3;
+}
+.saints-section-container.style-fialove .saints-item-boxed .grid-item-label {
+    color: #ffffff;
+}
