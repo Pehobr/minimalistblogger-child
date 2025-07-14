@@ -54,7 +54,7 @@ get_header();
             <div class="modlitba-container">
                 <article id="post-<?php echo $post_to_display->ID; ?>" <?php post_class('', $post_to_display->ID); ?>>
                     <header class="entry-header">
-                        <h1 class="entry-title">Zamyšlení a modlitba</h1>
+                        <h1 class="entry-title">Dnešní modlitba</h1>
                     </header>
                     <div class="entry-content">
                         <?php if ($modlitba_text) : ?>

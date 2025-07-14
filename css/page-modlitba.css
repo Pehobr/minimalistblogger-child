@@ -1,39 +1,34 @@
 /**
  * Styly pro stránku s denní modlitbou (/css/page-modlitba.css)
- * VERZE 4: Minimalizace odsazení v boxech.
+ * VERZE 5: Změna písma na tlačítku archivu na Merriweather.
  */
 
 /* --- Základní styly pro kontejner a text --- */
-
-/* Styl pro vnější kontejner každé modlitby (aktuální i archivní) */
 .modlitba-container article {
     background-color: #e6e0f3 !important;
     border: 2px solid #3b0f5d !important;
-    padding: 7px !important; /* ZMENŠENÉ ODSADZENÍ */
+    padding: 7px !important;
     border-radius: 8px !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05) !important;
     margin-top: 20px;
 }
 
-/* Nadpis modlitby */
 .modlitba-container .entry-title {
     text-align: center;
-    font-size: 1.1rem; /* Zmenšený nadpis */
+    font-size: 1.1rem;
     color: #870e2c;
-    margin-bottom: 7px; /* Zmenšená mezera */
-    padding-bottom: 5px; /* Zmenšené odsazení pod nadpisem */
-    border-bottom: 1px solid rgba(59, 15, 93, 0.2); /* Jemnější oddělovač */
+    margin-bottom: 7px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(59, 15, 93, 0.2);
 }
 
-/* Text modlitby */
 .modlitba-text-content {
     font-size: 1rem;
-    line-height: 1.5; /* Mírně zhuštěnější řádkování */
-    margin-bottom: 15px; /* Zmenšená mezera */
+    line-height: 1.5;
+    margin-bottom: 15px;
     text-align: center;
     color: #333;
 }
-/* Odstranění defaultních mezer u odstavců */
 .modlitba-text-content p {
     margin-bottom: 0.5em;
 }
@@ -41,8 +36,6 @@
     margin-bottom: 0;
 }
 
-
-/* Skrytí původního audio tagu */
 .modlitba-audio-element {
     display: none;
 }
@@ -53,15 +46,15 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding: 0; /* Odstraněn padding */
+    padding: 0;
     box-sizing: border-box;
-    margin-top: 10px; /* Zmenšená mezera */
+    margin-top: 10px;
 }
 
 .modlitba-player-container .player-controls {
     display: flex;
     align-items: center;
-    margin-bottom: 7px; /* Zmenšená mezera */
+    margin-bottom: 7px;
 }
 
 .modlitba-player-container .player-control-btn {
@@ -94,7 +87,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px; /* Zmenšená mezera */
+    gap: 5px;
 }
 
 .modlitba-player-container .progress-bar-container {
@@ -140,6 +133,7 @@
     font-size: 1.2rem;
     margin-top: 30px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    font-family: 'Merriweather', serif; /* <<< TOTO JE PŘIDANÝ ŘÁDEK */
 }
 
 .modlitba-accordion-btn:hover {
