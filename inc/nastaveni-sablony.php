@@ -45,3 +45,32 @@ function pehobr_add_liturgical_color_body_class($classes) {
     return $classes;
 }
 add_filter('body_class', 'pehobr_add_liturgical_color_body_class');
+
+function pehobr_render_home_modlitba_section() {
+    $modlitba_page_id = get_option('home_modlitba_page_id');
+    $modlitba_post = $modlitba_page_id ? get_post($modlitba_page_id) : null;
+
+    if ($modlitba_post) {
+        $ikona = get_field('ikona', $modlitba_page_id);
+        $ikona_url = $ikona ? $ikona['url'] : '';
+        $ikona_alt = $ikona ? $ikona['alt'] : 'Ikona modlitby';
+
+        // Získáme URL nové stránky s modlitbou
+        $denni_modlitba_url = home_url('/denni-modlitba/');
+
+        echo '<div id="home-modlitba" class="home-section">';
+        
+        // PŮVODNÍ KÓD ODKAZU S VYSKAKOVACÍM OKNEM:
+        // echo '<a href="#" class="modlitba-popup-trigger" data-modlitba-id="' . $modlitba_page_id . '">';
+        
+        // NOVÝ KÓD S PŘÍMÝM ODKAZEM:
+        echo '<a href="' . esc_url($denni_modlitba_url) . '">';
+
+        if ($ikona_url) {
+            echo '<img src="' . esc_url($ikona_url) . '" alt="' . esc_attr($ikona_alt) . '" class="modlitba-ikona">';
+        }
+        echo '<h2>' . esc_html($modlitba_post->post_title) . '</h2>';
+        echo '</a>';
+        echo '</div>';
+    }
+}

@@ -2,7 +2,7 @@
 /**
  * Template Name: Úvodní stránka aplikace Home
  * Description: Speciální úvodní stránka, která dynamicky načítá denní obsah a řadí sekce podle nastavení.
- * VERZE 44: Rozdělení knihoven do samostatných boxů.
+ * VERZE 45: Oprava odkazu u ikony Modlitba na přímý odkaz.
  * @package minimalistblogger-child
  */
 
@@ -142,7 +142,7 @@ $saints_nav_style = get_option('pehobr_saints_nav_style', 'svetle');
         </div>
         <div class="saints-item-boxed">
              <a href="<?php echo esc_url(home_url('/papez-lev/')); ?>">
-                <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-lev.png'); ?>" alt="Lev XIV.">
+                 <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/ikona-lev.png'); ?>" alt="Lev XIV.">
             </a>
             <span class="grid-item-label">Lev XIV.</span>
         </div>
@@ -161,13 +161,24 @@ $actions_nav_style = get_option('pehobr_actions_nav_style', 'svetle');
         <?php
         for ($i = 5; $i < count($grid_items); $i++):
             $item = $grid_items[$i];
-            $content_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
-            $has_content = !empty($content_html) || $item['type'] === 'ai_inspiration';
-            $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/');
             $icon_to_use = ($actions_nav_style === 'fialove' && isset($item['light_icon'])) ? $item['light_icon'] : $item['icon'];
+
+            // === ZAČÁTEK KLÍČOVÉ ÚPRAVY ===
+            if ($item['name'] === 'Modlitba') {
+                // Pro "Modlitbu" vždy použijeme přímý odkaz a zrušíme atributy pro popup
+                $link_url = home_url('/denni-modlitba/');
+                $data_attributes = '';
+            } else {
+                // Původní logika pro ostatní položky (Bible, Inspirace)
+                $content_html = isset($item['citat_key']) && isset($quotes[$item['citat_key']]) ? $quotes[$item['citat_key']] : '';
+                $has_content = !empty($content_html) || $item['type'] === 'ai_inspiration';
+                $link_url = $has_content ? '#' : home_url('/' . $item['slug'] . '/');
+                $data_attributes = $has_content ? 'data-target-id="quote-content-' . esc_attr($item['citat_key']) . '" data-type="' . esc_attr($item['type']) . '" data-author-name="' . esc_attr($item['name']) . '"' : '';
+            }
+            // === KONEC KLÍČOVÉ ÚPRAVY ===
         ?>
             <div class="grid-item-wrapper">
-                <a href="<?php echo esc_url($link_url); ?>" class="icon-grid-item" <?php if ($has_content): ?>data-target-id="quote-content-<?php echo esc_attr($item['citat_key']); ?>" data-type="<?php echo esc_attr($item['type']); ?>" data-author-name="<?php echo esc_attr($item['name']); ?>"<?php endif; ?>>
+                <a href="<?php echo esc_url($link_url); ?>" class="icon-grid-item" <?php echo $data_attributes; ?>>
                     <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $icon_to_use); ?>" alt="<?php echo esc_attr($item['name']); ?>">
                 </a>
             </div>
@@ -251,13 +262,13 @@ $sections_html['library_section'] = ob_get_clean();
                 if ($item['type'] === 'video') {
                      $modal_content = $content_html;
                 } else {
-                    $modal_content = wpautop($content_html);
-                    if (isset($item['audio_key'])) {
-                        $audio_url = get_post_meta($source_post_id, $item['audio_key'], true);
-                        if (!empty($audio_url)) {
-                             $modal_content .= '<div class="modal-audio-player" data-audio-src="' . esc_url($audio_url) . '">...</div>';
-                        }
-                    }
+                     $modal_content = wpautop($content_html);
+                     if (isset($item['audio_key'])) {
+                         $audio_url = get_post_meta($source_post_id, $item['audio_key'], true);
+                         if (!empty($audio_url)) {
+                              $modal_content .= '<div class="modal-audio-player" data-audio-src="' . esc_url($audio_url) . '">...</div>';
+                         }
+                     }
                 }
                 ?>
                 <div id="quote-content-<?php echo esc_attr($item['citat_key']); ?>">
