@@ -2,7 +2,7 @@
 /**
  * Template Name: Nastavení vzhledu pro uživatele
  * Description: Umožňuje uživatelům nastavit si, které sekce chtějí vidět a jak se mají zobrazovat.
- * VERZE 7: Přidány návrhy barev pro světlé téma.
+ * VERZE 8: Finální restrukturalizace nastavení na tři sekce.
  * @package minimalistblogger-child
  */
 
@@ -37,29 +37,15 @@ $all_sections = function_exists('pehobr_get_home_layout_sections') ? pehobr_get_
                             <?php endforeach; ?>
                         </div>
 
-                        <button class="accordion-btn">Vzhled boxů</button>
+                        <button class="accordion-btn">Barva boxů</button>
                         <div class="accordion-content">
-                            
-                            <div class="setting-item setting-item-pope-display">
-                                <label for="toggle-pope-display" class="setting-label">Citáty papežů</label>
-                                <div class="toggle-container">
-                                    <span class="toggle-label">Grafika</span>
-                                    <label class="switch">
-                                        <input type="checkbox" class="display-toggle" id="toggle-pope-display" data-section-slug="pope_section_display">
-                                        <span class="slider round"></span>
-                                    </label>
-                                    <span class="toggle-label">Text</span>
-                                </div>
-                            </div>
-                            
                             <div class="setting-item">
                                 <label for="light-theme-color-picker" class="setting-label">Barva světlého pozadí</label>
                                 <div class="color-picker-wrapper">
                                     <input type="color" id="light-theme-color-picker" value="#f5f2eb">
                                     <div class="color-suggestions">
                                         <?php
-                                        // Pole s navrhovanými barvami
-                                        $suggested_colors = ['#FFE8FF', '#E8D5B5', '#FFFADE', '#E3EFFD', '#FEF7FF','#f5f2eb'];
+                                        $suggested_colors = ['#E8D5B5', '#FFFADE','#f5f2eb','#FFE8FF',  '#E3EFFD', '#FEF7FF'];
                                         foreach ($suggested_colors as $color) {
                                             echo '<button class="color-suggestion-btn" data-color="' . $color . '" style="background-color:' . $color . ';" title="' . $color . '"></button>';
                                         }
@@ -70,14 +56,13 @@ $all_sections = function_exists('pehobr_get_home_layout_sections') ? pehobr_get_
 
                             <hr class="setting-divider">
 
-                            <h3 class="setting-subtitle">Barevnost boxů</h3>
-                            
+                            <h4 class="setting-subtitle">Barevnost boxů</h4>
                             <?php
                             $themeable_sections = [
                                 'pope_section'        => 'Papežové',
-                                'saints_section'      => 'Augustin, Lev',
+                                'saints_section'      => 'Augustin, Lev XIV.',
                                 'actions_section'     => 'Modlitba, Bible..',
-                                'desktop_nav_section' => 'Navigace pro PC',
+                                'desktop_nav_section' => 'Navigace PC',
                                 'library_section'     => 'Knihovny (video..)',
                             ];
 
@@ -95,6 +80,21 @@ $all_sections = function_exists('pehobr_get_home_layout_sections') ? pehobr_get_
                                     </div>
                                 </div>
                             <?php endforeach; ?>
+                        </div>
+
+                        <button class="accordion-btn">Vzhled boxů</button>
+                        <div class="accordion-content">
+                             <div class="setting-item setting-item-pope-display">
+                                <label for="toggle-pope-display" class="setting-label">Citáty papežů</label>
+                                <div class="toggle-container">
+                                    <span class="toggle-label">Grafika</span>
+                                    <label class="switch">
+                                        <input type="checkbox" class="display-toggle" id="toggle-pope-display" data-section-slug="pope_section_display">
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <span class="toggle-label">Text</span>
+                                </div>
+                            </div>
                         </div>
 
                     </div>
