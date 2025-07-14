@@ -316,3 +316,14 @@ header#masthead.sheader {
         font-size: 1rem; 
     }
 }
+
+/* --- Svislé centrování obsahu na mobilu --- */
+@media screen and (max-width: 991px) {
+    #primary.intro-app > main#main {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        /* Výpočet minimální výšky: 100% výšky okna minus horní a dolní odsazení body */
+        min-height: calc(100vh - 67px - 70px); /* 67px je horní padding, 70px je odhad pro dolní lištu a mezeru */
+    }
+}
