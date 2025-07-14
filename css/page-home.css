@@ -1,6 +1,6 @@
 /*
  * Styly pro úvodní obrazovku s mřížkou ikon (page-home.css)
- * VERZE 5: Přidán rámeček pro ikony knihoven.
+ * VERZE 6: Ikony "Modlitba, Bible, Inspirace" mají vlastní boxy.
  */
 
 body {
@@ -50,8 +50,7 @@ header#masthead.sheader { z-index: 999; }
 }
 
 .pope-section-container,
-.saints-section-container,
-.third-row-section-container {
+.saints-section-container {
     width: 90vw;
     max-width: 600px;
     border-radius: 12px;
@@ -62,7 +61,17 @@ header#masthead.sheader { z-index: 999; }
     transition: background-color 0.3s, border-color 0.3s;
 }
 
-/* --- NOVÉ STYLY PRO BAREVNÉ VARIANTY (PŘESUNUTO Z VZHLED-PC.CSS) --- */
+/* === ÚPRAVA: Kontejner pro třetí řádek slouží jen jako neviditelný obal === */
+.third-row-section-container {
+    width: 90vw;
+    max-width: 600px;
+    margin-top: 0;
+    margin-bottom: 12px;
+    /* Odstraněny vlastnosti pro vnější box */
+}
+
+
+/* --- NOVÉ STYLY PRO BAREVNÉ VARIANTy --- */
 
 /* === Sekce Papežové === */
 .pope-section-container .pope-icon-link img {
@@ -124,27 +133,6 @@ header#masthead.sheader { z-index: 999; }
 }
 .saints-section-container.style-fialove .saints-item-boxed .grid-item-label {
     color: #ffffff;
-}
-
-
-/* === Sekce Akce (Modlitba, Bible, Inspirace) === */
-.third-row-section-container .icon-grid-item img {
-    transition: transform 0.2s ease-in-out;
-}
-.third-row-section-container .icon-grid-item:hover img {
-    transform: scale(1.1);
-}
-
-/* Varianta Světlá */
-.third-row-section-container.style-svetle {
-    background-color: #F5F2EB;
-    border: 2px solid #3b0f5d;
-}
-
-/* Varianta Fialová */
-.third-row-section-container.style-fialove {
-    background-color: #741ea4;
-    border: 2px solid #e6e0f3;
 }
 
 
@@ -265,18 +253,37 @@ header#masthead.sheader { z-index: 999; }
     align-items: center;
 }
 
+/* === NOVÉ STYLY pro ikony "Modlitba, Bible, Inspirace" === */
 .third-row-section-container .grid-item-wrapper {
-    width: 30%;
+    width: 32%;
 }
 .third-row-section-container .icon-grid-item {
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
-    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 95px; /* Sjednocená výška */
+    border-radius: 12px;
+    box-sizing: border-box;
+    transition: transform 0.2s ease-in-out, border-color 0.3s, background-color 0.3s;
 }
 .third-row-section-container .icon-grid-item:hover {
     transform: translateY(-3px);
-    box-shadow: none;
+}
+.third-row-section-container .icon-grid-item img {
+    transition: transform 0.2s ease-in-out;
+}
+.third-row-section-container .icon-grid-item:hover img {
+    transform: scale(1.1);
+}
+/* Barevné varianty pro jednotlivé boxy */
+.third-row-section-container.style-svetle .icon-grid-item {
+    background-color: #F5F2EB;
+    border: 2px solid #3b0f5d;
+}
+.third-row-section-container.style-fialove .icon-grid-item {
+    background-color: #741ea4;
+    border: 2px solid #e6e0f3;
 }
 .third-row-section-container .grid-item-label {
     display: none;
@@ -290,7 +297,7 @@ header#masthead.sheader { z-index: 999; }
     background-color: transparent;
     text-decoration: none;
     transition: transform 0.2s ease-in-out;
-    height: 50px;
+    height: 95px; /* Sjednocená výška */
     width: 100%;
     border: 2px solid #e6e0f3;
     border-radius: 12px;
