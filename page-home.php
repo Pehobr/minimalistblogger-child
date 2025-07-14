@@ -48,10 +48,10 @@ $source_post_id = $daily_post_id ?? $page_id_for_defaults;
 
 // === DEFINICE SEKCÍ (s úpravou pro Inspiraci) ===
 $grid_items = [
-    ['name' => 'Sv. Jan Pavel II.', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel', 'label' => 'Jan Pavel', 'type' => 'text'],
-    ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt', 'label' => 'Benedikt', 'type' => 'text'],
+    ['name' => 'Sv. Jan Pavel II.', 'slug' => 'papez-frantisek', 'icon' => 'ikona-janpavel.png', 'citat_key' => 'citat_janpavel', 'label' => 'sv. Jan Pavel II.', 'type' => 'text'],
+    ['name' => 'Papež Benedikt XVI.', 'slug' => 'papez-benedikt', 'icon' => 'ikona-benedikt.png', 'citat_key' => 'citat_benedikt', 'label' => 'Benedikt XVI.', 'type' => 'text'],
     ['name' => 'Papež František', 'slug' => 'papez-frantisek', 'icon' => 'ikona-frantisek.png', 'citat_key' => 'citat_frantisek', 'label' => 'František', 'type' => 'text'],
-    ['name' => 'Sv. Augustin', 'slug' => '#', 'icon' => 'ikona-augustin.png', 'foto_key' => 'foto_url', 'label' => 'Augustin', 'type' => 'image'],
+    ['name' => 'Sv. Augustin', 'slug' => '#', 'icon' => 'ikona-augustin.png', 'foto_key' => 'foto_url', 'label' => 'sv. Augustin', 'type' => 'image'],
     ['name' => 'Papež Lev XIV.', 'slug' => 'papez-lev', 'icon' => 'ikona-lev.png', 'citat_key' => 'citat_lev', 'label' => 'Lev XIV.', 'type' => 'text'],
     ['name' => 'Modlitba', 'slug' => 'modlitba', 'icon' => 'ikona-modlitba.png', 'light_icon' => 'ikona-modlitba-svetla.png', 'citat_key' => 'modlitba_text', 'audio_key' => 'modlitba_url', 'label' => 'Modlitba', 'type' => 'text'],
     ['name' => 'Bible', 'slug' => 'poboznosti', 'icon' => 'ikona-bible.png', 'light_icon' => 'ikona-bible-svetla.png', 'label' => 'Bible', 'type' => 'text'],
@@ -135,7 +135,7 @@ $saints_nav_style = get_option('pehobr_saints_nav_style', 'svetle');
                      <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/' . $augustin_item['icon']); ?>" alt="<?php echo esc_attr($augustin_item['name']); ?>">
                 </span>
             <?php endif; ?>
-            <span class="grid-item-label">Augustin</span>
+            <span class="grid-item-label">sv. Augustin</span>
         </div>
         <div class="saints-item-center">
             <img src="<?php echo esc_url(get_stylesheet_directory_uri() . '/img/erb-lev.png'); ?>" alt="Vatikán">

@@ -75,8 +75,10 @@
     }
 }
 
-/* Skrytí popisků pod ikonami papežů a svatých na mobilu */
-.page-template-page-home .pope-section-container .grid-item-label,
-.page-template-page-home .saints-section-container .grid-item-label {
-    display: none;
+@media screen and (max-width: 991px) {
+    /* Skrytí popisků pod ikonami papežů a sv. Augustina na mobilu */
+    .page-template-page-home .pope-section-container .grid-item-label,
+    .page-template-page-home .saints-section-container .grid-item-label {
+        display: none;
+    }
 }

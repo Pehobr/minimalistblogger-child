@@ -60,7 +60,7 @@ header#masthead.sheader {
 /* Obecný popisek pod ikonou (používá se ve více sekcích) */
 .grid-item-label {
     margin-top: 4px;
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     font-weight: bold;
     text-shadow: none;
 }
