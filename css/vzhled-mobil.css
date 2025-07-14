@@ -19,27 +19,30 @@
         margin-bottom: 20px;
     }
 
-    /* <<-- ZMĚNA: Postranní panel (sidebar) na mobilu úplně skryjeme -->> */
+    /* Postranní panel (sidebar) na mobilu a tabletu úplně skryjeme */
     #secondary.featured-sidebar {
         display: none;
+    }
+    
+    /* === OPRAVA ZAROVNÁNÍ A VÝŠKY HLAVIČKY PRO STŘEDNÍ OBRAZOVKY === */
+    .site-branding {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .site-branding .site-title {
+        flex-grow: 1;
+        text-align: center;
+        margin: 0; /* Odstraní přebytečné okraje */
+        padding: 0; /* Odstraní přebytečné odsazení */
+        font-size: 22px; /* Nastaví rozumnou velikost pro tablet */
+        line-height: 1; /* Sníží výšku řádku */
     }
 }
 
 /* Pravidla pro obrazovky do 700px (převážně mobily) */
 @media screen and (max-width: 700px) {
-    
-    /* === NOVÁ ÚPRAVA: Vycentrování titulku pomocí Flexboxu === */
-.site-branding {
-    display: flex; /* Použijeme Flexbox */
-    align-items: center; /* Vertikálně zarovná ikony a titulek */
-    justify-content: space-between; /* Rozmístí prvky od sebe */
-    text-align: center; /* Toto zajistí, že titulek bude vycentrovaný */
-}
-
-/* Zajistíme, aby se titulek roztáhl a vyplnil prostor mezi ikonami */
-.site-branding .site-title {
-    flex-grow: 1; /* Titulek zabere všechen volný prostor */
-}
     
     /* ODSAZENÍ OBSAHU */
     article .entry-content {
@@ -47,7 +50,7 @@
         font-size: 16px;
     }
 
-    /* NADPIS APLIKACE */
+    /* NADPIS APLIKACE (menší pro mobily) */
     .site-branding .site-title {
         font-size: 17px;
     }

@@ -29,7 +29,7 @@ nav#primary-site-navigation {
     align-self: flex-start;
 }
 
-/* === NOVÁ ÚPRAVA: Zarovnání ikon menu a titulku na PC === */
+/* === ÚPRAVA: Zarovnání ikon menu a titulku na PC === */
 .site-branding {
     display: flex;
     align-items: center;
@@ -38,10 +38,11 @@ nav#primary-site-navigation {
 }
 
 .site-branding .site-title {
-    flex-grow: 1; /* Titulek zabere všechen volný prostor a vycentruje se */
+    flex-grow: 1;
     text-align: center;
     font-size: 27px;
     margin: 0;
+    padding: 0; /* DOPLNĚNÍ: Vynulování odsazení pro konzistenci */
 }
 
 /* === ZMĚNA PÍSMA V BOČNÍM MENU NA PC === */
@@ -55,16 +56,14 @@ nav#primary-site-navigation {
 
 /* === VZHLED MENU V SIDEBARU PODLE MOBILNÍ VERZE (MINIMÁLNÍ ODSADZENÍ) === */
 
-/* 1. Základní nastavení pro seznam menu */
 #secondary .widget_nav_menu ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-/* 2. Nastavení pro jednotlivé položky a oddělovací čáru */
 #secondary .widget_nav_menu li {
-    padding-bottom: 2px; /* ZMĚNA: Sníženo odsazení pod čarou */
+    padding-bottom: 2px;
     margin: 0;
 }
 
@@ -74,14 +73,13 @@ nav#primary-site-navigation {
     width: 70%;
     height: 1px;
     background-color: #3b0f5d;
-    margin: 2px auto 0; /* ZMĚNA: Snížena mezera nad čarou */
+    margin: 2px auto 0;
     opacity: 0.5;
 }
 
-/* 3. Styl pro samotný odkaz (text) uvnitř položky */
 #secondary .widget_nav_menu li a {
     display: block;
-    padding: 2px 15px; /* ZMĚNA: Výrazně sníženo horní a dolní odsazení */
+    padding: 2px 15px;
     color: #3b0f5d;
     text-decoration: none;
     font-size: 16px;
@@ -91,7 +89,6 @@ nav#primary-site-navigation {
     transition: background-color 0.2s ease;
 }
 
-/* 4. Efekt při najetí myší */
 #secondary .widget_nav_menu li a:hover {
     background-color: #dcd7e9;
 }
@@ -108,7 +105,6 @@ nav#primary-site-navigation {
 
 /* === STYLY PRO ROZBALOVACÍ POD-MENU V SIDEBARU (FINÁLNÍ VERZE 2.0) === */
 
-/* 1. Obecné nastavení pro položky a odstranění nežádoucích prvků */
 #secondary .widget_nav_menu li {
     position: relative;
     border-left: none !important;
@@ -118,7 +114,6 @@ nav#primary-site-navigation {
     display: none !important;
 }
 
-/* 2. Styl odkazu v rodičovské položce (s vlastní šipkou) */
 #secondary .widget_nav_menu .menu-item-has-children > a {
     display: flex;
     justify-content: center;
@@ -126,7 +121,6 @@ nav#primary-site-navigation {
     gap: 8px;
 }
 
-/* 3. Vzhled nové šipky */
 .submenu-arrow {
     display: inline-block;
     width: 7px;
@@ -137,12 +131,10 @@ nav#primary-site-navigation {
     transition: transform 0.2s ease-in-out;
 }
 
-/* 4. Otočení šipky, když je pod-menu otevřené */
 #secondary .widget_nav_menu .submenu-is-open > a .submenu-arrow {
     transform: rotate(225deg);
 }
 
-/* 5. Vzhled pod-menu a jeho položek */
 #secondary .widget_nav_menu ul.sub-menu {
     list-style: none;
     padding-left: 0;
@@ -150,7 +142,6 @@ nav#primary-site-navigation {
     margin-bottom: 5px;
 }
 
-/* ZMĚNA: Skryje nežádoucí šipku vedle samotného pod-menu */
 #secondary .widget_nav_menu ul.sub-menu::before,
 #secondary .widget_nav_menu ul.sub-menu::after {
     display: none !important;
@@ -163,7 +154,6 @@ nav#primary-site-navigation {
     padding: 4px 15px;
 }
 
-/* Skrytí oddělovacích čar v pod-menu */
 #secondary .widget_nav_menu ul.sub-menu li:not(:last-child)::after {
     display: none;
 }
